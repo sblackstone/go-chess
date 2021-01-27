@@ -1,6 +1,5 @@
 package boardstate
 
-
 type BoardState struct {
   white      int64
   black      int64
@@ -10,15 +9,18 @@ type BoardState struct {
   bishops    int64
   queens     int64
   kings      int64
-  turn       int8
-  wpassant   int8
-  bpassant   int8
-  wcastle    int8
-  bcastle    int8
+  empty      int64
+  state      int32
+
+  //wpassant   int8 // 8 bits needed
+  //bpassant   int8 // 8 bits needed
+  //turn       int8 // 1 bit needed
+  //wcastle    int8 // 2 bits needed
+  //bcastle    int8 // 2 bits needed
 }
 
-func (b *BoardState) GetWhiteSquares() int64 {
-  return b.white;
+func planeToAffine(i int8, j int8) int8 {
+  return i * 8 + j;
 }
 
 func BlankBoard() *BoardState {
