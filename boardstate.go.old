@@ -1,0 +1,52 @@
+package boardstate
+
+type BoardState struct {
+  colors     []int64
+  pieces     []int64
+  state      int32
+  //wpassant   int8 // 8 bits needed
+  //bpassant   int8 // 8 bits needed
+  //turn       int8 // 1 bit needed
+  //wcastle    int8 // 2 bits needed
+  //bcastle    int8 // 2 bits needed
+}
+
+func (b *BoardState) setSquare(i uint8, j uint8, color uint8, piece uint8) {
+  //n := gridToLinear(i,j);
+
+  switch color {
+  case WHITE:
+  case BLACK:
+  case EMPTY:
+  }
+
+  switch piece {
+  case ROOK:
+  case KNIGHT:
+  case BISHOP:
+  case KING:
+  case QUEEN:
+  }
+
+  return;
+}
+
+func gridToLinear(i uint8, j uint8) uint8 {
+  return i * 8 + j;
+}
+
+func EmptyBoard() *BoardState {
+  b := BoardState{}
+  b.colors = make([]int64, 3);
+
+  b.pieces = make([]int64, 7);
+  return &b;
+}
+
+func InitialBoard() *BoardState {
+  b := BoardState{};
+  return &b;
+}
+
+/*
+*/
