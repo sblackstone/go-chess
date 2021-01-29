@@ -1,16 +1,22 @@
 package boardstate
 
+// Color Constants
 const (
-  WHITE  = iota
-  BLACK
-  EMPTY
+	WHITE = iota
+	BLACK
 )
 
+// Piece Constants
 const (
-  ROOK   = iota
-  KNIGHT
-  BISHOP
-  QUEEN
-  KING
-  PAWN
+	ROOK = iota
+	KNIGHT
+	BISHOP
+	QUEEN
+	KING
+	PAWN
+)
+
+// Empty is for multiple things.
+const (
+	EMPTY=99
 )
