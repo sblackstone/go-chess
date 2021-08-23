@@ -7,8 +7,8 @@ import (
 // Print outputs a debug display of the current board.
 func (b *BoardState) Print() {
 	pieces := make([][]string, 2)
-	pieces[WHITE] = []string{"♖", "♘", "♗", "♕", "♔", "♙"};
-	pieces[BLACK] = []string{"♜", "♞", "♝", "♛", "♚", "♟"};
+	pieces[BLACK] = []string{"♖", "♘", "♗", "♕", "♔", "♙"};
+	pieces[WHITE] = []string{"♜", "♞", "♝", "♛", "♚", "♟"};
 	var i, j uint8
 	for i = 0; i < 8; i++ {
 		for j = 0; j < 8; j++ {

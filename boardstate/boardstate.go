@@ -10,7 +10,7 @@ func gridToLinear(i uint8, j uint8) uint8 {
 type BoardState struct {
 	colors []uint64
 	pieces []uint64
-	state  uint32
+	meta  uint32
 	//wpassant   int8 // 8 bits needed
 	//bpassant   int8 // 8 bits needed
 	//turn       int8 // 1 bit needed
@@ -35,19 +35,19 @@ func Initial() *BoardState {
 	return &b
 }
 
-// InitialManual sets up the board manually, only used to calculate the constants for the fast version Initial.
-func InitialManual() *BoardState {
+// initialManual sets up the board manually, only used to calculate the constants for the fast version Initial.
+func initialManual() *BoardState {
 	var j uint8
 
 	b := Blank()
 
 	backFile := []uint8{ROOK, KNIGHT, BISHOP, QUEEN, KING, BISHOP, KNIGHT, ROOK}
 	for j = 0; j < 8; j++ {
-		b.SetSquare(0, j, WHITE, backFile[j])
-		b.SetSquare(7, j, BLACK, backFile[j])
+		b.SetSquareLinear(0, j, WHITE, backFile[j])
+		b.SetSquareLinear(7, j, BLACK, backFile[j])
 
-		b.SetSquare(1, j, WHITE, PAWN)
-		b.SetSquare(6, j, BLACK, PAWN)
+		b.SetSquareLinear(1, j, WHITE, PAWN)
+		b.SetSquareLinear(6, j, BLACK, PAWN)
 	}
 	return b
 }
@@ -66,7 +66,7 @@ func (b *BoardState) ColorOfSquare(n uint8) uint8 {
 // PieceOfSquare t
 func (b *BoardState) PieceOfSquare(n uint8) uint8 {
 	var i uint8
-	for i = 0; i < 8; i++ {
+	for i = 0; i < 6; i++ {
 		if testBit(b.pieces[i], n) {
 			return i
 		}
@@ -75,8 +75,22 @@ func (b *BoardState) PieceOfSquare(n uint8) uint8 {
 }
 
 // SetSquare blah blah blah
-func (b *BoardState) SetSquare(i uint8, j uint8, color uint8, piece uint8) {
-	n := gridToLinear(i, j)
+func (b *BoardState) SetSquare(n uint8, color uint8, piece uint8) {
+
+	b.pieces[ROOK]    = clearBit(b.pieces[ROOK],   n)
+	b.pieces[BISHOP]  = clearBit(b.pieces[BISHOP], n)
+	b.pieces[KNIGHT]  = clearBit(b.pieces[KNIGHT], n)
+	b.pieces[QUEEN]   = clearBit(b.pieces[QUEEN],  n)
+	b.pieces[KING]    = clearBit(b.pieces[KING],   n)
+	b.pieces[PAWN]    = clearBit(b.pieces[PAWN],   n)
+	b.colors[WHITE]   = clearBit(b.colors[WHITE],  n)
+	b.colors[BLACK]   = clearBit(b.colors[BLACK],  n)
+
 	b.colors[color] = setBit(b.colors[color], n)
 	b.pieces[piece] = setBit(b.pieces[piece], n)
+}
+
+// SetSquare blah blah blah
+func (b *BoardState) SetSquareLinear(i uint8, j uint8, color uint8, piece uint8) {
+	b.SetSquare(gridToLinear(i, j), color, piece);
 }
