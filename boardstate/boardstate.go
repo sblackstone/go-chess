@@ -30,24 +30,24 @@ func Blank() *BoardState {
 func Initial() *BoardState {
 	b := BoardState{}
 	// These constants are pre-calculated for the initial board state.
-	b.colors = []uint64{65535, 18446462598732840960}
+	b.colors = []uint64{18446462598732840960, 65535 }
 	b.pieces = []uint64{9295429630892703873, 4755801206503243842, 2594073385365405732, 576460752303423496, 1152921504606846992, 71776119061282560}
 	return &b
 }
 
 // initialManual sets up the board manually, only used to calculate the constants for the fast version Initial.
-func initialManual() *BoardState {
+func InitialManual() *BoardState {
 	var j uint8
 
 	b := Blank()
 
 	backFile := []uint8{ROOK, KNIGHT, BISHOP, QUEEN, KING, BISHOP, KNIGHT, ROOK}
 	for j = 0; j < 8; j++ {
-		b.SetSquareLinear(0, j, WHITE, backFile[j])
-		b.SetSquareLinear(7, j, BLACK, backFile[j])
+		b.SetSquareLinear(0, j, BLACK, backFile[j])
+		b.SetSquareLinear(7, j, WHITE, backFile[j])
 
-		b.SetSquareLinear(1, j, WHITE, PAWN)
-		b.SetSquareLinear(6, j, BLACK, PAWN)
+		b.SetSquareLinear(1, j, BLACK, PAWN)
+		b.SetSquareLinear(6, j, WHITE, PAWN)
 	}
 	return b
 }
