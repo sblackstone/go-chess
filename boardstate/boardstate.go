@@ -34,7 +34,7 @@ func Initial() *BoardState {
 	b.pieces = []uint64{9295429630892703873, 4755801206503243842, 2594073385365405732, 576460752303423496, 1152921504606846992, 71776119061282560}
 
 	// TODO: Make meta a constant...
-	b.setTurn(WHITE)
+	b.SetTurn(WHITE)
 
 	return &b
 }
@@ -53,7 +53,7 @@ func initialManual() *BoardState {
 		b.SetSquareXY(1, j, BLACK, PAWN)
 		b.SetSquareXY(6, j, WHITE, PAWN)
 	}
-	b.setTurn(WHITE)
+	b.SetTurn(WHITE)
 
 
 	return b

@@ -25,7 +25,7 @@ const (
 )
 
 
-func (b *BoardState) getTurn() uint8 {
+func (b *BoardState) GetTurn() uint8 {
   if testBit(b.meta, TURN) {
     return BLACK
   } else {
@@ -33,7 +33,7 @@ func (b *BoardState) getTurn() uint8 {
   }
 }
 
-func (b *BoardState) setTurn(color uint8) {
+func (b *BoardState) SetTurn(color uint8) {
   if color == WHITE {
     b.meta = clearBit(b.meta, TURN)
   } else {
@@ -41,16 +41,17 @@ func (b *BoardState) setTurn(color uint8) {
   }
 }
 
-func (b *BoardState) toggleTurn() {
+func (b *BoardState) ToggleTurn() {
   b.meta = flipBit(b.meta, TURN)
 }
 
 
-func (b *BoardState) canCastle(side uint8, color uint8) bool {
+func (b *BoardState) CanCastle(side uint8, color uint8) bool {
   bit := 1 + (color * 2) + side
   return testBit(b.meta, bit)
 }
 
+/*
 func (b *BoardState) setCastleState(side uint8, color uint8, enabled bool) {
 
   // WHITE = 0, BLACK = 1
@@ -69,7 +70,7 @@ func (b *BoardState) setCastleState(side uint8, color uint8, enabled bool) {
   }
 }
 
-
+*/
 
 /*
 func (b *BoardState) clearCastleRight(color uint8, side uint8) {
