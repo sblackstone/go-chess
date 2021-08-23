@@ -35,6 +35,10 @@ func Initial() *BoardState {
 
 	// TODO: Make meta a constant...
 	b.SetTurn(WHITE)
+	b.SetCastleRights(WHITE, CASTLE_LONG, true)
+	b.SetCastleRights(WHITE, CASTLE_SHORT, true)
+	b.SetCastleRights(BLACK, CASTLE_LONG, true)
+	b.SetCastleRights(BLACK, CASTLE_SHORT, true)
 
 	return &b
 }
