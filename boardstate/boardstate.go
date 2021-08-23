@@ -86,9 +86,8 @@ func (b *BoardState) SetSquare(n uint8, color uint8, piece uint8) {
 	b.pieces[PAWN]    = clearBit(b.pieces[PAWN],   n)
 	b.colors[WHITE]   = clearBit(b.colors[WHITE],  n)
 	b.colors[BLACK]   = clearBit(b.colors[BLACK],  n)
-
-	b.colors[color] = setBit(b.colors[color], n)
-	b.pieces[piece] = setBit(b.pieces[piece], n)
+	b.colors[color]   = setBit(b.colors[color], n)
+	b.pieces[piece]   = setBit(b.pieces[piece], n)
 }
 
 // SetSquareXY removes any existing piece and sets the square to the new piece/color with (x,y) coordinates.
