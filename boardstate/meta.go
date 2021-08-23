@@ -34,7 +34,7 @@ func (b *BoardState) setTurn(color uint8) {
 }
 
 func (b *BoardState) toggleTurn() {
-
+  b.meta = flipBit(b.meta, TURN)
 }
 
 /*
