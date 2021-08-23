@@ -16,9 +16,8 @@ func TestCreateBlankBoard(t *testing.T) {
   }
 }
 
-func TestCreateInitialBoard(t *testing.T) {
-  b := Initial()
-  // 64bit int versions of the chess board assuming a correct inital state.
+func testInitialBoard(t *testing.T, b *BoardState) {
+	// 64bit int versions of the chess board assuming a correct inital state.
   expectedPieces := []uint64{9295429630892703873, 4755801206503243842, 2594073385365405732, 576460752303423496, 1152921504606846992, 71776119061282560}
   expectedColors := []uint64{18446462598732840960, 65535};
 
@@ -35,25 +34,12 @@ func TestCreateInitialBoard(t *testing.T) {
   }
 }
 
+func TestCreateInitialBoard(t *testing.T) {
+	testInitialBoard(t, Initial())
+}
 
 func TestCreateInitialBoardManual(t *testing.T) {
-	b := initialManual()
-  // 64bit int versions of the chess board assuming a correct inital state.
-  expectedPieces := []uint64{9295429630892703873, 4755801206503243842, 2594073385365405732, 576460752303423496, 1152921504606846992, 71776119061282560}
-  expectedColors := []uint64{18446462598732840960, 65535};
-
-  for i := range(b.pieces) {
-    if (b.pieces[i] != expectedPieces[i]) {
-      t.Errorf("Initial Board mismatch pieces");
-    }
-  }
-
-  for i := range(b.colors) {
-    if (b.colors[i] != expectedColors[i]) {
-      t.Errorf("Initial Board mismatch colors");
-    }
-  }
-
+	testInitialBoard(t, initialManual())
 }
 
 
