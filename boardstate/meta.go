@@ -45,14 +45,7 @@ func (b *BoardState) ToggleTurn() {
   b.meta = flipBit(b.meta, TURN)
 }
 
-
-func (b *BoardState) HasCastleRights(color uint8, side uint8) bool {
-  bit := 1 + (color * 2) + side
-  return testBit(b.meta, bit)
-}
-
-func (b *BoardState) SetCastleRights(color uint8, side uint8, enabled bool) {
-
+func castleBit(color uint8, side uint8) uint8 {
   // WHITE = 0, BLACK = 1
   // SHORT = 0 LONG = 1
   // So,
@@ -60,8 +53,17 @@ func (b *BoardState) SetCastleRights(color uint8, side uint8, enabled bool) {
   // WHITE LONG  = 1 + (2*0) + 1 = 2
   // BLACK SHORT = 1 + (2*1) + 0 = 3
   // BLACK LONG  = 1 + (2*2) + 1 = 4
+  return  1 + (color * 2) + side;
+}
 
-  bit := 1 + (color * 2) + side
+func (b *BoardState) HasCastleRights(color uint8, side uint8) bool {
+  return testBit(b.meta, castleBit(color, side))
+}
+
+func (b *BoardState) SetCastleRights(color uint8, side uint8, enabled bool) {
+
+
+  bit := castleBit(color, side)
   if enabled {
     b.meta = setBit(b.meta, bit)
   } else {
