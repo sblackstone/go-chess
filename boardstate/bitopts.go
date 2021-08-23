@@ -14,3 +14,8 @@ func clearBit(n uint64, pos uint8) uint64 {
 func testBit(n uint64, pos uint8) bool {
     return n & (1 << pos) > 0;
 }
+
+func flipBit(n uint64, pos uint8) uint64 {
+  n ^= (1 << pos)
+  return n
+}

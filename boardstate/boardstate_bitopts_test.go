@@ -5,6 +5,27 @@ import (
 	//  "github.com/sblackstone/go-chess/boardstate"
 )
 
+
+
+func TestFlipBit(t *testing.T) {
+	var v uint64;
+
+	v = 0b101
+
+	v = flipBit(v, 1)
+
+	if (v != 0b111) {
+		t.Errorf("Expected 101 ^ 010 = 111 (7)")
+	}
+
+	v = flipBit(v, 1)
+
+	if (v != 0b101) {
+		t.Errorf("Expected 111 ^ 010 = 101 (5)")
+	}
+
+}
+
 func TestSetBit(t *testing.T) {
 	var v uint64
 	v = setBit(v, 0)

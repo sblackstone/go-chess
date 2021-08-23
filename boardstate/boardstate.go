@@ -10,7 +10,7 @@ func gridToLinear(i uint8, j uint8) uint8 {
 type BoardState struct {
 	colors []uint64
 	pieces []uint64
-	meta   uint32
+	meta   uint64 // really could be int32 but we don't want to have to write 32 and 64 bit versions of our bit library.
 	//wpassant   int8 // 8 bits needed
 	//bpassant   int8 // 8 bits needed
 	//turn       int8 // 1 bit needed
@@ -32,6 +32,10 @@ func Initial() *BoardState {
 	// These constants are pre-calculated using InitialManual (see below)...
 	b.colors = []uint64{18446462598732840960, 65535 }
 	b.pieces = []uint64{9295429630892703873, 4755801206503243842, 2594073385365405732, 576460752303423496, 1152921504606846992, 71776119061282560}
+
+	// TODO: Make meta a constant...
+	b.setTurn(WHITE)
+
 	return &b
 }
 
@@ -49,6 +53,9 @@ func initialManual() *BoardState {
 		b.SetSquareXY(1, j, BLACK, PAWN)
 		b.SetSquareXY(6, j, WHITE, PAWN)
 	}
+	b.setTurn(WHITE)
+
+
 	return b
 }
 
