@@ -2,7 +2,7 @@ package boardstate
 
 import (
 	"testing"
-  "fmt"
+//  "fmt"
 )
 
 
@@ -94,14 +94,10 @@ func TestSetSquare(t *testing.T) {
 		t.Errorf("Expected piece of square 0 to be ROOK (%v), got %v", ROOK, b.PieceOfSquare(0))
 	}
 
-	b.Print()
-	fmt.Print("-----\n")
-	b.SetSquareXY(0,0, BLACK, PAWN)
+	b.SetSquareXY(0,0, WHITE, PAWN)
 
-	b.Print()
-
-	if (b.ColorOfSquare(0) != BLACK) {
-		t.Errorf("Expected color of square 0 to be BLACK")
+	if (b.ColorOfSquare(0) != WHITE) {
+		t.Errorf("Expected color of square 0 to be WHITE")
 	}
 	if (b.PieceOfSquare(0) != PAWN) {
 		t.Errorf("Expected piece of square 0 to be PAWN (%v), got %v", PAWN, b.PieceOfSquare(0))
