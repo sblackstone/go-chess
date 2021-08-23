@@ -29,14 +29,14 @@ func Blank() *BoardState {
 // Initial returns a board with the initial setup.
 func Initial() *BoardState {
 	b := BoardState{}
-	// These constants are pre-calculated for the initial board state.
+	// These constants are pre-calculated using InitialManual (see below)...
 	b.colors = []uint64{18446462598732840960, 65535 }
 	b.pieces = []uint64{9295429630892703873, 4755801206503243842, 2594073385365405732, 576460752303423496, 1152921504606846992, 71776119061282560}
 	return &b
 }
 
 // initialManual sets up the board manually, only used to calculate the constants for the fast version Initial.
-func InitialManual() *BoardState {
+func initialManual() *BoardState {
 	var j uint8
 
 	b := Blank()
