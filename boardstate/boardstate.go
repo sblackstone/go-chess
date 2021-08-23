@@ -10,7 +10,7 @@ func gridToLinear(i uint8, j uint8) uint8 {
 type BoardState struct {
 	colors []uint64
 	pieces []uint64
-	meta  uint32
+	meta   uint32
 	//wpassant   int8 // 8 bits needed
 	//bpassant   int8 // 8 bits needed
 	//turn       int8 // 1 bit needed
@@ -76,7 +76,8 @@ func (b *BoardState) PieceOfSquare(n uint8) uint8 {
 
 // SetSquare blah blah blah
 func (b *BoardState) SetSquare(n uint8, color uint8, piece uint8) {
-
+	// Theres gotta be room for improvement here...
+	// we really only need to update the bitboard that is currently set.
 	b.pieces[ROOK]    = clearBit(b.pieces[ROOK],   n)
 	b.pieces[BISHOP]  = clearBit(b.pieces[BISHOP], n)
 	b.pieces[KNIGHT]  = clearBit(b.pieces[KNIGHT], n)
