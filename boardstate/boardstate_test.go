@@ -110,7 +110,7 @@ func TestSetSquare(t *testing.T) {
 
 	b.Print()
 	fmt.Print("-----\n")
-	b.SetSquareLinear(0,0, BLACK, PAWN)
+	b.SetSquareXY(0,0, BLACK, PAWN)
 
 	b.Print()
 

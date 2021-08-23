@@ -43,11 +43,11 @@ func InitialManual() *BoardState {
 
 	backFile := []uint8{ROOK, KNIGHT, BISHOP, QUEEN, KING, BISHOP, KNIGHT, ROOK}
 	for j = 0; j < 8; j++ {
-		b.SetSquareLinear(0, j, BLACK, backFile[j])
-		b.SetSquareLinear(7, j, WHITE, backFile[j])
+		b.SetSquareXY(0, j, BLACK, backFile[j])
+		b.SetSquareXY(7, j, WHITE, backFile[j])
 
-		b.SetSquareLinear(1, j, BLACK, PAWN)
-		b.SetSquareLinear(6, j, WHITE, PAWN)
+		b.SetSquareXY(1, j, BLACK, PAWN)
+		b.SetSquareXY(6, j, WHITE, PAWN)
 	}
 	return b
 }
@@ -92,6 +92,6 @@ func (b *BoardState) SetSquare(n uint8, color uint8, piece uint8) {
 }
 
 // SetSquare blah blah blah
-func (b *BoardState) SetSquareLinear(i uint8, j uint8, color uint8, piece uint8) {
+func (b *BoardState) SetSquareXY(i uint8, j uint8, color uint8, piece uint8) {
 	b.SetSquare(gridToLinear(i, j), color, piece);
 }
