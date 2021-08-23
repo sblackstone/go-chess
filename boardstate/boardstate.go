@@ -74,7 +74,7 @@ func (b *BoardState) PieceOfSquare(n uint8) uint8 {
 	return EMPTY
 }
 
-// SetSquare blah blah blah
+// SetSquare removes any existing piece and sets the square to the new piece/color.
 func (b *BoardState) SetSquare(n uint8, color uint8, piece uint8) {
 	// Theres gotta be room for improvement here...
 	// we really only need to update the bitboard that is currently set.
@@ -91,7 +91,7 @@ func (b *BoardState) SetSquare(n uint8, color uint8, piece uint8) {
 	b.pieces[piece] = setBit(b.pieces[piece], n)
 }
 
-// SetSquare blah blah blah
+// SetSquareXY removes any existing piece and sets the square to the new piece/color with (x,y) coordinates.
 func (b *BoardState) SetSquareXY(i uint8, j uint8, color uint8, piece uint8) {
 	b.SetSquare(gridToLinear(i, j), color, piece);
 }
