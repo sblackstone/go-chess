@@ -2,21 +2,13 @@ package boardstate
 
 /*
 
-
 Bit
-1      Turn                      (White = 0, Black = 1)
-2      White Castling Short      ()
-
-
-//turn       int8 // 1 bit needed
-
-  SET   = BLACK
-  UNSET = WHITE
-
-//wcastle    int8 // 2 bits needed
-//bcastle    int8 // 2 bits needed
-//wpassant   int8 // 8 bits needed
-//bpassant   int8 // 8 bits needed
+0      Turn                      (White = 0, Black = 1)
+1      White Castling Short      (Available = 0, Unavailalbe = 1)
+2      White Castling Long
+3      Black Castling Short
+4      Black Castling Long
+5-12   Enpassant state after last move  (Set = pawn pushed in that file by opposing color)
 
 */
 
@@ -60,6 +52,26 @@ func castleBit(color uint8, side uint8) uint8 {
   // BLACK LONG  = 1 + (2*2) + 1 = 4
   return  1 + (color * 2) + side;
 }
+
+func (b *BoardState) ClearEnpassant() {
+  // Todo:  This just needs to be a logical and with an appropriate mask.
+  for i := 5; i < 13; i++ {
+    b.meta = clearBit(b.meta, uint8(i));
+  }
+}
+
+// SetEnpassant takes a file 0-7 and saves the enpassant state.
+func (b *BoardState) SetEnpassant(file uint8) {
+  b.ClearEnpassant()
+  b.meta = setBit(b.meta, 5 + file)
+}
+
+// SetEnpassant takes a file 0-7 and saves the enpassant state.
+func (b *BoardState) IsEnpassant(file uint8) bool {
+  return testBit(b.meta, 5 + file)
+}
+
+
 
 func (b *BoardState) HasCastleRights(color uint8, side uint8) bool {
   return !testBit(b.meta, castleBit(color, side))
