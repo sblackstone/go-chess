@@ -79,13 +79,6 @@ func TestCastleRights(t *testing.T) {
   if (b.GetTurn() != WHITE) {
     t.Errorf("Expected it to be white's turn")
   }
-
-
-
-
-
-
-
 }
 
 

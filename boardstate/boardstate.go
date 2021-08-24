@@ -32,14 +32,6 @@ func Initial() *BoardState {
 	// These constants are pre-calculated using InitialManual (see below)...
 	b.colors = []uint64{18446462598732840960, 65535 }
 	b.pieces = []uint64{9295429630892703873, 4755801206503243842, 2594073385365405732, 576460752303423496, 1152921504606846992, 71776119061282560}
-
-	// TODO: Make meta a constant...
-	b.SetTurn(WHITE)
-	b.SetCastleRights(WHITE, CASTLE_LONG, true)
-	b.SetCastleRights(WHITE, CASTLE_SHORT, true)
-	b.SetCastleRights(BLACK, CASTLE_LONG, true)
-	b.SetCastleRights(BLACK, CASTLE_SHORT, true)
-
 	return &b
 }
 
