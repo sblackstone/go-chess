@@ -10,12 +10,7 @@ func gridToLinear(i uint8, j uint8) uint8 {
 type BoardState struct {
 	colors []uint64
 	pieces []uint64
-	meta   uint64 // really could be int32 but we don't want to have to write 32 and 64 bit versions of our bit library.
-	//wpassant   int8 // 8 bits needed
-	//bpassant   int8 // 8 bits needed
-	//turn       int8 // 1 bit needed
-	//wcastle    int8 // 2 bits needed
-	//bcastle    int8 // 2 bits needed
+	meta   uint64 
 }
 
 // Blank returns a blank board with no pieces on it
