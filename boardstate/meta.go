@@ -65,12 +65,10 @@ func (b *BoardState) SetEnpassant(file uint8) {
   b.meta = setBit(b.meta, 5 + file)
 }
 
-// SetEnpassant takes a file 0-7 and saves the enpassant state.
+// IsEnpassant takes a file 0-7 and returns the enpassant state.
 func (b *BoardState) IsEnpassant(file uint8) bool {
   return testBit(b.meta, 5 + file)
 }
-
-
 
 func (b *BoardState) HasCastleRights(color uint8, side uint8) bool {
   return !testBit(b.meta, castleBit(color, side))
