@@ -3,6 +3,11 @@ package boardstate
 /*
 
 
+Bit
+1      Turn                      (White = 0, Black = 1)
+2      White Castling Short      ()
+
+
 //turn       int8 // 1 bit needed
 
   SET   = BLACK
@@ -57,16 +62,14 @@ func castleBit(color uint8, side uint8) uint8 {
 }
 
 func (b *BoardState) HasCastleRights(color uint8, side uint8) bool {
-  return testBit(b.meta, castleBit(color, side))
+  return !testBit(b.meta, castleBit(color, side))
 }
 
 func (b *BoardState) SetCastleRights(color uint8, side uint8, enabled bool) {
-
-
   bit := castleBit(color, side)
   if enabled {
-    b.meta = setBit(b.meta, bit)
-  } else {
     b.meta = clearBit(b.meta, bit)
+  } else {
+    b.meta = setBit(b.meta, bit)
   }
 }
