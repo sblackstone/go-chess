@@ -49,9 +49,6 @@ func initialManual() *BoardState {
 		b.SetSquareXY(1, j, BLACK, PAWN)
 		b.SetSquareXY(6, j, WHITE, PAWN)
 	}
-	b.SetTurn(WHITE)
-
-
 	return b
 }
 
