@@ -54,10 +54,7 @@ func castleBit(color uint8, side uint8) uint8 {
 }
 
 func (b *BoardState) ClearEnpassant() {
-  // Todo:  This just needs to be a logical and with an appropriate mask.
-  for i := 5; i < 13; i++ {
-    b.meta = clearBit(b.meta, uint8(i));
-  }
+  b.meta = b.meta & 0b1111111111111111111111111111111111111111111111111110000000011111
 }
 
 // SetEnpassant takes a file 0-7 and saves the enpassant state.
