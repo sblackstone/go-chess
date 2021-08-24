@@ -2,6 +2,8 @@ package boardstate
 
 /*
 
+// All fields on an initial board should be 0 so no initializiation is necessary.
+
 Bit
 0      Turn                      (White = 0, Black = 1)
 1      White Castling Short      (Available = 0, Unavailalbe = 1)
