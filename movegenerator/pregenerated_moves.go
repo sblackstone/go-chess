@@ -1,21 +1,15 @@
 package movegenerator
-
 import (
-  "fmt"
-  "bitopts"
+  "github.com/sblackstone/go-chess/bitopts"
 )
 func genKnightMoveBitBoards() [64]uint64 {
   var result [64]uint64;
 
   for y := 18; y <= 42; y+=8 {
     for x := 0; x < 4; x++ {
-
-      fmt.Println(y + x);
+      pos := uint8(y + x);
+      result[pos] = bitopts.SetBit(result[pos], pos);
     }
-  }
-
-  for knightPos := 18; knightPos <= 42; knightPos += 8 {
-    result[knightPos] = 1
   }
   return result;
 }
