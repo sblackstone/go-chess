@@ -1,6 +1,7 @@
 package boardstate
 
 import (
+  "github.com/sblackstone/go-chess/bitopts"
 	"fmt"
 )
 
@@ -12,11 +13,11 @@ func (b *BoardState) Print() {
 	var i, j uint8
 	for i = 0; i < 8; i++ {
 		for j = 0; j < 8; j++ {
-			color := b.ColorOfSquare(gridToLinear(i, j))
+			color := b.ColorOfSquare(bitopts.GridToLinear(i, j))
 			if color == EMPTY {
 				fmt.Printf(" - ")
 			} else {
-				piece := b.PieceOfSquare(gridToLinear(i, j))
+				piece := b.PieceOfSquare(bitopts.GridToLinear(i, j))
 				fmt.Printf(" %s ", pieces[color][piece])
 			}
 		}

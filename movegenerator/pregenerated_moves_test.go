@@ -10,8 +10,11 @@ func TestBlarg(t *testing.T) {
   boards := genKnightMoveBitBoards();
   var pos uint8;
   for pos = 0; pos < 64; pos++ {
-    fmt.Println(pos);
-    bitopts.Print(boards[pos]);
-    fmt.Println()
+    if (boards[pos] > 0) {
+      fmt.Println(pos);
+      bitopts.Print(boards[pos], pos);
+      fmt.Println()
+    }
   }
+  fmt.Printf("%v\n", boards)
 }

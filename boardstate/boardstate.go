@@ -1,10 +1,7 @@
 package boardstate
 
 import ("github.com/sblackstone/go-chess/bitopts")
-// gridToLinear maps (i,j) -> n
-func gridToLinear(i uint8, j uint8) uint8 {
-	return i*8 + j
-}
+
 
 // BoardState contains the state of the Board
 type BoardState struct {
@@ -87,5 +84,5 @@ func (b *BoardState) SetSquare(n uint8, color uint8, piece uint8) {
 
 // SetSquareXY removes any existing piece and sets the square to the new piece/color with (x,y) coordinates.
 func (b *BoardState) SetSquareXY(i uint8, j uint8, color uint8, piece uint8) {
-	b.SetSquare(gridToLinear(i, j), color, piece);
+	b.SetSquare(bitopts.GridToLinear(i, j), color, piece);
 }

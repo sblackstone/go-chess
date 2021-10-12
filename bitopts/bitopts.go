@@ -25,15 +25,17 @@ func GridToLinear(i uint8, j uint8) uint8 {
 }
 
 
-func Print(n uint64) {
+func Print(n uint64, highlight uint8) {
   var i,j uint8;
   for i = 0; i < 8; i++ {
     for j = 0; j < 8; j++ {
       pos := GridToLinear(i,j)
-      if (TestBit(n, pos)) {
-        fmt.Printf("1");
+      if (pos == highlight) {
+        fmt.Printf(" * ");
+      } else if (TestBit(n, pos)) {
+        fmt.Printf(" X ");
       } else {
-        fmt.Printf("0");
+        fmt.Printf(" - ");
       }
     }
     fmt.Println()
