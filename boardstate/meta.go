@@ -1,5 +1,6 @@
 package boardstate
 
+import ("github.com/sblackstone/go-chess/bitopts")
 /*
 
 // All fields on an initial board should be 0 so no initializiation is necessary.
@@ -25,7 +26,7 @@ const (
 
 
 func (b *BoardState) GetTurn() uint8 {
-  if testBit(b.meta, TURN) {
+  if bitopts.TestBit(b.meta, TURN) {
     return BLACK
   } else {
     return WHITE
@@ -34,14 +35,14 @@ func (b *BoardState) GetTurn() uint8 {
 
 func (b *BoardState) SetTurn(color uint8) {
   if color == WHITE {
-    b.meta = clearBit(b.meta, TURN)
+    b.meta = bitopts.ClearBit(b.meta, TURN)
   } else {
-    b.meta = setBit(b.meta, TURN)
+    b.meta = bitopts.SetBit(b.meta, TURN)
   }
 }
 
 func (b *BoardState) ToggleTurn() {
-  b.meta = flipBit(b.meta, TURN)
+  b.meta = bitopts.FlipBit(b.meta, TURN)
 }
 
 func castleBit(color uint8, side uint8) uint8 {
@@ -62,23 +63,23 @@ func (b *BoardState) ClearEnpassant() {
 // SetEnpassant takes a file 0-7 and saves the enpassant state.
 func (b *BoardState) SetEnpassant(file uint8) {
   b.ClearEnpassant()
-  b.meta = setBit(b.meta, 5 + file)
+  b.meta = bitopts.SetBit(b.meta, 5 + file)
 }
 
 // IsEnpassant takes a file 0-7 and returns the enpassant state.
 func (b *BoardState) IsEnpassant(file uint8) bool {
-  return testBit(b.meta, 5 + file)
+  return bitopts.TestBit(b.meta, 5 + file)
 }
 
 func (b *BoardState) HasCastleRights(color uint8, side uint8) bool {
-  return !testBit(b.meta, castleBit(color, side))
+  return !bitopts.TestBit(b.meta, castleBit(color, side))
 }
 
 func (b *BoardState) SetCastleRights(color uint8, side uint8, enabled bool) {
   bit := castleBit(color, side)
   if enabled {
-    b.meta = clearBit(b.meta, bit)
+    b.meta = bitopts.ClearBit(b.meta, bit)
   } else {
-    b.meta = setBit(b.meta, bit)
+    b.meta = bitopts.SetBit(b.meta, bit)
   }
 }

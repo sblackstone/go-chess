@@ -1,6 +1,6 @@
 package boardstate
 
-
+import ("github.com/sblackstone/go-chess/bitopts")
 // gridToLinear maps (i,j) -> n
 func gridToLinear(i uint8, j uint8) uint8 {
 	return i*8 + j
@@ -10,7 +10,7 @@ func gridToLinear(i uint8, j uint8) uint8 {
 type BoardState struct {
 	colors []uint64
 	pieces []uint64
-	meta   uint64 
+	meta   uint64
 }
 
 // Blank returns a blank board with no pieces on it
@@ -49,10 +49,10 @@ func initialManual() *BoardState {
 
 // ColorOfSquare returns WHITE,BLACK, or EMPTY
 func (b *BoardState) ColorOfSquare(n uint8) uint8 {
-	if testBit(b.colors[WHITE], n) {
+	if bitopts.TestBit(b.colors[WHITE], n) {
 		return WHITE
 	}
-	if testBit(b.colors[BLACK], n) {
+	if bitopts.TestBit(b.colors[BLACK], n) {
 		return BLACK
 	}
 	return EMPTY
@@ -62,7 +62,7 @@ func (b *BoardState) ColorOfSquare(n uint8) uint8 {
 func (b *BoardState) PieceOfSquare(n uint8) uint8 {
 	var i uint8
 	for i = 0; i < 6; i++ {
-		if testBit(b.pieces[i], n) {
+		if bitopts.TestBit(b.pieces[i], n) {
 			return i
 		}
 	}
@@ -73,16 +73,16 @@ func (b *BoardState) PieceOfSquare(n uint8) uint8 {
 func (b *BoardState) SetSquare(n uint8, color uint8, piece uint8) {
 	// Theres gotta be room for improvement here...
 	// we really only need to update the bitboard that is currently set.
-	b.pieces[ROOK]    = clearBit(b.pieces[ROOK],   n)
-	b.pieces[BISHOP]  = clearBit(b.pieces[BISHOP], n)
-	b.pieces[KNIGHT]  = clearBit(b.pieces[KNIGHT], n)
-	b.pieces[QUEEN]   = clearBit(b.pieces[QUEEN],  n)
-	b.pieces[KING]    = clearBit(b.pieces[KING],   n)
-	b.pieces[PAWN]    = clearBit(b.pieces[PAWN],   n)
-	b.colors[WHITE]   = clearBit(b.colors[WHITE],  n)
-	b.colors[BLACK]   = clearBit(b.colors[BLACK],  n)
-	b.colors[color]   = setBit(b.colors[color], n)
-	b.pieces[piece]   = setBit(b.pieces[piece], n)
+	b.pieces[ROOK]    = bitopts.ClearBit(b.pieces[ROOK],   n)
+	b.pieces[BISHOP]  = bitopts.ClearBit(b.pieces[BISHOP], n)
+	b.pieces[KNIGHT]  = bitopts.ClearBit(b.pieces[KNIGHT], n)
+	b.pieces[QUEEN]   = bitopts.ClearBit(b.pieces[QUEEN],  n)
+	b.pieces[KING]    = bitopts.ClearBit(b.pieces[KING],   n)
+	b.pieces[PAWN]    = bitopts.ClearBit(b.pieces[PAWN],   n)
+	b.colors[WHITE]   = bitopts.ClearBit(b.colors[WHITE],  n)
+	b.colors[BLACK]   = bitopts.ClearBit(b.colors[BLACK],  n)
+	b.colors[color]   = bitopts.SetBit(b.colors[color], n)
+	b.pieces[piece]   = bitopts.SetBit(b.pieces[piece], n)
 }
 
 // SetSquareXY removes any existing piece and sets the square to the new piece/color with (x,y) coordinates.
