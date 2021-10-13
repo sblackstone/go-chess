@@ -2,19 +2,22 @@ package movegenerator
 
 import (
 	"testing"
-  "github.com/sblackstone/go-chess/bitopts"
   "fmt"
+	"github.com/sblackstone/go-chess/bitopts"
+
 )
 
 func TestBlarg(t *testing.T) {
-  boards := genKnightMoveBitBoards();
+  boards := genKnightMoves();
   var pos uint8;
+	var tmp uint64
+	var i int
   for pos = 0; pos < 64; pos++ {
-    if (boards[pos] > 0) {
-      fmt.Println(pos);
-      bitopts.Print(boards[pos], pos);
-      fmt.Println()
-    }
+		tmp = 0
+		for i = range(boards[pos]) {
+			tmp = bitopts.SetBit(tmp, boards[pos][i])
+		}
+		fmt.Printf("%v: %v\n", pos, boards[pos]);
+		bitopts.Print(tmp, pos)
   }
-  fmt.Printf("%v\n", boards)
 }

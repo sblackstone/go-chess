@@ -9,12 +9,12 @@ A      B    C     D
       -17  -15
 -10              -6
 
--6               +10
++6               +10
       +15  +17
 */
 
-func genKnightMoveBitBoards() [64]uint64 {
-  var result [64]uint64;
+func genKnightMoves() [64][]uint8 {
+  var result [64][]uint8;
   var row,col uint8
   for row = 0; row < 8; row++ {
     for col =0; col < 8; col++ {
@@ -22,40 +22,41 @@ func genKnightMoveBitBoards() [64]uint64 {
       // A
       if col >= 2 {
         if row >= 1 {
-          result[pos] = bitopts.SetBit(result[pos], pos - 10);
+          result[pos] = append(result[pos], pos - 10)
         }
         if row <= 6 {
-          result[pos] = bitopts.SetBit(result[pos], pos +  6);
+          result[pos] = append(result[pos], pos + 6)
         }
       }
 
       // B
       if col >= 1 {
         if row >= 2 {
-          result[pos] = bitopts.SetBit(result[pos], pos - 17);
+          result[pos] = append(result[pos], pos - 17)
+
         }
         if row <= 5 {
-          result[pos] = bitopts.SetBit(result[pos], pos + 15);
+          result[pos] = append(result[pos], pos + 15)
         }
       }
 
       // C
       if col <= 6 {
         if row >= 2 {
-          result[pos] = bitopts.SetBit(result[pos], pos - 15);
+          result[pos] = append(result[pos], pos - 15)
         }
         if row <= 5 {
-          result[pos] = bitopts.SetBit(result[pos], pos + 17);
+          result[pos] = append(result[pos], pos + 17)
         }
       }
 
       // D
       if col <= 5 {
         if row >= 1 {
-          result[pos] = bitopts.SetBit(result[pos], pos -  6);
+          result[pos] = append(result[pos], pos - 6)
         }
         if row <= 6 {
-          result[pos] = bitopts.SetBit(result[pos], pos + 10);
+          result[pos] = append(result[pos], pos + 10)
         }
       }
 
