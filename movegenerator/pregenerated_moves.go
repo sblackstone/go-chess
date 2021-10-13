@@ -4,6 +4,8 @@ import (
 )
 
 /*
+A      B    C     D
+
       -17  -15
 -10              -6
 
@@ -27,7 +29,6 @@ func genKnightMoveBitBoards() [64]uint64 {
         }
       }
 
-
       // B
       if col >= 1 {
         if row >= 2 {
@@ -37,7 +38,6 @@ func genKnightMoveBitBoards() [64]uint64 {
           result[pos] = bitopts.SetBit(result[pos], pos + 15);
         }
       }
-
 
       // C
       if col <= 6 {

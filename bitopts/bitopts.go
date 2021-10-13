@@ -24,6 +24,10 @@ func GridToLinear(i uint8, j uint8) uint8 {
 	return i*8 + j
 }
 
+func LinearToGrid(n uint8) (uint8, uint8) {
+  return n / 8, n % 8
+}
+
 
 func Print(n uint64, highlight uint8) {
   var i,j uint8;

@@ -5,6 +5,38 @@ import (
 	//  "github.com/sblackstone/go-chess/boardstate"
 )
 
+func TestGridToLinear(t *testing.T) {
+	cases := [][3]uint8{
+		{0,0,0},
+		{7,7,63},
+		{7,3,59},
+		{3,7,31},
+	}
+
+	for i := range(cases) {
+		v := GridToLinear(cases[i][0],cases[i][1])
+		if (v != cases[i][2]) {
+				t.Errorf("Expected (%v,%v) to be %v, got %v", cases[i][0],cases[i][1], cases[i][2], v);
+		}
+	}
+}
+
+func TestLinearToGrid(t *testing.T) {
+	cases := [][3]uint8{
+		{0,0,0},
+		{7,7,63},
+		{7,3,59},
+		{3,7,31},
+	}
+
+	for i := range(cases) {
+		row,col := LinearToGrid(cases[i][2])
+		if (row != cases[i][0] || col != cases[i][1]) {
+				t.Errorf("Expected %v to be (%v,%v), got (%v,%v)", cases[i][2], cases[i][0], cases[i][1], row,col);
+		}
+	}
+}
+
 
 
 func TestFlipBit(t *testing.T) {
