@@ -2,20 +2,64 @@ package movegenerator
 import (
   "github.com/sblackstone/go-chess/bitopts"
 )
+
+/*
+      -17  -15
+-10              -6
+
+-6               +10
+      +15  +17
+*/
+
 func genKnightMoveBitBoards() [64]uint64 {
   var result [64]uint64;
+  var row,col uint8
+  for row = 0; row < 8; row++ {
+    for col =0; col < 8; col++ {
+      pos := bitopts.GridToLinear(row,col)
+      // A
+      if col >= 2 {
+        if row >= 1 {
+          result[pos] = bitopts.SetBit(result[pos], pos - 10);
+        }
+        if row <= 6 {
+          result[pos] = bitopts.SetBit(result[pos], pos +  6);
+        }
+      }
 
-  for y := 18; y <= 42; y+=8 {
-    for x := 0; x < 4; x++ {
-      pos := uint8(y + x);
-      result[pos] = bitopts.SetBit(result[pos], pos + 10);
-      result[pos] = bitopts.SetBit(result[pos], pos - 10);
-      result[pos] = bitopts.SetBit(result[pos], pos + 17);
-      result[pos] = bitopts.SetBit(result[pos], pos - 17);
-      result[pos] = bitopts.SetBit(result[pos], pos - 15);
-      result[pos] = bitopts.SetBit(result[pos], pos + 15);
-      result[pos] = bitopts.SetBit(result[pos], pos -  6);
-      result[pos] = bitopts.SetBit(result[pos], pos +  6);
+
+      // B
+      if col >= 1 {
+        if row >= 2 {
+          result[pos] = bitopts.SetBit(result[pos], pos - 17);
+        }
+        if row <= 5 {
+          result[pos] = bitopts.SetBit(result[pos], pos + 15);
+        }
+      }
+
+
+      // C
+      if col <= 6 {
+        if row >= 2 {
+          result[pos] = bitopts.SetBit(result[pos], pos - 15);
+        }
+        if row <= 5 {
+          result[pos] = bitopts.SetBit(result[pos], pos + 17);
+        }
+      }
+
+      // D
+      if col <= 5 {
+        if row >= 1 {
+          result[pos] = bitopts.SetBit(result[pos], pos -  6);
+        }
+        if row <= 6 {
+          result[pos] = bitopts.SetBit(result[pos], pos + 10);
+        }
+      }
+
+
     }
   }
   return result;
@@ -41,7 +85,11 @@ func genKnightMoveBitBoards() [64]uint64 {
 +- 6:  12, 24
 
 
+      -17  -15
+-10              -6
 
+-6               +10
+      +15  +17
 
 18-21
 26-29
