@@ -8,7 +8,7 @@ import (
 )
 
 func TestBlarg(t *testing.T) {
-  boards := genKnightMoves();
+  boards := genAllKnightMoves();
   var pos uint8;
 	var tmp uint64
 	var i int

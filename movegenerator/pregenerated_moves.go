@@ -13,7 +13,7 @@ A      B    C     D
       +15  +17
 */
 
-func genKnightMoves() [64][]uint8 {
+func genAllKnightMoves() [64][]uint8 {
   var result [64][]uint8;
   var row,col uint8
   for row = 0; row < 8; row++ {
