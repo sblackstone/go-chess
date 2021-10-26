@@ -7,7 +7,7 @@ import (
 
 )
 
-func TestBlarg(t *testing.T) {
+func TestGenAllKnightMoves(t *testing.T) {
   boards := genAllKnightMoves();
   var pos uint8;
 	var tmp uint64
