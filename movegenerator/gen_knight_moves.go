@@ -32,7 +32,7 @@ func genAllKnightMoves() [64][]uint8 {
   var row,col uint8
   for row = 0; row < 8; row++ {
     for col =0; col < 8; col++ {
-      pos := bitopts.GridToLinear(row,col)
+      pos := bitopts.RankFileToSquare(row,col)
       // A
       if col >= 2 {
         if row >= 1 {

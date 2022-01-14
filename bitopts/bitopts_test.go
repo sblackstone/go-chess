@@ -5,7 +5,7 @@ import (
 	//  "github.com/sblackstone/go-chess/boardstate"
 )
 
-func TestGridToLinear(t *testing.T) {
+func TestRankFileToSquare(t *testing.T) {
 	cases := [][3]uint8{
 		{0,0,0},
 		{7,7,63},
@@ -14,7 +14,7 @@ func TestGridToLinear(t *testing.T) {
 	}
 
 	for i := range(cases) {
-		v := GridToLinear(cases[i][0],cases[i][1])
+		v := RankFileToSquare(cases[i][0],cases[i][1])
 		if (v != cases[i][2]) {
 				t.Errorf("Expected (%v,%v) to be %v, got %v", cases[i][0],cases[i][1], cases[i][2], v);
 		}
