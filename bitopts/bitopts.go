@@ -31,7 +31,7 @@ func SquareToRankFile(n uint8) (uint8, uint8) {
 
 func Print(n uint64, highlight uint8) {
   var rank,file uint8;
-  for rank = 0; rank < 8; rank++ {
+  for rank = 7; rank < 8; rank-- {
     for file = 0; file < 8; file++ {
       pos := RankFileToSquare(rank,file)
       if (pos == highlight) {

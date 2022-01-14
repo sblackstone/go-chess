@@ -19,7 +19,7 @@ func TestCreateBlankBoard(t *testing.T) {
 func testInitialBoard(t *testing.T, b *BoardState) {
 	// 64bit int versions of the chess board assuming a correct inital state.
   expectedPieces := []uint64{9295429630892703873, 4755801206503243842, 2594073385365405732, 576460752303423496, 1152921504606846992, 71776119061282560}
-  expectedColors := []uint64{18446462598732840960, 65535};
+  expectedColors := []uint64{65535,18446462598732840960};
 
   for i := range(b.pieces) {
     if (b.pieces[i] != expectedPieces[i]) {
@@ -45,11 +45,11 @@ func TestCreateInitialBoardManual(t *testing.T) {
 
 func TestColorOfSquare(t *testing.T) {
   b := Initial()
-  if (b.ColorOfSquare(63) != WHITE) {
-    t.Errorf("Expected square 0 to be white")
+  if (b.ColorOfSquare(63) != BLACK) {
+    t.Errorf("Expected square 63 to be BLACK")
   }
-  if (b.ColorOfSquare(0) != BLACK) {
-    t.Errorf("Expected square 63 to be black")
+  if (b.ColorOfSquare(0) != WHITE) {
+    t.Errorf("Expected square 0 to be WHITE")
   }
   if (b.ColorOfSquare(32) != EMPTY) {
     t.Errorf("Expected square 32 to be EMPTY")
@@ -86,18 +86,18 @@ func TestPieceOfSquare(t *testing.T) {
 func TestSetSquare(t *testing.T) {
 	b := Initial()
 
-	if (b.ColorOfSquare(0) != BLACK) {
-		t.Errorf("Expected color of square 0 to be BLACK (%v), got %v", BLACK, b.ColorOfSquare(0))
+	if (b.ColorOfSquare(0) != WHITE) {
+		t.Errorf("Expected color of square 0 to be WHITE (%v), got %v", WHITE, b.ColorOfSquare(0))
 	}
 
 	if (b.PieceOfSquare(0) != ROOK) {
 		t.Errorf("Expected piece of square 0 to be ROOK (%v), got %v", ROOK, b.PieceOfSquare(0))
 	}
 
-	b.SetSquareRankFile(0,0, WHITE, PAWN)
+	b.SetSquareRankFile(0,0, BLACK, PAWN)
 
-	if (b.ColorOfSquare(0) != WHITE) {
-		t.Errorf("Expected color of square 0 to be WHITE")
+	if (b.ColorOfSquare(0) != BLACK) {
+		t.Errorf("Expected color of square 0 to be BLACK")
 	}
 	if (b.PieceOfSquare(0) != PAWN) {
 		t.Errorf("Expected piece of square 0 to be PAWN (%v), got %v", PAWN, b.PieceOfSquare(0))

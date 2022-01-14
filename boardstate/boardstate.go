@@ -1,6 +1,8 @@
 package boardstate
 
-import ("github.com/sblackstone/go-chess/bitopts")
+import (
+	"github.com/sblackstone/go-chess/bitopts"
+)
 
 
 // BoardState contains the state of the Board
@@ -22,7 +24,7 @@ func Blank() *BoardState {
 func Initial() *BoardState {
 	b := BoardState{}
 	// These constants are pre-calculated using InitialManual (see below)...
-	b.colors = []uint64{18446462598732840960, 65535 }
+	b.colors = []uint64{65535, 18446462598732840960 }
 	b.pieces = []uint64{9295429630892703873, 4755801206503243842, 2594073385365405732, 576460752303423496, 1152921504606846992, 71776119061282560}
 	return &b
 }
@@ -35,12 +37,13 @@ func initialManual() *BoardState {
 
 	backFile := []uint8{ROOK, KNIGHT, BISHOP, QUEEN, KING, BISHOP, KNIGHT, ROOK}
 	for j = 0; j < 8; j++ {
-		b.SetSquareRankFile(0, j, BLACK, backFile[j])
-		b.SetSquareRankFile(7, j, WHITE, backFile[j])
+		b.SetSquareRankFile(7, j, BLACK, backFile[j])
+		b.SetSquareRankFile(0, j, WHITE, backFile[j])
 
-		b.SetSquareRankFile(1, j, BLACK, PAWN)
-		b.SetSquareRankFile(6, j, WHITE, PAWN)
+		b.SetSquareRankFile(6, j, BLACK, PAWN)
+		b.SetSquareRankFile(1, j, WHITE, PAWN)
 	}
+
 	return b
 }
 
