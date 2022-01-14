@@ -35,13 +35,17 @@ func initialManual() *BoardState {
 
 	backFile := []uint8{ROOK, KNIGHT, BISHOP, QUEEN, KING, BISHOP, KNIGHT, ROOK}
 	for j = 0; j < 8; j++ {
-		b.SetSquareXY(0, j, BLACK, backFile[j])
-		b.SetSquareXY(7, j, WHITE, backFile[j])
+		b.SetSquareRankFile(0, j, BLACK, backFile[j])
+		b.SetSquareRankFile(7, j, WHITE, backFile[j])
 
-		b.SetSquareXY(1, j, BLACK, PAWN)
-		b.SetSquareXY(6, j, WHITE, PAWN)
+		b.SetSquareRankFile(1, j, BLACK, PAWN)
+		b.SetSquareRankFile(6, j, WHITE, PAWN)
 	}
 	return b
+}
+
+func (b *BoardState) MovePiece(src uint8, dst uint8) {
+
 }
 
 // ColorOfSquare returns WHITE,BLACK, or EMPTY
@@ -82,7 +86,7 @@ func (b *BoardState) SetSquare(n uint8, color uint8, piece uint8) {
 	b.pieces[piece]   = bitopts.SetBit(b.pieces[piece], n)
 }
 
-// SetSquareXY removes any existing piece and sets the square to the new piece/color with (x,y) coordinates.
-func (b *BoardState) SetSquareXY(i uint8, j uint8, color uint8, piece uint8) {
-	b.SetSquare(bitopts.RankFileToSquare(i, j), color, piece);
+// SetSquareRankFile removes any existing piece and sets the square to the new piece/color with (x,y) coordinates.
+func (b *BoardState) SetSquareRankFile(rank uint8, file uint8, color uint8, piece uint8) {
+	b.SetSquare(bitopts.RankFileToSquare(rank, file), color, piece);
 }

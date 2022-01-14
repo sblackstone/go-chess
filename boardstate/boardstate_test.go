@@ -94,7 +94,7 @@ func TestSetSquare(t *testing.T) {
 		t.Errorf("Expected piece of square 0 to be ROOK (%v), got %v", ROOK, b.PieceOfSquare(0))
 	}
 
-	b.SetSquareXY(0,0, WHITE, PAWN)
+	b.SetSquareRankFile(0,0, WHITE, PAWN)
 
 	if (b.ColorOfSquare(0) != WHITE) {
 		t.Errorf("Expected color of square 0 to be WHITE")
