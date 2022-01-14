@@ -29,47 +29,47 @@ import (
 
 func genAllKnightMoves() [64][]uint8 {
   var result [64][]uint8;
-  var row,col uint8
-  for row = 0; row < 8; row++ {
-    for col =0; col < 8; col++ {
-      pos := bitopts.RankFileToSquare(row,col)
+  var rank,file uint8
+  for rank = 0; rank < 8; rank++ {
+    for file =0; file < 8; file++ {
+      pos := bitopts.RankFileToSquare(rank,file)
       // A
-      if col >= 2 {
-        if row >= 1 {
+      if file >= 2 {
+        if rank >= 1 {
           result[pos] = append(result[pos], pos - 10)
         }
-        if row <= 6 {
+        if rank <= 6 {
           result[pos] = append(result[pos], pos + 6)
         }
       }
 
       // B
-      if col >= 1 {
-        if row >= 2 {
+      if file >= 1 {
+        if rank >= 2 {
           result[pos] = append(result[pos], pos - 17)
 
         }
-        if row <= 5 {
+        if rank <= 5 {
           result[pos] = append(result[pos], pos + 15)
         }
       }
 
       // C
-      if col <= 6 {
-        if row >= 2 {
+      if file <= 6 {
+        if rank >= 2 {
           result[pos] = append(result[pos], pos - 15)
         }
-        if row <= 5 {
+        if rank <= 5 {
           result[pos] = append(result[pos], pos + 17)
         }
       }
 
       // D
-      if col <= 5 {
-        if row >= 1 {
+      if file <= 5 {
+        if rank >= 1 {
           result[pos] = append(result[pos], pos - 6)
         }
-        if row <= 6 {
+        if rank <= 6 {
           result[pos] = append(result[pos], pos + 10)
         }
       }
