@@ -30,10 +30,10 @@ func SquareToRankFile(n uint8) (uint8, uint8) {
 
 
 func Print(n uint64, highlight uint8) {
-  var i,j uint8;
-  for i = 0; i < 8; i++ {
-    for j = 0; j < 8; j++ {
-      pos := RankFileToSquare(i,j)
+  var rank,file uint8;
+  for rank = 0; rank < 8; rank++ {
+    for file = 0; file < 8; file++ {
+      pos := RankFileToSquare(rank,file)
       if (pos == highlight) {
         fmt.Printf(" * ");
       } else if (TestBit(n, pos)) {

@@ -10,14 +10,14 @@ func (b *BoardState) Print() {
 	pieces := make([][]string, 2)
 	pieces[BLACK] = []string{"♖", "♘", "♗", "♕", "♔", "♙"};
 	pieces[WHITE] = []string{"♜", "♞", "♝", "♛", "♚", "♟"};
-	var i, j uint8
-	for i = 0; i < 8; i++ {
-		for j = 0; j < 8; j++ {
-			color := b.ColorOfSquare(bitopts.RankFileToSquare(i, j))
+	var rank, file uint8
+	for rank = 0; rank < 8; rank++ {
+		for file = 0; file < 8; file++ {
+			color := b.ColorOfSquare(bitopts.RankFileToSquare(rank, file))
 			if color == EMPTY {
 				fmt.Printf(" - ")
 			} else {
-				piece := b.PieceOfSquare(bitopts.RankFileToSquare(i, j))
+				piece := b.PieceOfSquare(bitopts.RankFileToSquare(rank, file))
 				fmt.Printf(" %s ", pieces[color][piece])
 			}
 		}
