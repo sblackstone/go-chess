@@ -21,7 +21,7 @@ func TestRankFileToSquare(t *testing.T) {
 	}
 }
 
-func TestLinearToGrid(t *testing.T) {
+func TestSquareToRankFile(t *testing.T) {
 	cases := [][3]uint8{
 		{0,0,0},
 		{7,7,63},
@@ -30,7 +30,7 @@ func TestLinearToGrid(t *testing.T) {
 	}
 
 	for i := range(cases) {
-		row,col := LinearToGrid(cases[i][2])
+		row,col := SquareToRankFile(cases[i][2])
 		if (row != cases[i][0] || col != cases[i][1]) {
 				t.Errorf("Expected %v to be (%v,%v), got (%v,%v)", cases[i][2], cases[i][0], cases[i][1], row,col);
 		}

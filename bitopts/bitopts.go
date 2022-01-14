@@ -24,7 +24,7 @@ func RankFileToSquare(rank uint8, file uint8) uint8 {
 	return rank*8 + file
 }
 
-func LinearToGrid(n uint8) (uint8, uint8) {
+func SquareToRankFile(n uint8) (uint8, uint8) {
   return n / 8, n % 8
 }
 
