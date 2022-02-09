@@ -11,6 +11,6 @@ import (
 func main() {
   b := boardstate.Initial();
   b.Print()
-  fmt.Println("\n")
+  fmt.Println()
   bitopts.Print(18446462598732840960, 0);
 }
