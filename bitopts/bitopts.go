@@ -1,8 +1,43 @@
 package bitopts
-import ("fmt")
+import (
+  "fmt"
+  "math/bits"
+//  "strconv"
+)
+
 func SetBit(n uint64, pos uint8) uint64 {
   n |= (1 << pos)
   return n
+}
+
+func FindTwoPiecePositions(n uint64) []uint8 {
+  var result []uint8
+  fmt.Printf("%064b\n", n)
+  trailing := bits.TrailingZeros64(n)
+  leading  := bits.LeadingZeros64(n)
+
+  fmt.Printf("Trailing %v\n", trailing)
+  fmt.Printf("Leading %v\n", leading)
+
+  if (trailing == 64 && leading == 64) {
+    return result
+  }
+
+  if (trailing < 64) {
+    result = append(result, uint8(trailing))
+  }
+
+  if (leading < 64) {
+    leadingPos := 64 - leading - 1
+    if (leadingPos != trailing) {
+      result = append(result, uint8(leadingPos))
+    }
+  }
+
+
+  //result = append(result, uint8(trailing))
+  //result = append(result, uint8(leading))
+  return result
 }
 
 func ClearBit(n uint64, pos uint8) uint64 {
