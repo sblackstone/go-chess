@@ -53,18 +53,23 @@ func (b *BoardState) MovePiece(src uint8, dst uint8) {
 
 func (b *BoardState) FindPieces(pieceType uint8, color uint8) []uint8 {
 	pieceBitboard := b.colors[color] & b.pieces[pieceType]
+	twoPiecePos := bitopts.FindTwoPiecePositions(pieceBitboard)
 
 	if pieceType == PAWN {
+		// [1] or []
+		if len(twoPiecePos) < 2 {
+			return twoPiecePos
+		}
 		var result []uint8
 		var i uint8
-		for i = 0; i <= 63; i++ {
+		for i = twoPiecePos[0]; i <= twoPiecePos[1]; i++ {
 			if bitopts.TestBit(pieceBitboard, i) {
 				result = append(result, i)
 			}
 		}
 		return result
 	} else {
-		return bitopts.FindTwoPiecePositions(pieceBitboard)
+		return twoPiecePos
 	}
 }
 
@@ -104,7 +109,7 @@ func (b *BoardState) SetSquare(n uint8, color uint8, piece uint8) {
 	b.colors[BLACK]   = bitopts.ClearBit(b.colors[BLACK],  n)
 	if (color != EMPTY) {
 		b.colors[color]   = bitopts.SetBit(b.colors[color], n)
-		b.pieces[piece]   = bitopts.SetBit(b.pieces[piece], n)		
+		b.pieces[piece]   = bitopts.SetBit(b.pieces[piece], n)
 	}
 }
 
