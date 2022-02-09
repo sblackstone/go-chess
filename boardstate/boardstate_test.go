@@ -6,6 +6,47 @@ import (
 )
 
 
+func TestFindPieces(t *testing.T) {
+	b := Initial()
+
+	res := b.FindPieces(QUEEN, BLACK)
+	if (len(res) != 1 || res[0] != 59) {
+		t.Errorf("Expected %v to be [59]\n", res)
+	}
+
+	res2 := b.FindPieces(QUEEN, WHITE)
+	if (len(res2) != 1 || res2[0] != 3) {
+		t.Errorf("Expected %v to be [3]\n", res2)
+	}
+
+	res3 := b.FindPieces(KNIGHT, BLACK)
+	if (len(res3) != 2 || res3[0] != 57 || res3[1] != 62) {
+		t.Errorf("Expected %v to be [57,62]\n", res3)
+	}
+
+	res4 := b.FindPieces(KNIGHT, WHITE)
+	if (len(res4) != 2 || res4[0] != 1 || res4[1] != 6) {
+		t.Errorf("Expected %v to be [1,6]\n", res4)
+	}
+
+
+	res5 := b.FindPieces(PAWN, WHITE)
+	if (len(res5) != 8 || res5[0] != 8 || res5[7] != 15) {
+		t.Errorf("Expected %v to be [8,9,10,11,12,13,14,15]\n", res5)
+	}
+
+	res6 := b.FindPieces(PAWN, BLACK)
+	if (len(res6) != 8 || res6[0] != 48 || res6[7] != 55) {
+		t.Errorf("Expected %v to be [48,49,50,51,52,53,54,55]\n", res6)
+	}
+
+
+
+
+
+
+}
+
 func TestCreateBlankBoard(t *testing.T) {
   b := Blank();
   if (len(b.colors) != 2) {
