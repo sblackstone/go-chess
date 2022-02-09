@@ -102,8 +102,10 @@ func (b *BoardState) SetSquare(n uint8, color uint8, piece uint8) {
 	b.pieces[PAWN]    = bitopts.ClearBit(b.pieces[PAWN],   n)
 	b.colors[WHITE]   = bitopts.ClearBit(b.colors[WHITE],  n)
 	b.colors[BLACK]   = bitopts.ClearBit(b.colors[BLACK],  n)
-	b.colors[color]   = bitopts.SetBit(b.colors[color], n)
-	b.pieces[piece]   = bitopts.SetBit(b.pieces[piece], n)
+	if (color != EMPTY) {
+		b.colors[color]   = bitopts.SetBit(b.colors[color], n)
+		b.pieces[piece]   = bitopts.SetBit(b.pieces[piece], n)		
+	}
 }
 
 // SetSquareRankFile removes any existing piece and sets the square to the new piece/color with (x,y) coordinates.

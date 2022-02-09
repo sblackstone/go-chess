@@ -40,7 +40,6 @@ func TestFindPieces(t *testing.T) {
 		t.Errorf("Expected %v to be [48,49,50,51,52,53,54,55]\n", res6)
 	}
 
-
 	b2 := Blank()
 	res7 := b2.FindPieces(PAWN, BLACK)
 	if (len(res7) != 0) {
@@ -51,6 +50,16 @@ func TestFindPieces(t *testing.T) {
 	if (len(res8) != 0) {
 		t.Errorf("Expected %v to be []\n", res8)
 	}
+
+
+	b3 := Initial()
+	b3.SetSquare(57, EMPTY, EMPTY)
+	res9 := b3.FindPieces(KNIGHT, BLACK)
+	if (len(res9) != 1 || res9[0] != 62) {
+		t.Errorf("Expected %v to be [62]\n", res9)
+	}
+
+
 
 
 
@@ -153,6 +162,15 @@ func TestSetSquare(t *testing.T) {
 	if (b.PieceOfSquare(0) != PAWN) {
 		t.Errorf("Expected piece of square 0 to be PAWN (%v), got %v", PAWN, b.PieceOfSquare(0))
 	}
+
+	b.SetSquareRankFile(0,0, EMPTY, EMPTY)
+	if (b.ColorOfSquare(0) != EMPTY) {
+		t.Errorf("Expected color of square 0 to be EMPTY")
+	}
+	if (b.PieceOfSquare(0) != EMPTY) {
+		t.Errorf("Expected piece of square 0 to be EMPTY (%v), got %v", EMPTY, b.PieceOfSquare(0))
+	}
+
 
 
 }
