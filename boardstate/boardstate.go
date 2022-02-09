@@ -47,6 +47,16 @@ func initialManual() *BoardState {
 	return b
 }
 
+func (b *BoardState) PlayTurn(src uint8, dst uint8) {
+		b.MovePiece(src, dst)
+		// TODO: Enpassant
+		// TODO: Castling rights
+		// TODO: Set Turn
+
+		b.ToggleTurn()
+
+}
+
 func (b *BoardState) MovePiece(src uint8, dst uint8) {
 	color := b.ColorOfSquare(src)
 	piece := b.PieceOfSquare(src)
@@ -54,9 +64,6 @@ func (b *BoardState) MovePiece(src uint8, dst uint8) {
 	b.colors[color]    = bitopts.ClearBit(b.colors[color], src)
 	b.colors[color]    = bitopts.SetBit(b.colors[color],   dst)
 	b.pieces[piece]    = bitopts.SetBit(b.pieces[piece],   dst)
-	// TODO: Enpassant
-	// TODO: Castling rights
-	// TODO: Set Turn
 }
 
 // Returns an array of positions for a given set of pieces.

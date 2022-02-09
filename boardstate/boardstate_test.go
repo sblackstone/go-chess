@@ -5,6 +5,29 @@ import (
 //  "fmt"
 )
 
+func TestPlayTurn(t *testing.T) {
+	b := Initial()
+	if b.GetTurn() != WHITE {
+		t.Errorf("Expected initial turn to be white");
+	}
+
+	b.PlayTurn(1, 18)
+
+	if (b.PieceOfSquare(18) != KNIGHT || b.ColorOfSquare(18) != WHITE) {
+		t.Errorf("square 18 isn't a white knight")
+	}
+
+	if (b.PieceOfSquare(1) != EMPTY || b.ColorOfSquare(1) != EMPTY) {
+		t.Errorf("square 1 isn't empty")
+	}
+
+
+	if b.GetTurn() != BLACK {
+		t.Errorf("Expected turn after PlayTurn to be black");
+	}
+
+
+}
 
 func TestFindPieces(t *testing.T) {
 	b := Initial()
@@ -130,7 +153,6 @@ func TestMovePieceBlackKnight(t *testing.T) {
 	}
 
 	b.MovePiece(57, 42)
-	b.Print()
 
 	if b.PieceOfSquare(57) != EMPTY {
 		t.Errorf("Exepcted piece in square 1 to be empty")
