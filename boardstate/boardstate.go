@@ -51,8 +51,6 @@ func (b *BoardState) PlayTurn(src uint8, dst uint8) {
 		b.MovePiece(src, dst)
 		// TODO: Enpassant
 		// TODO: Castling rights
-		// TODO: Set Turn
-
 		b.ToggleTurn()
 
 }
