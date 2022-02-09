@@ -54,6 +54,8 @@ func (b *BoardState) MovePiece(src uint8, dst uint8) {
 	b.colors[color]    = bitopts.ClearBit(b.colors[color], src)
 	b.colors[color]    = bitopts.SetBit(b.colors[color],   dst)
 	b.pieces[piece]    = bitopts.SetBit(b.pieces[piece],   dst)
+	// TODO: Enpassant
+	// TODO: Castling rights
 }
 
 // Returns an array of positions for a given set of pieces.
