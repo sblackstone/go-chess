@@ -78,10 +78,8 @@ func TestCreateBlankBoard(t *testing.T) {
   }
 }
 
-func TestMovePiece(t *testing.T) {
+func TestMovePieceWhiteKnight(t *testing.T) {
 	b := Initial()
-
-	b.Print()
 
 	if b.PieceOfSquare(1) != KNIGHT {
 		t.Errorf("Exepcted piece in square 1 to be KNIGHT")
@@ -96,7 +94,6 @@ func TestMovePiece(t *testing.T) {
 	if b.ColorOfSquare(18) != EMPTY {
 		t.Errorf("Exepcted color in square 18 to be empty")
 	}
-
 
 	b.MovePiece(1, 18)
 
@@ -113,9 +110,43 @@ func TestMovePiece(t *testing.T) {
 	if b.ColorOfSquare(18) != WHITE {
 		t.Errorf("Exepcted color in square 18 to be WHITE")
 	}
-
-
 }
+
+func TestMovePieceBlackKnight(t *testing.T) {
+	b := Initial()
+
+	if b.PieceOfSquare(57) != KNIGHT {
+		t.Errorf("Exepcted piece in square 1 to be KNIGHT")
+	}
+	if b.ColorOfSquare(57) != BLACK {
+		t.Errorf("Exepcted color in square 1 to be BLACK")
+	}
+
+	if b.PieceOfSquare(42) != EMPTY {
+		t.Errorf("Exepcted piece in square 42 to be empty")
+	}
+	if b.ColorOfSquare(42) != EMPTY {
+		t.Errorf("Exepcted color in square 42 to be empty")
+	}
+
+	b.MovePiece(57, 42)
+	b.Print()
+
+	if b.PieceOfSquare(57) != EMPTY {
+		t.Errorf("Exepcted piece in square 1 to be empty")
+	}
+	if b.ColorOfSquare(57) != EMPTY {
+		t.Errorf("Exepcted color in square 1 to be empty")
+	}
+
+	if b.PieceOfSquare(42) != KNIGHT {
+		t.Errorf("Exepcted piece in square 18 to be KNIGHT")
+	}
+	if b.ColorOfSquare(42) != BLACK {
+		t.Errorf("Exepcted color in square 18 to be BLACK")
+	}
+}
+
 
 func testInitialBoard(t *testing.T, b *BoardState) {
 	// 64bit int versions of the chess board assuming a correct inital state.
