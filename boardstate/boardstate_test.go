@@ -66,12 +66,6 @@ func TestFindPieces(t *testing.T) {
 	if (len(res10) != 1 || res10[0] != 55) {
 		t.Errorf("Expected %v to be [55]\n", res10)
 	}
-
-
-
-
-
-
 }
 
 func TestCreateBlankBoard(t *testing.T) {
