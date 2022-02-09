@@ -60,6 +60,14 @@ func TestFindPieces(t *testing.T) {
 	}
 
 
+	b4 := Blank()
+	b4.SetSquare(55, BLACK, PAWN)
+	res10 := b4.FindPieces(PAWN, BLACK)
+	if (len(res10) != 1 || res10[0] != 55) {
+		t.Errorf("Expected %v to be [55]\n", res10)
+	}
+
+
 
 
 

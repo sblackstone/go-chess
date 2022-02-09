@@ -60,6 +60,7 @@ func (b *BoardState) FindPieces(pieceType uint8, color uint8) []uint8 {
 		if len(twoPiecePos) < 2 {
 			return twoPiecePos
 		}
+		// [8,15]
 		var result []uint8
 		var i uint8
 		for i = twoPiecePos[0]; i <= twoPiecePos[1]; i++ {
