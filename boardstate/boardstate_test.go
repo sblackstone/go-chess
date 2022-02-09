@@ -9,44 +9,44 @@ import (
 func TestFindPieces(t *testing.T) {
 	b := Initial()
 
-	res := b.FindPieces(QUEEN, BLACK)
+	res := b.FindPieces(BLACK, QUEEN)
 	if (len(res) != 1 || res[0] != 59) {
 		t.Errorf("Expected %v to be [59]\n", res)
 	}
 
-	res2 := b.FindPieces(QUEEN, WHITE)
+	res2 := b.FindPieces(WHITE, QUEEN)
 	if (len(res2) != 1 || res2[0] != 3) {
 		t.Errorf("Expected %v to be [3]\n", res2)
 	}
 
-	res3 := b.FindPieces(KNIGHT, BLACK)
+	res3 := b.FindPieces(BLACK, KNIGHT)
 	if (len(res3) != 2 || res3[0] != 57 || res3[1] != 62) {
 		t.Errorf("Expected %v to be [57,62]\n", res3)
 	}
 
-	res4 := b.FindPieces(KNIGHT, WHITE)
+	res4 := b.FindPieces(WHITE, KNIGHT)
 	if (len(res4) != 2 || res4[0] != 1 || res4[1] != 6) {
 		t.Errorf("Expected %v to be [1,6]\n", res4)
 	}
 
 
-	res5 := b.FindPieces(PAWN, WHITE)
+	res5 := b.FindPieces(WHITE, PAWN)
 	if (len(res5) != 8 || res5[0] != 8 || res5[7] != 15) {
 		t.Errorf("Expected %v to be [8,9,10,11,12,13,14,15]\n", res5)
 	}
 
-	res6 := b.FindPieces(PAWN, BLACK)
+	res6 := b.FindPieces(BLACK, PAWN)
 	if (len(res6) != 8 || res6[0] != 48 || res6[7] != 55) {
 		t.Errorf("Expected %v to be [48,49,50,51,52,53,54,55]\n", res6)
 	}
 
 	b2 := Blank()
-	res7 := b2.FindPieces(PAWN, BLACK)
+	res7 := b2.FindPieces(BLACK, PAWN)
 	if (len(res7) != 0) {
 		t.Errorf("Expected %v to be []\n", res7)
 	}
 
-	res8 := b2.FindPieces(QUEEN, WHITE)
+	res8 := b2.FindPieces(WHITE, QUEEN)
 	if (len(res8) != 0) {
 		t.Errorf("Expected %v to be []\n", res8)
 	}
@@ -54,7 +54,7 @@ func TestFindPieces(t *testing.T) {
 
 	b3 := Initial()
 	b3.SetSquare(57, EMPTY, EMPTY)
-	res9 := b3.FindPieces(KNIGHT, BLACK)
+	res9 := b3.FindPieces(BLACK, KNIGHT)
 	if (len(res9) != 1 || res9[0] != 62) {
 		t.Errorf("Expected %v to be [62]\n", res9)
 	}
@@ -62,7 +62,7 @@ func TestFindPieces(t *testing.T) {
 
 	b4 := Blank()
 	b4.SetSquare(55, BLACK, PAWN)
-	res10 := b4.FindPieces(PAWN, BLACK)
+	res10 := b4.FindPieces(BLACK, PAWN)
 	if (len(res10) != 1 || res10[0] != 55) {
 		t.Errorf("Expected %v to be [55]\n", res10)
 	}

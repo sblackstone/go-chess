@@ -51,7 +51,7 @@ func (b *BoardState) MovePiece(src uint8, dst uint8) {
 
 }
 
-func (b *BoardState) FindPieces(pieceType uint8, color uint8) []uint8 {
+func (b *BoardState) FindPieces(color uint8, pieceType uint8) []uint8 {
 	pieceBitboard := b.colors[color] & b.pieces[pieceType]
 	twoPiecePos := bitopts.FindTwoPiecePositions(pieceBitboard)
 
