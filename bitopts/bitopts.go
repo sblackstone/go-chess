@@ -13,11 +13,12 @@ func SetBit(n uint64, pos uint8) uint64 {
 func FindTwoPiecePositions(n uint64) []uint8 {
   var result []uint8
   trailing := bits.TrailingZeros64(n)
-  leading  := bits.LeadingZeros64(n)
 
-  if (trailing == 64 && leading == 64) {
+  if (trailing == 64) {
     return result
   }
+
+  leading  := bits.LeadingZeros64(n)
 
   if (trailing < 64) {
     result = append(result, uint8(trailing))
