@@ -78,6 +78,45 @@ func TestCreateBlankBoard(t *testing.T) {
   }
 }
 
+func TestMovePiece(t *testing.T) {
+	b := Initial()
+
+	b.Print()
+
+	if b.PieceOfSquare(1) != KNIGHT {
+		t.Errorf("Exepcted piece in square 1 to be KNIGHT")
+	}
+	if b.ColorOfSquare(1) != WHITE {
+		t.Errorf("Exepcted color in square 1 to be WHITE")
+	}
+
+	if b.PieceOfSquare(18) != EMPTY {
+		t.Errorf("Exepcted piece in square 18 to be empty")
+	}
+	if b.ColorOfSquare(18) != EMPTY {
+		t.Errorf("Exepcted color in square 18 to be empty")
+	}
+
+
+	b.MovePiece(1, 18)
+
+	if b.PieceOfSquare(1) != EMPTY {
+		t.Errorf("Exepcted piece in square 1 to be empty")
+	}
+	if b.ColorOfSquare(1) != EMPTY {
+		t.Errorf("Exepcted color in square 1 to be empty")
+	}
+
+	if b.PieceOfSquare(18) != KNIGHT {
+		t.Errorf("Exepcted piece in square 18 to be KNIGHT")
+	}
+	if b.ColorOfSquare(18) != WHITE {
+		t.Errorf("Exepcted color in square 18 to be WHITE")
+	}
+
+
+}
+
 func testInitialBoard(t *testing.T, b *BoardState) {
 	// 64bit int versions of the chess board assuming a correct inital state.
   expectedPieces := []uint64{9295429630892703873, 4755801206503243842, 2594073385365405732, 576460752303423496, 1152921504606846992, 71776119061282560}

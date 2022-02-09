@@ -48,9 +48,15 @@ func initialManual() *BoardState {
 }
 
 func (b *BoardState) MovePiece(src uint8, dst uint8) {
-
+	color := b.ColorOfSquare(src)
+	piece := b.PieceOfSquare(src)
+	b.pieces[piece]    = bitopts.ClearBit(b.pieces[piece], src)
+	b.colors[color]    = bitopts.ClearBit(b.colors[color], src)
+	b.colors[color]    = bitopts.SetBit(b.colors[color],   dst)
+	b.pieces[piece]    = bitopts.SetBit(b.pieces[piece],   dst)
 }
 
+// Returns an array of positions for a given set of pieces.
 func (b *BoardState) FindPieces(color uint8, pieceType uint8) []uint8 {
 	pieceBitboard := b.colors[color] & b.pieces[pieceType]
 	twoPiecePos := bitopts.FindTwoPiecePositions(pieceBitboard)
