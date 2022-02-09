@@ -12,12 +12,8 @@ func SetBit(n uint64, pos uint8) uint64 {
 
 func FindTwoPiecePositions(n uint64) []uint8 {
   var result []uint8
-  fmt.Printf("%064b\n", n)
   trailing := bits.TrailingZeros64(n)
   leading  := bits.LeadingZeros64(n)
-
-  fmt.Printf("Trailing %v\n", trailing)
-  fmt.Printf("Leading %v\n", leading)
 
   if (trailing == 64 && leading == 64) {
     return result
@@ -34,9 +30,6 @@ func FindTwoPiecePositions(n uint64) []uint8 {
     }
   }
 
-
-  //result = append(result, uint8(trailing))
-  //result = append(result, uint8(leading))
   return result
 }
 
