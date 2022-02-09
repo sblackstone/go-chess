@@ -41,6 +41,16 @@ func TestFindPieces(t *testing.T) {
 	}
 
 
+	b2 := Blank()
+	res7 := b2.FindPieces(PAWN, BLACK)
+	if (len(res7) != 0) {
+		t.Errorf("Expected %v to be []\n", res7)
+	}
+
+	res8 := b2.FindPieces(QUEEN, WHITE)
+	if (len(res8) != 0) {
+		t.Errorf("Expected %v to be []\n", res8)
+	}
 
 
 
