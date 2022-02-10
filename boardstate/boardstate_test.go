@@ -5,6 +5,32 @@ import (
 //  "fmt"
 )
 
+func TestCopy(t *testing.T) {
+	b1 := Initial()
+	b1.PlayTurn(1, 18)
+
+	b2 := b1.Copy()
+
+	if (b2.PieceOfSquare(18) != KNIGHT || b2.ColorOfSquare(18) != WHITE) {
+		t.Errorf("square 18 isn't a white knight")
+	}
+
+	if (b2.PieceOfSquare(1) != EMPTY || b2.ColorOfSquare(1) != EMPTY) {
+		t.Errorf("square 1 isn't empty")
+	}
+
+	if b2.GetTurn() != BLACK {
+		t.Errorf("Expected turn after PlayTurn to be black");
+	}
+
+	b2.PlayTurn(57, 42)
+
+	if b1.PieceOfSquare(42) != EMPTY || b1.ColorOfSquare(42) != EMPTY || b1.GetTurn() != BLACK {
+		t.Errorf("copy is effecting the original")
+	}
+
+}
+
 func TestPlayTurn(t *testing.T) {
 	b := Initial()
 	if b.GetTurn() != WHITE {

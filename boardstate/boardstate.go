@@ -29,6 +29,16 @@ func Initial() *BoardState {
 	return &b
 }
 
+// Copy returns a copy of a venue
+func (b *BoardState) Copy() *BoardState {
+	boardCopy := BoardState{
+		meta: b.meta,
+	}
+	boardCopy.colors = append([]uint64(nil), b.colors...)
+	boardCopy.pieces = append([]uint64(nil), b.pieces...)
+	return &boardCopy
+}
+
 // initialManual sets up the board manually, only used to calculate the constants for the fast version Initial.
 func initialManual() *BoardState {
 	var j uint8
