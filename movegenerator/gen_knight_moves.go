@@ -3,7 +3,6 @@ package movegenerator
 import (
 	"github.com/sblackstone/go-chess/boardstate"
   "github.com/sblackstone/go-chess/bitopts"
-	"fmt"
 )
 
 /*
