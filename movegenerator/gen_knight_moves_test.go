@@ -37,9 +37,40 @@ func TestGenKnightMovesKnowsAboutTurns(t *testing.T) {
 	if (!reflect.DeepEqual(movesBlack, expectedBlack)) {
 		t.Errorf("Expected %v to be %v", moves, expected)
 	}
-
-
 }
+
+
+func TestGenKnightMovesBlockedBySelf(t *testing.T) {
+	b := boardstate.Blank()
+	b.SetSquare(1,  boardstate.WHITE, boardstate.KNIGHT)
+	b.SetSquare(57, boardstate.BLACK, boardstate.KNIGHT)
+	b.SetSquare(11, boardstate.WHITE, boardstate.PAWN)
+	b.SetSquare(16, boardstate.WHITE, boardstate.PAWN)
+
+	moves := genSortedBoardLocationsKnights(b)
+
+	expected := []uint8{18}
+	if (!reflect.DeepEqual(moves, expected)) {
+		t.Errorf("Expected %v to be %v", moves, expected)
+	}
+}
+
+func TestGenKnightMovesCaptures(t *testing.T) {
+	b := boardstate.Blank()
+	b.SetSquare(1,  boardstate.WHITE, boardstate.KNIGHT)
+	b.SetSquare(57, boardstate.BLACK, boardstate.KNIGHT)
+	b.SetSquare(11, boardstate.BLACK, boardstate.PAWN)
+	b.SetSquare(16, boardstate.BLACK, boardstate.PAWN)
+
+	moves := genSortedBoardLocationsKnights(b)
+
+	expected := []uint8{11,16,18}
+	if (!reflect.DeepEqual(moves, expected)) {
+		t.Errorf("Expected %v to be %v", moves, expected)
+	}
+}
+
+
 
 func TestGenAllKnightMoves(t *testing.T) {
 

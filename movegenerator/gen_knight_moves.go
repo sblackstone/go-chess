@@ -87,7 +87,6 @@ func genSingleKnightMoves(b *boardstate.BoardState, knightPos uint8) []*boardsta
 	for i := range(allKnightMoves[knightPos]) {
 		move := allKnightMoves[knightPos][i];
 		if b.ColorOfSquare(move) != b.GetTurn() {
-			fmt.Println(move);
 			result = append(result, b.CopyPlayTurn(knightPos, move))
 		}
 	}
