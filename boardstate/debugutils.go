@@ -6,7 +6,7 @@ import (
 )
 
 // Print outputs a debug display of the current board.
-func (b *BoardState) Print() {
+func (b *BoardState) Print(highlight uint8) {
 	pieces := make([][]string, 2)
 	pieces[BLACK] = []string{"♖", "♘", "♗", "♕", "♔", "♙"};
 	pieces[WHITE] = []string{"♜", "♞", "♝", "♛", "♚", "♟"};
@@ -14,9 +14,12 @@ func (b *BoardState) Print() {
   // This next line is correct because the indexes are uint8 so 0 - 1 = 255.
 	for rank = 7; rank < 8; rank-- {
 		for file = 0; file < 8; file++ {
-			color := b.ColorOfSquare(bitopts.RankFileToSquare(rank, file))
+      pos := bitopts.RankFileToSquare(rank, file)
+			color := b.ColorOfSquare(pos)
       //fmt.Printf(" %v ", bitopts.RankFileToSquare(rank, file))
-			if color == EMPTY {
+      if pos == highlight {
+        fmt.Printf(" * ")        
+      } else if color == EMPTY {
 				fmt.Printf(" - ")
 			} else {
 				piece := b.PieceOfSquare(bitopts.RankFileToSquare(rank, file))

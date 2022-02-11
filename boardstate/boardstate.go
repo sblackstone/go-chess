@@ -29,7 +29,7 @@ func Initial() *BoardState {
 	return &b
 }
 
-// Copy returns a copy of a venue
+// Copy returns a copy of a BoardState
 func (b *BoardState) Copy() *BoardState {
 	boardCopy := BoardState{
 		meta: b.meta,
