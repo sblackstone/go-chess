@@ -3,9 +3,43 @@ package movegenerator
 import (
 	"testing"
   "reflect"
+	"github.com/sblackstone/go-chess/boardstate"
+	"sort"
 //	"github.com/sblackstone/go-chess/bitopts"
 
 )
+
+func genSortedBoardLocationsKnights(b *boardstate.BoardState) []uint8 {
+  result := genKnightMoves(b)
+  var locations []uint8
+  for i := range(result) {
+    locations = append(locations, result[i].FindPieces(b.GetTurn(), boardstate.KNIGHT)...)
+  }
+  sort.Slice(locations, func(i, j int) bool { return locations[i] < locations[j] })
+  return locations
+}
+
+
+func TestGenKnightMovesKnowsAboutTurns(t *testing.T) {
+	b := boardstate.Blank()
+	b.SetSquare(1,  boardstate.WHITE, boardstate.KNIGHT)
+	b.SetSquare(57, boardstate.BLACK, boardstate.KNIGHT)
+	moves := genSortedBoardLocationsKnights(b)
+
+	expected := []uint8{11,16,18}
+	if (!reflect.DeepEqual(moves, expected)) {
+		t.Errorf("Expected %v to be %v", moves, expected)
+	}
+
+	b.ToggleTurn()
+	movesBlack := genSortedBoardLocationsKnights(b)
+	expectedBlack := []uint8{40,42,51}
+	if (!reflect.DeepEqual(movesBlack, expectedBlack)) {
+		t.Errorf("Expected %v to be %v", moves, expected)
+	}
+
+
+}
 
 func TestGenAllKnightMoves(t *testing.T) {
 

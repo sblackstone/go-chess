@@ -3,6 +3,7 @@ package movegenerator
 import (
 	"github.com/sblackstone/go-chess/boardstate"
   "github.com/sblackstone/go-chess/bitopts"
+	"fmt"
 )
 
 /*
@@ -80,7 +81,28 @@ func genAllKnightMoves() [64][]uint8 {
   return result;
 }
 
+func genSingleKnightMoves(b *boardstate.BoardState, knightPos uint8) []*boardstate.BoardState {
+	var result []*boardstate.BoardState;
+	allKnightMoves := genAllKnightMoves(); // TODO: THIS MUST BE MEMOIZED SOMEHOW.
+	for i := range(allKnightMoves[knightPos]) {
+		move := allKnightMoves[knightPos][i];
+		if b.ColorOfSquare(move) != b.GetTurn() {
+			fmt.Println(move);
+			result = append(result, b.CopyPlayTurn(knightPos, move))
+		}
+	}
+	return result
+}
+
+
+
 func genKnightMoves(b *boardstate.BoardState) []*boardstate.BoardState {
-  var result []*boardstate.BoardState;
+	var result []*boardstate.BoardState;
+	knightPositions := b.FindPieces(b.GetTurn(), boardstate.KNIGHT)
+	//fmt.Printf("%v\n", rookPositions)
+	for i := 0; i < len(knightPositions); i++ {
+		result = append(result, genSingleKnightMoves(b, knightPositions[i])...)
+	}
+
   return result;
 }
