@@ -65,6 +65,12 @@ func (b *BoardState) PlayTurn(src uint8, dst uint8) {
 
 }
 
+func (b *BoardState) CopyPlayTurn(src uint8, dst uint8) *BoardState{
+	bCopy := b.Copy()
+	bCopy.PlayTurn(src, dst)
+	return bCopy
+}
+
 func (b *BoardState) MovePiece(src uint8, dst uint8) {
 	color := b.ColorOfSquare(src)
 	piece := b.PieceOfSquare(src)
