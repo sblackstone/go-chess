@@ -84,6 +84,17 @@ func TestGenRookStopsAtCapture(t *testing.T) {
 }
 
 func TestTwoRooksOnBoard(t *testing.T) {
+	b := boardstate.Blank()
+
+  b.SetSquare(56, boardstate.WHITE, boardstate.ROOK)
+  b.SetSquare(7,  boardstate.WHITE, boardstate.ROOK)
+
+  locations := genSortedBoardLocationsRooks(b)
+	// We expect 7 and 56 to repeat a bunch as the other rook is still on that square whent he other moves.
+  expected := []uint8{0, 0, 1, 2, 3, 4, 5, 6, 7, 7, 7, 7, 7, 7,7 ,7, 7, 7, 7, 7, 7, 7, 8, 15, 16, 23, 24, 31, 32, 39, 40, 47, 48, 55, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 57, 58, 59, 60, 61, 62, 63, 63}
+  if !reflect.DeepEqual(locations, expected) {
+    t.Errorf("Expected %v to be %v", locations, expected)
+  }
 }
 
 
