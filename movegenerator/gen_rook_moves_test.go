@@ -15,15 +15,15 @@ func genSortedBoardLocations(b *boardstate.BoardState) []uint8 {
   result := genRookMoves(b)
   var locations []uint8
   for i := range(result) {
-    locations = append(locations, result[i].FindPieces(boardstate.WHITE, boardstate.ROOK)...)
+    locations = append(locations, result[i].FindPieces(b.GetTurn(), boardstate.ROOK)...)
   }
-
   sort.Slice(locations, func(i, j int) bool { return locations[i] < locations[j] })
   return locations
 }
 
 func TestGenRookMovesUnderstandsTurn(t *testing.T) {
   b := boardstate.Blank()
+
   b.SetSquare(56, boardstate.WHITE, boardstate.ROOK)
   b.SetSquare(7,  boardstate.BLACK, boardstate.ROOK)
 
@@ -34,8 +34,9 @@ func TestGenRookMovesUnderstandsTurn(t *testing.T) {
   }
 
   b.ToggleTurn()
-  fmt.Printf("%v", b.GetTurn())
+  fmt.Printf("New Turn: %v\n", b.GetTurn())
   locationsBlack := genSortedBoardLocations(b)
+  fmt.Printf("%v\n", locationsBlack)
   expectedBlack := []uint8{0,1,2,3,4,5,6,15,23,31,39,47,55,63}
   if !reflect.DeepEqual(locationsBlack, expectedBlack) {
     t.Errorf("Expected %v to be %v", locationsBlack, expectedBlack)
