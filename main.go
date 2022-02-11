@@ -10,7 +10,7 @@ import (
 
 func main() {
   b := boardstate.Initial();
-  b.Print()
+  b.Print(65)
   fmt.Println()
   bitopts.Print(18446462598732840960, 0);
 }
