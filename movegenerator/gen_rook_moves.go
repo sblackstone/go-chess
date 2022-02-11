@@ -4,14 +4,8 @@ import (
 	"github.com/sblackstone/go-chess/boardstate"
 //	"github.com/sblackstone/go-chess/bitopts"
 
-	"fmt"
+//	"fmt"
 )
-
-func makeMoveOnCopy(b *boardstate.BoardState, src uint8, dst uint8) *boardstate.BoardState {
-	bCopy := b.Copy()
-	bCopy.PlayTurn(src, dst)
-	return bCopy
-}
 
 func genSingleRookMoves(b *boardstate.BoardState, rookPos uint8) []*boardstate.BoardState {
 	var result []*boardstate.BoardState;
@@ -61,7 +55,7 @@ func genSingleRookMoves(b *boardstate.BoardState, rookPos uint8) []*boardstate.B
 func genRookMoves(b *boardstate.BoardState) []*boardstate.BoardState {
   var result []*boardstate.BoardState;
 	rookPositions := b.FindPieces(b.GetTurn(), boardstate.ROOK)
-	fmt.Printf("%v\n", rookPositions)
+	//fmt.Printf("%v\n", rookPositions)
 	for i := 0; i < len(rookPositions); i++ {
 		result = append(result, genSingleRookMoves(b, rookPositions[i])...)
 	}
