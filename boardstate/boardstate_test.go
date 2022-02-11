@@ -5,6 +5,34 @@ import (
 //  "fmt"
 )
 
+
+func TestCopyPlayMove(t *testing.T) {
+	b1 := Initial()
+	b2 := b1.CopyPlayTurn(1, 18)
+	if (b1 == b2) {
+		t.Errorf("Expected b1 to be different than b2")
+	}
+
+	if (b2.PieceOfSquare(18) != KNIGHT || b2.ColorOfSquare(18) != WHITE) {
+		t.Errorf("square 18 isn't a white knight")
+	}
+
+	if (b2.PieceOfSquare(1) != EMPTY || b2.ColorOfSquare(1) != EMPTY) {
+		t.Errorf("square 1 isn't empty")
+	}
+
+	if (b1.PieceOfSquare(1) == EMPTY || b1.ColorOfSquare(1) == EMPTY) {
+		t.Errorf("square 1 on b1 shouldn't be empty")
+	}
+
+	if (b1.PieceOfSquare(18) == KNIGHT || b1.ColorOfSquare(18) == WHITE) {
+		t.Errorf("square 18 on b1 should be empty")
+	}
+
+
+
+}
+
 func TestCopy(t *testing.T) {
 	b1 := Initial()
 	b1.PlayTurn(1, 18)
