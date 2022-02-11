@@ -5,7 +5,7 @@ import (
   "sort"
   "reflect"
   "github.com/sblackstone/go-chess/boardstate"
-  "fmt"
+//  "fmt"
 //	"github.com/sblackstone/go-chess/bitopts"
 
 )
@@ -34,9 +34,7 @@ func TestGenRookMovesUnderstandsTurn(t *testing.T) {
   }
 
   b.ToggleTurn()
-  fmt.Printf("New Turn: %v\n", b.GetTurn())
   locationsBlack := genSortedBoardLocations(b)
-  fmt.Printf("%v\n", locationsBlack)
   expectedBlack := []uint8{0,1,2,3,4,5,6,15,23,31,39,47,55,63}
   if !reflect.DeepEqual(locationsBlack, expectedBlack) {
     t.Errorf("Expected %v to be %v", locationsBlack, expectedBlack)
