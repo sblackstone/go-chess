@@ -4,20 +4,11 @@ import (
 	"testing"
   "reflect"
 	"github.com/sblackstone/go-chess/boardstate"
-	"sort"
+//	"sort"
 //	"github.com/sblackstone/go-chess/bitopts"
 
 )
 
-func genSortedBoardLocationsKnights(b *boardstate.BoardState) []uint8 {
-  result := genKnightMoves(b)
-  var locations []uint8
-  for i := range(result) {
-    locations = append(locations, result[i].FindPieces(b.GetTurn(), boardstate.KNIGHT)...)
-  }
-  sort.Slice(locations, func(i, j int) bool { return locations[i] < locations[j] })
-  return locations
-}
 
 
 func TestGenKnightMovesKnowsAboutTurns(t *testing.T) {

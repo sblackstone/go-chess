@@ -2,24 +2,15 @@ package movegenerator
 
 import (
 	"testing"
-  "sort"
   "reflect"
   "github.com/sblackstone/go-chess/boardstate"
+//	"sort"
+
 //  "fmt"
 //	"github.com/sblackstone/go-chess/bitopts"
 
 )
 
-
-func genSortedBoardLocationsRooks(b *boardstate.BoardState) []uint8 {
-  result := genRookMoves(b)
-  var locations []uint8
-  for i := range(result) {
-    locations = append(locations, result[i].FindPieces(b.GetTurn(), boardstate.ROOK)...)
-  }
-  sort.Slice(locations, func(i, j int) bool { return locations[i] < locations[j] })
-  return locations
-}
 
 func TestGenRookMovesUnderstandsTurn(t *testing.T) {
   b := boardstate.Blank()
