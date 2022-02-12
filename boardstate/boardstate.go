@@ -33,18 +33,9 @@ func Initial() *BoardState {
 func (b *BoardState) Copy() *BoardState {
 	boardCopy := BoardState{
 		meta: b.meta,
+		colors: b.colors,
+		pieces: b.pieces,
 	}
-
-	// Unrolled.
-	boardCopy.colors[0] = b.colors[0]
-	boardCopy.colors[1] = b.colors[1]
-	boardCopy.pieces[0] = b.pieces[0]
-	boardCopy.pieces[1] = b.pieces[1]
-	boardCopy.pieces[2] = b.pieces[2]
-	boardCopy.pieces[3] = b.pieces[3]
-	boardCopy.pieces[4] = b.pieces[4]
-	boardCopy.pieces[5] = b.pieces[5]
-
 
 	return &boardCopy
 }
