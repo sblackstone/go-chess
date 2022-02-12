@@ -62,6 +62,10 @@ func TestGenBishopMovesSqSECorner(t *testing.T) {
   }
 }
 
+func TestTwoBishopsOnBoard(t *testing.t) {
+	t.Errorf("TODO\n");
+}
+
 func TestGenBishopMovesKnowsAboutTurns(t *testing.T) {
 	t.Errorf("TODO\n")
 }
