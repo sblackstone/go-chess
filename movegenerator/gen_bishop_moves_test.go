@@ -62,7 +62,7 @@ func TestGenBishopMovesSqSECorner(t *testing.T) {
   }
 }
 
-func TestTwoBishopsOnBoard(t *testing.t) {
+func TestTwoBishopsOnBoard(t *testing.T) {
 	t.Errorf("TODO\n");
 }
 
@@ -71,9 +71,33 @@ func TestGenBishopMovesKnowsAboutTurns(t *testing.T) {
 }
 
 func TestGenBishopMovesBlockedByOwnPieces(t *testing.T) {
-	t.Errorf("TODO\n")
+	b := boardstate.Blank()
+  b.SetSquare(35, boardstate.WHITE, boardstate.BISHOP)
+
+	b.SetSquare(53, boardstate.WHITE, boardstate.PAWN)
+	b.SetSquare(49, boardstate.WHITE, boardstate.PAWN)
+	b.SetSquare(17, boardstate.WHITE, boardstate.PAWN)
+	b.SetSquare(21, boardstate.WHITE, boardstate.PAWN)
+
+  locations := genSortedBoardLocationsBishops(b)
+	expected := []uint8{26,28,42,44}
+  if !reflect.DeepEqual(locations, expected) {
+    t.Errorf("Expected %v to be %v", locations, expected)
+  }
 }
 
 func TestGenBishopMovesStopsAtCaptures(t *testing.T) {
-	t.Errorf("TODO\n")
+	b := boardstate.Blank()
+  b.SetSquare(35, boardstate.WHITE, boardstate.BISHOP)
+
+	b.SetSquare(53, boardstate.BLACK, boardstate.PAWN)
+	b.SetSquare(49, boardstate.BLACK, boardstate.PAWN)
+	b.SetSquare(17, boardstate.BLACK, boardstate.PAWN)
+	b.SetSquare(21, boardstate.BLACK, boardstate.PAWN)
+
+  locations := genSortedBoardLocationsBishops(b)
+	expected := []uint8{17,21,26,28,42,44,49,53}
+  if !reflect.DeepEqual(locations, expected) {
+    t.Errorf("Expected %v to be %v", locations, expected)
+  }
 }
