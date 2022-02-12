@@ -4,13 +4,10 @@ import (
 	"testing"
   "reflect"
   "github.com/sblackstone/go-chess/boardstate"
-//	"fmt"
-//	"sort"
-
-//  "fmt"
-//	"github.com/sblackstone/go-chess/bitopts"
-
 )
+
+
+/* Limited tests since we rely on the rook and bishop code to generate queen moves */
 
 
 func TestGenQueenMovesUnderstandsTurn(t *testing.T) {
@@ -32,10 +29,7 @@ func TestGenQueenMovesUnderstandsTurn(t *testing.T) {
 		t.Errorf("Expected %v to be %v", movesBlack, expected)
 	}
 
-
 }
-
-
 
 
 func TestGenQueenMovesMiddleOfBoard(t *testing.T) {
