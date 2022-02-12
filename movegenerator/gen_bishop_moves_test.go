@@ -63,7 +63,15 @@ func TestGenBishopMovesSqSECorner(t *testing.T) {
 }
 
 func TestTwoBishopsOnBoard(t *testing.T) {
-	t.Errorf("TODO\n");
+	b := boardstate.Blank()
+  b.SetSquare(7, boardstate.WHITE, boardstate.BISHOP)
+	b.SetSquare(63, boardstate.WHITE, boardstate.BISHOP)
+
+  locations := genSortedBoardLocationsBishops(b)
+	expected := []uint8{0, 7, 7, 7, 7, 7, 7, 7, 9, 14, 18, 21, 27, 28, 35, 36, 42, 45, 49, 54, 56, 63, 63, 63, 63, 63, 63, 63}
+  if !reflect.DeepEqual(locations, expected) {
+    t.Errorf("Expected %v to be %v", locations, expected)
+  }
 }
 
 func TestGenBishopMovesKnowsAboutTurns(t *testing.T) {
