@@ -14,7 +14,25 @@ import (
 
 
 func TestGenQueenMovesUnderstandsTurn(t *testing.T) {
-	t.Errorf("TODO\n")
+
+	b := boardstate.Blank()
+	b.SetSquare(56,  boardstate.WHITE, boardstate.QUEEN)
+	b.SetSquare(7,   boardstate.BLACK, boardstate.QUEEN)
+	moves := genSortedBoardLocationsQueens(b)
+
+	expected := []uint8{0, 7, 8, 14, 16, 21, 24, 28, 32, 35, 40, 42, 48, 49, 57, 58, 59, 60, 61, 62, 63}
+	if (!reflect.DeepEqual(moves, expected)) {
+		t.Errorf("Expected %v to be %v", moves, expected)
+	}
+
+	b.ToggleTurn()
+	movesBlack := genSortedBoardLocationsQueens(b)
+	expectedBlack := []uint8{0, 1, 2, 3, 4, 5, 6, 14, 15, 21, 23, 28, 31, 35, 39, 42, 47, 49, 55, 56, 63}
+	if (!reflect.DeepEqual(movesBlack, expectedBlack)) {
+		t.Errorf("Expected %v to be %v", movesBlack, expected)
+	}
+
+
 }
 
 

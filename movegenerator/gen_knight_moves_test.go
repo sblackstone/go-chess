@@ -26,7 +26,7 @@ func TestGenKnightMovesKnowsAboutTurns(t *testing.T) {
 	movesBlack := genSortedBoardLocationsKnights(b)
 	expectedBlack := []uint8{40,42,51}
 	if (!reflect.DeepEqual(movesBlack, expectedBlack)) {
-		t.Errorf("Expected %v to be %v", moves, expected)
+		t.Errorf("Expected %v to be %v", movesBlack, expected)
 	}
 }
 
