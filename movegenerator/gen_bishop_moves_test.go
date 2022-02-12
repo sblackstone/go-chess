@@ -65,3 +65,11 @@ func TestGenBishopMovesSqSECorner(t *testing.T) {
 func TestGenBishopMovesKnowsAboutTurns(t *testing.T) {
 	t.Errorf("TODO\n")
 }
+
+func TestGenBishopMovesBlockedByOwnPieces(t *testing.T) {
+	t.Errorf("TODO\n")
+}
+
+func TestGenBishopMovesStopsAtCaptures(t *testing.T) {
+	t.Errorf("TODO\n")
+}
