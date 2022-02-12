@@ -135,3 +135,23 @@ func TestKingBlockedByOwnPieces(t *testing.T) {
     t.Errorf("Expected %v to be %v", locations, expected)
   }
 }
+
+
+func TestGenKingMovesKnowsAboutTurns(t *testing.T) {
+	b := boardstate.Blank()
+	b.SetSquare(43,  boardstate.WHITE, boardstate.KING)
+	b.SetSquare(19,  boardstate.BLACK, boardstate.KING)
+	moves := genSortedBoardLocationsKings(b)
+
+	expected := []uint8{34, 35, 36, 42, 44, 50, 51, 52}
+	if (!reflect.DeepEqual(moves, expected)) {
+		t.Errorf("Expected %v to be %v", moves, expected)
+	}
+
+	b.ToggleTurn()
+	movesBlack := genSortedBoardLocationsKings(b)
+	expectedBlack := []uint8{10, 11, 12, 18, 20, 26, 27, 28}
+	if (!reflect.DeepEqual(movesBlack, expectedBlack)) {
+		t.Errorf("Expected %v to be %v", movesBlack, expected)
+	}
+}
