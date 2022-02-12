@@ -52,42 +52,6 @@ func genSingleBishopMoves(b *boardstate.BoardState, bishopPos uint8) []*boardsta
 				break;
 			}
 	}
-
-
-
-
-/*
-	for r := rookPos-8; r < 64; r -= 8 {
-		color := b.ColorOfSquare(r)
-		if color == boardstate.EMPTY || color != b.GetTurn() {
-			result = append(result, b.CopyPlayTurn(rookPos, r))
-		}
-		if color != boardstate.EMPTY {
-			break;
-		}
-	}
-
-	for r := rookPos+1; r % 8 > 0; r += 1 {
-		color := b.ColorOfSquare(r)
-		if color == boardstate.EMPTY || color != b.GetTurn() {
-			result = append(result, b.CopyPlayTurn(rookPos, r))
-		}
-		if color != boardstate.EMPTY {
-			break;
-		}
-	}
-
-	for r := rookPos-1; r % 8 < 7; r -= 1 {
-		color := b.ColorOfSquare(r)
-		if color == boardstate.EMPTY || color != b.GetTurn() {
-			result = append(result, b.CopyPlayTurn(rookPos, r))
-		}
-		if color != boardstate.EMPTY {
-			break;
-		}
-	}
-	*/
-
 	return result
 }
 
