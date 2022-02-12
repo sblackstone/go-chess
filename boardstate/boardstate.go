@@ -7,16 +7,16 @@ import (
 
 // BoardState contains the state of the Board
 type BoardState struct {
-	colors []uint64
-	pieces []uint64
+	colors [2]uint64
+	pieces [6]uint64
 	meta   uint64
 }
 
 // Blank returns a blank board with no pieces on it
 func Blank() *BoardState {
 	b := BoardState{}
-	b.colors = []uint64{0, 0}
-	b.pieces = []uint64{0, 0, 0, 0, 0, 0}
+	b.colors = [2]uint64{0, 0}
+	b.pieces = [6]uint64{0, 0, 0, 0, 0, 0}
 	return &b
 }
 
@@ -24,8 +24,8 @@ func Blank() *BoardState {
 func Initial() *BoardState {
 	b := BoardState{}
 	// These constants are pre-calculated using InitialManual (see below)...
-	b.colors = []uint64{65535, 18446462598732840960 }
-	b.pieces = []uint64{9295429630892703873, 4755801206503243842, 2594073385365405732, 576460752303423496, 1152921504606846992, 71776119061282560}
+	b.colors = [2]uint64{65535, 18446462598732840960 }
+	b.pieces = [6]uint64{9295429630892703873, 4755801206503243842, 2594073385365405732, 576460752303423496, 1152921504606846992, 71776119061282560}
 	return &b
 }
 
@@ -34,8 +34,18 @@ func (b *BoardState) Copy() *BoardState {
 	boardCopy := BoardState{
 		meta: b.meta,
 	}
-	boardCopy.colors = append([]uint64(nil), b.colors...)
-	boardCopy.pieces = append([]uint64(nil), b.pieces...)
+
+	// Unrolled.
+	boardCopy.colors[0] = b.colors[0]
+	boardCopy.colors[1] = b.colors[1]
+	boardCopy.pieces[0] = b.pieces[0]
+	boardCopy.pieces[1] = b.pieces[1]
+	boardCopy.pieces[2] = b.pieces[2]
+	boardCopy.pieces[3] = b.pieces[3]
+	boardCopy.pieces[4] = b.pieces[4]
+	boardCopy.pieces[5] = b.pieces[5]
+
+
 	return &boardCopy
 }
 
