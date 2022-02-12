@@ -28,3 +28,7 @@ func genSortedBoardLocationsBishops(b *boardstate.BoardState) []uint8 {
 func genSortedBoardLocationsQueens(b *boardstate.BoardState) []uint8 {
   return genSortedBoardLocationsGeneric(b.GetTurn(), boardstate.QUEEN, genQueenMoves(b))
 }
+
+func genSortedBoardLocationsKings(b *boardstate.BoardState) []uint8 {
+  return genSortedBoardLocationsGeneric(b.GetTurn(), boardstate.KING, genKingMoves(b))
+}

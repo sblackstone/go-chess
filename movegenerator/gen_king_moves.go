@@ -47,52 +47,28 @@ func genAllKingMoves() [64][]uint8 {
   return result;
 }
 
+
+func genSingleKingMoves(b *boardstate.BoardState, kingPos uint8) []*boardstate.BoardState {
+	var result []*boardstate.BoardState;
+	allKingMoves := genAllKingMoves(); // TODO: THIS MUST BE MEMOIZED SOMEHOW.
+	for i := range(allKingMoves[kingPos]) {
+		move := allKingMoves[kingPos][i];
+		if b.ColorOfSquare(move) != b.GetTurn() {
+			result = append(result, b.CopyPlayTurn(kingPos, move))
+		}
+	}
+	return result
+}
+
+
+/* TODO: CASTLING */
 func genKingMoves(b *boardstate.BoardState) []*boardstate.BoardState {
-  var result []*boardstate.BoardState;
+	var result []*boardstate.BoardState;
+	kingPositions := b.FindPieces(b.GetTurn(), boardstate.KING)
+	//fmt.Printf("%v\n", rookPositions)
+	for i := 0; i < len(kingPositions); i++ {
+		result = append(result, genSingleKingMoves(b, kingPositions[i])...)
+	}
+
   return result;
 }
-
-/*
-// A
-if file >= 2 {
-	if rank >= 1 {
-		result[pos] = append(result[pos], pos - 10)
-	}
-	if rank <= 6 {
-		result[pos] = append(result[pos], pos + 6)
-	}
-}
-
-// B
-if file >= 1 {
-	if rank >= 2 {
-		result[pos] = append(result[pos], pos - 17)
-
-	}
-	if rank <= 5 {
-		result[pos] = append(result[pos], pos + 15)
-	}
-}
-
-// C
-if file <= 6 {
-	if rank >= 2 {
-		result[pos] = append(result[pos], pos - 15)
-	}
-	if rank <= 5 {
-		result[pos] = append(result[pos], pos + 17)
-	}
-}
-
-// D
-if file <= 5 {
-	if rank >= 1 {
-		result[pos] = append(result[pos], pos - 6)
-	}
-	if rank <= 6 {
-		result[pos] = append(result[pos], pos + 10)
-	}
-}
-}
-
-*/

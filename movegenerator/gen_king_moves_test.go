@@ -4,7 +4,7 @@ import (
 	"testing"
   "reflect"
 	//"fmt"
-	//"github.com/sblackstone/go-chess/bitopts"
+	"github.com/sblackstone/go-chess/boardstate"
 
 )
 
@@ -85,19 +85,16 @@ func TestGenAllKingMoves(t *testing.T) {
 				t.Errorf("Expected %v to be %v", boards[i], cases[i]);
 			}
 	}
+}
 
-/*
-	// Print out all the king bitboards
-  var pos uint8;
-	var tmp uint64
-	var j int
-  for pos = 0; pos < 64; pos++ {
-		tmp = 0
-		for j = range(boards[pos]) {
-			tmp = bitopts.SetBit(tmp, boards[pos][j])
-		}
-		fmt.Printf("%v: %v\n", pos, boards[pos]);
-		bitopts.Print(tmp, pos)
+
+
+func TestKingCenterOfBoard(t *testing.T) {
+	b := boardstate.Blank()
+  b.SetSquare(27, boardstate.WHITE, boardstate.KING)
+  locations := genSortedBoardLocationsKings(b)
+  expected := []uint8{18, 19, 20, 26, 28, 34, 35, 36}
+  if !reflect.DeepEqual(locations, expected) {
+    t.Errorf("Expected %v to be %v", locations, expected)
   }
-*/
 }
