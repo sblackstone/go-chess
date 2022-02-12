@@ -98,3 +98,40 @@ func TestKingCenterOfBoard(t *testing.T) {
     t.Errorf("Expected %v to be %v", locations, expected)
   }
 }
+
+
+func TestKingCanCaptureOtherPieces(t *testing.T) {
+	b := boardstate.Blank()
+	expected := []uint8{18, 19, 20, 26, 28, 34, 35, 36}
+	for i := range(expected) {
+		b.SetSquare(expected[i], boardstate.BLACK, boardstate.PAWN)
+	}
+  b.SetSquare(27, boardstate.WHITE, boardstate.KING)
+  locations := genSortedBoardLocationsKings(b)
+
+
+  if !reflect.DeepEqual(locations, expected) {
+    t.Errorf("Expected %v to be %v", locations, expected)
+  }
+}
+
+
+func TestKingBlockedByOwnPieces(t *testing.T) {
+	b := boardstate.Blank()
+	b.SetSquare(18, boardstate.WHITE, boardstate.PAWN)
+	b.SetSquare(19, boardstate.WHITE, boardstate.PAWN)
+	b.SetSquare(20, boardstate.WHITE, boardstate.PAWN)
+	b.SetSquare(26, boardstate.WHITE, boardstate.PAWN)
+	b.SetSquare(28, boardstate.WHITE, boardstate.PAWN)
+	b.SetSquare(34, boardstate.WHITE, boardstate.PAWN)
+	b.SetSquare(35, boardstate.WHITE, boardstate.PAWN)
+	b.SetSquare(36, boardstate.WHITE, boardstate.PAWN)
+
+  b.SetSquare(27, boardstate.WHITE, boardstate.KING)
+  locations := genSortedBoardLocationsKings(b)
+	var expected []uint8
+
+	if !reflect.DeepEqual(locations, expected) {
+    t.Errorf("Expected %v to be %v", locations, expected)
+  }
+}
