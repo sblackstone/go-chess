@@ -63,6 +63,11 @@ func (b *BoardState) EnemyOccupiedSquare(n uint8) bool{
 	return c != EMPTY && c != b.GetTurn()
 }
 
+func (b *BoardState) EmptyOrEnemyOccupiedSquare(n uint8) bool{
+	c := b.ColorOfSquare(n)
+	return c != b.GetTurn()
+}
+
 func (b *BoardState) PlayTurn(src uint8, dst uint8, promotePiece uint8) {
 		b.MovePiece(src, dst)
 		// TODO: Enpassant

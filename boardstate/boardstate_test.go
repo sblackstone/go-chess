@@ -33,6 +33,33 @@ func TestCopyPlayMove(t *testing.T) {
 
 }
 
+func TestEmptyOrEnemyOccupiedSquare(t *testing.T) {
+	b := Initial()
+	if (b.EmptyOrEnemyOccupiedSquare(10)) {
+		t.Errorf("expected square 10 to not be empty/enemy occupiped\n")
+	}
+	if (!b.EmptyOrEnemyOccupiedSquare(18)) {
+		t.Errorf("expected square 18 to be empty/enemy occupiped\n")
+	}
+
+	if (!b.EmptyOrEnemyOccupiedSquare(50)) {
+		t.Errorf("expected square 50 to be empty/enemy occupiped\n")
+	}
+
+	b.ToggleTurn()
+
+	if (b.EmptyOrEnemyOccupiedSquare(51)) {
+		t.Errorf("expected square 10 to not be empty/enemy occupiped\n")
+	}
+	if (!b.EmptyOrEnemyOccupiedSquare(43)) {
+		t.Errorf("expected square 43 to be empty/enemy occupiped\n")
+	}
+
+	if (!b.EmptyOrEnemyOccupiedSquare(10)) {
+		t.Errorf("expected square 50 to be empty/enemy occupiped\n")
+	}
+
+}
 
 func TestEnemyOccupriedSquare(t *testing.T) {
 	b := Initial()
@@ -52,8 +79,8 @@ func TestEnemyOccupriedSquare(t *testing.T) {
 	if (b.EnemyOccupiedSquare(51)) {
 		t.Errorf("expected square 10 to not be enemy occupiped\n")
 	}
-	if (b.EnemyOccupiedSquare(51)) {
-		t.Errorf("expected square 18 to not be enemy occupiped\n")
+	if (b.EnemyOccupiedSquare(43)) {
+		t.Errorf("expected square 43 to not be enemy occupiped\n")
 	}
 
 	if (!b.EnemyOccupiedSquare(10)) {
