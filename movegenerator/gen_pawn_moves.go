@@ -2,21 +2,27 @@ package movegenerator
 
 import (
 	"github.com/sblackstone/go-chess/boardstate"
+	"github.com/sblackstone/go-chess/bitopts"
 )
+
+func genPromotionBoards(b *boardstate.BoardState, src uint8, dst uint8) []*boardstate.BoardState {
+	var i  uint8
+	var result []*boardstate.BoardState;
+	for i = boardstate.ROOK; i <= boardstate.QUEEN; i++ {
+		newBoard := b.CopyPlayTurn(src, dst, i)
+		result = append(result, newBoard)
+	}
+	return result
+}
 
 func genSinglePawnMovesWhite(b *boardstate.BoardState, pawnPos uint8) []*boardstate.BoardState {
 	var result []*boardstate.BoardState;
-	var i uint8
-	if b.ColorOfSquare(pawnPos+8) == boardstate.EMPTY {
-		newRank := pawnPos / 8
-		if (newRank < 7) {
-			result = append(result, b.CopyPlayTurn(pawnPos, pawnPos+8, boardstate.EMPTY))
+	pushForwardOne := pawnPos+8
+	if b.EmptySquare(pushForwardOne) {
+		if (bitopts.RankOfSquare(pushForwardOne) < 7) {
+			result = append(result, b.CopyPlayTurn(pawnPos, pushForwardOne, boardstate.EMPTY))
 		} else {
-			// Using the fact that ROOK=0 KNIGHT=1 BISHOP=2 QUEEN=3
-			for i = boardstate.ROOK; i <= boardstate.QUEEN; i++ {
-				newBoard := b.CopyPlayTurn(pawnPos, pawnPos + 8, i)
-				result = append(result, newBoard)
-			}
+			result = append(result, genPromotionBoards(b, pawnPos, pushForwardOne)...)
 		}
 	}
 	return result
