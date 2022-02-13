@@ -33,6 +33,37 @@ func TestCopyPlayMove(t *testing.T) {
 
 }
 
+
+func TestEnemyOccupriedSquare(t *testing.T) {
+	b := Initial()
+	if (b.EnemyOccupiedSquare(10)) {
+		t.Errorf("expected square 10 to not be enemy occupiped\n")
+	}
+	if (b.EnemyOccupiedSquare(18)) {
+		t.Errorf("expected square 18 to not be enemy occupiped\n")
+	}
+
+	if (!b.EnemyOccupiedSquare(50)) {
+		t.Errorf("expected square 50 to be enemy occupiped\n")
+	}
+
+	b.ToggleTurn()
+
+	if (b.EnemyOccupiedSquare(51)) {
+		t.Errorf("expected square 10 to not be enemy occupiped\n")
+	}
+	if (b.EnemyOccupiedSquare(51)) {
+		t.Errorf("expected square 18 to not be enemy occupiped\n")
+	}
+
+	if (!b.EnemyOccupiedSquare(10)) {
+		t.Errorf("expected square 50 to be enemy occupiped\n")
+	}
+
+
+
+}
+
 func TestCopy(t *testing.T) {
 	b1 := Initial()
 	b1.PlayTurn(1, 18, EMPTY)
