@@ -2,7 +2,7 @@ package movegenerator
 
 import (
 	"github.com/sblackstone/go-chess/boardstate"
-//	"github.com/sblackstone/go-chess/bitopts"
+	"github.com/sblackstone/go-chess/bitopts"
 
 //	"fmt"
 )
@@ -30,7 +30,7 @@ func genSingleRookMoves(b *boardstate.BoardState, rookPos uint8) []*boardstate.B
 		}
 	}
 
-	for r := rookPos+1; r % 8 > 0; r += 1 {
+	for r := rookPos+1; bitopts.FileOfSquare(r) > 0; r += 1 {
 		color := b.ColorOfSquare(r)
 		if color == boardstate.EMPTY || color != b.GetTurn() {
 			result = append(result, b.CopyPlayTurn(rookPos, r))
@@ -40,7 +40,7 @@ func genSingleRookMoves(b *boardstate.BoardState, rookPos uint8) []*boardstate.B
 		}
 	}
 
-	for r := rookPos-1; r % 8 < 7; r -= 1 {
+	for r := rookPos-1; bitopts.FileOfSquare(r) < 7; r -= 1 {
 		color := b.ColorOfSquare(r)
 		if color == boardstate.EMPTY || color != b.GetTurn() {
 			result = append(result, b.CopyPlayTurn(rookPos, r))

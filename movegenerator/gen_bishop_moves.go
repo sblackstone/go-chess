@@ -12,7 +12,7 @@ func genSingleBishopMoves(b *boardstate.BoardState, bishopPos uint8) []*boardsta
 
 	_, file := bitopts.SquareToRankFile(bishopPos)
 
-	for r := bishopPos+9; r < 64 && r % 8 > file; r += 9 {
+	for r := bishopPos+9; r < 64 && bitopts.FileOfSquare(r) > file; r += 9 {
 			color := b.ColorOfSquare(r)
 			if color == boardstate.EMPTY || color != b.GetTurn() {
 				result = append(result, b.CopyPlayTurn(bishopPos, r))
@@ -22,7 +22,7 @@ func genSingleBishopMoves(b *boardstate.BoardState, bishopPos uint8) []*boardsta
 			}
 	}
 
-	for r := bishopPos+7; r < 64 && r % 8 < file; r += 7 {
+	for r := bishopPos+7; r < 64 && bitopts.FileOfSquare(r) < file; r += 7 {
 			color := b.ColorOfSquare(r)
 			if color == boardstate.EMPTY || color != b.GetTurn() {
 				result = append(result, b.CopyPlayTurn(bishopPos, r))
@@ -33,7 +33,7 @@ func genSingleBishopMoves(b *boardstate.BoardState, bishopPos uint8) []*boardsta
 	}
 
 
-	for r := bishopPos-7; r < 64 && r % 8 > file; r -= 7 {
+	for r := bishopPos-7; r < 64 && bitopts.FileOfSquare(r) > file; r -= 7 {
 			color := b.ColorOfSquare(r)
 			if color == boardstate.EMPTY || color != b.GetTurn() {
 				result = append(result, b.CopyPlayTurn(bishopPos, r))
@@ -43,7 +43,7 @@ func genSingleBishopMoves(b *boardstate.BoardState, bishopPos uint8) []*boardsta
 			}
 	}
 
-	for r := bishopPos-9; r < 64 && r % 8 < file; r -= 9 {
+	for r := bishopPos-9; r < 64 && bitopts.FileOfSquare(r) < file; r -= 9 {
 			color := b.ColorOfSquare(r)
 			if color == boardstate.EMPTY || color != b.GetTurn() {
 				result = append(result, b.CopyPlayTurn(bishopPos, r))
