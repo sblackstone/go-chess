@@ -58,17 +58,20 @@ func initialManual() *BoardState {
 	return b
 }
 
-func (b *BoardState) PlayTurn(src uint8, dst uint8) {
+func (b *BoardState) PlayTurn(src uint8, dst uint8, promotePiece uint8) {
 		b.MovePiece(src, dst)
 		// TODO: Enpassant
 		// TODO: Castling rights
+		if promotePiece != EMPTY {
+			b.SetSquare(dst, b.GetTurn(), promotePiece)
+		}
 		b.ToggleTurn()
 
 }
 
-func (b *BoardState) CopyPlayTurn(src uint8, dst uint8) *BoardState{
+func (b *BoardState) CopyPlayTurn(src uint8, dst uint8, promotePiece uint8) *BoardState{
 	bCopy := b.Copy()
-	bCopy.PlayTurn(src, dst)
+	bCopy.PlayTurn(src, dst, promotePiece)
 	return bCopy
 }
 

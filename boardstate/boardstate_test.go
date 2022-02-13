@@ -8,7 +8,7 @@ import (
 
 func TestCopyPlayMove(t *testing.T) {
 	b1 := Initial()
-	b2 := b1.CopyPlayTurn(1, 18)
+	b2 := b1.CopyPlayTurn(1, 18, EMPTY)
 	if (b1 == b2) {
 		t.Errorf("Expected b1 to be different than b2")
 	}
@@ -35,7 +35,7 @@ func TestCopyPlayMove(t *testing.T) {
 
 func TestCopy(t *testing.T) {
 	b1 := Initial()
-	b1.PlayTurn(1, 18)
+	b1.PlayTurn(1, 18, EMPTY)
 
 	b2 := b1.Copy()
 
@@ -51,10 +51,20 @@ func TestCopy(t *testing.T) {
 		t.Errorf("Expected turn after PlayTurn to be black");
 	}
 
-	b2.PlayTurn(57, 42)
+	b2.PlayTurn(57, 42, EMPTY)
 
 	if b1.PieceOfSquare(42) != EMPTY || b1.ColorOfSquare(42) != EMPTY || b1.GetTurn() != BLACK {
 		t.Errorf("copy is effecting the original")
+	}
+
+}
+
+func TestPlayTurnPromote(t *testing.T) {
+	b := Initial()
+	b.PlayTurn(1, 18, QUEEN)
+
+	if (b.PieceOfSquare(18) != QUEEN || b.ColorOfSquare(18) != WHITE) {
+		t.Errorf("square 18 isn't a white queen")
 	}
 
 }
@@ -65,7 +75,7 @@ func TestPlayTurn(t *testing.T) {
 		t.Errorf("Expected initial turn to be white");
 	}
 
-	b.PlayTurn(1, 18)
+	b.PlayTurn(1, 18, EMPTY)
 
 	if (b.PieceOfSquare(18) != KNIGHT || b.ColorOfSquare(18) != WHITE) {
 		t.Errorf("square 18 isn't a white knight")

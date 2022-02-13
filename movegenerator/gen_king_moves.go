@@ -54,7 +54,7 @@ func genSingleKingMoves(b *boardstate.BoardState, kingPos uint8) []*boardstate.B
 	for i := range(allKingMoves[kingPos]) {
 		move := allKingMoves[kingPos][i];
 		if b.ColorOfSquare(move) != b.GetTurn() {
-			result = append(result, b.CopyPlayTurn(kingPos, move))
+			result = append(result, b.CopyPlayTurn(kingPos, move, boardstate.EMPTY))
 		}
 	}
 	return result

@@ -12,7 +12,7 @@ func genSingleRookMoves(b *boardstate.BoardState, rookPos uint8) []*boardstate.B
 	for r := rookPos+8; r < 64; r += 8 {
 			color := b.ColorOfSquare(r)
 			if color == boardstate.EMPTY || color != b.GetTurn() {
-				result = append(result, b.CopyPlayTurn(rookPos, r))
+				result = append(result, b.CopyPlayTurn(rookPos, r, boardstate.EMPTY))
 			}
 			if color != boardstate.EMPTY {
 				break;
@@ -23,7 +23,7 @@ func genSingleRookMoves(b *boardstate.BoardState, rookPos uint8) []*boardstate.B
 	for r := rookPos-8; r < 64; r -= 8 {
 		color := b.ColorOfSquare(r)
 		if color == boardstate.EMPTY || color != b.GetTurn() {
-			result = append(result, b.CopyPlayTurn(rookPos, r))
+			result = append(result, b.CopyPlayTurn(rookPos, r, boardstate.EMPTY))
 		}
 		if color != boardstate.EMPTY {
 			break;
@@ -33,7 +33,7 @@ func genSingleRookMoves(b *boardstate.BoardState, rookPos uint8) []*boardstate.B
 	for r := rookPos+1; bitopts.FileOfSquare(r) > 0; r += 1 {
 		color := b.ColorOfSquare(r)
 		if color == boardstate.EMPTY || color != b.GetTurn() {
-			result = append(result, b.CopyPlayTurn(rookPos, r))
+			result = append(result, b.CopyPlayTurn(rookPos, r, boardstate.EMPTY))
 		}
 		if color != boardstate.EMPTY {
 			break;
@@ -43,7 +43,7 @@ func genSingleRookMoves(b *boardstate.BoardState, rookPos uint8) []*boardstate.B
 	for r := rookPos-1; bitopts.FileOfSquare(r) < 7; r -= 1 {
 		color := b.ColorOfSquare(r)
 		if color == boardstate.EMPTY || color != b.GetTurn() {
-			result = append(result, b.CopyPlayTurn(rookPos, r))
+			result = append(result, b.CopyPlayTurn(rookPos, r, boardstate.EMPTY))
 		}
 		if color != boardstate.EMPTY {
 			break;
