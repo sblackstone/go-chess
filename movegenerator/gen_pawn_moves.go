@@ -4,8 +4,6 @@ import (
 	"github.com/sblackstone/go-chess/boardstate"
 )
 
-
-
 func genSinglePawnMovesWhite(b *boardstate.BoardState, pawnPos uint8) []*boardstate.BoardState {
 	var result []*boardstate.BoardState;
 	var i uint8
@@ -14,6 +12,7 @@ func genSinglePawnMovesWhite(b *boardstate.BoardState, pawnPos uint8) []*boardst
 		if (newRank < 7) {
 			result = append(result, b.CopyPlayTurn(pawnPos, pawnPos+8))
 		} else {
+			// Using the fact that ROOK=0 KNIGHT=1 BISHOP=2 QUEEN=3
 			for i = boardstate.ROOK; i <= boardstate.QUEEN; i++ {
 				newBoard := b.CopyPlayTurn(pawnPos, pawnPos + 8)
 				newBoard.SetSquare(pawnPos + 8, b.GetTurn(), i)
