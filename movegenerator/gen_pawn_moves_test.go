@@ -2,6 +2,7 @@ package movegenerator
 
 import (
 	"testing"
+	"fmt"
   "reflect"
   "github.com/sblackstone/go-chess/boardstate"
 )
@@ -23,10 +24,17 @@ func TestPushPawnWhite(t *testing.T) {
   if !reflect.DeepEqual(locations, expected) {
     t.Errorf("Expected %v to be %v", locations, expected)
   }
+}
 
-	for i := range(expected) {
-		b.SetSquare(expected[i], boardstate.WHITE, boardstate.QUEEN)
+func TestPushPawnPromoteWhite(t *testing.T) {
+  b := boardstate.Blank()
+  b.SetSquare(49, boardstate.WHITE, boardstate.PAWN)
+	boards := genPawnMoves(b)
+	var sum uint8
+	for i := range(boards) {
+		sum += boards[i].PieceOfSquare(57)
 	}
-
-
+	if (sum != 6) {
+		t.Errorf("Expected square 6 to have rook,knight,bishop or queen")
+	}
 }
