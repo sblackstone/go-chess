@@ -55,6 +55,26 @@ func TestPushPawnTwoWhite(t *testing.T) {
   if !reflect.DeepEqual(locations, expected) {
     t.Errorf("Expected %v to be %v", locations, expected)
   }
+
+	var expected2 []uint8
+
+	b.SetSquare(16, boardstate.WHITE, boardstate.QUEEN)
+	locations2 := genSortedBoardLocationsPawns(b)
+
+	if !reflect.DeepEqual(locations2, expected2) {
+    t.Errorf("Expected %v to be %v", locations2	, expected2)
+  }
+
+	b.SetSquare(16, boardstate.EMPTY, boardstate.EMPTY)
+	b.SetSquare(24, boardstate.BLACK, boardstate.QUEEN)
+
+	locations3 := genSortedBoardLocationsPawns(b)
+	expected3 := []uint8{16}
+
+	if !reflect.DeepEqual(locations3, expected3) {
+    t.Errorf("Expected %v to be %v", locations3	, expected3)
+  }
+
 }
 
 
