@@ -65,7 +65,7 @@ func (b *BoardState) EnemyOccupiedSquare(n uint8) bool{
 
 func (b *BoardState) EmptySquare(n uint8) bool {
 	c := b.ColorOfSquare(n)
-	return c == EMPTY	
+	return c == EMPTY
 }
 
 func (b *BoardState) EmptyOrEnemyOccupiedSquare(n uint8) bool{
@@ -75,7 +75,7 @@ func (b *BoardState) EmptyOrEnemyOccupiedSquare(n uint8) bool{
 
 func (b *BoardState) PlayTurn(src uint8, dst uint8, promotePiece uint8) {
 		b.MovePiece(src, dst)
-		// TODO: Enpassant
+		// TODO: SET OR CLEAR ENPASSANT.
 		// TODO: Castling rights
 		if promotePiece != EMPTY {
 			b.SetSquare(dst, b.GetTurn(), promotePiece)
