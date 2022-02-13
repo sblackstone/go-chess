@@ -13,44 +13,40 @@ func genSingleBishopMoves(b *boardstate.BoardState, bishopPos uint8) []*boardsta
 	file := bitopts.FileOfSquare(bishopPos)
 
 	for r := bishopPos+9; r < 64 && bitopts.FileOfSquare(r) > file; r += 9 {
-			color := b.ColorOfSquare(r)
-			if color == boardstate.EMPTY || color != b.GetTurn() {
+			if b.EmptyOrEnemyOccupiedSquare(r) {
 				result = append(result, b.CopyPlayTurn(bishopPos, r, boardstate.EMPTY))
 			}
-			if color != boardstate.EMPTY {
+			if !b.EmptySquare(r) {
 				break;
 			}
 	}
 
 	for r := bishopPos+7; r < 64 && bitopts.FileOfSquare(r) < file; r += 7 {
-			color := b.ColorOfSquare(r)
-			if color == boardstate.EMPTY || color != b.GetTurn() {
-				result = append(result, b.CopyPlayTurn(bishopPos, r, boardstate.EMPTY))
-			}
-			if color != boardstate.EMPTY {
-				break;
-			}
+		if b.EmptyOrEnemyOccupiedSquare(r) {
+			result = append(result, b.CopyPlayTurn(bishopPos, r, boardstate.EMPTY))
+		}
+		if !b.EmptySquare(r) {
+			break;
+		}
 	}
 
 
 	for r := bishopPos-7; r < 64 && bitopts.FileOfSquare(r) > file; r -= 7 {
-			color := b.ColorOfSquare(r)
-			if color == boardstate.EMPTY || color != b.GetTurn() {
-				result = append(result, b.CopyPlayTurn(bishopPos, r, boardstate.EMPTY))
-			}
-			if color != boardstate.EMPTY {
-				break;
-			}
+		if b.EmptyOrEnemyOccupiedSquare(r) {
+			result = append(result, b.CopyPlayTurn(bishopPos, r, boardstate.EMPTY))
+		}
+		if !b.EmptySquare(r) {
+			break;
+		}
 	}
 
 	for r := bishopPos-9; r < 64 && bitopts.FileOfSquare(r) < file; r -= 9 {
-			color := b.ColorOfSquare(r)
-			if color == boardstate.EMPTY || color != b.GetTurn() {
-				result = append(result, b.CopyPlayTurn(bishopPos, r, boardstate.EMPTY))
-			}
-			if color != boardstate.EMPTY {
-				break;
-			}
+		if b.EmptyOrEnemyOccupiedSquare(r) {
+			result = append(result, b.CopyPlayTurn(bishopPos, r, boardstate.EMPTY))
+		}
+		if !b.EmptySquare(r) {
+			break;
+		}
 	}
 	return result
 }
