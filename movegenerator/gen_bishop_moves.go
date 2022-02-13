@@ -10,7 +10,7 @@ import (
 func genSingleBishopMoves(b *boardstate.BoardState, bishopPos uint8) []*boardstate.BoardState {
 	var result []*boardstate.BoardState;
 
-	_, file := bitopts.SquareToRankFile(bishopPos)
+	file := bitopts.FileOfSquare(bishopPos)
 
 	for r := bishopPos+9; r < 64 && bitopts.FileOfSquare(r) > file; r += 9 {
 			color := b.ColorOfSquare(r)
