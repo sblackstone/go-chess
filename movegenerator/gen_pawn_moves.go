@@ -23,7 +23,7 @@ func genSinglePawnMovesWhite(b *boardstate.BoardState, pawnPos uint8) []*boardst
 	pushForwardTwo := pawnPos+16
 	// Push 1
 	if b.EmptySquare(pushForwardOne) {
-		if (bitopts.RankOfSquare(pushForwardOne) < promotionRank) {
+		if (bitopts.RankOfSquare(pushForwardOne) != promotionRank) { 
 			result = append(result, b.CopyPlayTurn(pawnPos, pushForwardOne, boardstate.EMPTY))
 		} else {
 			result = append(result, genPromotionBoards(b, pawnPos, pushForwardOne)...)
