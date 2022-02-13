@@ -21,6 +21,7 @@ func genSinglePawnMovesWhite(b *boardstate.BoardState, pawnPos uint8) []*boardst
 	pushFoardTwoRank := uint8(1)
 	pushForwardOne := pawnPos+8
 	pushForwardTwo := pawnPos+16
+	// Push 1
 	if b.EmptySquare(pushForwardOne) {
 		if (bitopts.RankOfSquare(pushForwardOne) < promotionRank) {
 			result = append(result, b.CopyPlayTurn(pawnPos, pushForwardOne, boardstate.EMPTY))
@@ -28,11 +29,13 @@ func genSinglePawnMovesWhite(b *boardstate.BoardState, pawnPos uint8) []*boardst
 			result = append(result, genPromotionBoards(b, pawnPos, pushForwardOne)...)
 		}
 	}
-
+	// Push 2
 	if bitopts.RankOfSquare(pawnPos) == pushFoardTwoRank && b.EmptySquare(pushForwardOne) && b.EmptySquare(pushForwardTwo) {
 		result = append(result, b.CopyPlayTurn(pawnPos, pushForwardTwo, boardstate.EMPTY))
-
 	}
+
+	// TODO: ENPASSANT CAPTURE
+	// TODO: REGULAR CAPTURE
 
 	return result
 }
