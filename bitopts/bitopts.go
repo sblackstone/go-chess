@@ -53,8 +53,17 @@ func RankFileToSquare(rank uint8, file uint8) uint8 {
 	return rank*8 + file
 }
 
+func RankOfSquare(n uint8) uint8 {
+  return n / 8
+}
+
+func FileOfSquare(n uint8) uint8 {
+  return n % 8
+}
+
+
 func SquareToRankFile(n uint8) (uint8, uint8) {
-  return n / 8, n % 8
+  return RankOfSquare(n), FileOfSquare(n)
 }
 
 
