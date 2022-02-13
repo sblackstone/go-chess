@@ -33,6 +33,21 @@ func TestCopyPlayMove(t *testing.T) {
 
 }
 
+func TestEmptySquare(t *testing.T) {
+	b := Initial()
+	if (b.EmptySquare(10)) {
+		t.Errorf("expected square 10 to not be empty\n")
+	}
+	if (b.EmptySquare(51)) {
+		t.Errorf("expected square 51 to not be empty\n")
+	}
+
+	if (!b.EmptySquare(27)) {
+		t.Errorf("expected square 27 to be empty\n")
+	}
+
+}
+
 func TestEmptyOrEnemyOccupiedSquare(t *testing.T) {
 	b := Initial()
 	if (b.EmptyOrEnemyOccupiedSquare(10)) {

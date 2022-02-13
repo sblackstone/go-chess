@@ -63,6 +63,11 @@ func (b *BoardState) EnemyOccupiedSquare(n uint8) bool{
 	return c != EMPTY && c != b.GetTurn()
 }
 
+func (b *BoardState) EmptySquare(n uint8) bool {
+	c := b.ColorOfSquare(n)
+	return c == EMPTY	
+}
+
 func (b *BoardState) EmptyOrEnemyOccupiedSquare(n uint8) bool{
 	c := b.ColorOfSquare(n)
 	return c != b.GetTurn()
