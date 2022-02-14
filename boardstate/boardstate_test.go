@@ -272,6 +272,10 @@ func TestCreateBlankBoard(t *testing.T) {
   if (len(b.pieces) != 6) {
     t.Errorf("pieces are not 0,0")
   }
+	if (b.GetEnpassant() != NO_ENPASSANT) {
+		t.Errorf("Expected an initial board to have NO_ENPASSANT")
+	}
+
 }
 
 func TestMovePieceWhiteKnight(t *testing.T) {
@@ -347,6 +351,10 @@ func testInitialBoard(t *testing.T, b *BoardState) {
 	// 64bit int versions of the chess board assuming a correct inital state.
   expectedPieces := []uint64{9295429630892703873, 4755801206503243842, 2594073385365405732, 576460752303423496, 1152921504606846992, 71776119061282560}
   expectedColors := []uint64{65535,18446462598732840960};
+
+	if (b.GetEnpassant() != NO_ENPASSANT) {
+		t.Errorf("Expected an initial board to have NO_ENPASSANT")
+	}
 
   for i := range(b.pieces) {
     if (b.pieces[i] != expectedPieces[i]) {
