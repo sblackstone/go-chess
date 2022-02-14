@@ -25,12 +25,11 @@ func Blank() *BoardState {
 
 // Initial returns a board with the initial setup.
 func Initial() *BoardState {
-	b := BoardState{}
+	b := Blank()
 	// These constants are pre-calculated using InitialManual (see below)...
 	b.colors = [2]uint64{65535, 18446462598732840960 }
 	b.pieces = [6]uint64{9295429630892703873, 4755801206503243842, 2594073385365405732, 576460752303423496, 1152921504606846992, 71776119061282560}
-	b.enpassantCol = NO_ENPASSANT
-	return &b
+	return b
 }
 
 // Copy returns a copy of a BoardState
