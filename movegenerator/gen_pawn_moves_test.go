@@ -211,8 +211,6 @@ func TestEnPassantCaptureAsWhiteLowerFile(t *testing.T) {
 	b := boardstate.Blank()
 	b.SetSquare(48, boardstate.BLACK, boardstate.PAWN)
 	b.SetSquare(33, boardstate.WHITE, boardstate.PAWN)
-	b.SetSquare(14, boardstate.WHITE, boardstate.PAWN)
-	b.SetSquare(55, boardstate.BLACK, boardstate.PAWN)
 
 	b.SetTurn(boardstate.BLACK)
 	fmt.Println(b.GetEnpassant())
@@ -238,6 +236,37 @@ func TestEnPassantCaptureAsWhiteHigherFile(t *testing.T) {
 	fmt.Println(b.GetEnpassant())
 	// Black pushes two setting up enpassant
 	b.PlayTurn(53, 37, boardstate.EMPTY)
+
+	fmt.Println(b.GetEnpassant())
+	pawnMoves := genPawnMoves(b)
+	for i := range(pawnMoves) {
+		fmt.Println()
+		pawnMoves[i].Print(255)
+	}
+	t.Errorf("TODO")
+}
+
+
+func TestEnPassantCaptureAsWhiteUnavailableAfterAdditionalMove(t *testing.T) {
+	b := boardstate.Blank()
+	b.SetSquare(48, boardstate.BLACK, boardstate.PAWN)
+	b.SetSquare(33, boardstate.WHITE, boardstate.PAWN)
+	b.SetSquare(14, boardstate.WHITE, boardstate.PAWN)
+	b.SetSquare(55, boardstate.BLACK, boardstate.PAWN)
+
+	b.SetTurn(boardstate.BLACK)
+	fmt.Println(b.GetEnpassant())
+
+	// Black pushes two setting up enpassant
+	b.PlayTurn(48, 32, boardstate.EMPTY)
+
+	// White pushes something else`
+	b.PlayTurn(14, 22, boardstate.EMPTY)
+
+	// Black pushes something else
+	b.PlayTurn(55, 47, boardstate.EMPTY)
+
+
 
 	fmt.Println(b.GetEnpassant())
 	pawnMoves := genPawnMoves(b)
