@@ -58,9 +58,11 @@ func genSinglePawnMovesWhite(b *boardstate.BoardState, pawnPos uint8) []*boardst
 	if pawnPosRank == fromEnpassantRank {
 		enpassantFile := b.GetEnpassant()
 		if enpassantFile != boardstate.NO_ENPASSANT {
+			// Capture enpassant lower file
 			if (bitopts.FileOfSquare(captureToLowerFilePos) == enpassantFile && bitopts.FileOfSquare(captureToLowerFilePos) < pawnPosFile) {
 				appendPawnMovesFn(captureToLowerFilePos)
 			}
+			// Capture enpassant higher file
 			if (bitopts.FileOfSquare(captureToHigherFilePos) == enpassantFile && bitopts.FileOfSquare(captureToHigherFilePos) > pawnPosFile) {
 				appendPawnMovesFn(captureToHigherFilePos)
 			}
