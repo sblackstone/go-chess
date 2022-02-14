@@ -16,16 +16,29 @@ func genPromotionBoards(b *boardstate.BoardState, src uint8, dst uint8) []*board
 }
 
 
-func genSinglePawnMovesWhite(b *boardstate.BoardState, pawnPos uint8) []*boardstate.BoardState {
+func genSinglePawnMoves(b *boardstate.BoardState, pawnPos uint8) []*boardstate.BoardState {
 	var result []*boardstate.BoardState;
 	pawnPosRank, pawnPosFile := bitopts.SquareToRankFile(pawnPos)
-	promotionRank := uint8(7)
-	pushFoardTwoRank := uint8(1)
-	pushForwardOne := pawnPos+8
-	pushForwardTwo := pawnPos+16
-	captureToLowerFilePos := pawnPos + 7
-	captureToHigherFilePos := pawnPos + 9
-	fromEnpassantRank := uint8(4)
+	var promotionRank,pushFoardTwoRank,pushForwardOne,pushForwardTwo,captureToLowerFilePos,captureToHigherFilePos,fromEnpassantRank uint8
+
+	if (b.GetTurn() == boardstate.WHITE) {
+		promotionRank = uint8(7)
+		pushFoardTwoRank = uint8(1)
+		pushForwardOne = pawnPos+8
+		pushForwardTwo = pawnPos+16
+		captureToLowerFilePos = pawnPos + 7
+		captureToHigherFilePos = pawnPos + 9
+		fromEnpassantRank = uint8(4)
+	} else {
+		promotionRank = uint8(0)
+		pushFoardTwoRank = uint8(6)
+		pushForwardOne = pawnPos-8
+		pushForwardTwo = pawnPos-16
+		captureToLowerFilePos = pawnPos - 9
+		captureToHigherFilePos = pawnPos - 7
+		fromEnpassantRank = uint8(3)
+
+	}
 
 	appendPawnMovesFn := func(newPos uint8) {
 		if (bitopts.RankOfSquare(newPos) != promotionRank) {
@@ -83,18 +96,10 @@ func genSinglePawnMovesBlack(b *boardstate.BoardState, pawnPos uint8) []*boardst
 
 func genPawnMoves(b *boardstate.BoardState) []*boardstate.BoardState {
 	var result []*boardstate.BoardState;
-	var genFn func(*boardstate.BoardState, uint8) []*boardstate.BoardState;
-
-	if (b.GetTurn() == boardstate.WHITE) {
-		genFn = genSinglePawnMovesWhite
-	} else {
-		genFn = genSinglePawnMovesBlack
-	}
-
 	pawnPositions := b.FindPieces(b.GetTurn(), boardstate.PAWN)
 	//fmt.Printf("%v\n", rookPositions)
 	for i := 0; i < len(pawnPositions); i++ {
-		result = append(result, genFn(b, pawnPositions[i])...)
+		result = append(result, genSinglePawnMoves(b, pawnPositions[i])...)
 	}
 
   return result;
