@@ -59,6 +59,21 @@ func TestPushPawnTwoWhite(t *testing.T) {
     t.Errorf("Expected %v to be %v", locations, expected)
   }
 
+	positions := genPawnMoves(b)
+	for i := range(positions) {
+		if positions[i].PieceOfSquare(24) == boardstate.PAWN {
+			if !positions[i].IsEnpassant(0) {
+			  t.Errorf("Expected 0 to be enpassant after double push")
+			}
+		} else {
+			if positions[i].IsEnpassant(0) {
+			  t.Errorf("Expected 0 to NOT be enpassant after double push")
+			}
+
+		}
+	}
+
+
 	var expected2 []uint8
 
 	b.SetSquare(16, boardstate.WHITE, boardstate.QUEEN)
