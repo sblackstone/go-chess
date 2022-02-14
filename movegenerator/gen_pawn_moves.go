@@ -37,7 +37,6 @@ func genSinglePawnMoves(b *boardstate.BoardState, pawnPos uint8) []*boardstate.B
 		captureToLowerFilePos  = pawnPos - 9
 		captureToHigherFilePos = pawnPos - 7
 		fromEnpassantRank      = uint8(3)
-
 	}
 
 	appendPawnMovesFn := func(newPos uint8) {
