@@ -5,7 +5,7 @@ import (
 	//"fmt"
   "reflect"
   "github.com/sblackstone/go-chess/boardstate"
-	"github.com/sblackstone/go-chess/bitopts"
+	//"github.com/sblackstone/go-chess/bitopts"
 
 )
 
@@ -50,10 +50,11 @@ func TestPushPawnWhite(t *testing.T) {
 }
 
 func TestPushPawnTwoWhite(t *testing.T) {
+	// Setup the inital board with a pawn on 8, expect to be pushable 1 or 2 squares.
   b := boardstate.Blank()
   b.SetSquare(8, boardstate.WHITE, boardstate.PAWN)
-  locations := genSortedBoardLocationsPawns(b)
   expected := []uint8{16,24}
+	locations := genSortedBoardLocationsPawns(b)
   if !reflect.DeepEqual(locations, expected) {
     t.Errorf("Expected %v to be %v", locations, expected)
   }
@@ -62,9 +63,6 @@ func TestPushPawnTwoWhite(t *testing.T) {
 
 	b.SetSquare(16, boardstate.WHITE, boardstate.QUEEN)
 	locations2 := genSortedBoardLocationsPawns(b)
-	if !b.IsEnpassant(bitopts.FileOfSquare(16)) {
-		t.Errorf("Expected FileOfSquare(16) to have enpassant flag set")
-	}
 
 
 	if !reflect.DeepEqual(locations2, expected2) {
