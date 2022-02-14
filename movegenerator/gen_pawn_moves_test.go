@@ -117,6 +117,40 @@ func TestCaptureLowerFileWhite(t *testing.T) {
   }
 }
 
+func TestCaptureHigherFileWhiteWithPromotion(t *testing.T) {
+	b := boardstate.Blank()
+	b.SetSquare(53, boardstate.WHITE, boardstate.PAWN)
+	b.SetSquare(61, boardstate.BLACK, boardstate.KING)
+
+	b.SetSquare(62, boardstate.BLACK, boardstate.QUEEN)
+	boards := genPawnMoves(b)
+	var sum uint8
+	for i := range(boards) {
+		sum += boards[i].PieceOfSquare(62)
+	}
+	if (sum != 6) {
+		t.Errorf("Expected square 6 to have rook,knight,bishop or queen")
+	}
+}
+
+func TestCaptureLowerFileWhiteWithPromotion(t *testing.T) {
+	b := boardstate.Blank()
+	b.SetSquare(53, boardstate.WHITE, boardstate.PAWN)
+	b.SetSquare(61, boardstate.BLACK, boardstate.KING)
+
+	b.SetSquare(60, boardstate.BLACK, boardstate.QUEEN)
+	boards := genPawnMoves(b)
+	var sum uint8
+	for i := range(boards) {
+		sum += boards[i].PieceOfSquare(60)
+	}
+	if (sum != 6) {
+		t.Errorf("Expected square 6 to have rook,knight,bishop or queen")
+	}
+}
+
+
+
 func TestCaptureNoWarpingCapturesHigherFileWhite(t *testing.T) {
 	b := boardstate.Blank()
 	b.SetSquare(23, boardstate.WHITE, boardstate.PAWN)
