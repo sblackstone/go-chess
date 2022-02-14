@@ -24,34 +24,33 @@ func genSinglePawnMovesWhite(b *boardstate.BoardState, pawnPos uint8) []*boardst
 	pushForwardTwo := pawnPos+16
 	captureToLowerFilePos := pawnPos + 7
 	captureToHigherFilePos := pawnPos + 9
-	// Push 1
-	if b.EmptySquare(pushForwardOne) {
-		if (bitopts.RankOfSquare(pushForwardOne) != promotionRank) {
-			result = append(result, b.CopyPlayTurn(pawnPos, pushForwardOne, boardstate.EMPTY))
+
+	appendPawnMovesFn := func(newPos uint8) {
+		if (bitopts.RankOfSquare(newPos) != promotionRank) {
+			result = append(result, b.CopyPlayTurn(pawnPos, newPos, boardstate.EMPTY))
 		} else {
-			result = append(result, genPromotionBoards(b, pawnPos, pushForwardOne)...)
+			result = append(result, genPromotionBoards(b, pawnPos, newPos)...)
 		}
 	}
-	// Push 2
+
+	// Push 1
+	if b.EmptySquare(pushForwardOne) {
+		appendPawnMovesFn(pushForwardOne)
+	}
+
+	// Push 2, never has to promote.
 	if bitopts.RankOfSquare(pawnPos) == pushFoardTwoRank && b.EmptySquare(pushForwardOne) && b.EmptySquare(pushForwardTwo) {
 		result = append(result, b.CopyPlayTurn(pawnPos, pushForwardTwo, boardstate.EMPTY))
 	}
 
   // Cpature to Lower file
 	if (b.EnemyOccupiedSquare(captureToLowerFilePos) && bitopts.FileOfSquare(captureToLowerFilePos) < bitopts.FileOfSquare(pawnPos)) {
-		if (bitopts.RankOfSquare(captureToLowerFilePos) != promotionRank) {
-			result = append(result, b.CopyPlayTurn(pawnPos, captureToLowerFilePos, boardstate.EMPTY))
-		} else {
-			result = append(result, genPromotionBoards(b, pawnPos, captureToLowerFilePos)...)
-		}
+		appendPawnMovesFn(captureToLowerFilePos)
 	}
 
+	// Capture to Higher file
 	if (b.EnemyOccupiedSquare(captureToHigherFilePos) && bitopts.FileOfSquare(captureToHigherFilePos) > bitopts.FileOfSquare(pawnPos)) {
-		if (bitopts.RankOfSquare(captureToHigherFilePos) != promotionRank) {
-			result = append(result, b.CopyPlayTurn(pawnPos, captureToHigherFilePos, boardstate.EMPTY))
-		} else {
-			result = append(result, genPromotionBoards(b, pawnPos, captureToHigherFilePos)...)
-		}
+		appendPawnMovesFn(captureToHigherFilePos)
 	}
 
 
