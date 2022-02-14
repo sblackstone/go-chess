@@ -24,16 +24,16 @@ func genSinglePawnMoves(b *boardstate.BoardState, pawnPos uint8) []*boardstate.B
 	if (b.GetTurn() == boardstate.WHITE) {
 		promotionRank          = uint8(7)
 		pushFoardTwoRank       = uint8(1)
-		pushForwardOne         = pawnPos+8
-		pushForwardTwo         = pawnPos+16
+		pushForwardOne         = pawnPos + 8
+		pushForwardTwo         = pawnPos + 16
 		captureToLowerFilePos  = pawnPos + 7
 		captureToHigherFilePos = pawnPos + 9
 		fromEnpassantRank      = uint8(4)
 	} else {
 		promotionRank          = uint8(0)
 		pushFoardTwoRank       = uint8(6)
-		pushForwardOne         = pawnPos-8
-		pushForwardTwo         = pawnPos-16
+		pushForwardOne         = pawnPos - 8
+		pushForwardTwo         = pawnPos - 16
 		captureToLowerFilePos  = pawnPos - 9
 		captureToHigherFilePos = pawnPos - 7
 		fromEnpassantRank      = uint8(3)
