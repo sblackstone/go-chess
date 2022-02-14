@@ -10,6 +10,7 @@ import (
 type BoardState struct {
 	colors [2]uint64
 	pieces [6]uint64
+	enpassantCol uint8
 	meta   uint64
 }
 
@@ -18,6 +19,7 @@ func Blank() *BoardState {
 	b := BoardState{}
 	b.colors = [2]uint64{0, 0}
 	b.pieces = [6]uint64{0, 0, 0, 0, 0, 0}
+	b.enpassantCol = NO_ENPASSANT
 	return &b
 }
 
@@ -27,6 +29,7 @@ func Initial() *BoardState {
 	// These constants are pre-calculated using InitialManual (see below)...
 	b.colors = [2]uint64{65535, 18446462598732840960 }
 	b.pieces = [6]uint64{9295429630892703873, 4755801206503243842, 2594073385365405732, 576460752303423496, 1152921504606846992, 71776119061282560}
+	b.enpassantCol = NO_ENPASSANT
 	return &b
 }
 
@@ -36,6 +39,7 @@ func (b *BoardState) Copy() *BoardState {
 		meta: b.meta,
 		colors: b.colors,
 		pieces: b.pieces,
+		enpassantCol: b.enpassantCol,
 	}
 
 	return &boardCopy

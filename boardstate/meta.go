@@ -15,6 +15,8 @@ Bit
 
 */
 
+const NO_ENPASSANT = 255
+
 const (
   TURN = iota
 )
@@ -57,18 +59,17 @@ func castleBit(color uint8, side uint8) uint8 {
 }
 
 func (b *BoardState) ClearEnpassant() {
-  b.meta = b.meta & 0b1111111111111111111111111111111111111111111111111110000000011111
+  b.enpassantCol = NO_ENPASSANT;
 }
 
 // SetEnpassant takes a file 0-7 and saves the enpassant state.
 func (b *BoardState) SetEnpassant(file uint8) {
-  b.ClearEnpassant()
-  b.meta = bitopts.SetBit(b.meta, 5 + file)
+  b.enpassantCol = file;
 }
 
 // IsEnpassant takes a file 0-7 and returns the enpassant state.
 func (b *BoardState) IsEnpassant(file uint8) bool {
-  return bitopts.TestBit(b.meta, 5 + file)
+  return b.enpassantCol == file
 }
 
 func (b *BoardState) HasCastleRights(color uint8, side uint8) bool {
