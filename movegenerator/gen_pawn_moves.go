@@ -24,7 +24,7 @@ func genSinglePawnMovesWhite(b *boardstate.BoardState, pawnPos uint8) []*boardst
 	pushForwardTwo := pawnPos+16
 	captureToLowerFilePos := pawnPos + 7
 	captureToHigherFilePos := pawnPos + 9
-
+	fromEnpassantRank := uint8(4)
 	appendPawnMovesFn := func(newPos uint8) {
 		if (bitopts.RankOfSquare(newPos) != promotionRank) {
 			result = append(result, b.CopyPlayTurn(pawnPos, newPos, boardstate.EMPTY))
@@ -53,6 +53,11 @@ func genSinglePawnMovesWhite(b *boardstate.BoardState, pawnPos uint8) []*boardst
 		appendPawnMovesFn(captureToHigherFilePos)
 	}
 
+	if bitopts.RankOfSquare(pawnPos) == fromEnpassantRank {
+		enpassantFile := b.GetEnpassant()
+		if enpassantFile != boardstate.NO_ENPASSANT {
+		}
+	}
 
 
 	// TODO: ENPASSANT CAPTURE
