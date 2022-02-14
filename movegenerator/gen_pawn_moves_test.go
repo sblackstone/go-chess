@@ -207,7 +207,7 @@ func TestPushPawnPromoteWhite(t *testing.T) {
 
 
 
-func TestEnPassantCaptureAsWhite(t *testing.T) {
+func TestEnPassantCaptureAsWhiteLowerFile(t *testing.T) {
 	b := boardstate.Blank()
 	b.SetSquare(48, boardstate.BLACK, boardstate.PAWN)
 	b.SetSquare(33, boardstate.WHITE, boardstate.PAWN)
@@ -218,20 +218,32 @@ func TestEnPassantCaptureAsWhite(t *testing.T) {
 	fmt.Println(b.GetEnpassant())
 	// Black pushes two setting up enpassant
 	b.PlayTurn(48, 32, boardstate.EMPTY)
-	// White ignores and pushes another pawn
-	b.PlayTurn(14, 22, boardstate.EMPTY)
-	// Black pushs another pawn making it whites move again
-	b.PlayTurn(55, 47, boardstate.EMPTY)
 
-	// White should no longer have enpassant.
 	fmt.Println(b.GetEnpassant())
 	pawnMoves := genPawnMoves(b)
 	for i := range(pawnMoves) {
 		fmt.Println()
 		pawnMoves[i].Print(255)
 	}
+	t.Errorf("TODO")
+}
 
 
+func TestEnPassantCaptureAsWhiteHigherFile(t *testing.T) {
+	b := boardstate.Blank()
+	b.SetSquare(53, boardstate.BLACK, boardstate.PAWN)
+	b.SetSquare(36, boardstate.WHITE, boardstate.PAWN)
 
+	b.SetTurn(boardstate.BLACK)
+	fmt.Println(b.GetEnpassant())
+	// Black pushes two setting up enpassant
+	b.PlayTurn(53, 37, boardstate.EMPTY)
 
+	fmt.Println(b.GetEnpassant())
+	pawnMoves := genPawnMoves(b)
+	for i := range(pawnMoves) {
+		fmt.Println()
+		pawnMoves[i].Print(255)
+	}
+	t.Errorf("TODO")
 }
