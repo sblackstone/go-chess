@@ -22,21 +22,21 @@ func genSinglePawnMoves(b *boardstate.BoardState, pawnPos uint8) []*boardstate.B
 	var promotionRank,pushFoardTwoRank,pushForwardOne,pushForwardTwo,captureToLowerFilePos,captureToHigherFilePos,fromEnpassantRank uint8
 
 	if (b.GetTurn() == boardstate.WHITE) {
-		promotionRank = uint8(7)
-		pushFoardTwoRank = uint8(1)
-		pushForwardOne = pawnPos+8
-		pushForwardTwo = pawnPos+16
-		captureToLowerFilePos = pawnPos + 7
+		promotionRank          = uint8(7)
+		pushFoardTwoRank       = uint8(1)
+		pushForwardOne         = pawnPos+8
+		pushForwardTwo         = pawnPos+16
+		captureToLowerFilePos  = pawnPos + 7
 		captureToHigherFilePos = pawnPos + 9
-		fromEnpassantRank = uint8(4)
+		fromEnpassantRank      = uint8(4)
 	} else {
-		promotionRank = uint8(0)
-		pushFoardTwoRank = uint8(6)
-		pushForwardOne = pawnPos-8
-		pushForwardTwo = pawnPos-16
-		captureToLowerFilePos = pawnPos - 9
+		promotionRank          = uint8(0)
+		pushFoardTwoRank       = uint8(6)
+		pushForwardOne         = pawnPos-8
+		pushForwardTwo         = pawnPos-16
+		captureToLowerFilePos  = pawnPos - 9
 		captureToHigherFilePos = pawnPos - 7
-		fromEnpassantRank = uint8(3)
+		fromEnpassantRank      = uint8(3)
 
 	}
 
@@ -68,8 +68,10 @@ func genSinglePawnMoves(b *boardstate.BoardState, pawnPos uint8) []*boardstate.B
 		appendPawnMovesFn(captureToHigherFilePos)
 	}
 
+	// The pawn is on the rank where taking enpassant is possible
 	if pawnPosRank == fromEnpassantRank {
 		enpassantFile := b.GetEnpassant()
+		// The enpassant flag is set.
 		if enpassantFile != boardstate.NO_ENPASSANT {
 			// Capture enpassant lower file
 			if (bitopts.FileOfSquare(captureToLowerFilePos) == enpassantFile && bitopts.FileOfSquare(captureToLowerFilePos) < pawnPosFile) {
