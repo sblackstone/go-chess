@@ -2,7 +2,7 @@ package movegenerator
 
 import (
 	"testing"
-	//"fmt"
+	"fmt"
   "reflect"
   "github.com/sblackstone/go-chess/boardstate"
 	//"github.com/sblackstone/go-chess/bitopts"
@@ -203,4 +203,35 @@ func TestPushPawnPromoteWhite(t *testing.T) {
 	if (sum != 6) {
 		t.Errorf("Expected square 6 to have rook,knight,bishop or queen")
 	}
+}
+
+
+
+func TestEnPassantCaptureAsWhite(t *testing.T) {
+	b := boardstate.Blank()
+	b.SetSquare(48, boardstate.BLACK, boardstate.PAWN)
+	b.SetSquare(33, boardstate.WHITE, boardstate.PAWN)
+	b.SetSquare(14, boardstate.WHITE, boardstate.PAWN)
+	b.SetSquare(55, boardstate.BLACK, boardstate.PAWN)
+
+	b.SetTurn(boardstate.BLACK)
+	fmt.Println(b.GetEnpassant())
+	// Black pushes two setting up enpassant
+	b.PlayTurn(48, 32, boardstate.EMPTY)
+	// White ignores and pushes another pawn
+	b.PlayTurn(14, 22, boardstate.EMPTY)
+	// Black pushs another pawn making it whites move again
+	b.PlayTurn(55, 47, boardstate.EMPTY)
+
+	// White should no longer have enpassant.
+	fmt.Println(b.GetEnpassant())
+	pawnMoves := genPawnMoves(b)
+	for i := range(pawnMoves) {
+		fmt.Println()
+		pawnMoves[i].Print(255)
+	}
+
+
+
+
 }

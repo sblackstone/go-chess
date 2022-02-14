@@ -18,6 +18,7 @@ func genPromotionBoards(b *boardstate.BoardState, src uint8, dst uint8) []*board
 
 func genSinglePawnMovesWhite(b *boardstate.BoardState, pawnPos uint8) []*boardstate.BoardState {
 	var result []*boardstate.BoardState;
+	pawnPosRank, pawnPosFile := bitopts.SquareToRankFile(pawnPos)
 	promotionRank := uint8(7)
 	pushFoardTwoRank := uint8(1)
 	pushForwardOne := pawnPos+8
@@ -25,6 +26,7 @@ func genSinglePawnMovesWhite(b *boardstate.BoardState, pawnPos uint8) []*boardst
 	captureToLowerFilePos := pawnPos + 7
 	captureToHigherFilePos := pawnPos + 9
 	fromEnpassantRank := uint8(4)
+
 	appendPawnMovesFn := func(newPos uint8) {
 		if (bitopts.RankOfSquare(newPos) != promotionRank) {
 			result = append(result, b.CopyPlayTurn(pawnPos, newPos, boardstate.EMPTY))
@@ -44,18 +46,24 @@ func genSinglePawnMovesWhite(b *boardstate.BoardState, pawnPos uint8) []*boardst
 	}
 
   // Cpature to Lower file
-	if (b.EnemyOccupiedSquare(captureToLowerFilePos) && bitopts.FileOfSquare(captureToLowerFilePos) < bitopts.FileOfSquare(pawnPos)) {
+	if (b.EnemyOccupiedSquare(captureToLowerFilePos) && bitopts.FileOfSquare(captureToLowerFilePos) < pawnPosFile) {
 		appendPawnMovesFn(captureToLowerFilePos)
 	}
 
 	// Capture to Higher file
-	if (b.EnemyOccupiedSquare(captureToHigherFilePos) && bitopts.FileOfSquare(captureToHigherFilePos) > bitopts.FileOfSquare(pawnPos)) {
+	if (b.EnemyOccupiedSquare(captureToHigherFilePos) && bitopts.FileOfSquare(captureToHigherFilePos) > pawnPosFile) {
 		appendPawnMovesFn(captureToHigherFilePos)
 	}
 
-	if bitopts.RankOfSquare(pawnPos) == fromEnpassantRank {
+	if pawnPosRank == fromEnpassantRank {
 		enpassantFile := b.GetEnpassant()
 		if enpassantFile != boardstate.NO_ENPASSANT {
+			if (bitopts.FileOfSquare(captureToLowerFilePos) == enpassantFile && bitopts.FileOfSquare(captureToLowerFilePos) < pawnPosFile) {
+				appendPawnMovesFn(captureToLowerFilePos)
+			}
+			if (bitopts.FileOfSquare(captureToHigherFilePos) == enpassantFile && bitopts.FileOfSquare(captureToHigherFilePos) > pawnPosFile) {
+				appendPawnMovesFn(captureToHigherFilePos)
+			}
 		}
 	}
 
