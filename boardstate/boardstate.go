@@ -2,6 +2,7 @@ package boardstate
 
 import (
 	"github.com/sblackstone/go-chess/bitopts"
+	"math"
 )
 
 
@@ -74,9 +75,24 @@ func (b *BoardState) EmptyOrEnemyOccupiedSquare(n uint8) bool{
 }
 
 func (b *BoardState) PlayTurn(src uint8, dst uint8, promotePiece uint8) {
+		// TODO: We can make this only check the pawns for a few ops worth of savings.
+		piece := b.PieceOfSquare(src)
+		if (piece == PAWN) {
+			diff := math.Abs(float64(dst) - float64(src))
+			if (diff == 16) {
+				b.SetEnpassant(bitopts.FileOfSquare(src))
+			} else {
+				b.ClearEnpassant()
+			}
+		} else {
+			b.ClearEnpassant()
+		}
+
 		b.MovePiece(src, dst)
 		// TODO: SET OR CLEAR ENPASSANT.
 		// TODO: Castling rights
+
+
 		if promotePiece != EMPTY {
 			b.SetSquare(dst, b.GetTurn(), promotePiece)
 		}
