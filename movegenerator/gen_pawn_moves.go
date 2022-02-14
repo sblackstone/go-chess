@@ -37,6 +37,7 @@ func genSinglePawnMovesWhite(b *boardstate.BoardState, pawnPos uint8) []*boardst
 		result = append(result, b.CopyPlayTurn(pawnPos, pushForwardTwo, boardstate.EMPTY))
 	}
 
+  // Cpature to Lower file
 	if (b.EnemyOccupiedSquare(captureToLowerFilePos) && bitopts.FileOfSquare(captureToLowerFilePos) < bitopts.FileOfSquare(pawnPos)) {
 		if (bitopts.RankOfSquare(captureToLowerFilePos) != promotionRank) {
 			result = append(result, b.CopyPlayTurn(pawnPos, captureToLowerFilePos, boardstate.EMPTY))
@@ -56,7 +57,6 @@ func genSinglePawnMovesWhite(b *boardstate.BoardState, pawnPos uint8) []*boardst
 
 
 	// TODO: ENPASSANT CAPTURE
-	// TODO: REGULAR CAPTURE
 
 	return result
 }

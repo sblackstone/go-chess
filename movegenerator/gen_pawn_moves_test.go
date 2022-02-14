@@ -94,19 +94,66 @@ func TestPushPawnTwoWhite(t *testing.T) {
 }
 
 func TestCaptureHigherFileWhite(t *testing.T) {
-	t.Errorf("TODO\n")
+	b := boardstate.Blank()
+	b.SetSquare(19, boardstate.WHITE, boardstate.PAWN)
+	b.SetSquare(28, boardstate.BLACK, boardstate.PAWN)
+
+	expected := []uint8{27,28}
+	locations := genSortedBoardLocationsPawns(b)
+	if !reflect.DeepEqual(locations, expected) {
+    t.Errorf("Expected %v to be %v", locations	, expected)
+  }
 }
 
 func TestCaptureLowerFileWhite(t *testing.T) {
-	t.Errorf("TODO\n")
+	b := boardstate.Blank()
+	b.SetSquare(19, boardstate.WHITE, boardstate.PAWN)
+	b.SetSquare(26, boardstate.BLACK, boardstate.PAWN)
+
+	expected := []uint8{26,27}
+	locations := genSortedBoardLocationsPawns(b)
+	if !reflect.DeepEqual(locations, expected) {
+    t.Errorf("Expected %v to be %v", locations	, expected)
+  }
 }
 
-func TestCaptureNoWarpingCapturesWhite(t *testing.T) {
-	t.Errorf("TODO\n")
+func TestCaptureNoWarpingCapturesHigherFileWhite(t *testing.T) {
+	b := boardstate.Blank()
+	b.SetSquare(23, boardstate.WHITE, boardstate.PAWN)
+	b.SetSquare(30, boardstate.BLACK, boardstate.PAWN)
+	b.SetSquare(32, boardstate.BLACK, boardstate.PAWN)
+
+	expected := []uint8{30,31}
+	locations := genSortedBoardLocationsPawns(b)
+	if !reflect.DeepEqual(locations, expected) {
+    t.Errorf("Expected %v to be %v", locations	, expected)
+  }
 }
+
+func TestCaptureNoWarpingCapturesLowerFileWhite(t *testing.T) {
+	b := boardstate.Blank()
+	b.SetSquare(16, boardstate.WHITE, boardstate.PAWN)
+	b.SetSquare(23, boardstate.BLACK, boardstate.PAWN)
+	b.SetSquare(25, boardstate.BLACK, boardstate.PAWN)
+
+	expected := []uint8{24,25}
+	locations := genSortedBoardLocationsPawns(b)
+	if !reflect.DeepEqual(locations, expected) {
+    t.Errorf("Expected %v to be %v", locations	, expected)
+  }
+}
+
 
 func TestCaptureNoSelfCapturesWhite(t *testing.T) {
-	t.Errorf("TODO\n")
+	b := boardstate.Blank()
+	b.SetSquare(27, boardstate.WHITE, boardstate.PAWN)
+	b.SetSquare(34, boardstate.WHITE, boardstate.QUEEN)
+	b.SetSquare(36, boardstate.WHITE, boardstate.QUEEN)
+	expected := []uint8{35}
+	locations := genSortedBoardLocationsPawns(b)
+	if !reflect.DeepEqual(locations, expected) {
+    t.Errorf("Expected %v to be %v", locations	, expected)
+  }
 }
 
 
