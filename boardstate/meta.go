@@ -36,7 +36,7 @@ func (b *BoardState) SetTurn(color uint8) {
 }
 
 func (b *BoardState) ToggleTurn() {
-  b.turn = (b.turn + 1) % 2
+  b.turn = b.turn ^ 1
 }
 
 func castleBit(color uint8, side uint8) uint8 {
