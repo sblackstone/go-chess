@@ -15,15 +15,18 @@ func genPromotionBoards(b *boardstate.BoardState, src uint8, dst uint8) []*board
 	return result
 }
 
+
 func genSinglePawnMovesWhite(b *boardstate.BoardState, pawnPos uint8) []*boardstate.BoardState {
 	var result []*boardstate.BoardState;
 	promotionRank := uint8(7)
 	pushFoardTwoRank := uint8(1)
 	pushForwardOne := pawnPos+8
 	pushForwardTwo := pawnPos+16
+	captureToLowerFilePos := pawnPos + 7
+	captureToHigherFilePos := pawnPos + 9
 	// Push 1
 	if b.EmptySquare(pushForwardOne) {
-		if (bitopts.RankOfSquare(pushForwardOne) != promotionRank) { 
+		if (bitopts.RankOfSquare(pushForwardOne) != promotionRank) {
 			result = append(result, b.CopyPlayTurn(pawnPos, pushForwardOne, boardstate.EMPTY))
 		} else {
 			result = append(result, genPromotionBoards(b, pawnPos, pushForwardOne)...)
@@ -33,6 +36,24 @@ func genSinglePawnMovesWhite(b *boardstate.BoardState, pawnPos uint8) []*boardst
 	if bitopts.RankOfSquare(pawnPos) == pushFoardTwoRank && b.EmptySquare(pushForwardOne) && b.EmptySquare(pushForwardTwo) {
 		result = append(result, b.CopyPlayTurn(pawnPos, pushForwardTwo, boardstate.EMPTY))
 	}
+
+	if (b.EnemyOccupiedSquare(captureToLowerFilePos) && bitopts.FileOfSquare(captureToLowerFilePos) < bitopts.FileOfSquare(pawnPos)) {
+		if (bitopts.RankOfSquare(captureToLowerFilePos) != promotionRank) {
+			result = append(result, b.CopyPlayTurn(pawnPos, captureToLowerFilePos, boardstate.EMPTY))
+		} else {
+			result = append(result, genPromotionBoards(b, pawnPos, captureToLowerFilePos)...)
+		}
+	}
+
+	if (b.EnemyOccupiedSquare(captureToHigherFilePos) && bitopts.FileOfSquare(captureToHigherFilePos) > bitopts.FileOfSquare(pawnPos)) {
+		if (bitopts.RankOfSquare(captureToHigherFilePos) != promotionRank) {
+			result = append(result, b.CopyPlayTurn(pawnPos, captureToHigherFilePos, boardstate.EMPTY))
+		} else {
+			result = append(result, genPromotionBoards(b, pawnPos, captureToHigherFilePos)...)
+		}
+	}
+
+
 
 	// TODO: ENPASSANT CAPTURE
 	// TODO: REGULAR CAPTURE

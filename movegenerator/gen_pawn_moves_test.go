@@ -10,9 +10,6 @@ import (
 )
 
 
-/* Limited tests since we rely on the rook and bishop code to generate queen moves */
-
-
 func TestGenPawnMovesUnderstandsTurn(t *testing.T) {
 
 }
@@ -95,6 +92,23 @@ func TestPushPawnTwoWhite(t *testing.T) {
   }
 
 }
+
+func TestCaptureHigherFileWhite(t *testing.T) {
+	t.Errorf("TODO\n")
+}
+
+func TestCaptureLowerFileWhite(t *testing.T) {
+	t.Errorf("TODO\n")
+}
+
+func TestCaptureNoWarpingCapturesWhite(t *testing.T) {
+	t.Errorf("TODO\n")
+}
+
+func TestCaptureNoSelfCapturesWhite(t *testing.T) {
+	t.Errorf("TODO\n")
+}
+
 
 
 func TestPushPawnPromoteWhite(t *testing.T) {
