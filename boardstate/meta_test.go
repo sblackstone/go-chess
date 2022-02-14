@@ -18,6 +18,9 @@ func TestEnpassent(t *testing.T) {
 
   for i := 0; i < 8; i++ {
     b.SetEnpassant(uint8(i))
+		if b.GetEnpassant() != uint8(i) {
+			t.Errorf("Expected %v to be %v", b.GetEnpassant(), uint8(i));
+		}
     for j :=0; j < 8; j++ {
       if j != i && b.IsEnpassant(uint8(j)) {
         t.Errorf("%v shouldnt be enpassant", i)

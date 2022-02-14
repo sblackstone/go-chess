@@ -62,6 +62,11 @@ func (b *BoardState) ClearEnpassant() {
   b.enpassantCol = NO_ENPASSANT;
 }
 
+func (b *BoardState) GetEnpassant() uint8 {
+  return b.enpassantCol;
+}
+
+
 // SetEnpassant takes a file 0-7 and saves the enpassant state.
 func (b *BoardState) SetEnpassant(file uint8) {
   b.enpassantCol = file;
