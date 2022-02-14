@@ -28,23 +28,15 @@ const (
 
 
 func (b *BoardState) GetTurn() uint8 {
-  if bitopts.TestBit(b.meta, TURN) {
-    return BLACK
-  } else {
-    return WHITE
-  }
+  return b.turn
 }
 
 func (b *BoardState) SetTurn(color uint8) {
-  if color == WHITE {
-    b.meta = bitopts.ClearBit(b.meta, TURN)
-  } else {
-    b.meta = bitopts.SetBit(b.meta, TURN)
-  }
+  b.turn = color
 }
 
 func (b *BoardState) ToggleTurn() {
-  b.meta = bitopts.FlipBit(b.meta, TURN)
+  b.turn = (b.turn + 1) % 2
 }
 
 func castleBit(color uint8, side uint8) uint8 {

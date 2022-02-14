@@ -12,11 +12,13 @@ type BoardState struct {
 	pieces [6]uint64
 	enpassantCol uint8
 	meta   uint64
+	turn uint8
 }
 
 // Blank returns a blank board with no pieces on it
 func Blank() *BoardState {
 	b := BoardState{}
+	b.turn = WHITE
 	b.colors = [2]uint64{0, 0}
 	b.pieces = [6]uint64{0, 0, 0, 0, 0, 0}
 	b.enpassantCol = NO_ENPASSANT
@@ -39,6 +41,7 @@ func (b *BoardState) Copy() *BoardState {
 		colors: b.colors,
 		pieces: b.pieces,
 		enpassantCol: b.enpassantCol,
+		turn: b.turn,
 	}
 
 	return &boardCopy
