@@ -12,15 +12,16 @@ import (
 
 func TestPushPawnBlack(t *testing.T) {
   b := boardstate.Blank()
-	b.SetSquare(27, boardstate.WHITE, boardstate.PAWN)
+	b.ToggleTurn()
+	b.SetSquare(42, boardstate.BLACK, boardstate.PAWN)
 	locations := genSortedBoardLocationsPawns(b)
-  expected := []uint8{35}
+  expected := []uint8{34}
   if !reflect.DeepEqual(locations, expected) {
     t.Errorf("Expected %v to be %v", locations, expected)
   }
 
 	// Obstructed by SELF
-	b.SetSquare(35, boardstate.WHITE, boardstate.QUEEN)
+	b.SetSquare(34, boardstate.BLACK, boardstate.QUEEN)
 	var expected2 []uint8
 	locations2 := genSortedBoardLocationsPawns(b)
 
@@ -29,7 +30,7 @@ func TestPushPawnBlack(t *testing.T) {
   }
 
 	/// Obstructed by ENEMY
-	b.SetSquare(35, boardstate.BLACK, boardstate.QUEEN)
+	b.SetSquare(34, boardstate.WHITE, boardstate.QUEEN)
 	var expected3 []uint8
 	locations3 := genSortedBoardLocationsPawns(b)
 
