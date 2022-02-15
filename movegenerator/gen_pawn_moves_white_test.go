@@ -2,7 +2,7 @@ package movegenerator
 
 import (
 	"testing"
-	"fmt"
+	//"fmt"
   "reflect"
   "github.com/sblackstone/go-chess/boardstate"
 	//"github.com/sblackstone/go-chess/bitopts"
@@ -207,7 +207,7 @@ func TestEnPassantCaptureAsWhiteLowerFile(t *testing.T) {
 	b.SetSquare(33, boardstate.WHITE, boardstate.PAWN)
 
 	b.SetTurn(boardstate.BLACK)
-	fmt.Println(b.GetEnpassant())
+	//fmt.Println(b.GetEnpassant())
 	// Black pushes two setting up enpassant
 	b.PlayTurn(48, 32, boardstate.EMPTY)
 
@@ -225,7 +225,7 @@ func TestEnPassantCaptureAsWhiteHigherFile(t *testing.T) {
 	b.SetSquare(36, boardstate.WHITE, boardstate.PAWN)
 
 	b.SetTurn(boardstate.BLACK)
-	fmt.Println(b.GetEnpassant())
+	//fmt.Println(b.GetEnpassant())
 	// Black pushes two setting up enpassant
 	b.PlayTurn(53, 37, boardstate.EMPTY)
 
@@ -245,7 +245,7 @@ func TestEnPassantCaptureAsWhiteUnavailableAfterAdditionalMove(t *testing.T) {
 	b.SetSquare(55, boardstate.BLACK, boardstate.QUEEN)
 
 	b.SetTurn(boardstate.BLACK)
-	fmt.Println(b.GetEnpassant())
+	//fmt.Println(b.GetEnpassant())
 
 	// Black pushes two setting up enpassant
 	b.PlayTurn(48, 32, boardstate.EMPTY)
