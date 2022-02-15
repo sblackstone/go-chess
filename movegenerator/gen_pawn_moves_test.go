@@ -236,13 +236,11 @@ func TestEnPassantCaptureAsWhiteLowerFile(t *testing.T) {
 	// Black pushes two setting up enpassant
 	b.PlayTurn(48, 32, boardstate.EMPTY)
 
-	fmt.Println(b.GetEnpassant())
-	pawnMoves := genPawnMoves(b)
-	for i := range(pawnMoves) {
-		fmt.Println()
-		pawnMoves[i].Print(255)
-	}
-	t.Errorf("TODO")
+	locations := genSortedBoardLocationsPawns(b)
+	expected := []uint8{40,41}
+	if !reflect.DeepEqual(locations, expected) {
+    t.Errorf("Expected %v to be %v", locations	, expected)
+  }
 }
 
 
@@ -256,13 +254,11 @@ func TestEnPassantCaptureAsWhiteHigherFile(t *testing.T) {
 	// Black pushes two setting up enpassant
 	b.PlayTurn(53, 37, boardstate.EMPTY)
 
-	fmt.Println(b.GetEnpassant())
-	pawnMoves := genPawnMoves(b)
-	for i := range(pawnMoves) {
-		fmt.Println()
-		pawnMoves[i].Print(255)
-	}
-	t.Errorf("TODO")
+	locations := genSortedBoardLocationsPawns(b)
+	expected := []uint8{44,45}
+	if !reflect.DeepEqual(locations, expected) {
+    t.Errorf("Expected %v to be %v", locations	, expected)
+  }
 }
 
 
@@ -270,8 +266,8 @@ func TestEnPassantCaptureAsWhiteUnavailableAfterAdditionalMove(t *testing.T) {
 	b := boardstate.Blank()
 	b.SetSquare(48, boardstate.BLACK, boardstate.PAWN)
 	b.SetSquare(33, boardstate.WHITE, boardstate.PAWN)
-	b.SetSquare(14, boardstate.WHITE, boardstate.PAWN)
-	b.SetSquare(55, boardstate.BLACK, boardstate.PAWN)
+	b.SetSquare(14, boardstate.WHITE, boardstate.QUEEN)
+	b.SetSquare(55, boardstate.BLACK, boardstate.QUEEN)
 
 	b.SetTurn(boardstate.BLACK)
 	fmt.Println(b.GetEnpassant())
@@ -279,19 +275,31 @@ func TestEnPassantCaptureAsWhiteUnavailableAfterAdditionalMove(t *testing.T) {
 	// Black pushes two setting up enpassant
 	b.PlayTurn(48, 32, boardstate.EMPTY)
 
+	locations1 := genSortedBoardLocationsPawns(b)
+	expected1 := []uint8{40,41}
+	if !reflect.DeepEqual(locations1, expected1) {
+    t.Errorf("Expected %v to be %v", locations1	, expected1)
+  }
+
+
 	// White pushes something else`
 	b.PlayTurn(14, 22, boardstate.EMPTY)
 
 	// Black pushes something else
 	b.PlayTurn(55, 47, boardstate.EMPTY)
 
+	locations2 := genSortedBoardLocationsPawns(b)
+	expected2 := []uint8{41}
+	if !reflect.DeepEqual(locations2, expected2) {
+    t.Errorf("Expected %v to be %v", locations2	, expected2)
+  }
 
 
-	fmt.Println(b.GetEnpassant())
-	pawnMoves := genPawnMoves(b)
-	for i := range(pawnMoves) {
-		fmt.Println()
-		pawnMoves[i].Print(255)
-	}
-	t.Errorf("TODO")
+	// fmt.Println(b.GetEnpassant())
+	// pawnMoves := genPawnMoves(b)
+	// for i := range(pawnMoves) {
+	// 	fmt.Println()
+	// 	pawnMoves[i].Print(255)
+	// }
+	// t.Errorf("TODO")
 }
