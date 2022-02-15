@@ -203,17 +203,16 @@ func TestCaptureNoSelfCapturesBlack(t *testing.T) {
 
 
 func TestPushPawnPromoteBlack(t *testing.T) {
-	t.Errorf("TODO")
-
   b := boardstate.Blank()
-  b.SetSquare(49, boardstate.WHITE, boardstate.PAWN)
+	b.ToggleTurn()
+  b.SetSquare(11, boardstate.BLACK, boardstate.PAWN)
 	boards := genPawnMoves(b)
 	var sum uint8
 	for i := range(boards) {
-		sum += boards[i].PieceOfSquare(57)
+		sum += boards[i].PieceOfSquare(3)
 	}
 	if (sum != 6) {
-		t.Errorf("Expected square 6 to have rook,knight,bishop or queen")
+		t.Errorf("Expected square 3 to have rook,knight,bishop or queen")
 	}
 }
 
