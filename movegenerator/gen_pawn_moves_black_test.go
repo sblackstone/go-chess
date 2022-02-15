@@ -185,13 +185,12 @@ func TestCaptureNoWarpingCapturesLowerFileBlack(t *testing.T) {
 
 
 func TestCaptureNoSelfCapturesBlack(t *testing.T) {
-	t.Errorf("TODO")
-
 	b := boardstate.Blank()
-	b.SetSquare(27, boardstate.WHITE, boardstate.PAWN)
-	b.SetSquare(34, boardstate.WHITE, boardstate.QUEEN)
-	b.SetSquare(36, boardstate.WHITE, boardstate.QUEEN)
-	expected := []uint8{35}
+	b.ToggleTurn()
+	b.SetSquare(36, boardstate.BLACK, boardstate.PAWN)
+	b.SetSquare(27, boardstate.BLACK, boardstate.QUEEN)
+	b.SetSquare(29, boardstate.BLACK, boardstate.QUEEN)
+	expected := []uint8{28}
 	locations := genSortedBoardLocationsPawns(b)
 	if !reflect.DeepEqual(locations, expected) {
     t.Errorf("Expected %v to be %v", locations	, expected)
