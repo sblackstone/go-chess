@@ -18,7 +18,7 @@ func (b *BoardState) Print(highlight uint8) {
 			color := b.ColorOfSquare(pos)
       //fmt.Printf(" %v ", bitopts.RankFileToSquare(rank, file))
       if pos == highlight {
-        fmt.Printf(" * ")        
+        fmt.Printf(" * ")
       } else if color == EMPTY {
 				fmt.Printf(" - ")
 			} else {
@@ -28,4 +28,6 @@ func (b *BoardState) Print(highlight uint8) {
 		}
 		fmt.Println()
 	}
+  fmt.Printf("\n----------------------\n\n")
+
 }

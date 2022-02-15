@@ -117,35 +117,36 @@ func TestCaptureLowerFileBlack(t *testing.T) {
 }
 
 func TestCaptureHigherFileBlackWithPromotion(t *testing.T) {
-	t.Errorf("TODO")
-
 	b := boardstate.Blank()
-	b.SetSquare(53, boardstate.WHITE, boardstate.PAWN)
-	b.SetSquare(61, boardstate.BLACK, boardstate.KING)
+	b.ToggleTurn()
+	b.SetSquare(14, boardstate.BLACK, boardstate.PAWN)
+	b.SetSquare(7, boardstate.WHITE, boardstate.KING)
+	b.SetSquare(6, boardstate.WHITE, boardstate.QUEEN)
 
-	b.SetSquare(62, boardstate.BLACK, boardstate.QUEEN)
+	//b.SetSquare(62, boardstate.BLACK, boardstate.QUEEN)
 	boards := genPawnMoves(b)
 	var sum uint8
 	for i := range(boards) {
-		sum += boards[i].PieceOfSquare(62)
+		boards[i].Print(255)
+		sum += boards[i].PieceOfSquare(7)
 	}
 	if (sum != 6) {
-		t.Errorf("Expected square 6 to have rook,knight,bishop or queen")
+		t.Errorf("Expected square 7 to have rook,knight,bishop or queen, sum was %v", sum)
 	}
 }
 
+
 func TestCaptureLowerFileBlackWithPromotion(t *testing.T) {
-	t.Errorf("TODO")
-
 	b := boardstate.Blank()
-	b.SetSquare(53, boardstate.WHITE, boardstate.PAWN)
-	b.SetSquare(61, boardstate.BLACK, boardstate.KING)
+	b.ToggleTurn()
+	b.SetSquare(10, boardstate.BLACK, boardstate.PAWN)
+	b.SetSquare(1, boardstate.WHITE, boardstate.KING)
 
-	b.SetSquare(60, boardstate.BLACK, boardstate.QUEEN)
+	b.SetSquare(2, boardstate.WHITE, boardstate.QUEEN)
 	boards := genPawnMoves(b)
 	var sum uint8
 	for i := range(boards) {
-		sum += boards[i].PieceOfSquare(60)
+		sum += boards[i].PieceOfSquare(1)
 	}
 	if (sum != 6) {
 		t.Errorf("Expected square 6 to have rook,knight,bishop or queen")
