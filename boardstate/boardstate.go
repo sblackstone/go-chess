@@ -3,6 +3,7 @@ package boardstate
 import (
 	"github.com/sblackstone/go-chess/bitopts"
 	"math"
+	"fmt"
 )
 
 
@@ -112,10 +113,24 @@ func (b *BoardState) PlayTurn(src uint8, dst uint8, promotePiece uint8) {
 		}
 
 		b.MovePiece(src, dst)
-		// TODO: SET OR CLEAR ENPASSANT.
+
+
 		// TODO: Castling rights
 
 
+		// Handle castling
+		if (piece == KING) {
+			if (src-dst == 2) {
+				fmt.Printf("src=%v dst=%v dst-3=%v dst-2=%v\n", src, dst, dst-3, dst-2)
+				b.MovePiece(src-3, src-1)
+			}
+			if (int(src)-int(dst) == -2) {
+				fmt.Printf("src=%v dst=%v src+4=%v src+1=%v\n", src, dst, src+4, src+1)
+				b.MovePiece(src+4, src+1)
+			}
+		}
+
+		// Handle Piece promotion
 		if promotePiece != EMPTY {
 			b.SetSquare(dst, b.GetTurn(), promotePiece)
 		}

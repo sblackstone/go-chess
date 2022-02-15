@@ -6,6 +6,66 @@ import (
 )
 
 
+func TestCastleShortWhite(t *testing.T) {
+	b := Blank()
+	b.SetSquare(0, WHITE, ROOK)
+	b.SetSquare(3, WHITE, KING)
+	b.PlayTurn(3,1, EMPTY)
+	if b.PieceOfSquare(1) != KING {
+		t.Errorf("Expected KING in sq 1");
+	}
+	if b.PieceOfSquare(2) != ROOK {
+		t.Errorf("Expected ROOK in sq 2");
+	}
+
+
+}
+
+func TestCastleLongWhite(t *testing.T) {
+	b := Blank()
+	b.SetSquare(7, WHITE, ROOK)
+	b.SetSquare(3, WHITE, KING)
+	b.PlayTurn(3,5, EMPTY)
+	if b.PieceOfSquare(5) != KING {
+		t.Errorf("Expected KING in sq 5");
+	}
+	if b.PieceOfSquare(4) != ROOK {
+		t.Errorf("Expected ROOK in sq 4");
+	}
+}
+
+//////////////
+
+func TestCastleShortBlack(t *testing.T) {
+	b := Blank()
+	b.SetSquare(56, BLACK, ROOK)
+	b.SetSquare(59, BLACK, KING)
+	b.SetTurn(BLACK)
+	b.PlayTurn(59,57, EMPTY)
+	if b.PieceOfSquare(57) != KING {
+		t.Errorf("Expected KING in sq 57");
+	}
+	if b.PieceOfSquare(58) != ROOK {
+		t.Errorf("Expected ROOK in sq 58");
+	}
+}
+
+func TestCastleLongBlack(t *testing.T) {
+	b := Blank()
+	b.SetSquare(63, BLACK, ROOK)
+	b.SetSquare(59, BLACK, KING)
+	b.SetTurn(BLACK)
+	b.PlayTurn(59,61, EMPTY)
+	if b.PieceOfSquare(61) != KING {
+		t.Errorf("Expected KING in sq 57");
+	}
+	if b.PieceOfSquare(60) != ROOK {
+		t.Errorf("Expected ROOK in sq 60");
+	}
+}
+
+
+
 func TestCopyPlayMove(t *testing.T) {
 	b1 := Initial()
 	b2 := b1.CopyPlayTurn(1, 18, EMPTY)
