@@ -2,7 +2,7 @@ package boardstate
 
 import (
 	"testing"
-//  "fmt"
+  "fmt"
 )
 
 
@@ -263,6 +263,93 @@ func TestFindPieces(t *testing.T) {
 		t.Errorf("Expected %v to be [55]\n", res10)
 	}
 }
+
+func TestEnpassantCaptureClearsEnemyPawnBlackLowerFile(t *testing.T) {
+	b1 := Blank()
+	b1.SetSquare(8, WHITE, PAWN)
+	b1.SetSquare(25, BLACK, PAWN)
+	//b1.Print(255)
+	b1.PlayTurn(8, 24, EMPTY)
+	fmt.Println(b1.GetEnpassant())
+	//b1.Print(255)
+	fmt.Println()
+
+	b1.PlayTurn(25, 16, EMPTY)
+	//b1.Print(255)
+
+	if (b1.PieceOfSquare(24) != EMPTY) {
+		fmt.Println("Expected 24 to be empty")
+	}
+
+}
+
+func TestEnpassantCaptureClearsEnemyPawnBlackHigherFile(t *testing.T) {
+	b1 := Blank()
+	b1.SetSquare(11, WHITE, PAWN)
+	b1.SetSquare(26, BLACK, PAWN)
+	//b1.Print(255)
+	//fmt.Println()
+
+	b1.PlayTurn(11, 27, EMPTY)
+	//fmt.Println(b1.GetEnpassant())
+	//b1.Print(255)
+	//fmt.Println()
+
+	b1.PlayTurn(26, 19, EMPTY)
+	//b1.Print(255)
+
+	if (b1.PieceOfSquare(27) != EMPTY) {
+		fmt.Println("Expected 27 to be empty")
+	}
+
+}
+
+
+///////+++++++++++++++++++++++++/
+func TestEnpassantCaptureClearsEnemyPawnWhiteLowerFile(t *testing.T) {
+	b1 := Blank()
+	b1.SetSquare(55, BLACK, PAWN)
+	b1.SetSquare(38, WHITE, PAWN)
+	b1.SetTurn(BLACK)
+	//b1.Print(255)
+	b1.PlayTurn(55, 39, EMPTY)
+	//fmt.Println(b1.GetEnpassant())
+	//b1.Print(255)
+	//fmt.Println()
+
+	b1.PlayTurn(38, 47, EMPTY)
+	//b1.Print(255)
+
+	if (b1.PieceOfSquare(39) != EMPTY) {
+		fmt.Println("Expected 39 to be empty")
+	}
+
+}
+
+
+func TestEnpassantCaptureClearsEnemyPawnWhiteHigherFile(t *testing.T) {
+	b1 := Blank()
+	b1.SetSquare(49, BLACK, PAWN)
+	b1.SetSquare(34, WHITE, PAWN)
+	b1.SetTurn(BLACK)
+	//b1.Print(255)
+	b1.PlayTurn(49, 33, EMPTY)
+	//fmt.Println(b1.GetEnpassant())
+	//b1.Print(255)
+	//fmt.Println()
+
+	b1.PlayTurn(34, 41, EMPTY)
+	//b1.Print(255)
+
+	if (b1.PieceOfSquare(33) != EMPTY) {
+		fmt.Println("Expected 33 to be empty")
+	}
+
+}
+
+//////++++++++++++++++++++++++++/
+
+
 
 func TestCreateBlankBoard(t *testing.T) {
   b := Blank();

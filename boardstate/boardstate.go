@@ -83,6 +83,8 @@ func (b *BoardState) EmptyOrEnemyOccupiedSquare(n uint8) bool{
 func (b *BoardState) PlayTurn(src uint8, dst uint8, promotePiece uint8) {
 		// TODO: We can make this only check the pawns for a few ops worth of savings.
 		piece := b.PieceOfSquare(src)
+
+		// Set or Clear enpassant flag
 		if (piece == PAWN) {
 			diff := math.Abs(float64(dst) - float64(src))
 			if (diff == 16) {
@@ -94,6 +96,21 @@ func (b *BoardState) PlayTurn(src uint8, dst uint8, promotePiece uint8) {
 			b.ClearEnpassant()
 		}
 
+		if piece == PAWN {
+			// TODO: FIX THIS TEST.
+			diff := math.Abs(float64(src) - float64(dst))
+			if (diff == 7 || diff == 9) {
+					targetPiece := b.PieceOfSquare(dst)
+					if targetPiece == EMPTY {
+						if dst > src {
+							b.SetSquare(dst - 8, EMPTY, EMPTY)
+						} else {
+							b.SetSquare(dst + 8, EMPTY, EMPTY)
+						}
+					}
+			}
+		}
+
 		b.MovePiece(src, dst)
 		// TODO: SET OR CLEAR ENPASSANT.
 		// TODO: Castling rights
@@ -102,6 +119,7 @@ func (b *BoardState) PlayTurn(src uint8, dst uint8, promotePiece uint8) {
 		if promotePiece != EMPTY {
 			b.SetSquare(dst, b.GetTurn(), promotePiece)
 		}
+
 		b.ToggleTurn()
 
 }
