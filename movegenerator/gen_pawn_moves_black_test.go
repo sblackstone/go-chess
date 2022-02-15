@@ -127,7 +127,7 @@ func TestCaptureHigherFileBlackWithPromotion(t *testing.T) {
 	boards := genPawnMoves(b)
 	var sum uint8
 	for i := range(boards) {
-		boards[i].Print(255)
+		//boards[i].Print(255)
 		sum += boards[i].PieceOfSquare(7)
 	}
 	if (sum != 6) {

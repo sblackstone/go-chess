@@ -17,7 +17,7 @@ func TestFindTwoPiecePositions(t *testing.T) {
 		}
 
 		val = SetBit(val, 1)
-		Print(val,64)
+		//Print(val,64)
 
 		posOfOne := FindTwoPiecePositions(val)
 		if len(posOfOne) != 1 || posOfOne[0] != 1 {
@@ -25,7 +25,7 @@ func TestFindTwoPiecePositions(t *testing.T) {
 		}
 
 		val = SetBit(val, 2)
-		Print(val,64)
+		//Print(val,64)
 
 		posOfThree := FindTwoPiecePositions(val)
 		if len(posOfThree) != 2 || posOfThree[0] != 1 || posOfThree[1] != 2 {
@@ -34,7 +34,7 @@ func TestFindTwoPiecePositions(t *testing.T) {
 
 		val = SetBit(0, 17)
 		val = SetBit(val, 19)
-		Print(val,64)
+		//Print(val,64)
 		posOfComplex := FindTwoPiecePositions(val)
 		if len(posOfComplex) != 2 || posOfComplex[0] != 17 || posOfComplex[1] != 19 {
 			t.Errorf("Expected %v to be [1,2]", posOfComplex)
