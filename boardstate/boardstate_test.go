@@ -542,7 +542,7 @@ func TestColorOfSquare(t *testing.T) {
 func TestPieceOfSquare(t *testing.T) {
   b := Initial()
 
-  expected := [][]uint8{
+  expected := [][]int8{
     {0,ROOK},
     {1,KNIGHT},
     {2,BISHOP},

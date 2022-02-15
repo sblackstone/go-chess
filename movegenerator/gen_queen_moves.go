@@ -4,7 +4,7 @@ import (
 	"github.com/sblackstone/go-chess/boardstate"
 )
 
-func genSingleQueenMoves(b *boardstate.BoardState, queenPos uint8) []*boardstate.BoardState {
+func genSingleQueenMoves(b *boardstate.BoardState, queenPos int8) []*boardstate.BoardState {
 	var result []*boardstate.BoardState;
 	result = append(result, genSingleRookMoves(b, queenPos)...)
 	result = append(result, genSingleBishopMoves(b, queenPos)...)

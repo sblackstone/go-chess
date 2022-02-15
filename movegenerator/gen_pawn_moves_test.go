@@ -16,7 +16,7 @@ func TestGenPawnMovesUnderstandsTurn(t *testing.T) {
 	b.SetSquare(45, boardstate.BLACK, boardstate.PAWN)
 
 	locations := genSortedBoardLocationsPawns(b)
-  expected := []uint8{35}
+  expected := []int8{35}
   if !reflect.DeepEqual(locations, expected) {
     t.Errorf("Expected %v to be %v", locations, expected)
   }
@@ -24,7 +24,7 @@ func TestGenPawnMovesUnderstandsTurn(t *testing.T) {
 	b.ToggleTurn()
 
 	locations2 := genSortedBoardLocationsPawns(b)
-  expected2 := []uint8{37}
+  expected2 := []int8{37}
   if !reflect.DeepEqual(locations2, expected2) {
     t.Errorf("Expected %v to be %v", locations2, expected2)
   }

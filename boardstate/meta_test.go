@@ -11,30 +11,30 @@ func TestEnpassent(t *testing.T) {
   b := Initial()
 
   for i := 0; i < 8; i++ {
-    if (b.IsEnpassant(uint8(i))) {
+    if (b.IsEnpassant(int8(i))) {
       t.Errorf("No enpassant file should be set from initial state")
     }
   }
 
   for i := 0; i < 8; i++ {
-    b.SetEnpassant(uint8(i))
-		if b.GetEnpassant() != uint8(i) {
-			t.Errorf("Expected %v to be %v", b.GetEnpassant(), uint8(i));
+    b.SetEnpassant(int8(i))
+		if b.GetEnpassant() != int8(i) {
+			t.Errorf("Expected %v to be %v", b.GetEnpassant(), int8(i));
 		}
     for j :=0; j < 8; j++ {
-      if j != i && b.IsEnpassant(uint8(j)) {
+      if j != i && b.IsEnpassant(int8(j)) {
         t.Errorf("%v shouldnt be enpassant", i)
       }
-      if j == i && !b.IsEnpassant(uint8(j)) {
+      if j == i && !b.IsEnpassant(int8(j)) {
         t.Errorf("%v should be enpassant", i)
       }
     }
   }
 
-  b.SetEnpassant(uint8(1))
+  b.SetEnpassant(int8(1))
   b.ClearEnpassant()
   for i := 0; i < 8; i++ {
-    if (b.IsEnpassant(uint8(i))) {
+    if (b.IsEnpassant(int8(i))) {
       t.Errorf("No enpassant file should be set after clear enpassant")
     }
   }

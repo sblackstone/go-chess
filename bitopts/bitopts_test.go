@@ -43,7 +43,7 @@ func TestFindTwoPiecePositions(t *testing.T) {
 }
 
 func TestRankFileToSquare(t *testing.T) {
-	cases := [][3]uint8{
+	cases := [][3]int8{
 		{0,0,0},
 		{7,7,63},
 		{7,3,59},
@@ -59,7 +59,7 @@ func TestRankFileToSquare(t *testing.T) {
 }
 
 func TestSquareToRankFile(t *testing.T) {
-	cases := [][3]uint8{
+	cases := [][3]int8{
 		{0,0,0},
 		{7,7,63},
 		{7,3,59},

@@ -11,9 +11,9 @@ import (
 type BoardState struct {
 	colors [2]uint64
 	pieces [6]uint64
-	enpassantFile uint8
+	enpassantFile int8
 	meta   uint64
-	turn uint8
+	turn int8
 }
 
 // Blank returns a blank board with no pieces on it
@@ -50,11 +50,11 @@ func (b *BoardState) Copy() *BoardState {
 
 // initialManual sets up the board manually, only used to calculate the constants for the fast version Initial.
 func initialManual() *BoardState {
-	var j uint8
+	var j int8
 
 	b := Blank()
 
-	backFile := []uint8{ROOK, KNIGHT, BISHOP, QUEEN, KING, BISHOP, KNIGHT, ROOK}
+	backFile := []int8{ROOK, KNIGHT, BISHOP, QUEEN, KING, BISHOP, KNIGHT, ROOK}
 	for j = 0; j < 8; j++ {
 		b.SetSquareRankFile(7, j, BLACK, backFile[j])
 		b.SetSquareRankFile(0, j, WHITE, backFile[j])
@@ -66,22 +66,22 @@ func initialManual() *BoardState {
 	return b
 }
 
-func (b *BoardState) EnemyOccupiedSquare(n uint8) bool{
+func (b *BoardState) EnemyOccupiedSquare(n int8) bool{
 	c := b.ColorOfSquare(n)
 	return c != EMPTY && c != b.GetTurn()
 }
 
-func (b *BoardState) EmptySquare(n uint8) bool {
+func (b *BoardState) EmptySquare(n int8) bool {
 	c := b.ColorOfSquare(n)
 	return c == EMPTY
 }
 
-func (b *BoardState) EmptyOrEnemyOccupiedSquare(n uint8) bool{
+func (b *BoardState) EmptyOrEnemyOccupiedSquare(n int8) bool{
 	c := b.ColorOfSquare(n)
 	return c != b.GetTurn()
 }
 
-func (b *BoardState) PlayTurn(src uint8, dst uint8, promotePiece uint8) {
+func (b *BoardState) PlayTurn(src int8, dst int8, promotePiece int8) {
 		// TODO: We can make this only check the pawns for a few ops worth of savings.
 		piece := b.PieceOfSquare(src)
 
@@ -139,13 +139,13 @@ func (b *BoardState) PlayTurn(src uint8, dst uint8, promotePiece uint8) {
 
 }
 
-func (b *BoardState) CopyPlayTurn(src uint8, dst uint8, promotePiece uint8) *BoardState{
+func (b *BoardState) CopyPlayTurn(src int8, dst int8, promotePiece int8) *BoardState{
 	bCopy := b.Copy()
 	bCopy.PlayTurn(src, dst, promotePiece)
 	return bCopy
 }
 
-func (b *BoardState) MovePiece(src uint8, dst uint8) {
+func (b *BoardState) MovePiece(src int8, dst int8) {
 	color := b.ColorOfSquare(src)
 	piece := b.PieceOfSquare(src)
 	b.pieces[piece]    = bitopts.ClearBit(b.pieces[piece], src)
@@ -155,7 +155,7 @@ func (b *BoardState) MovePiece(src uint8, dst uint8) {
 }
 
 // Returns an array of positions for a given set of pieces.
-func (b *BoardState) FindPieces(color uint8, pieceType uint8) []uint8 {
+func (b *BoardState) FindPieces(color int8, pieceType int8) []int8 {
 	pieceBitboard := b.colors[color] & b.pieces[pieceType]
 	twoPiecePos := bitopts.FindTwoPiecePositions(pieceBitboard)
 
@@ -165,8 +165,8 @@ func (b *BoardState) FindPieces(color uint8, pieceType uint8) []uint8 {
 			return twoPiecePos
 		}
 		// [8,15]
-		var result []uint8
-		var i uint8
+		var result []int8
+		var i int8
 		for i = twoPiecePos[0]; i <= twoPiecePos[1]; i++ {
 			if bitopts.TestBit(pieceBitboard, i) {
 				result = append(result, i)
@@ -179,7 +179,7 @@ func (b *BoardState) FindPieces(color uint8, pieceType uint8) []uint8 {
 }
 
 // ColorOfSquare returns WHITE,BLACK, or EMPTY
-func (b *BoardState) ColorOfSquare(n uint8) uint8 {
+func (b *BoardState) ColorOfSquare(n int8) int8 {
 	if bitopts.TestBit(b.colors[WHITE], n) {
 		return WHITE
 	}
@@ -190,8 +190,8 @@ func (b *BoardState) ColorOfSquare(n uint8) uint8 {
 }
 
 // PieceOfSquare t
-func (b *BoardState) PieceOfSquare(n uint8) uint8 {
-	var i uint8
+func (b *BoardState) PieceOfSquare(n int8) int8 {
+	var i int8
 	for i = 0; i < 6; i++ {
 		if bitopts.TestBit(b.pieces[i], n) {
 			return i
@@ -201,7 +201,7 @@ func (b *BoardState) PieceOfSquare(n uint8) uint8 {
 }
 
 // SetSquare removes any existing piece and sets the square to the new piece/color.
-func (b *BoardState) SetSquare(n uint8, color uint8, piece uint8) {
+func (b *BoardState) SetSquare(n int8, color int8, piece int8) {
 	// Theres gotta be room for improvement here...
 	// we really only need to update the bitboard that is currently set.
 	b.pieces[ROOK]    = bitopts.ClearBit(b.pieces[ROOK],   n)
@@ -219,6 +219,6 @@ func (b *BoardState) SetSquare(n uint8, color uint8, piece uint8) {
 }
 
 // SetSquareRankFile removes any existing piece and sets the square to the new piece/color with (x,y) coordinates.
-func (b *BoardState) SetSquareRankFile(rank uint8, file uint8, color uint8, piece uint8) {
+func (b *BoardState) SetSquareRankFile(rank int8, file int8, color int8, piece int8) {
 	b.SetSquare(bitopts.RankFileToSquare(rank, file), color, piece);
 }

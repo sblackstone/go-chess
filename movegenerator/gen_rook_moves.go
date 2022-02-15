@@ -7,7 +7,7 @@ import (
 //	"fmt"
 )
 
-func genSingleRookMoves(b *boardstate.BoardState, rookPos uint8) []*boardstate.BoardState {
+func genSingleRookMoves(b *boardstate.BoardState, rookPos int8) []*boardstate.BoardState {
 	var result []*boardstate.BoardState;
 	for r := rookPos+8; r < 64; r += 8 {
 		if b.EmptyOrEnemyOccupiedSquare(r) {
@@ -18,7 +18,7 @@ func genSingleRookMoves(b *boardstate.BoardState, rookPos uint8) []*boardstate.B
 		}
 	}
 
-	for r := rookPos-8; r < 64; r -= 8 {
+	for r := rookPos-8; r >= 0; r -= 8 {
 		if b.EmptyOrEnemyOccupiedSquare(r) {
 			result = append(result, b.CopyPlayTurn(rookPos, r, boardstate.EMPTY))
 		}
@@ -36,7 +36,7 @@ func genSingleRookMoves(b *boardstate.BoardState, rookPos uint8) []*boardstate.B
 		}
 	}
 
-	for r := rookPos-1; bitopts.FileOfSquare(r) < 7; r -= 1 {
+	for r := rookPos-1; r >= 0 && bitopts.FileOfSquare(r) < 7; r -= 1 {
 		if b.EmptyOrEnemyOccupiedSquare(r) {
 			result = append(result, b.CopyPlayTurn(rookPos, r, boardstate.EMPTY))
 		}

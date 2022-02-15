@@ -6,13 +6,13 @@ import (
 )
 
 // Print outputs a debug display of the current board.
-func (b *BoardState) Print(highlight uint8) {
+func (b *BoardState) Print(highlight int8) {
 	pieces := make([][]string, 2)
 	pieces[BLACK] = []string{"♖", "♘", "♗", "♕", "♔", "♙"};
 	pieces[WHITE] = []string{"♜", "♞", "♝", "♛", "♚", "♟"};
-	var rank, file uint8
-  // This next line is correct because the indexes are uint8 so 0 - 1 = 255.
-	for rank = 7; rank < 8; rank-- {
+	var rank, file int8
+  // This next line is correct because the indexes are int8 so 0 - 1 = 255.
+	for rank = 7; rank >= 0; rank-- {
 		for file = 0; file < 8; file++ {
       pos := bitopts.RankFileToSquare(rank, file)
 			color := b.ColorOfSquare(pos)

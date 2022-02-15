@@ -10,7 +10,7 @@ import (
 
 func TestGenAllKingMoves(t *testing.T) {
 
-	cases := [][]uint8{
+	cases := [][]int8{
 		{8,9,1},
 		{9,8,10,0,2},
 		{10,9,11,1,3},
@@ -78,7 +78,7 @@ func TestGenAllKingMoves(t *testing.T) {
 	}
 
   boards := genAllKingMoves();
-	var i uint8;
+	var i int8;
 
 	for i = 0; i < 64; i++ {
 			if !reflect.DeepEqual(boards[i], cases[i]) {
@@ -93,7 +93,7 @@ func TestKingCenterOfBoard(t *testing.T) {
 	b := boardstate.Blank()
   b.SetSquare(27, boardstate.WHITE, boardstate.KING)
   locations := genSortedBoardLocationsKings(b)
-  expected := []uint8{18, 19, 20, 26, 28, 34, 35, 36}
+  expected := []int8{18, 19, 20, 26, 28, 34, 35, 36}
   if !reflect.DeepEqual(locations, expected) {
     t.Errorf("Expected %v to be %v", locations, expected)
   }
@@ -102,7 +102,7 @@ func TestKingCenterOfBoard(t *testing.T) {
 
 func TestKingCanCaptureOtherPieces(t *testing.T) {
 	b := boardstate.Blank()
-	expected := []uint8{18, 19, 20, 26, 28, 34, 35, 36}
+	expected := []int8{18, 19, 20, 26, 28, 34, 35, 36}
 	for i := range(expected) {
 		b.SetSquare(expected[i], boardstate.BLACK, boardstate.PAWN)
 	}
@@ -129,7 +129,7 @@ func TestKingBlockedByOwnPieces(t *testing.T) {
 
   b.SetSquare(27, boardstate.WHITE, boardstate.KING)
   locations := genSortedBoardLocationsKings(b)
-	var expected []uint8
+	var expected []int8
 
 	if !reflect.DeepEqual(locations, expected) {
     t.Errorf("Expected %v to be %v", locations, expected)
@@ -143,14 +143,14 @@ func TestGenKingMovesKnowsAboutTurns(t *testing.T) {
 	b.SetSquare(19,  boardstate.BLACK, boardstate.KING)
 	moves := genSortedBoardLocationsKings(b)
 
-	expected := []uint8{34, 35, 36, 42, 44, 50, 51, 52}
+	expected := []int8{34, 35, 36, 42, 44, 50, 51, 52}
 	if (!reflect.DeepEqual(moves, expected)) {
 		t.Errorf("Expected %v to be %v", moves, expected)
 	}
 
 	b.ToggleTurn()
 	movesBlack := genSortedBoardLocationsKings(b)
-	expectedBlack := []uint8{10, 11, 12, 18, 20, 26, 27, 28}
+	expectedBlack := []int8{10, 11, 12, 18, 20, 26, 27, 28}
 	if (!reflect.DeepEqual(movesBlack, expectedBlack)) {
 		t.Errorf("Expected %v to be %v", movesBlack, expected)
 	}

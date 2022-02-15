@@ -15,7 +15,7 @@ Bit
 
 */
 
-const NO_ENPASSANT = 255
+const NO_ENPASSANT = 127
 
 const (
   TURN = iota
@@ -27,11 +27,11 @@ const (
 )
 
 
-func (b *BoardState) GetTurn() uint8 {
+func (b *BoardState) GetTurn() int8 {
   return b.turn
 }
 
-func (b *BoardState) SetTurn(color uint8) {
+func (b *BoardState) SetTurn(color int8) {
   b.turn = color
 }
 
@@ -39,7 +39,7 @@ func (b *BoardState) ToggleTurn() {
   b.turn = b.turn ^ 1
 }
 
-func castleBit(color uint8, side uint8) uint8 {
+func castleBit(color int8, side int8) int8 {
   // WHITE = 0, BLACK = 1
   // SHORT = 0 LONG = 1
   // So,
@@ -54,26 +54,26 @@ func (b *BoardState) ClearEnpassant() {
   b.enpassantFile = NO_ENPASSANT;
 }
 
-func (b *BoardState) GetEnpassant() uint8 {
+func (b *BoardState) GetEnpassant() int8 {
   return b.enpassantFile;
 }
 
 
 // SetEnpassant takes a file 0-7 and saves the enpassant state.
-func (b *BoardState) SetEnpassant(file uint8) {
+func (b *BoardState) SetEnpassant(file int8) {
   b.enpassantFile = file;
 }
 
 // IsEnpassant takes a file 0-7 and returns the enpassant state.
-func (b *BoardState) IsEnpassant(file uint8) bool {
+func (b *BoardState) IsEnpassant(file int8) bool {
   return b.enpassantFile == file
 }
 
-func (b *BoardState) HasCastleRights(color uint8, side uint8) bool {
+func (b *BoardState) HasCastleRights(color int8, side int8) bool {
   return !bitopts.TestBit(b.meta, castleBit(color, side))
 }
 
-func (b *BoardState) SetCastleRights(color uint8, side uint8, enabled bool) {
+func (b *BoardState) SetCastleRights(color int8, side int8, enabled bool) {
   bit := castleBit(color, side)
   if enabled {
     b.meta = bitopts.ClearBit(b.meta, bit)

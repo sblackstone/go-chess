@@ -17,14 +17,14 @@ func TestGenKnightMovesKnowsAboutTurns(t *testing.T) {
 	b.SetSquare(57, boardstate.BLACK, boardstate.KNIGHT)
 	moves := genSortedBoardLocationsKnights(b)
 
-	expected := []uint8{11,16,18}
+	expected := []int8{11,16,18}
 	if (!reflect.DeepEqual(moves, expected)) {
 		t.Errorf("Expected %v to be %v", moves, expected)
 	}
 
 	b.ToggleTurn()
 	movesBlack := genSortedBoardLocationsKnights(b)
-	expectedBlack := []uint8{40,42,51}
+	expectedBlack := []int8{40,42,51}
 	if (!reflect.DeepEqual(movesBlack, expectedBlack)) {
 		t.Errorf("Expected %v to be %v", movesBlack, expected)
 	}
@@ -40,7 +40,7 @@ func TestGenKnightMovesBlockedBySelf(t *testing.T) {
 
 	moves := genSortedBoardLocationsKnights(b)
 
-	expected := []uint8{18}
+	expected := []int8{18}
 	if (!reflect.DeepEqual(moves, expected)) {
 		t.Errorf("Expected %v to be %v", moves, expected)
 	}
@@ -55,7 +55,7 @@ func TestGenKnightMovesCaptures(t *testing.T) {
 
 	moves := genSortedBoardLocationsKnights(b)
 
-	expected := []uint8{11,16,18}
+	expected := []int8{11,16,18}
 	if (!reflect.DeepEqual(moves, expected)) {
 		t.Errorf("Expected %v to be %v", moves, expected)
 	}
@@ -65,7 +65,7 @@ func TestGenKnightMovesCaptures(t *testing.T) {
 
 func TestGenAllKnightMoves(t *testing.T) {
 
-	cases := [][]uint8{
+	cases := [][]int8{
 	  {17,10},
 	  {16,18,11},
 	  {8,17,19,12},
@@ -133,7 +133,7 @@ func TestGenAllKnightMoves(t *testing.T) {
 	}
 
   boards := genAllKnightMoves();
-	var i uint8;
+	var i int8;
 
 	for i = 0; i < 64; i++ {
 			if !reflect.DeepEqual(boards[i], cases[i]) {
@@ -143,7 +143,7 @@ func TestGenAllKnightMoves(t *testing.T) {
 
 /*
 	// Print out all the knight bitboards
-  var pos uint8;
+  var pos int8;
 	var tmp uint64
 	var i int
   for pos = 0; pos < 64; pos++ {

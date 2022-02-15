@@ -5,36 +5,36 @@ import (
 	"github.com/sblackstone/go-chess/bitopts"
 )
 
-func genSinglePawnMoves(b *boardstate.BoardState, pawnPos uint8) []*boardstate.BoardState {
+func genSinglePawnMoves(b *boardstate.BoardState, pawnPos int8) []*boardstate.BoardState {
 	var result []*boardstate.BoardState;
 	pawnPosRank, pawnPosFile := bitopts.SquareToRankFile(pawnPos)
-	var promotionRank,pushFoardTwoRank,pushForwardOne,pushForwardTwo,captureToLowerFilePos,captureToHigherFilePos,fromEnpassantRank uint8
+	var promotionRank,pushFoardTwoRank,pushForwardOne,pushForwardTwo,captureToLowerFilePos,captureToHigherFilePos,fromEnpassantRank int8
 
 	if (b.GetTurn() == boardstate.WHITE) {
-		promotionRank          = uint8(7)
-		pushFoardTwoRank       = uint8(1)
+		promotionRank          = int8(7)
+		pushFoardTwoRank       = int8(1)
 		pushForwardOne         = pawnPos + 8
 		pushForwardTwo         = pawnPos + 16
 		captureToLowerFilePos  = pawnPos + 7
 		captureToHigherFilePos = pawnPos + 9
-		fromEnpassantRank      = uint8(4)
+		fromEnpassantRank      = int8(4)
 	} else {
-		promotionRank          = uint8(0)
-		pushFoardTwoRank       = uint8(6)
+		promotionRank          = int8(0)
+		pushFoardTwoRank       = int8(6)
 		pushForwardOne         = pawnPos - 8
 		pushForwardTwo         = pawnPos - 16
 		captureToLowerFilePos  = pawnPos - 9
 		captureToHigherFilePos = pawnPos - 7
-		fromEnpassantRank      = uint8(3)
+		fromEnpassantRank      = int8(3)
 	}
 
-	appendPawnMovesFn := func(newPos uint8) {
+	appendPawnMovesFn := func(newPos int8) {
 		// Non-Promotion
 		if (bitopts.RankOfSquare(newPos) != promotionRank) {
 			result = append(result, b.CopyPlayTurn(pawnPos, newPos, boardstate.EMPTY))
 		} else {
 			// With Promotion
-			var i uint8
+			var i int8
 			for i = boardstate.ROOK; i <= boardstate.QUEEN; i++ {
 				newBoard := b.CopyPlayTurn(pawnPos, newPos, i)
 				result = append(result, newBoard)
@@ -84,7 +84,7 @@ func genSinglePawnMoves(b *boardstate.BoardState, pawnPos uint8) []*boardstate.B
 	return result
 }
 
-func genSinglePawnMovesBlack(b *boardstate.BoardState, pawnPos uint8) []*boardstate.BoardState {
+func genSinglePawnMovesBlack(b *boardstate.BoardState, pawnPos int8) []*boardstate.BoardState {
 	var result []*boardstate.BoardState;
 	return result
 }

@@ -27,9 +27,9 @@ import (
 */
 
 
-func genAllKnightMoves() [64][]uint8 {
-  var result [64][]uint8;
-  var rank,file uint8
+func genAllKnightMoves() [64][]int8 {
+  var result [64][]int8;
+  var rank,file int8
   for rank = 0; rank < 8; rank++ {
     for file =0; file < 8; file++ {
       pos := bitopts.RankFileToSquare(rank,file)
@@ -80,7 +80,7 @@ func genAllKnightMoves() [64][]uint8 {
   return result;
 }
 
-func genSingleKnightMoves(b *boardstate.BoardState, knightPos uint8) []*boardstate.BoardState {
+func genSingleKnightMoves(b *boardstate.BoardState, knightPos int8) []*boardstate.BoardState {
 	var result []*boardstate.BoardState;
 	allKnightMoves := genAllKnightMoves(); // TODO: THIS MUST BE MEMOIZED SOMEHOW.
 	for i := range(allKnightMoves[knightPos]) {

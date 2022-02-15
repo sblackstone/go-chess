@@ -7,7 +7,7 @@ import (
 //	"fmt"
 )
 
-func genSingleBishopMoves(b *boardstate.BoardState, bishopPos uint8) []*boardstate.BoardState {
+func genSingleBishopMoves(b *boardstate.BoardState, bishopPos int8) []*boardstate.BoardState {
 	var result []*boardstate.BoardState;
 
 	file := bitopts.FileOfSquare(bishopPos)
@@ -31,7 +31,7 @@ func genSingleBishopMoves(b *boardstate.BoardState, bishopPos uint8) []*boardsta
 	}
 
 
-	for r := bishopPos-7; r < 64 && bitopts.FileOfSquare(r) > file; r -= 7 {
+	for r := bishopPos-7; r >= 0 && bitopts.FileOfSquare(r) > file; r -= 7 {
 		if b.EmptyOrEnemyOccupiedSquare(r) {
 			result = append(result, b.CopyPlayTurn(bishopPos, r, boardstate.EMPTY))
 		}
@@ -40,7 +40,7 @@ func genSingleBishopMoves(b *boardstate.BoardState, bishopPos uint8) []*boardsta
 		}
 	}
 
-	for r := bishopPos-9; r < 64 && bitopts.FileOfSquare(r) < file; r -= 9 {
+	for r := bishopPos-9; r >= 0 && bitopts.FileOfSquare(r) < file; r -= 9 {
 		if b.EmptyOrEnemyOccupiedSquare(r) {
 			result = append(result, b.CopyPlayTurn(bishopPos, r, boardstate.EMPTY))
 		}

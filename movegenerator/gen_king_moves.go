@@ -7,10 +7,10 @@ import (
 )
 
 
-func genAllKingMoves() [64][]uint8 {
-  var result [64][]uint8;
-  var rank,file uint8
-  for rank = 7; rank < 8; rank-- {
+func genAllKingMoves() [64][]int8 {
+  var result [64][]int8;
+  var rank,file int8
+  for rank = 7; rank >= 0; rank-- {
     for file =0; file < 8; file++ {
       pos := bitopts.RankFileToSquare(rank,file)
 			if (rank >= 1) {
@@ -48,7 +48,7 @@ func genAllKingMoves() [64][]uint8 {
 }
 
 
-func genSingleKingMoves(b *boardstate.BoardState, kingPos uint8) []*boardstate.BoardState {
+func genSingleKingMoves(b *boardstate.BoardState, kingPos int8) []*boardstate.BoardState {
 	var result []*boardstate.BoardState;
 	allKingMoves := genAllKingMoves(); // TODO: THIS MUST BE MEMOIZED SOMEHOW.
 	for i := range(allKingMoves[kingPos]) {

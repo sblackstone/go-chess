@@ -15,14 +15,14 @@ func TestPushPawnBlack(t *testing.T) {
 	b.ToggleTurn()
 	b.SetSquare(42, boardstate.BLACK, boardstate.PAWN)
 	locations := genSortedBoardLocationsPawns(b)
-  expected := []uint8{34}
+  expected := []int8{34}
   if !reflect.DeepEqual(locations, expected) {
     t.Errorf("Expected %v to be %v", locations, expected)
   }
 
 	// Obstructed by SELF
 	b.SetSquare(34, boardstate.BLACK, boardstate.QUEEN)
-	var expected2 []uint8
+	var expected2 []int8
 	locations2 := genSortedBoardLocationsPawns(b)
 
   if !reflect.DeepEqual(locations2, expected2) {
@@ -31,7 +31,7 @@ func TestPushPawnBlack(t *testing.T) {
 
 	/// Obstructed by ENEMY
 	b.SetSquare(34, boardstate.WHITE, boardstate.QUEEN)
-	var expected3 []uint8
+	var expected3 []int8
 	locations3 := genSortedBoardLocationsPawns(b)
 
   if !reflect.DeepEqual(locations3, expected3) {
@@ -47,7 +47,7 @@ func TestPushPawnTwoBlack(t *testing.T) {
   b := boardstate.Blank()
 	b.ToggleTurn()
   b.SetSquare(49, boardstate.BLACK, boardstate.PAWN)
-  expected := []uint8{33,41}
+  expected := []int8{33,41}
 	locations := genSortedBoardLocationsPawns(b)
   if !reflect.DeepEqual(locations, expected) {
     t.Errorf("Expected %v to be %v", locations, expected)
@@ -68,7 +68,7 @@ func TestPushPawnTwoBlack(t *testing.T) {
 	}
 
 
-	var expected2 []uint8
+	var expected2 []int8
 
 	b.SetSquare(41, boardstate.WHITE, boardstate.QUEEN)
 	locations2 := genSortedBoardLocationsPawns(b)
@@ -82,7 +82,7 @@ func TestPushPawnTwoBlack(t *testing.T) {
 	b.SetSquare(33, boardstate.BLACK, boardstate.QUEEN)
 
 	locations3 := genSortedBoardLocationsPawns(b)
-	expected3 := []uint8{41}
+	expected3 := []int8{41}
 
 	if !reflect.DeepEqual(locations3, expected3) {
     t.Errorf("Expected %v to be %v", locations3	, expected3)
@@ -96,7 +96,7 @@ func TestCaptureHigherFileBlack(t *testing.T) {
 	b.SetSquare(36, boardstate.WHITE, boardstate.PAWN)
 	b.SetSquare(43, boardstate.BLACK, boardstate.PAWN)
 
-	expected := []uint8{35,36}
+	expected := []int8{35,36}
 	locations := genSortedBoardLocationsPawns(b)
 	if !reflect.DeepEqual(locations, expected) {
     t.Errorf("Expected %v to be %v", locations	, expected)
@@ -109,7 +109,7 @@ func TestCaptureLowerFileBlack(t *testing.T) {
 	b.SetSquare(34, boardstate.WHITE, boardstate.PAWN)
 	b.SetSquare(43, boardstate.BLACK, boardstate.PAWN)
 
-	expected := []uint8{34,35}
+	expected := []int8{34,35}
 	locations := genSortedBoardLocationsPawns(b)
 	if !reflect.DeepEqual(locations, expected) {
     t.Errorf("Expected %v to be %v", locations	, expected)
@@ -125,7 +125,7 @@ func TestCaptureHigherFileBlackWithPromotion(t *testing.T) {
 
 	//b.SetSquare(62, boardstate.BLACK, boardstate.QUEEN)
 	boards := genPawnMoves(b)
-	var sum uint8
+	var sum int8
 	for i := range(boards) {
 		//boards[i].Print(255)
 		sum += boards[i].PieceOfSquare(7)
@@ -144,7 +144,7 @@ func TestCaptureLowerFileBlackWithPromotion(t *testing.T) {
 
 	b.SetSquare(2, boardstate.WHITE, boardstate.QUEEN)
 	boards := genPawnMoves(b)
-	var sum uint8
+	var sum int8
 	for i := range(boards) {
 		sum += boards[i].PieceOfSquare(1)
 	}
@@ -162,7 +162,7 @@ func TestCaptureNoWarpingCapturesHigherFileBlack(t *testing.T) {
 	b.SetSquare(22, boardstate.WHITE, boardstate.PAWN)
 	b.SetSquare(24, boardstate.WHITE, boardstate.PAWN)
 
-	expected := []uint8{22,23}
+	expected := []int8{22,23}
 	locations := genSortedBoardLocationsPawns(b)
 	if !reflect.DeepEqual(locations, expected) {
     t.Errorf("Expected %v to be %v", locations	, expected)
@@ -176,7 +176,7 @@ func TestCaptureNoWarpingCapturesLowerFileBlack(t *testing.T) {
 	b.SetSquare(17, boardstate.WHITE, boardstate.PAWN)
 	b.SetSquare(15, boardstate.WHITE, boardstate.PAWN)
 
-	expected := []uint8{16,17}
+	expected := []int8{16,17}
 	locations := genSortedBoardLocationsPawns(b)
 	if !reflect.DeepEqual(locations, expected) {
     t.Errorf("Expected %v to be %v", locations	, expected)
@@ -190,7 +190,7 @@ func TestCaptureNoSelfCapturesBlack(t *testing.T) {
 	b.SetSquare(36, boardstate.BLACK, boardstate.PAWN)
 	b.SetSquare(27, boardstate.BLACK, boardstate.QUEEN)
 	b.SetSquare(29, boardstate.BLACK, boardstate.QUEEN)
-	expected := []uint8{28}
+	expected := []int8{28}
 	locations := genSortedBoardLocationsPawns(b)
 	if !reflect.DeepEqual(locations, expected) {
     t.Errorf("Expected %v to be %v", locations	, expected)
@@ -204,7 +204,7 @@ func TestPushPawnPromoteBlack(t *testing.T) {
 	b.ToggleTurn()
   b.SetSquare(11, boardstate.BLACK, boardstate.PAWN)
 	boards := genPawnMoves(b)
-	var sum uint8
+	var sum int8
 	for i := range(boards) {
 		sum += boards[i].PieceOfSquare(3)
 	}
@@ -225,7 +225,7 @@ func TestEnPassantCaptureAsBlackLowerFile(t *testing.T) {
 	b.PlayTurn(9, 25, boardstate.EMPTY)
 
 	locations := genSortedBoardLocationsPawns(b)
-	expected := []uint8{17,18}
+	expected := []int8{17,18}
 	if !reflect.DeepEqual(locations, expected) {
     t.Errorf("Expected %v to be %v", locations	, expected)
   }
@@ -242,7 +242,7 @@ func TestEnPassantCaptureAsBlackHigherFile(t *testing.T) {
 	b.PlayTurn(14, 30, boardstate.EMPTY)
 
 	locations := genSortedBoardLocationsPawns(b)
-	expected := []uint8{21,22}
+	expected := []int8{21,22}
 	if !reflect.DeepEqual(locations, expected) {
     t.Errorf("Expected %v to be %v", locations	, expected)
   }
@@ -262,7 +262,7 @@ func TestEnPassantCaptureAsBlackUnavailableAfterAdditionalMove(t *testing.T) {
 	b.PlayTurn(13, 29, boardstate.EMPTY)
 
 	locations1 := genSortedBoardLocationsPawns(b)
-	expected1 := []uint8{21,22}
+	expected1 := []int8{21,22}
 	if !reflect.DeepEqual(locations1, expected1) {
     t.Errorf("Expected %v to be %v", locations1	, expected1)
   }
@@ -275,7 +275,7 @@ func TestEnPassantCaptureAsBlackUnavailableAfterAdditionalMove(t *testing.T) {
 	b.PlayTurn(9, 10, boardstate.EMPTY)
 
 	locations2 := genSortedBoardLocationsPawns(b)
-	expected2 := []uint8{22}
+	expected2 := []int8{22}
 	if !reflect.DeepEqual(locations2, expected2) {
     t.Errorf("Expected %v to be %v", locations2	, expected2)
   }
