@@ -156,14 +156,13 @@ func TestCaptureLowerFileBlackWithPromotion(t *testing.T) {
 
 
 func TestCaptureNoWarpingCapturesHigherFileBlack(t *testing.T) {
-	t.Errorf("TODO")
-
 	b := boardstate.Blank()
-	b.SetSquare(23, boardstate.WHITE, boardstate.PAWN)
-	b.SetSquare(30, boardstate.BLACK, boardstate.PAWN)
-	b.SetSquare(32, boardstate.BLACK, boardstate.PAWN)
+	b.ToggleTurn()
+	b.SetSquare(31, boardstate.BLACK, boardstate.PAWN)
+	b.SetSquare(22, boardstate.WHITE, boardstate.PAWN)
+	b.SetSquare(24, boardstate.WHITE, boardstate.PAWN)
 
-	expected := []uint8{30,31}
+	expected := []uint8{22,23}
 	locations := genSortedBoardLocationsPawns(b)
 	if !reflect.DeepEqual(locations, expected) {
     t.Errorf("Expected %v to be %v", locations	, expected)
@@ -171,14 +170,13 @@ func TestCaptureNoWarpingCapturesHigherFileBlack(t *testing.T) {
 }
 
 func TestCaptureNoWarpingCapturesLowerFileBlack(t *testing.T) {
-	t.Errorf("TODO")
-
 	b := boardstate.Blank()
-	b.SetSquare(16, boardstate.WHITE, boardstate.PAWN)
-	b.SetSquare(23, boardstate.BLACK, boardstate.PAWN)
-	b.SetSquare(25, boardstate.BLACK, boardstate.PAWN)
+	b.ToggleTurn()
+	b.SetSquare(24, boardstate.BLACK, boardstate.PAWN)
+	b.SetSquare(17, boardstate.WHITE, boardstate.PAWN)
+	b.SetSquare(15, boardstate.WHITE, boardstate.PAWN)
 
-	expected := []uint8{24,25}
+	expected := []uint8{16,17}
 	locations := genSortedBoardLocationsPawns(b)
 	if !reflect.DeepEqual(locations, expected) {
     t.Errorf("Expected %v to be %v", locations	, expected)
