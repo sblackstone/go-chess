@@ -43,11 +43,11 @@ func TestPushPawnBlack(t *testing.T) {
 }
 
 func TestPushPawnTwoBlack(t *testing.T) {
-	t.Errorf("TODO")
 	// Setup the inital board with a pawn on 8, expect to be pushable 1 or 2 squares.
   b := boardstate.Blank()
-  b.SetSquare(8, boardstate.WHITE, boardstate.PAWN)
-  expected := []uint8{16,24}
+	b.ToggleTurn()
+  b.SetSquare(49, boardstate.BLACK, boardstate.PAWN)
+  expected := []uint8{33,41}
 	locations := genSortedBoardLocationsPawns(b)
   if !reflect.DeepEqual(locations, expected) {
     t.Errorf("Expected %v to be %v", locations, expected)
@@ -55,13 +55,13 @@ func TestPushPawnTwoBlack(t *testing.T) {
 
 	positions := genPawnMoves(b)
 	for i := range(positions) {
-		if positions[i].PieceOfSquare(24) == boardstate.PAWN {
-			if !positions[i].IsEnpassant(0) {
-			  t.Errorf("Expected 0 to be enpassant after double push")
+		if positions[i].PieceOfSquare(33) == boardstate.PAWN {
+			if !positions[i].IsEnpassant(1) {
+			  t.Errorf("Expected 1 to be enpassant after double push, got %v", positions[i].GetEnpassant())
 			}
 		} else {
-			if positions[i].IsEnpassant(0) {
-			  t.Errorf("Expected 0 to NOT be enpassant after double push")
+			if positions[i].IsEnpassant(1) {
+				t.Errorf("Expected 1 to NOT be enpassant after double push, got %v", positions[i].GetEnpassant())
 			}
 
 		}
@@ -70,7 +70,7 @@ func TestPushPawnTwoBlack(t *testing.T) {
 
 	var expected2 []uint8
 
-	b.SetSquare(16, boardstate.WHITE, boardstate.QUEEN)
+	b.SetSquare(41, boardstate.WHITE, boardstate.QUEEN)
 	locations2 := genSortedBoardLocationsPawns(b)
 
 
@@ -78,11 +78,11 @@ func TestPushPawnTwoBlack(t *testing.T) {
     t.Errorf("Expected %v to be %v", locations2	, expected2)
   }
 
-	b.SetSquare(16, boardstate.EMPTY, boardstate.EMPTY)
-	b.SetSquare(24, boardstate.BLACK, boardstate.QUEEN)
+	b.SetSquare(41, boardstate.EMPTY, boardstate.EMPTY)
+	b.SetSquare(33, boardstate.BLACK, boardstate.QUEEN)
 
 	locations3 := genSortedBoardLocationsPawns(b)
-	expected3 := []uint8{16}
+	expected3 := []uint8{41}
 
 	if !reflect.DeepEqual(locations3, expected3) {
     t.Errorf("Expected %v to be %v", locations3	, expected3)
