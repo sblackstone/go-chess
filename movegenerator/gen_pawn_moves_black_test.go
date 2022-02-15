@@ -91,13 +91,12 @@ func TestPushPawnTwoBlack(t *testing.T) {
 }
 
 func TestCaptureHigherFileBlack(t *testing.T) {
-	t.Errorf("TODO")
-
 	b := boardstate.Blank()
-	b.SetSquare(19, boardstate.WHITE, boardstate.PAWN)
-	b.SetSquare(28, boardstate.BLACK, boardstate.PAWN)
+	b.ToggleTurn()
+	b.SetSquare(36, boardstate.WHITE, boardstate.PAWN)
+	b.SetSquare(43, boardstate.BLACK, boardstate.PAWN)
 
-	expected := []uint8{27,28}
+	expected := []uint8{35,36}
 	locations := genSortedBoardLocationsPawns(b)
 	if !reflect.DeepEqual(locations, expected) {
     t.Errorf("Expected %v to be %v", locations	, expected)
@@ -105,13 +104,12 @@ func TestCaptureHigherFileBlack(t *testing.T) {
 }
 
 func TestCaptureLowerFileBlack(t *testing.T) {
-	t.Errorf("TODO")
-
 	b := boardstate.Blank()
-	b.SetSquare(19, boardstate.WHITE, boardstate.PAWN)
-	b.SetSquare(26, boardstate.BLACK, boardstate.PAWN)
+	b.ToggleTurn()
+	b.SetSquare(34, boardstate.WHITE, boardstate.PAWN)
+	b.SetSquare(43, boardstate.BLACK, boardstate.PAWN)
 
-	expected := []uint8{26,27}
+	expected := []uint8{34,35}
 	locations := genSortedBoardLocationsPawns(b)
 	if !reflect.DeepEqual(locations, expected) {
     t.Errorf("Expected %v to be %v", locations	, expected)
