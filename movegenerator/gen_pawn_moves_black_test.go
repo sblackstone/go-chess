@@ -2,7 +2,7 @@ package movegenerator
 
 import (
 	"testing"
-	"fmt"
+	//"fmt"
   "reflect"
   "github.com/sblackstone/go-chess/boardstate"
 	//"github.com/sblackstone/go-chess/bitopts"
@@ -216,19 +216,16 @@ func TestPushPawnPromoteBlack(t *testing.T) {
 
 
 func TestEnPassantCaptureAsBlackLowerFile(t *testing.T) {
-	t.Errorf("TODO")
 
 	b := boardstate.Blank()
-	b.SetSquare(48, boardstate.BLACK, boardstate.PAWN)
-	b.SetSquare(33, boardstate.WHITE, boardstate.PAWN)
+	b.SetSquare(26, boardstate.BLACK, boardstate.PAWN)
+	b.SetSquare(9, boardstate.WHITE, boardstate.PAWN)
 
-	b.SetTurn(boardstate.BLACK)
-	fmt.Println(b.GetEnpassant())
-	// Black pushes two setting up enpassant
-	b.PlayTurn(48, 32, boardstate.EMPTY)
+	// White pushes two setting up enpassant
+	b.PlayTurn(9, 25, boardstate.EMPTY)
 
 	locations := genSortedBoardLocationsPawns(b)
-	expected := []uint8{40,41}
+	expected := []uint8{17,18}
 	if !reflect.DeepEqual(locations, expected) {
     t.Errorf("Expected %v to be %v", locations	, expected)
   }
@@ -236,19 +233,16 @@ func TestEnPassantCaptureAsBlackLowerFile(t *testing.T) {
 
 
 func TestEnPassantCaptureAsBlackHigherFile(t *testing.T) {
-	t.Errorf("TODO")
 
 	b := boardstate.Blank()
-	b.SetSquare(53, boardstate.BLACK, boardstate.PAWN)
-	b.SetSquare(36, boardstate.WHITE, boardstate.PAWN)
+	b.SetSquare(29, boardstate.BLACK, boardstate.PAWN)
+	b.SetSquare(14, boardstate.WHITE, boardstate.PAWN)
 
-	b.SetTurn(boardstate.BLACK)
-	fmt.Println(b.GetEnpassant())
-	// Black pushes two setting up enpassant
-	b.PlayTurn(53, 37, boardstate.EMPTY)
+	// White pushes two setting up enpassant
+	b.PlayTurn(14, 30, boardstate.EMPTY)
 
 	locations := genSortedBoardLocationsPawns(b)
-	expected := []uint8{44,45}
+	expected := []uint8{21,22}
 	if !reflect.DeepEqual(locations, expected) {
     t.Errorf("Expected %v to be %v", locations	, expected)
   }
@@ -256,35 +250,32 @@ func TestEnPassantCaptureAsBlackHigherFile(t *testing.T) {
 
 
 func TestEnPassantCaptureAsBlackUnavailableAfterAdditionalMove(t *testing.T) {
-	t.Errorf("TODO")
 
 	b := boardstate.Blank()
-	b.SetSquare(48, boardstate.BLACK, boardstate.PAWN)
-	b.SetSquare(33, boardstate.WHITE, boardstate.PAWN)
-	b.SetSquare(14, boardstate.WHITE, boardstate.QUEEN)
-	b.SetSquare(55, boardstate.BLACK, boardstate.QUEEN)
+	b.SetSquare(30, boardstate.BLACK, boardstate.PAWN)
+	b.SetSquare(13, boardstate.WHITE, boardstate.PAWN)
+	b.SetSquare(9, boardstate.WHITE, boardstate.QUEEN)
+	b.SetSquare(57, boardstate.BLACK, boardstate.QUEEN)
 
-	b.SetTurn(boardstate.BLACK)
-	fmt.Println(b.GetEnpassant())
 
-	// Black pushes two setting up enpassant
-	b.PlayTurn(48, 32, boardstate.EMPTY)
+	// White pushes two setting up enpassant
+	b.PlayTurn(13, 29, boardstate.EMPTY)
 
 	locations1 := genSortedBoardLocationsPawns(b)
-	expected1 := []uint8{40,41}
+	expected1 := []uint8{21,22}
 	if !reflect.DeepEqual(locations1, expected1) {
     t.Errorf("Expected %v to be %v", locations1	, expected1)
   }
 
 
-	// White pushes something else`
-	b.PlayTurn(14, 22, boardstate.EMPTY)
+	// Block pushes something else`
+	b.PlayTurn(57, 58, boardstate.EMPTY)
 
-	// Black pushes something else
-	b.PlayTurn(55, 47, boardstate.EMPTY)
+	// White pushes something else
+	b.PlayTurn(9, 10, boardstate.EMPTY)
 
 	locations2 := genSortedBoardLocationsPawns(b)
-	expected2 := []uint8{41}
+	expected2 := []uint8{22}
 	if !reflect.DeepEqual(locations2, expected2) {
     t.Errorf("Expected %v to be %v", locations2	, expected2)
   }
