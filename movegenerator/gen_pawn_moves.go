@@ -5,17 +5,6 @@ import (
 	"github.com/sblackstone/go-chess/bitopts"
 )
 
-func genPromotionBoards(b *boardstate.BoardState, src uint8, dst uint8) []*boardstate.BoardState {
-	var i  uint8
-	var result []*boardstate.BoardState;
-	for i = boardstate.ROOK; i <= boardstate.QUEEN; i++ {
-		newBoard := b.CopyPlayTurn(src, dst, i)
-		result = append(result, newBoard)
-	}
-	return result
-}
-
-
 func genSinglePawnMoves(b *boardstate.BoardState, pawnPos uint8) []*boardstate.BoardState {
 	var result []*boardstate.BoardState;
 	pawnPosRank, pawnPosFile := bitopts.SquareToRankFile(pawnPos)
@@ -40,10 +29,16 @@ func genSinglePawnMoves(b *boardstate.BoardState, pawnPos uint8) []*boardstate.B
 	}
 
 	appendPawnMovesFn := func(newPos uint8) {
+		// Non-Promotion
 		if (bitopts.RankOfSquare(newPos) != promotionRank) {
 			result = append(result, b.CopyPlayTurn(pawnPos, newPos, boardstate.EMPTY))
 		} else {
-			result = append(result, genPromotionBoards(b, pawnPos, newPos)...)
+			// With Promotion
+			var i uint8
+			for i = boardstate.ROOK; i <= boardstate.QUEEN; i++ {
+				newBoard := b.CopyPlayTurn(pawnPos, newPos, i)
+				result = append(result, newBoard)
+			}
 		}
 	}
 
