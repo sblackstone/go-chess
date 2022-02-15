@@ -98,9 +98,8 @@ func (b *BoardState) PlayTurn(src int8, dst int8, promotePiece int8) {
 		}
 
 		if piece == PAWN {
-			// TODO: FIX THIS TEST.
-			diff := math.Abs(float64(src) - float64(dst))
-			if (diff == 7 || diff == 9) {
+			diff := dst - src
+			if (diff == 7 || diff == 9 || diff == -7 || diff == -9) {
 					targetPiece := b.PieceOfSquare(dst)
 					if targetPiece == EMPTY {
 						if dst > src {
@@ -124,7 +123,7 @@ func (b *BoardState) PlayTurn(src int8, dst int8, promotePiece int8) {
 				fmt.Printf("src=%v dst=%v dst-3=%v dst-2=%v\n", src, dst, dst-3, dst-2)
 				b.MovePiece(src-3, src-1)
 			}
-			if (int(src)-int(dst) == -2) {
+			if (src-dst == -2) {
 				fmt.Printf("src=%v dst=%v src+4=%v src+1=%v\n", src, dst, src+4, src+1)
 				b.MovePiece(src+4, src+1)
 			}
