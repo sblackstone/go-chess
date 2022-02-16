@@ -31,52 +31,56 @@ func (b * BoardState) updateCastlingRights(src int8) {
 	}
 }
 
+
+func (b *BoardState) handleEnpassant(src int8, dst int8) {
+  diff := dst - src
+
+  // Flags
+  if (diff == 16 || diff == -16) {
+    b.SetEnpassant(bitopts.FileOfSquare(src))
+  } else {
+    b.ClearEnpassant()
+  }
+
+  if (diff == 7 || diff == 9 || diff == -7 || diff == -9) {
+    targetPiece := b.PieceOfSquare(dst)
+    if targetPiece == EMPTY {
+      if dst > src {
+        b.SetSquare(dst - 8, EMPTY, EMPTY)
+      } else {
+        b.SetSquare(dst + 8, EMPTY, EMPTY)
+      }
+    }
+  }
+}
+
+func (b *BoardState) handleCastling(src int8, dst int8) {
+  if (src-dst == 2) {
+    b.MovePiece(src-3, src-1)
+  }
+  if (src-dst == -2) {
+    b.MovePiece(src+4, src+1)
+  }
+}
+
 func (b *BoardState) PlayTurn(src int8, dst int8, promotePiece int8) {
 		// TODO: We can make this only check the pawns for a few ops worth of savings.
 		piece := b.PieceOfSquare(src)
 
 		// Set or Clear enpassant flag
 		if (piece == PAWN) {
-			diff := dst - src
-			if (diff == 16 || diff == -16) {
-				b.SetEnpassant(bitopts.FileOfSquare(src))
-			} else {
-				b.ClearEnpassant()
-			}
+      b.handleEnpassant(src, dst)
 		} else {
 			b.ClearEnpassant()
-		}
-
-		if piece == PAWN {
-			diff := dst - src
-			if (diff == 7 || diff == 9 || diff == -7 || diff == -9) {
-					targetPiece := b.PieceOfSquare(dst)
-					if targetPiece == EMPTY {
-						if dst > src {
-							b.SetSquare(dst - 8, EMPTY, EMPTY)
-						} else {
-							b.SetSquare(dst + 8, EMPTY, EMPTY)
-						}
-					}
-			}
 		}
 
 		b.updateCastlingRights(src)
 
 		b.MovePiece(src, dst)
 
-
-		// TODO: Castling rights
-
-
 		// Handle castling
 		if (piece == KING) {
-			if (src-dst == 2) {
-				b.MovePiece(src-3, src-1)
-			}
-			if (src-dst == -2) {
-				b.MovePiece(src+4, src+1)
-			}
+      b.handleCastling(src, dst)
 		}
 
 		// Handle Piece promotion
