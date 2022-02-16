@@ -6,6 +6,11 @@ import (
 )
 
 
+
+func TestUpdateCastlingRights(t *testing.T) {
+	t.Errorf("TODO")
+}
+
 func TestCastleShortWhite(t *testing.T) {
 	b := Blank()
 	b.SetSquare(0, WHITE, ROOK)
