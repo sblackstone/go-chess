@@ -67,7 +67,53 @@ func TestCastleBlackBlocked(t *testing.T) {
   }
 }
 
+func TestCastleWhiteBlocked2(t *testing.T) {
+	b := testCastlingBoard()
+	b.SetSquare(1, boardstate.BLACK, boardstate.BISHOP)
+	b.SetSquare(5, boardstate.BLACK, boardstate.KNIGHT)
+  locations := genSortedBoardLocationsKings(b)
+  expected := []int8{2,4,10,11,12}
+  if !reflect.DeepEqual(locations, expected) {
+    t.Errorf("Expected %v to be %v", locations, expected)
+  }
+}
 
+
+func TestCastleBlackBlocked2(t *testing.T) {
+	b := testCastlingBoard()
+	b.SetSquare(57, boardstate.WHITE, boardstate.BISHOP)
+	b.SetSquare(61, boardstate.WHITE, boardstate.KNIGHT)
+	b.SetTurn(boardstate.BLACK)
+  locations := genSortedBoardLocationsKings(b)
+  expected := []int8{50,51,52,58,60}
+  if !reflect.DeepEqual(locations, expected) {
+    t.Errorf("Expected %v to be %v", locations, expected)
+  }
+}
+
+func TestCastleWhiteBlocked3(t *testing.T) {
+	b := testCastlingBoard()
+	b.SetSquare(1, boardstate.BLACK, boardstate.BISHOP)
+	b.SetSquare(6, boardstate.BLACK, boardstate.KNIGHT)
+  locations := genSortedBoardLocationsKings(b)
+  expected := []int8{2,4,10,11,12}
+  if !reflect.DeepEqual(locations, expected) {
+    t.Errorf("Expected %v to be %v", locations, expected)
+  }
+}
+
+
+func TestCastleBlackBlocked3(t *testing.T) {
+	b := testCastlingBoard()
+	b.SetSquare(57, boardstate.WHITE, boardstate.BISHOP)
+	b.SetSquare(62, boardstate.WHITE, boardstate.KNIGHT)
+	b.SetTurn(boardstate.BLACK)
+  locations := genSortedBoardLocationsKings(b)
+  expected := []int8{50,51,52,58,60}
+  if !reflect.DeepEqual(locations, expected) {
+    t.Errorf("Expected %v to be %v", locations, expected)
+  }
+}
 
 
 func TestGenAllKingMoves(t *testing.T) {
