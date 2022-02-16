@@ -10,7 +10,7 @@ import (
 type BoardState struct {
 	colors [2]uint64
 	pieces [6]uint64
-	enpassantFile int8
+	enpassantSquare int8
 	meta   uint64
 	turn int8
 }
@@ -21,7 +21,7 @@ func Blank() *BoardState {
 	b.turn = WHITE
 	b.colors = [2]uint64{0, 0}
 	b.pieces = [6]uint64{0, 0, 0, 0, 0, 0}
-	b.enpassantFile = NO_ENPASSANT
+	b.enpassantSquare = NO_ENPASSANT
 	return &b
 }
 
@@ -40,7 +40,7 @@ func (b *BoardState) Copy() *BoardState {
 		meta: b.meta,
 		colors: b.colors,
 		pieces: b.pieces,
-		enpassantFile: b.enpassantFile,
+		enpassantSquare: b.enpassantSquare,
 		turn: b.turn,
 	}
 

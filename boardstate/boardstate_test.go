@@ -246,16 +246,16 @@ func TestCopyPlayMove(t *testing.T) {
 
 func TestEnpassantAsWhite(t *testing.T) {
 	b := Initial()
-	if (b.IsEnpassant(2)) {
-		t.Errorf("Did not expect enpassant to be set to 2")
+	if (b.GetEnpassant() == 18) {
+		t.Errorf("Did not expect enpassant to be set to 18, got %v", b.GetEnpassant())
 	}
 	b.PlayTurn(10,26, EMPTY)
-	if (!b.IsEnpassant(2)) {
-		t.Errorf("Expected enpassant to be set to 2")
+	if (b.GetEnpassant() != 18) {
+		t.Errorf("Expected enpassant to be set to 18, got %v", b.GetEnpassant())
 	}
 	b.PlayTurn(57,42, EMPTY)
-	if (b.IsEnpassant(2)) {
-		t.Errorf("Expected enpassant to not be set to 2")
+	if (b.GetEnpassant() == 18) {
+		t.Errorf("Expected enpassant to not be set to 18")
 	}
 
 }
@@ -263,17 +263,16 @@ func TestEnpassantAsWhite(t *testing.T) {
 func TestEnpassantAsBlack(t *testing.T) {
 	b := Initial()
 
-	b.PlayTurn(10,26, EMPTY)
-	if (b.IsEnpassant(5)) {
-		t.Errorf("Did not expect enpassant to be set to 2")
+	if (b.GetEnpassant() == 45) {
+		t.Errorf("Did not expect enpassant to be set to 45")
 	}
 	b.PlayTurn(53,37, EMPTY)
-	if (!b.IsEnpassant(5)) {
-		t.Errorf("Expected enpassant to be set to 2")
+	if (b.GetEnpassant() != 45) {
+		t.Errorf("Expected enpassant to be set to be 45, got %v", b.GetEnpassant())
 	}
 	b.PlayTurn(9,25, EMPTY)
-	if (b.IsEnpassant(5)) {
-		t.Errorf("Expected enpassant to not be set to 2")
+	if (b.GetEnpassant() == 45) {
+		t.Errorf("Did not expect enpassant to be set to 45")
 	}
 
 }

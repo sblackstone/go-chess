@@ -1,7 +1,7 @@
 package boardstate
 
 import (
-	"github.com/sblackstone/go-chess/bitopts"
+	//"github.com/sblackstone/go-chess/bitopts"
 	//"fmt"
 )
 
@@ -36,8 +36,10 @@ func (b *BoardState) handleEnpassant(src int8, dst int8) {
   diff := dst - src
 
   // Flags
-  if (diff == 16 || diff == -16) {
-    b.SetEnpassant(bitopts.FileOfSquare(src))
+  if (diff == 16) {
+    b.SetEnpassant(dst - 8)
+	} else if (diff == -16) {
+		b.SetEnpassant(dst + 8)
   } else {
     b.ClearEnpassant()
   }

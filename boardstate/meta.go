@@ -51,22 +51,22 @@ func castleBit(color int8, side int8) int8 {
 }
 
 func (b *BoardState) ClearEnpassant() {
-  b.enpassantFile = NO_ENPASSANT;
+  b.enpassantSquare = NO_ENPASSANT;
 }
 
 func (b *BoardState) GetEnpassant() int8 {
-  return b.enpassantFile;
+  return b.enpassantSquare;
 }
 
 
 // SetEnpassant takes a file 0-7 and saves the enpassant state.
 func (b *BoardState) SetEnpassant(file int8) {
-  b.enpassantFile = file;
+  b.enpassantSquare = file;
 }
 
 // IsEnpassant takes a file 0-7 and returns the enpassant state.
 func (b *BoardState) IsEnpassant(file int8) bool {
-  return b.enpassantFile == file
+  return b.enpassantSquare == file
 }
 
 func (b *BoardState) HasCastleRights(color int8, side int8) bool {

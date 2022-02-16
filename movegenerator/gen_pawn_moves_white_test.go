@@ -53,12 +53,12 @@ func TestPushPawnTwoWhite(t *testing.T) {
 	positions := genPawnMoves(b)
 	for i := range(positions) {
 		if positions[i].PieceOfSquare(24) == boardstate.PAWN {
-			if !positions[i].IsEnpassant(0) {
-			  t.Errorf("Expected 0 to be enpassant after double push")
+			if positions[i].GetEnpassant() != 16 {
+			  t.Errorf("Expected 16 to be enpassant after double push")
 			}
 		} else {
-			if positions[i].IsEnpassant(0) {
-			  t.Errorf("Expected 0 to NOT be enpassant after double push")
+			if positions[i].GetEnpassant() == 16 {
+			  t.Errorf("Expected 16 to NOT be enpassant after double push")
 			}
 
 		}
