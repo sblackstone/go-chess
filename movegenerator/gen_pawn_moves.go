@@ -77,15 +77,6 @@ func genSinglePawnMoves(b *boardstate.BoardState, pawnPos int8) []*boardstate.Bo
 			}
 		}
 	}
-
-
-	// TODO: ENPASSANT CAPTURE
-
-	return result
-}
-
-func genSinglePawnMovesBlack(b *boardstate.BoardState, pawnPos int8) []*boardstate.BoardState {
-	var result []*boardstate.BoardState;
 	return result
 }
 
