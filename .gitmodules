@@ -1,0 +1,3 @@
+[submodule "chessmovegen"]
+	path = chessmovegen
+	url = git@github.com:schnitzi/chessmovegen.git
