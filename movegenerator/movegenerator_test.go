@@ -1,11 +1,11 @@
 package movegenerator
 
+/*
+
 import (
   "testing"
 	"github.com/sblackstone/go-chess/boardstate"
 )
-
-
 
 func TestMoveGeneratorInitialPosition(t *testing.T) {
   b := boardstate.Initial()
@@ -29,3 +29,4 @@ func TestMoveGeneratorInitialPosition(t *testing.T) {
 
 
 }
+*/

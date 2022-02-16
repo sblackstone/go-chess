@@ -24,7 +24,7 @@ func testCastlingBoard() *boardstate.BoardState {
 func TestCastleWhite(t *testing.T) {
 	b := testCastlingBoard()
   locations := genSortedBoardLocationsKings(b)
-  expected := []int8{1, 2, 4, 5, 10, 11, 12}
+  expected := []int8{2, 3, 5, 6, 11, 12, 13}
   if !reflect.DeepEqual(locations, expected) {
     t.Errorf("Expected %v to be %v", locations, expected)
   }
@@ -35,7 +35,7 @@ func TestCastleBlack(t *testing.T) {
 	b := testCastlingBoard()
 	b.SetTurn(boardstate.BLACK)
   locations := genSortedBoardLocationsKings(b)
-  expected := []int8{50, 51, 52, 57, 58, 60, 61}
+  expected := []int8{51, 52, 53, 58,59, 61, 62}
   if !reflect.DeepEqual(locations, expected) {
     t.Errorf("Expected %v to be %v", locations, expected)
   }
@@ -45,10 +45,10 @@ func TestCastleBlack(t *testing.T) {
 
 func TestCastleWhiteBlocked(t *testing.T) {
 	b := testCastlingBoard()
-	b.SetSquare(2, boardstate.BLACK, boardstate.BISHOP)
-	b.SetSquare(4, boardstate.BLACK, boardstate.KNIGHT)
+	b.SetSquare(3, boardstate.WHITE, boardstate.BISHOP)
+	b.SetSquare(5, boardstate.WHITE, boardstate.KNIGHT)
   locations := genSortedBoardLocationsKings(b)
-  expected := []int8{2,4,10,11,12}
+  expected := []int8{11,12,13}
   if !reflect.DeepEqual(locations, expected) {
     t.Errorf("Expected %v to be %v", locations, expected)
   }
@@ -57,11 +57,11 @@ func TestCastleWhiteBlocked(t *testing.T) {
 
 func TestCastleBlackBlocked(t *testing.T) {
 	b := testCastlingBoard()
-	b.SetSquare(58, boardstate.WHITE, boardstate.BISHOP)
-	b.SetSquare(60, boardstate.WHITE, boardstate.KNIGHT)
+	b.SetSquare(59, boardstate.BLACK, boardstate.BISHOP)
+	b.SetSquare(61, boardstate.BLACK, boardstate.KNIGHT)
 	b.SetTurn(boardstate.BLACK)
   locations := genSortedBoardLocationsKings(b)
-  expected := []int8{50,51,52,58,60}
+  expected := []int8{51,52,53}
   if !reflect.DeepEqual(locations, expected) {
     t.Errorf("Expected %v to be %v", locations, expected)
   }
@@ -69,10 +69,10 @@ func TestCastleBlackBlocked(t *testing.T) {
 
 func TestCastleWhiteBlocked2(t *testing.T) {
 	b := testCastlingBoard()
-	b.SetSquare(1, boardstate.BLACK, boardstate.BISHOP)
-	b.SetSquare(5, boardstate.BLACK, boardstate.KNIGHT)
+	b.SetSquare(2, boardstate.WHITE, boardstate.BISHOP)
+	b.SetSquare(6, boardstate.WHITE, boardstate.KNIGHT)
   locations := genSortedBoardLocationsKings(b)
-  expected := []int8{2,4,10,11,12}
+  expected := []int8{3,5,11,12,13}
   if !reflect.DeepEqual(locations, expected) {
     t.Errorf("Expected %v to be %v", locations, expected)
   }
@@ -81,11 +81,11 @@ func TestCastleWhiteBlocked2(t *testing.T) {
 
 func TestCastleBlackBlocked2(t *testing.T) {
 	b := testCastlingBoard()
-	b.SetSquare(57, boardstate.WHITE, boardstate.BISHOP)
-	b.SetSquare(61, boardstate.WHITE, boardstate.KNIGHT)
+	b.SetSquare(58, boardstate.BLACK, boardstate.BISHOP)
+	b.SetSquare(62, boardstate.BLACK, boardstate.KNIGHT)
 	b.SetTurn(boardstate.BLACK)
   locations := genSortedBoardLocationsKings(b)
-  expected := []int8{50,51,52,58,60}
+  expected := []int8{51,52,53,59,61}
   if !reflect.DeepEqual(locations, expected) {
     t.Errorf("Expected %v to be %v", locations, expected)
   }
@@ -93,10 +93,10 @@ func TestCastleBlackBlocked2(t *testing.T) {
 
 func TestCastleWhiteBlocked3(t *testing.T) {
 	b := testCastlingBoard()
-	b.SetSquare(1, boardstate.BLACK, boardstate.BISHOP)
-	b.SetSquare(6, boardstate.BLACK, boardstate.KNIGHT)
+	b.SetSquare(5, boardstate.WHITE, boardstate.BISHOP)
+	b.SetSquare(1, boardstate.WHITE, boardstate.KNIGHT)
   locations := genSortedBoardLocationsKings(b)
-  expected := []int8{2,4,10,11,12}
+  expected := []int8{3,11,12,13}
   if !reflect.DeepEqual(locations, expected) {
     t.Errorf("Expected %v to be %v", locations, expected)
   }
@@ -105,11 +105,11 @@ func TestCastleWhiteBlocked3(t *testing.T) {
 
 func TestCastleBlackBlocked3(t *testing.T) {
 	b := testCastlingBoard()
-	b.SetSquare(57, boardstate.WHITE, boardstate.BISHOP)
-	b.SetSquare(62, boardstate.WHITE, boardstate.KNIGHT)
+	b.SetSquare(61, boardstate.BLACK, boardstate.BISHOP)
+	b.SetSquare(57, boardstate.BLACK, boardstate.KNIGHT)
 	b.SetTurn(boardstate.BLACK)
   locations := genSortedBoardLocationsKings(b)
-  expected := []int8{50,51,52,58,60}
+  expected := []int8{51,52,53,59}
   if !reflect.DeepEqual(locations, expected) {
     t.Errorf("Expected %v to be %v", locations, expected)
   }
@@ -199,6 +199,9 @@ func TestGenAllKingMoves(t *testing.T) {
 
 func TestKingCenterOfBoard(t *testing.T) {
 	b := boardstate.Blank()
+	b.SetCastleRights(boardstate.WHITE, boardstate.CASTLE_LONG, false)
+	b.SetCastleRights(boardstate.WHITE, boardstate.CASTLE_SHORT, false)
+
   b.SetSquare(27, boardstate.WHITE, boardstate.KING)
   locations := genSortedBoardLocationsKings(b)
   expected := []int8{18, 19, 20, 26, 28, 34, 35, 36}
@@ -210,6 +213,9 @@ func TestKingCenterOfBoard(t *testing.T) {
 
 func TestKingCanCaptureOtherPieces(t *testing.T) {
 	b := boardstate.Blank()
+	b.SetCastleRights(boardstate.WHITE, boardstate.CASTLE_LONG, false)
+	b.SetCastleRights(boardstate.WHITE, boardstate.CASTLE_SHORT, false)
+
 	expected := []int8{18, 19, 20, 26, 28, 34, 35, 36}
 	for i := range(expected) {
 		b.SetSquare(expected[i], boardstate.BLACK, boardstate.PAWN)
@@ -226,6 +232,9 @@ func TestKingCanCaptureOtherPieces(t *testing.T) {
 
 func TestKingBlockedByOwnPieces(t *testing.T) {
 	b := boardstate.Blank()
+	b.SetCastleRights(boardstate.WHITE, boardstate.CASTLE_LONG, false)
+	b.SetCastleRights(boardstate.WHITE, boardstate.CASTLE_SHORT, false)
+
 	b.SetSquare(18, boardstate.WHITE, boardstate.PAWN)
 	b.SetSquare(19, boardstate.WHITE, boardstate.PAWN)
 	b.SetSquare(20, boardstate.WHITE, boardstate.PAWN)
@@ -247,6 +256,11 @@ func TestKingBlockedByOwnPieces(t *testing.T) {
 
 func TestGenKingMovesKnowsAboutTurns(t *testing.T) {
 	b := boardstate.Blank()
+	b.SetCastleRights(boardstate.WHITE, boardstate.CASTLE_LONG, false)
+	b.SetCastleRights(boardstate.WHITE, boardstate.CASTLE_SHORT, false)
+	b.SetCastleRights(boardstate.BLACK, boardstate.CASTLE_LONG, false)
+	b.SetCastleRights(boardstate.BLACK, boardstate.CASTLE_SHORT, false)
+
 	b.SetSquare(43,  boardstate.WHITE, boardstate.KING)
 	b.SetSquare(19,  boardstate.BLACK, boardstate.KING)
 	moves := genSortedBoardLocationsKings(b)
