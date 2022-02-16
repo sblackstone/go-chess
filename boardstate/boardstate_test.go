@@ -18,6 +18,11 @@ func testCastlingBoard() *BoardState {
 }
 
 
+func TestDebugPrint(t *testing.T) {
+	b := Initial()
+	b.Print(52)
+}
+
 func TestTakingRooksDisableCastlingWhiteLong(t *testing.T) {
 	b := testCastlingBoard();
 	b.SetTurn(BLACK)

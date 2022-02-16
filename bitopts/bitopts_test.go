@@ -6,6 +6,10 @@ import (
 )
 
 
+func TestPrint(t *testing.T) {
+	var val uint64 = 5;
+	Print(val,52)
+}
 
 func TestFindTwoPiecePositions(t *testing.T) {
 	  var val uint64;
