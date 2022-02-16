@@ -43,6 +43,33 @@ func TestCastleBlack(t *testing.T) {
 
 
 
+func TestCastleWhiteBlocked(t *testing.T) {
+	b := testCastlingBoard()
+	b.SetSquare(2, boardstate.BLACK, boardstate.BISHOP)
+	b.SetSquare(4, boardstate.BLACK, boardstate.KNIGHT)
+  locations := genSortedBoardLocationsKings(b)
+  expected := []int8{2,4,10,11,12}
+  if !reflect.DeepEqual(locations, expected) {
+    t.Errorf("Expected %v to be %v", locations, expected)
+  }
+}
+
+
+func TestCastleBlackBlocked(t *testing.T) {
+	b := testCastlingBoard()
+	b.SetSquare(58, boardstate.WHITE, boardstate.BISHOP)
+	b.SetSquare(60, boardstate.WHITE, boardstate.KNIGHT)
+	b.SetTurn(boardstate.BLACK)
+  locations := genSortedBoardLocationsKings(b)
+  expected := []int8{50,51,52,58,60}
+  if !reflect.DeepEqual(locations, expected) {
+    t.Errorf("Expected %v to be %v", locations, expected)
+  }
+}
+
+
+
+
 func TestGenAllKingMoves(t *testing.T) {
 
 	cases := [][]int8{
