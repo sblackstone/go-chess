@@ -19,20 +19,66 @@ func testCastlingBoard() *BoardState {
 
 
 func TestTakingRooksDisableCastlingWhiteShort(t *testing.T) {
-	t.Errorf("TODO")
+	b := testCastlingBoard();
+	b.SetTurn(BLACK)
+
+	if (!b.HasCastleRights(WHITE, CASTLE_SHORT)) {
+		t.Errorf("Expected WHITE to have CASTLE_SHORT before rook move")
+	}
+
+	b.PlayTurn(56, 0, EMPTY)
+
+	if (b.HasCastleRights(WHITE, CASTLE_SHORT)) {
+		t.Errorf("Expected WHITE to NOT have CASTLE_SHORT after rook move")
+	}
 }
 
 func TestTakingRooksDisableCastlingWhiteLong(t *testing.T) {
-	t.Errorf("TODO")
+	b := testCastlingBoard();
+	b.SetTurn(BLACK)
+
+	if (!b.HasCastleRights(WHITE, CASTLE_LONG)) {
+		t.Errorf("Expected WHITE to have CASTLE_LONG before rook move")
+	}
+
+	b.PlayTurn(63, 7, EMPTY)
+
+	if (b.HasCastleRights(WHITE, CASTLE_LONG)) {
+		t.Errorf("Expected WHITE to NOT have CASTLE_LONG after rook move")
+	}
 }
 
+
+/////
 func TestTakingRooksDisableCastlingBlackShort(t *testing.T) {
-	t.Errorf("TODO")
+	b := testCastlingBoard();
+
+	if (!b.HasCastleRights(BLACK, CASTLE_SHORT)) {
+		t.Errorf("Expected BLACK to have CASTLE_SHORT before rook move")
+	}
+
+	b.PlayTurn(0, 56, EMPTY)
+
+	if (b.HasCastleRights(BLACK, CASTLE_SHORT)) {
+		t.Errorf("Expected BLACK to NOT have CASTLE_SHORT after rook move")
+	}
 }
 
 func TestTakingRooksDisableCastlingBlackLong(t *testing.T) {
-	t.Errorf("TODO")
+	b := testCastlingBoard();
+
+	if (!b.HasCastleRights(BLACK, CASTLE_LONG)) {
+		t.Errorf("Expected BLACK to have CASTLE_LONG before rook move")
+	}
+
+	b.PlayTurn(7, 63, EMPTY)
+
+	if (b.HasCastleRights(BLACK, CASTLE_LONG)) {
+		t.Errorf("Expected BLACK to NOT have CASTLE_LONG after rook move")
+	}
 }
+
+/////
 
 
 
