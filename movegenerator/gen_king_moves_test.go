@@ -21,28 +21,24 @@ func testCastlingBoard() *boardstate.BoardState {
 	return b
 }
 
-func TestCastleShortWhite(t *testing.T) {
+func TestCastleWhite(t *testing.T) {
 	b := testCastlingBoard()
-	b.Print(127)
   locations := genSortedBoardLocationsKings(b)
   expected := []int8{1, 2, 4, 5, 10, 11, 12}
   if !reflect.DeepEqual(locations, expected) {
     t.Errorf("Expected %v to be %v", locations, expected)
   }
-
-
 }
 
-func TestCastleLongWhite(t *testing.T) {
-	t.Errorf("TODO")
-}
 
-func TestCastleShortBlack(t *testing.T) {
-	t.Errorf("TODO")
-}
-
-func TestCastleLongBlack(t *testing.T) {
-	t.Errorf("TODO")
+func TestCastleBlack(t *testing.T) {
+	b := testCastlingBoard()
+	b.SetTurn(boardstate.BLACK)
+  locations := genSortedBoardLocationsKings(b)
+  expected := []int8{50, 51, 52, 57, 58, 60, 61}
+  if !reflect.DeepEqual(locations, expected) {
+    t.Errorf("Expected %v to be %v", locations, expected)
+  }
 }
 
 
