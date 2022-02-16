@@ -57,6 +57,29 @@ func genSingleKingMoves(b *boardstate.BoardState, kingPos int8) []*boardstate.Bo
 			result = append(result, b.CopyPlayTurn(kingPos, move, boardstate.EMPTY))
 		}
 	}
+
+	turn := b.GetTurn()
+
+  // TODO: NEEDS TO CHECK IF KING MOVES THROUGH CHECK!
+
+	if (turn == boardstate.WHITE) {
+		if kingPos == 3 && b.HasCastleRights(turn, boardstate.CASTLE_SHORT) && b.EmptySquare(1) && b.EmptySquare(2) {
+			result = append(result, b.CopyPlayTurn(3, 1, boardstate.EMPTY))
+		}
+		if kingPos == 3 && b.HasCastleRights(turn, boardstate.CASTLE_LONG) && b.EmptySquare(4) && b.EmptySquare(5) && b.EmptySquare(6) {
+			result = append(result, b.CopyPlayTurn(3, 5, boardstate.EMPTY))
+		}
+	}
+
+	if (turn == boardstate.BLACK) {
+		if kingPos == 59 && b.HasCastleRights(turn, boardstate.CASTLE_SHORT) && b.EmptySquare(57) && b.EmptySquare(58) {
+			result = append(result, b.CopyPlayTurn(59, 57, boardstate.EMPTY))
+		}
+		if kingPos == 59 && b.HasCastleRights(turn, boardstate.CASTLE_LONG) && b.EmptySquare(60) && b.EmptySquare(61) && b.EmptySquare(62) {
+			result = append(result, b.CopyPlayTurn(59, 61, boardstate.EMPTY))
+		}
+	}
+
 	return result
 }
 
