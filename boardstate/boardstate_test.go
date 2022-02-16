@@ -17,6 +17,25 @@ func testCastlingBoard() *BoardState {
 	return b
 }
 
+
+func TestTakingRooksDisableCastlingWhiteShort(t *testing.T) {
+	t.Errorf("TODO")
+}
+
+func TestTakingRooksDisableCastlingWhiteLong(t *testing.T) {
+	t.Errorf("TODO")
+}
+
+func TestTakingRooksDisableCastlingBlackShort(t *testing.T) {
+	t.Errorf("TODO")
+}
+
+func TestTakingRooksDisableCastlingBlackLong(t *testing.T) {
+	t.Errorf("TODO")
+}
+
+
+
 func TestMoveKingLoosesRights(t *testing.T) {
 	b := testCastlingBoard()
 	b.PlayTurn(3, 11, EMPTY)

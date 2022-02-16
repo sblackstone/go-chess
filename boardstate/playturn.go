@@ -6,7 +6,7 @@ import (
 )
 
 
-func (b * BoardState) updateCastlingRights(src int8) {
+func (b * BoardState) updateCastlingRights(src int8, dst int8) {
 	if (src == 3) {
 		b.SetCastleRights(WHITE, CASTLE_LONG,  false)
 		b.SetCastleRights(WHITE, CASTLE_SHORT, false)
@@ -17,16 +17,16 @@ func (b * BoardState) updateCastlingRights(src int8) {
 		b.SetCastleRights(BLACK, CASTLE_SHORT, false)
 	}
 
-	if (src == 0) {
+	if (src == 0 || dst == 0) {
 		b.SetCastleRights(WHITE, CASTLE_SHORT, false)
 	}
-	if (src == 7) {
+	if (src == 7 || dst == 7) {
 		b.SetCastleRights(WHITE, CASTLE_LONG, false)
 	}
-	if (src == 56) {
+	if (src == 56 || dst == 56) {
 		b.SetCastleRights(BLACK, CASTLE_SHORT, false)
 	}
-	if (src == 63) {
+	if (src == 63 || dst == 63) {
 		b.SetCastleRights(BLACK, CASTLE_LONG, false)
 	}
 }
@@ -73,7 +73,7 @@ func (b *BoardState) PlayTurn(src int8, dst int8, promotePiece int8) {
 			b.ClearEnpassant()
 		}
 
-		b.updateCastlingRights(src)
+		b.updateCastlingRights(src, dst)
 
 		b.MovePiece(src, dst)
 
