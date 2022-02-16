@@ -64,7 +64,6 @@ func (b *BoardState) handleCastling(src int8, dst int8) {
 }
 
 func (b *BoardState) PlayTurn(src int8, dst int8, promotePiece int8) {
-		// TODO: We can make this only check the pawns for a few ops worth of savings.
 		piece := b.PieceOfSquare(src)
 
 		// Set or Clear enpassant flag
