@@ -27,7 +27,7 @@ func (b * BoardState) updateCastlingRights(src int8) {
 		b.SetCastleRights(BLACK, CASTLE_SHORT, false)
 	}
 	if (src == 63) {
-		b.SetCastleRights(BLACK, CASTLE_SHORT, false)
+		b.SetCastleRights(BLACK, CASTLE_LONG, false)
 	}
 }
 
