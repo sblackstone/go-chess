@@ -4,7 +4,7 @@ import (
 	"github.com/sblackstone/go-chess/boardstate"
 )
 
-func genSucessors(b *boardstate.BoardState) []*boardstate.BoardState {
+func GenSucessors(b *boardstate.BoardState) []*boardstate.BoardState {
   var result []*boardstate.BoardState;
   result = append(result, genPawnMoves(b)...);
   result = append(result, genKingMoves(b)...);

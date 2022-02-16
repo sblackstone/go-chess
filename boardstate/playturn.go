@@ -7,26 +7,26 @@ import (
 
 
 func (b * BoardState) updateCastlingRights(src int8, dst int8) {
-	if (src == 3) {
+	if (src == 4) {
 		b.SetCastleRights(WHITE, CASTLE_LONG,  false)
 		b.SetCastleRights(WHITE, CASTLE_SHORT, false)
 	}
 
-	if (src == 59) {
+	if (src == 60) {
 		b.SetCastleRights(BLACK, CASTLE_LONG,  false)
 		b.SetCastleRights(BLACK, CASTLE_SHORT, false)
 	}
 
-	if (src == 0 || dst == 0) {
+	if (src == 7 || dst == 7) {
 		b.SetCastleRights(WHITE, CASTLE_SHORT, false)
 	}
-	if (src == 7 || dst == 7) {
+	if (src == 0 || dst == 0) {
 		b.SetCastleRights(WHITE, CASTLE_LONG, false)
 	}
-	if (src == 56 || dst == 56) {
+	if (src == 63 || dst == 63) {
 		b.SetCastleRights(BLACK, CASTLE_SHORT, false)
 	}
-	if (src == 63 || dst == 63) {
+	if (src == 56 || dst == 56) {
 		b.SetCastleRights(BLACK, CASTLE_LONG, false)
 	}
 }
@@ -56,10 +56,10 @@ func (b *BoardState) handleEnpassant(src int8, dst int8) {
 
 func (b *BoardState) handleCastling(src int8, dst int8) {
   if (src-dst == 2) {
-    b.MovePiece(src-3, src-1)
+    b.MovePiece(src-4, src-1)
   }
   if (src-dst == -2) {
-    b.MovePiece(src+4, src+1)
+    b.MovePiece(src+3, src+1)
   }
 }
 

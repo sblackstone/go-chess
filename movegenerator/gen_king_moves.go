@@ -60,7 +60,7 @@ func genSingleKingMoves(b *boardstate.BoardState, kingPos int8) []*boardstate.Bo
 
 	turn := b.GetTurn()
 
-  // TODO: NEEDS TO CHECK IF KING MOVES THROUGH CHECK!
+  // TODO: NEEDS TO CHECK IF KING MOVES THROUGH CHECK
 
 	if (turn == boardstate.WHITE) {
 		if kingPos == 3 && b.HasCastleRights(turn, boardstate.CASTLE_SHORT) && b.EmptySquare(1) && b.EmptySquare(2) {

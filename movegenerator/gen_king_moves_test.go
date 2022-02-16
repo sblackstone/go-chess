@@ -12,11 +12,11 @@ import (
 func testCastlingBoard() *boardstate.BoardState {
 	b := boardstate.Blank()
 	b.SetSquare(0, boardstate.WHITE, boardstate.ROOK)
-	b.SetSquare(3, boardstate.WHITE, boardstate.KING)
+	b.SetSquare(4, boardstate.WHITE, boardstate.KING)
 	b.SetSquare(7, boardstate.WHITE, boardstate.ROOK)
 
 	b.SetSquare(56, boardstate.BLACK, boardstate.ROOK)
-	b.SetSquare(59, boardstate.BLACK, boardstate.KING)
+	b.SetSquare(60, boardstate.BLACK, boardstate.KING)
 	b.SetSquare(63, boardstate.BLACK, boardstate.ROOK)
 	return b
 }
