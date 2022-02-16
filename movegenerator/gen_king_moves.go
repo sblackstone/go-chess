@@ -34,10 +34,10 @@ func genAllKingMoves() [64][]int8 {
 			}
 
 
-			if (file >= 1) {
+			if (file > 0) {
 				result[pos] = append(result[pos], pos - 1);
 			}
-			if (file <= 6) {
+			if (file < 7) {
 				result[pos] = append(result[pos], pos + 1);
 			}
 
