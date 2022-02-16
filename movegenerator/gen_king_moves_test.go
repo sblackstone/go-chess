@@ -8,6 +8,25 @@ import (
 
 )
 
+
+func TestCastleShortWhite(t *testing.T) {
+	t.Errorf("TODO")
+}
+
+func TestCastleLongWhite(t *testing.T) {
+	t.Errorf("TODO")
+}
+
+func TestCastleShortBlack(t *testing.T) {
+	t.Errorf("TODO")
+}
+
+func TestCastleLongBlack(t *testing.T) {
+	t.Errorf("TODO")
+}
+
+
+
 func TestGenAllKingMoves(t *testing.T) {
 
 	cases := [][]int8{
