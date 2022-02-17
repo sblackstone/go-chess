@@ -6,6 +6,38 @@ import (
 )
 
 
+func TestAlgebraicToSquare(t *testing.T) {
+
+	val, err := AlgebraicToSquare("c4")
+	if err != nil || val != 26 {
+		t.Errorf("Expected c4 to be 26, not %v %v", val, err)
+	}
+
+	val2, err2 := AlgebraicToSquare("H8")
+	if err2 != nil || val2 != 63 {
+		t.Errorf("Expected H8 to be 63, not %v %v", val2, err2)
+	}
+
+	val3, err3 := AlgebraicToSquare("K1")
+	if err3 == nil {
+		t.Errorf("Expected k1 to give error, not %v %v", val3, err3)
+	}
+
+	val4, err4 := AlgebraicToSquare("a9")
+	if err4 == nil {
+		t.Errorf("Expected a9 to give error, not %v %v", val4, err4)
+	}
+
+	val5, err5 := AlgebraicToSquare("g3")
+	if err5 != nil || val5 != 22 {
+		t.Errorf("Expected g3 to be 22, not %v %v", val5, err5)
+	}
+
+
+
+
+}
+
 func TestPrint(t *testing.T) {
 	var val uint64 = 5;
 	Print(val,52)
