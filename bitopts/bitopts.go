@@ -10,6 +10,11 @@ import (
 
 func AlgebraicToSquare(algrbraicSquare string) (int8, error) {
   var result int8
+
+  if len(algrbraicSquare) != 2 {
+    return -1, errors.New("algrbraicSquare must be a string of len 2 " + fmt.Sprint(result))
+  }
+
   algrbraicSquare = strings.ToLower(algrbraicSquare)
   var parts = strings.Split(algrbraicSquare, "")
   result = int8(algrbraicSquare[0]) - int8('a')

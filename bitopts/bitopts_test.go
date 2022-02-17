@@ -33,6 +33,18 @@ func TestAlgebraicToSquare(t *testing.T) {
 		t.Errorf("Expected g3 to be 22, not %v %v", val5, err5)
 	}
 
+	val6, err6 := AlgebraicToSquare("")
+	if err6 == nil {
+		t.Errorf("Expected empty string to give error, not %v %v", val6, err6)
+	}
+
+	val7, err7 := AlgebraicToSquare("AX")
+	if err7 == nil {
+		t.Errorf("Expected empty string to give error, not %v %v", val7, err7)
+	}
+
+
+
 }
 
 func TestPrint(t *testing.T) {
