@@ -34,5 +34,5 @@ func genSortedBoardLocationsKings(b *boardstate.BoardState) []int8 {
 }
 
 func genSortedBoardLocationsPawns(b *boardstate.BoardState) []int8 {
-  return genSortedBoardLocationsGeneric(b.GetTurn(), boardstate.PAWN, genPawnMoves(b))
+  return genSortedBoardLocationsGeneric(b.GetTurn(), boardstate.PAWN, genPawnSuccessors(b))
 }

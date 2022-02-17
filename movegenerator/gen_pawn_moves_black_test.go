@@ -53,7 +53,7 @@ func TestPushPawnTwoBlack(t *testing.T) {
     t.Errorf("Expected %v to be %v", locations, expected)
   }
 
-	positions := genPawnMoves(b)
+	positions := genPawnSuccessors(b)
 	for i := range(positions) {
 		if positions[i].PieceOfSquare(33) == boardstate.PAWN {
 			if positions[i].GetEnpassant() != 41 {
@@ -124,7 +124,7 @@ func TestCaptureHigherFileBlackWithPromotion(t *testing.T) {
 	b.SetSquare(6, boardstate.WHITE, boardstate.QUEEN)
 
 	//b.SetSquare(62, boardstate.BLACK, boardstate.QUEEN)
-	boards := genPawnMoves(b)
+	boards := genPawnSuccessors(b)
 	var sum int8
 	for i := range(boards) {
 		//boards[i].Print(255)
@@ -143,7 +143,7 @@ func TestCaptureLowerFileBlackWithPromotion(t *testing.T) {
 	b.SetSquare(1, boardstate.WHITE, boardstate.KING)
 
 	b.SetSquare(2, boardstate.WHITE, boardstate.QUEEN)
-	boards := genPawnMoves(b)
+	boards := genPawnSuccessors(b)
 	var sum int8
 	for i := range(boards) {
 		sum += boards[i].PieceOfSquare(1)
@@ -203,7 +203,7 @@ func TestPushPawnPromoteBlack(t *testing.T) {
   b := boardstate.Blank()
 	b.ToggleTurn()
   b.SetSquare(11, boardstate.BLACK, boardstate.PAWN)
-	boards := genPawnMoves(b)
+	boards := genPawnSuccessors(b)
 	var sum int8
 	for i := range(boards) {
 		sum += boards[i].PieceOfSquare(3)
@@ -282,7 +282,7 @@ func TestEnPassantCaptureAsBlackUnavailableAfterAdditionalMove(t *testing.T) {
 
 
 	// fmt.Println(b.GetEnpassant())
-	// pawnMoves := genPawnMoves(b)
+	// pawnMoves := genPawnSuccessors(b)
 	// for i := range(pawnMoves) {
 	// 	fmt.Println()
 	// 	pawnMoves[i].Print(255)

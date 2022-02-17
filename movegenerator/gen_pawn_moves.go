@@ -5,8 +5,8 @@ import (
 	"github.com/sblackstone/go-chess/bitopts"
 )
 
-func genSinglePawnMoves(b *boardstate.BoardState, pawnPos int8) []*boardstate.BoardState {
-	var result []*boardstate.BoardState;
+func genSinglePawnMoves(b *boardstate.BoardState, pawnPos int8) []*boardstate.Move {
+	var result []*boardstate.Move;
 	pawnPosRank, pawnPosFile := bitopts.SquareToRankFile(pawnPos)
 	var promotionRank,pushFoardTwoRank,pushForwardOne,pushForwardTwo,captureToLowerFilePos,captureToHigherFilePos,fromEnpassantRank int8
 
@@ -31,12 +31,12 @@ func genSinglePawnMoves(b *boardstate.BoardState, pawnPos int8) []*boardstate.Bo
 	appendPawnMovesFn := func(newPos int8) {
 		// Non-Promotion
 		if (bitopts.RankOfSquare(newPos) != promotionRank) {
-			result = append(result, b.CopyPlayTurn(pawnPos, newPos, boardstate.EMPTY))
+			result = append(result, boardstate.CreateMove(pawnPos, newPos, boardstate.EMPTY))
 		} else {
 			// With Promotion
 			var i int8
 			for i = boardstate.ROOK; i <= boardstate.QUEEN; i++ {
-				newBoard := b.CopyPlayTurn(pawnPos, newPos, i)
+				newBoard := boardstate.CreateMove(pawnPos, newPos, i)
 				result = append(result, newBoard)
 			}
 		}
@@ -49,7 +49,7 @@ func genSinglePawnMoves(b *boardstate.BoardState, pawnPos int8) []*boardstate.Bo
 
 	// Push 2, never has to promote.
 	if bitopts.RankOfSquare(pawnPos) == pushFoardTwoRank && b.EmptySquare(pushForwardOne) && b.EmptySquare(pushForwardTwo) {
-		result = append(result, b.CopyPlayTurn(pawnPos, pushForwardTwo, boardstate.EMPTY))
+		result = append(result, boardstate.CreateMove(pawnPos, pushForwardTwo, boardstate.EMPTY))
 	}
 
   // Cpature to Lower file
@@ -79,14 +79,17 @@ func genSinglePawnMoves(b *boardstate.BoardState, pawnPos int8) []*boardstate.Bo
 	return result
 }
 
-
-func genPawnMoves(b *boardstate.BoardState) []*boardstate.BoardState {
-	var result []*boardstate.BoardState;
+func genAllPawnMoves(b *boardstate.BoardState) []*boardstate.Move {
+	var result []*boardstate.Move;
 	pawnPositions := b.FindPieces(b.GetTurn(), boardstate.PAWN)
-	//fmt.Printf("%v\n", rookPositions)
 	for i := 0; i < len(pawnPositions); i++ {
 		result = append(result, genSinglePawnMoves(b, pawnPositions[i])...)
 	}
-
   return result;
+
+}
+
+
+func genPawnSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
+	return b.GenerateSuccessors(genAllPawnMoves(b))
 }
