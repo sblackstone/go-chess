@@ -14,7 +14,7 @@ func genSortedBoardLocationsGeneric(turn int8, piece int8, result[]*boardstate.B
 }
 
 func genSortedBoardLocationsRooks(b *boardstate.BoardState) []int8 {
-	return genSortedBoardLocationsGeneric(b.GetTurn(), boardstate.ROOK, genRookMoves(b))
+	return genSortedBoardLocationsGeneric(b.GetTurn(), boardstate.ROOK, genRookSuccessors(b))
 }
 
 func genSortedBoardLocationsKnights(b *boardstate.BoardState) []int8 {
@@ -22,11 +22,11 @@ func genSortedBoardLocationsKnights(b *boardstate.BoardState) []int8 {
 }
 
 func genSortedBoardLocationsBishops(b *boardstate.BoardState) []int8 {
-  return genSortedBoardLocationsGeneric(b.GetTurn(), boardstate.BISHOP, genBishopMoves(b))
+  return genSortedBoardLocationsGeneric(b.GetTurn(), boardstate.BISHOP, genBishopSuccessors(b))
 }
 
 func genSortedBoardLocationsQueens(b *boardstate.BoardState) []int8 {
-  return genSortedBoardLocationsGeneric(b.GetTurn(), boardstate.QUEEN, genQueenMoves(b))
+  return genSortedBoardLocationsGeneric(b.GetTurn(), boardstate.QUEEN, genQueenSuccessors(b))
 }
 
 func genSortedBoardLocationsKings(b *boardstate.BoardState) []int8 {

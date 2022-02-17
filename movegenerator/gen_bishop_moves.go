@@ -7,14 +7,14 @@ import (
 //	"fmt"
 )
 
-func genSingleBishopMoves(b *boardstate.BoardState, bishopPos int8) []*boardstate.BoardState {
-	var result []*boardstate.BoardState;
+func genSingleBishopMoves(b *boardstate.BoardState, bishopPos int8) []*boardstate.Move {
+	var result []*boardstate.Move;
 
 	file := bitopts.FileOfSquare(bishopPos)
 
 	for r := bishopPos+9; r < 64 && bitopts.FileOfSquare(r) > file; r += 9 {
 			if b.EmptyOrEnemyOccupiedSquare(r) {
-				result = append(result, b.CopyPlayTurn(bishopPos, r, boardstate.EMPTY))
+				result = append(result, boardstate.CreateMove(bishopPos, r, boardstate.EMPTY))
 			}
 			if !b.EmptySquare(r) {
 				break;
@@ -23,7 +23,7 @@ func genSingleBishopMoves(b *boardstate.BoardState, bishopPos int8) []*boardstat
 
 	for r := bishopPos+7; r < 64 && bitopts.FileOfSquare(r) < file; r += 7 {
 		if b.EmptyOrEnemyOccupiedSquare(r) {
-			result = append(result, b.CopyPlayTurn(bishopPos, r, boardstate.EMPTY))
+			result = append(result, boardstate.CreateMove(bishopPos, r, boardstate.EMPTY))
 		}
 		if !b.EmptySquare(r) {
 			break;
@@ -33,7 +33,7 @@ func genSingleBishopMoves(b *boardstate.BoardState, bishopPos int8) []*boardstat
 
 	for r := bishopPos-7; r >= 0 && bitopts.FileOfSquare(r) > file; r -= 7 {
 		if b.EmptyOrEnemyOccupiedSquare(r) {
-			result = append(result, b.CopyPlayTurn(bishopPos, r, boardstate.EMPTY))
+			result = append(result, boardstate.CreateMove(bishopPos, r, boardstate.EMPTY))
 		}
 		if !b.EmptySquare(r) {
 			break;
@@ -42,7 +42,7 @@ func genSingleBishopMoves(b *boardstate.BoardState, bishopPos int8) []*boardstat
 
 	for r := bishopPos-9; r >= 0 && bitopts.FileOfSquare(r) < file; r -= 9 {
 		if b.EmptyOrEnemyOccupiedSquare(r) {
-			result = append(result, b.CopyPlayTurn(bishopPos, r, boardstate.EMPTY))
+			result = append(result, boardstate.CreateMove(bishopPos, r, boardstate.EMPTY))
 		}
 		if !b.EmptySquare(r) {
 			break;
@@ -51,13 +51,16 @@ func genSingleBishopMoves(b *boardstate.BoardState, bishopPos int8) []*boardstat
 	return result
 }
 
-func genBishopMoves(b *boardstate.BoardState) []*boardstate.BoardState {
-  var result []*boardstate.BoardState;
-	bishopPositions := b.FindPieces(b.GetTurn(), boardstate.BISHOP)
-	//fmt.Printf("%v\n", rookPositions)
-	for i := 0; i < len(bishopPositions); i++ {
-		result = append(result, genSingleBishopMoves(b, bishopPositions[i])...)
-	}
 
-  return result;
+func genAllBishopMoves(b *boardstate.BoardState) []*boardstate.Move {
+	var result []*boardstate.Move;
+	rookPositions := b.FindPieces(b.GetTurn(), boardstate.BISHOP)
+	for i := 0; i < len(rookPositions); i++ {
+		result = append(result, genSingleBishopMoves(b, rookPositions[i])...)
+	}
+	return result
+}
+
+func genBishopSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
+	return b.GenerateSuccessors(genAllBishopMoves(b))
 }
