@@ -20,7 +20,7 @@ func (m *Move) Src() int8 {
 }
 
 func (m *Move) Dst() int8 {
-  return m.src;
+  return m.dst;
 }
 
 
