@@ -157,8 +157,7 @@ func FromFEN(fenString string) (*boardstate.BoardState, error) {
 	m := re.FindStringSubmatch(fenString)
 
 	if (len(m) != 12) {
-		fmt.Println(len(m))
-		return nil, errors.New("Invalid FEN")
+		return nil, errors.New("Invalid FEN: " + fenString )
 	}
 	boardStr := m[1]
 	turnStr := m[3]
