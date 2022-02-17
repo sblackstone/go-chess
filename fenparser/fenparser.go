@@ -185,18 +185,13 @@ func FromFEN(fenString string) (*boardstate.BoardState, error) {
 		return nil, err
 	}
 
-
-
 	//enpassantSquare := m[7]
 	//halfMoveClock := m[9]
 	//fullMoveNumber := m[11]
 
-	for i := range(m) {
-		fmt.Printf("%v: %v\n", i, m[i])
-	}
-
-
-
+	//for i := range(m) {
+	//	fmt.Printf("%v: %v\n", i, m[i])
+	//}
 
   return b, nil
 }
