@@ -14,3 +14,16 @@ func CreateMove(src int8, dst int8, promotePiece int8) *Move {
     promotePiece: promotePiece,
   }
 }
+
+func (m *Move) Src() int8 {
+  return m.src;
+}
+
+func (m *Move) Dst() int8 {
+  return m.src;
+}
+
+
+func (m *Move) PromotePiece() int8 {
+  return m.promotePiece;
+}
