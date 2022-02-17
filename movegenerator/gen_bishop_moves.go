@@ -54,9 +54,9 @@ func genSingleBishopMoves(b *boardstate.BoardState, bishopPos int8) []*boardstat
 
 func genAllBishopMoves(b *boardstate.BoardState) []*boardstate.Move {
 	var result []*boardstate.Move;
-	rookPositions := b.FindPieces(b.GetTurn(), boardstate.BISHOP)
-	for i := 0; i < len(rookPositions); i++ {
-		result = append(result, genSingleBishopMoves(b, rookPositions[i])...)
+	bishopPositions := b.FindPieces(b.GetTurn(), boardstate.BISHOP)
+	for i := 0; i < len(bishopPositions); i++ {
+		result = append(result, genSingleBishopMoves(b, bishopPositions[i])...)
 	}
 	return result
 }

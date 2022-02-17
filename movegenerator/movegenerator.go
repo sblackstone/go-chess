@@ -7,7 +7,7 @@ import (
 func GenSucessors(b *boardstate.BoardState) []*boardstate.BoardState {
   var result []*boardstate.BoardState;
   result = append(result, genPawnMoves(b)...);
-  result = append(result, genKingMoves(b)...);
+  result = append(result, genKingSuccessors(b)...);
   result = append(result, genQueenSuccessors(b)...);
   result = append(result, genBishopSuccessors(b)...);
   result = append(result, genKnightSuccessors(b)...);

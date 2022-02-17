@@ -7,7 +7,7 @@ import (
 )
 
 
-func genAllKingMoves() [64][]int8 {
+func pregenerateAllKingMoves() [64][]int8 {
   var result [64][]int8;
   var rank,file int8
   for rank = 7; rank >= 0; rank-- {
@@ -48,13 +48,13 @@ func genAllKingMoves() [64][]int8 {
 }
 
 
-func genSingleKingMoves(b *boardstate.BoardState, kingPos int8) []*boardstate.BoardState {
-	var result []*boardstate.BoardState;
-	allKingMoves := genAllKingMoves(); // TODO: THIS MUST BE MEMOIZED SOMEHOW.
+func genSingleKingMoves(b *boardstate.BoardState, kingPos int8) []*boardstate.Move {
+	var result []*boardstate.Move;
+	allKingMoves := pregenerateAllKingMoves(); // TODO: THIS MUST BE MEMOIZED SOMEHOW.
 	for i := range(allKingMoves[kingPos]) {
 		move := allKingMoves[kingPos][i];
 		if b.ColorOfSquare(move) != b.GetTurn() {
-			result = append(result, b.CopyPlayTurn(kingPos, move, boardstate.EMPTY))
+			result = append(result, boardstate.CreateMove(kingPos, move, boardstate.EMPTY))
 		}
 	}
 
@@ -64,19 +64,19 @@ func genSingleKingMoves(b *boardstate.BoardState, kingPos int8) []*boardstate.Bo
 
 	if (turn == boardstate.WHITE) {
 		if b.HasCastleRights(turn, boardstate.CASTLE_SHORT) && b.EmptySquare(5) && b.EmptySquare(6) {
-			result = append(result, b.CopyPlayTurn(4, 6, boardstate.EMPTY))
+			result = append(result, boardstate.CreateMove(4, 6, boardstate.EMPTY))
 		}
 		if b.HasCastleRights(turn, boardstate.CASTLE_LONG) && b.EmptySquare(1) && b.EmptySquare(2) && b.EmptySquare(3) {
-			result = append(result, b.CopyPlayTurn(4, 2, boardstate.EMPTY))
+			result = append(result, boardstate.CreateMove(4, 2, boardstate.EMPTY))
 		}
 	}
 
 	if (turn == boardstate.BLACK) {
 		if b.HasCastleRights(turn, boardstate.CASTLE_SHORT) && b.EmptySquare(61) && b.EmptySquare(62) {
-			result = append(result, b.CopyPlayTurn(60, 62, boardstate.EMPTY))
+			result = append(result, boardstate.CreateMove(60, 62, boardstate.EMPTY))
 		}
 		if b.HasCastleRights(turn, boardstate.CASTLE_LONG) && b.EmptySquare(57) && b.EmptySquare(58) && b.EmptySquare(59) {
-			result = append(result, b.CopyPlayTurn(60, 58, boardstate.EMPTY))
+			result = append(result, boardstate.CreateMove(60, 58, boardstate.EMPTY))
 		}
 	}
 
@@ -85,13 +85,17 @@ func genSingleKingMoves(b *boardstate.BoardState, kingPos int8) []*boardstate.Bo
 
 
 /* TODO: CASTLING */
-func genKingMoves(b *boardstate.BoardState) []*boardstate.BoardState {
-	var result []*boardstate.BoardState;
+func genAllKingMoves(b *boardstate.BoardState) []*boardstate.Move {
+	var result []*boardstate.Move;
 	kingPositions := b.FindPieces(b.GetTurn(), boardstate.KING)
 	//fmt.Printf("%v\n", rookPositions)
 	for i := 0; i < len(kingPositions); i++ {
 		result = append(result, genSingleKingMoves(b, kingPositions[i])...)
 	}
-
   return result;
+}
+
+
+func genKingSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
+	return b.GenerateSuccessors(genAllKingMoves(b))
 }

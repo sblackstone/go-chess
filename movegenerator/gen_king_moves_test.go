@@ -184,7 +184,7 @@ func TestGenAllKingMoves(t *testing.T) {
 		{55,54,62},
 	}
 
-  boards := genAllKingMoves();
+  boards := pregenerateAllKingMoves();
 	var i int8;
 
 	for i = 0; i < 64; i++ {
