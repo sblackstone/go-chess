@@ -15,7 +15,7 @@ func AlgebraicToSquare(algrbraicSquare string) (int8, error) {
   result = int8(algrbraicSquare[0]) - int8('a')
 
   if (result < 0 || result > 7) {
-    return -1, errors.New("Invalid file")
+    return -1, errors.New("Invalid file: " + fmt.Sprint(result))
   }
 
   rank, err := strconv.Atoi(parts[1])
@@ -25,7 +25,7 @@ func AlgebraicToSquare(algrbraicSquare string) (int8, error) {
   rank -= 1
 
   if rank > 7 {
-    return -1, errors.New("Invalid Rank" + fmt.Sprint(rank))
+    return -1, errors.New("Invalid Rank: " + fmt.Sprint(rank))
   }
 
   result += int8(rank) * 8
