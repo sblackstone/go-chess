@@ -136,6 +136,19 @@ func applyCastlingString(b *boardstate.BoardState, castlingString string) error 
 	return nil
 }
 
+func applyEnpassantString(b *boardstate.BoardState, enpassantString string) error {
+	if enpassantString == "-" {
+		return nil
+	}
+	val, err := bitopts.AlgebraicToSquare(enpassantString)
+	if err != nil {
+		return err
+	}
+	b.SetEnpassant(val)
+	return nil
+
+}
+
 func FromFEN(fenString string) (*boardstate.BoardState, error) {
   b := boardstate.Blank()
 	fmt.Println(fenString)
@@ -150,6 +163,7 @@ func FromFEN(fenString string) (*boardstate.BoardState, error) {
 	boardStr := m[1]
 	turnStr := m[3]
 	castlingString := m[5]
+	enpassantString := m[7]
 
 	err := applyBoardString(b, boardStr)
 
@@ -163,6 +177,11 @@ func FromFEN(fenString string) (*boardstate.BoardState, error) {
 	}
 
 	err = applyCastlingString(b, castlingString)
+	if err != nil {
+		return nil, err
+	}
+
+	err = applyEnpassantString(b, enpassantString)
 	if err != nil {
 		return nil, err
 	}
