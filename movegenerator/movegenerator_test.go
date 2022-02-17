@@ -7,7 +7,7 @@ import (
 
 
 
-func TestMoveGeneratorInitialPosition(t *testing.T) {
+func TestGenSucessorsInitialPosition(t *testing.T) {
   b := boardstate.Initial()
   successors := GenSucessors(b)
 
@@ -27,5 +27,29 @@ func TestMoveGeneratorInitialPosition(t *testing.T) {
     }
   }
 
+
+}
+
+
+
+func TestGenAllMovesInitialPosition(t *testing.T) {
+    b := boardstate.Initial()
+    moves1 := GenAllMoves(b)
+
+    if len(moves1) != 20 {
+      t.Errorf("Expected initial successors to be 20, got %v", len(moves1))
+    }
+
+    b.PlayTurn(8, 24, boardstate.EMPTY)
+
+
+    moves2 := GenAllMoves(b)
+
+    if len(moves2) != 20 {
+      t.Errorf("Expected initial successors to be 20, got %v", len(moves2))
+      for i := range(moves2) {
+        t.Errorf("Move %v", moves2[i])
+      }
+    }
 
 }
