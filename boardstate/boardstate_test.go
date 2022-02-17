@@ -5,6 +5,7 @@ import (
   "fmt"
 )
 
+
 func testCastlingBoard() *BoardState {
 	b := Blank()
 	b.SetSquare(0, WHITE, ROOK)
@@ -17,6 +18,27 @@ func testCastlingBoard() *BoardState {
 	return b
 }
 
+
+
+func TestGenerateSuccessors(t *testing.T)  {
+	b := Blank()
+	b.SetSquare(22, WHITE, PAWN)
+	m1 := CreateMove(22, 22+8, EMPTY)
+	m2 := CreateMove(22, 22+16, EMPTY)
+
+	var moves []*Move;
+
+
+	moves = append(moves, m1)
+	moves = append(moves, m2)
+
+	successors := b.GenerateSuccessors(moves)
+
+	if len(successors) != 2 {
+		t.Errorf("Expected successors to be length 2");
+	}
+
+}
 
 func TestDebugPrint(t *testing.T) {
 	b := Initial()
