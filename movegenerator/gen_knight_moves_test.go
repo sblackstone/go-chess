@@ -132,7 +132,7 @@ func TestGenAllKnightMoves(t *testing.T) {
 	  {53,46},
 	}
 
-  boards := genAllKnightMoves();
+  boards := pregenerateKnightMoves();
 	var i int8;
 
 	for i = 0; i < 64; i++ {

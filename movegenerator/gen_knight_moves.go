@@ -27,7 +27,7 @@ import (
 */
 
 
-func genAllKnightMoves() [64][]int8 {
+func pregenerateKnightMoves() [64][]int8 {
   var result [64][]int8;
   var rank,file int8
   for rank = 0; rank < 8; rank++ {
@@ -80,27 +80,29 @@ func genAllKnightMoves() [64][]int8 {
   return result;
 }
 
-func genSingleKnightMoves(b *boardstate.BoardState, knightPos int8) []*boardstate.BoardState {
-	var result []*boardstate.BoardState;
-	allKnightMoves := genAllKnightMoves(); // TODO: THIS MUST BE MEMOIZED SOMEHOW.
+func genSingleKnightMoves(b *boardstate.BoardState, knightPos int8) []*boardstate.Move {
+	var result []*boardstate.Move;
+	allKnightMoves := pregenerateKnightMoves(); // TODO: THIS MUST BE MEMOIZED SOMEHOW.
 	for i := range(allKnightMoves[knightPos]) {
 		move := allKnightMoves[knightPos][i];
 		if b.ColorOfSquare(move) != b.GetTurn() {
-			result = append(result, b.CopyPlayTurn(knightPos, move, boardstate.EMPTY))
+			result = append(result, boardstate.CreateMove(knightPos, move, boardstate.EMPTY))
 		}
 	}
 	return result
 }
 
 
-
-func genKnightMoves(b *boardstate.BoardState) []*boardstate.BoardState {
-	var result []*boardstate.BoardState;
+func genAllKnightMoves(b *boardstate.BoardState) []*boardstate.Move {
+	var result []*boardstate.Move;
 	knightPositions := b.FindPieces(b.GetTurn(), boardstate.KNIGHT)
-	//fmt.Printf("%v\n", rookPositions)
 	for i := 0; i < len(knightPositions); i++ {
 		result = append(result, genSingleKnightMoves(b, knightPositions[i])...)
 	}
+	return result
+}
 
-  return result;
+
+func genKnightSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
+	return b.GenerateSuccessors(genAllKnightMoves(b))
 }

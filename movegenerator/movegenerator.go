@@ -10,7 +10,7 @@ func GenSucessors(b *boardstate.BoardState) []*boardstate.BoardState {
   result = append(result, genKingMoves(b)...);
   result = append(result, genQueenSuccessors(b)...);
   result = append(result, genBishopSuccessors(b)...);
-  result = append(result, genKnightMoves(b)...);
+  result = append(result, genKnightSuccessors(b)...);
   result = append(result, genRookSuccessors(b)...);
   return result;
 }
