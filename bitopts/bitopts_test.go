@@ -33,9 +33,6 @@ func TestAlgebraicToSquare(t *testing.T) {
 		t.Errorf("Expected g3 to be 22, not %v %v", val5, err5)
 	}
 
-
-
-
 }
 
 func TestPrint(t *testing.T) {
