@@ -93,6 +93,15 @@ func (b *BoardState) PlayTurn(src int8, dst int8, promotePiece int8) {
 
 }
 
+func (b *BoardState) PlayTurnFromMove(m *Move) {
+	b.PlayTurn(m.src, m.dst, m.promotePiece)
+}
+
+func (b *BoardState) CopyPlayTurnFromMove(m *Move) *BoardState {
+	return b.CopyPlayTurn(m.src, m.dst, m.promotePiece)
+}
+
+
 func (b *BoardState) CopyPlayTurn(src int8, dst int8, promotePiece int8) *BoardState{
 	bCopy := b.Copy()
 	bCopy.PlayTurn(src, dst, promotePiece)

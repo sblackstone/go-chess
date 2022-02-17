@@ -239,10 +239,33 @@ func TestCopyPlayMove(t *testing.T) {
 	if (b1.PieceOfSquare(18) == KNIGHT || b1.ColorOfSquare(18) == WHITE) {
 		t.Errorf("square 18 on b1 should be empty")
 	}
-
-
-
 }
+
+
+func TestCopyPlayMoveFromTurn(t *testing.T) {
+	b1 := Initial()
+	b2 := b1.CopyPlayTurnFromMove(&Move{src: 1, dst: 18, promotePiece: EMPTY})
+	if (b1 == b2) {
+		t.Errorf("Expected b1 to be different than b2")
+	}
+
+	if (b2.PieceOfSquare(18) != KNIGHT || b2.ColorOfSquare(18) != WHITE) {
+		t.Errorf("square 18 isn't a white knight")
+	}
+
+	if (b2.PieceOfSquare(1) != EMPTY || b2.ColorOfSquare(1) != EMPTY) {
+		t.Errorf("square 1 isn't empty")
+	}
+
+	if (b1.PieceOfSquare(1) == EMPTY || b1.ColorOfSquare(1) == EMPTY) {
+		t.Errorf("square 1 on b1 shouldn't be empty")
+	}
+
+	if (b1.PieceOfSquare(18) == KNIGHT || b1.ColorOfSquare(18) == WHITE) {
+		t.Errorf("square 18 on b1 should be empty")
+	}
+}
+
 
 func TestEnpassantAsWhite(t *testing.T) {
 	b := Initial()
@@ -408,9 +431,31 @@ func TestPlayTurn(t *testing.T) {
 	if b.GetTurn() != BLACK {
 		t.Errorf("Expected turn after PlayTurn to be black");
 	}
-
-
 }
+
+
+func TestPlayTurnMove(t *testing.T) {
+	b := Initial()
+	if b.GetTurn() != WHITE {
+		t.Errorf("Expected initial turn to be white");
+	}
+
+	b.PlayTurnFromMove(&Move{src: 1, dst: 18, promotePiece: EMPTY})
+
+	if (b.PieceOfSquare(18) != KNIGHT || b.ColorOfSquare(18) != WHITE) {
+		t.Errorf("square 18 isn't a white knight")
+	}
+
+	if (b.PieceOfSquare(1) != EMPTY || b.ColorOfSquare(1) != EMPTY) {
+		t.Errorf("square 1 isn't empty")
+	}
+
+
+	if b.GetTurn() != BLACK {
+		t.Errorf("Expected turn after PlayTurn to be black");
+	}
+}
+
 
 func TestFindPieces(t *testing.T) {
 	b := Initial()
