@@ -67,6 +67,7 @@ func (b *BoardState) handleCastling(src int8, dst int8) {
 
 func (b *BoardState) PlayTurn(src int8, dst int8, promotePiece int8) {
 		piece := b.PieceOfSquare(src)
+		dstColor := b.ColorOfSquare(dst)
 
 		// Set or Clear enpassant flag
 		if (piece == PAWN) {
@@ -87,6 +88,17 @@ func (b *BoardState) PlayTurn(src int8, dst int8, promotePiece int8) {
 		// Handle Piece promotion
 		if promotePiece != EMPTY {
 			b.SetSquare(dst, b.GetTurn(), promotePiece)
+		}
+
+
+		if b.GetTurn() == BLACK {
+			b.IncrementFullMoves()
+		}
+
+		if (piece == PAWN || dstColor != EMPTY) {
+			b.SetHalfMoves(0)
+		} else {
+			b.IncrementHalfMoves()
 		}
 
 		b.ToggleTurn()

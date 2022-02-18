@@ -51,8 +51,34 @@ func TestFullMoveCountProperlyIncrementsOnMoves(t *testing.T) {
 	t.Errorf("TODO")
 }
 
-func TestHalfMoveCountProperlyIncrementsOnMoves(t *testing.T) {
-	t.Errorf("TODO")
+func TestHalfMoveCountResetsOnPawnMoves(t *testing.T) {
+	// Pawn Push
+	b := Initial()
+	b.PlayTurn(1,16, EMPTY)
+	b.PlayTurn(57,40, EMPTY)
+	if (b.GetHalfMoves() != 2) {
+		t.Errorf("Expected half moves to be 2, got %v", b.GetHalfMoves())
+	}
+	b.PlayTurn(11, 27, EMPTY)
+	if (b.GetHalfMoves() != 0) {
+		t.Errorf("Expected half moves to be 0, got %v", b.GetHalfMoves())
+	}
+}
+
+func TestHalfMoveCountResetsOnCaptureMoves(t *testing.T) {
+	// Pawn Push
+	b := Initial()
+	b.PlayTurn(1,18, EMPTY)
+	b.PlayTurn(62,45, EMPTY)
+	b.PlayTurn(18,35, EMPTY)
+
+	if (b.GetHalfMoves() != 3) {
+		t.Errorf("Expected half moves to be 3, got %v", b.GetHalfMoves())
+	}
+	b.PlayTurn(35, 45, EMPTY)
+	if (b.GetHalfMoves() != 0) {
+		t.Errorf("Expected half moves to be 0, got %v", b.GetHalfMoves())
+	}
 }
 
 
