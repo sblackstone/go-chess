@@ -27,6 +27,31 @@ const (
 )
 
 
+func (b *BoardState) IncrementHalfMoves() {
+  b.halfMoves += 1
+}
+
+func (b *BoardState) IncrementFullMoves() {
+  b.fullMoves += 1
+}
+
+func (b *BoardState) GetHalfMoves() int {
+  return b.halfMoves
+}
+
+func (b *BoardState) GetFullMoves() int {
+  return b.fullMoves
+}
+
+func (b *BoardState) SetFullMoves(movesCount int) {
+  b.fullMoves = movesCount
+}
+
+func (b *BoardState) SetHalfMoves(movesCount int) {
+  b.halfMoves = movesCount
+}
+
+
 func (b *BoardState) GetTurn() int8 {
   return b.turn
 }

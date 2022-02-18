@@ -8,6 +8,7 @@ import (
 	"strings"
   "errors"
   "fmt"
+	"strconv"
 )
 
 func applyBoardString(b *boardstate.BoardState, boardStr string) error {
@@ -219,6 +220,22 @@ func ToFEN(b *boardstate.BoardState) (string, error) {
 		if blong  { result += "q" }
 	}
 
+	result += " "
+
+	/// Add Enpassant
+	enpassantSq := b.GetEnpassant()
+	if enpassantSq == boardstate.NO_ENPASSANT {
+		result += "-"
+	} else {
+		result += bitopts.SquareToAlgebraic(enpassantSq)
+	}
+
+	result += " "
+
+	/// Add Clocks
+	result += fmt.Sprint(b.GetHalfMoves())
+	result += " "
+	result += fmt.Sprint(b.GetFullMoves())
 
 	return result, nil
 
@@ -260,9 +277,27 @@ func FromFEN(fenString string) (*boardstate.BoardState, error) {
 		return nil, err
 	}
 
+
+
 	//enpassantSquare := m[7]
-	//halfMoveClock := m[9]
-	//fullMoveNumber := m[11]
+  halfMoveClock := m[9]
+	fullMoveNumber := m[11]
+
+	halfVal, err := strconv.Atoi(halfMoveClock)
+	if err != nil {
+		return nil, err
+	}
+	b.SetHalfMoves(halfVal)
+
+	fullVal, err := strconv.Atoi(fullMoveNumber)
+	if err != nil {
+		return nil, err
+	}
+	b.SetFullMoves(fullVal)
+
+
+
+
 
 	//for i := range(m) {
 	//	fmt.Printf("%v: %v\n", i, m[i])

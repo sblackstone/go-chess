@@ -13,6 +13,8 @@ type BoardState struct {
 	enpassantSquare int8
 	meta   uint64
 	turn int8
+	halfMoves int
+	fullMoves int
 }
 
 // Blank returns a blank board with no pieces on it
@@ -31,6 +33,7 @@ func Initial() *BoardState {
 	// These constants are pre-calculated using InitialManual (see below)...
 	b.colors = [2]uint64{65535, 18446462598732840960 }
 	b.pieces = [6]uint64{9295429630892703873, 4755801206503243842, 2594073385365405732, 576460752303423496, 1152921504606846992, 71776119061282560}
+	b.fullMoves = 1
 	return b
 }
 
@@ -42,6 +45,8 @@ func (b *BoardState) Copy() *BoardState {
 		pieces: b.pieces,
 		enpassantSquare: b.enpassantSquare,
 		turn: b.turn,
+		halfMoves: b.halfMoves,
+		fullMoves: b.fullMoves,
 	}
 
 	return &boardCopy
