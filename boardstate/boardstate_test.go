@@ -5,43 +5,46 @@ import (
   "fmt"
 )
 
-
-
-func TestHalfMoveClockWorks(t *testing.T) {
-	t.Errorf("TODO")
-}
-
-func TestFullMoveCountWorks(t *testing.T) {
-	t.Errorf("TODO")
-}
-
 func TestIncrementHalfMoves(t *testing.T) {
-	t.Errorf("TODO")
+	b := Initial()
+	if b.GetHalfMoves() != 0 {
+		t.Errorf("Expected halfMoves to be 0, got %v", b.GetHalfMoves())
+	}
 
+	b.IncrementHalfMoves()
+
+	if b.GetHalfMoves() != 1 {
+		t.Errorf("Expected halfMoves to be 1, got %v", b.GetHalfMoves())
+	}
 }
 
 func IncrementFullMoves(t *testing.T) {
-	t.Errorf("TODO")
+	b := Initial()
+	if b.GetHalfMoves() != 0 {
+		t.Errorf("Expected halfMoves to be 0, got %v", b.GetHalfMoves())
+	}
 
+	b.IncrementHalfMoves()
+
+	if b.GetHalfMoves() != 1 {
+		t.Errorf("Expected halfMoves to be 1, got %v", b.GetHalfMoves())
+	}
 }
 
-func TestGetHalfMoves(t *testing.T) {
-	t.Errorf("TODO")
-
+func TestSetGetHalfMoves(t *testing.T) {
+	b := Initial()
+	b.SetHalfMoves(512)
+	if (b.GetHalfMoves() != 512) {
+		t.Errorf("Expected half moves to be 512, got %v", b.GetHalfMoves())
+	}
 }
 
-func TestGetFullMoves(t *testing.T) {
-	t.Errorf("TODO")
-
-}
-
-func TestSetHalfMoves(t *testing.T) {
-	t.Errorf("TODO")
-
-}
-
-func TestSetFullMoves(t *testing.T) {
-	t.Errorf("TODO")
+func TestSetGetFullMoves(t *testing.T) {
+	b := Initial()
+	b.SetFullMoves(512)
+	if (b.GetFullMoves() != 512) {
+		t.Errorf("Expected half moves to be 512, got %v", b.GetFullMoves())
+	}
 }
 
 func TestFullMoveCountProperlyIncrementsOnMoves(t *testing.T) {
@@ -87,12 +90,6 @@ func TestGenerateSuccessors(t *testing.T)  {
 		t.Errorf("Expected successors to be length 2");
 	}
 
-}
-
-func TestDebugPrint(t *testing.T) {
-	t.Errorf("Full moves starts at 1")
-	b := Initial()
-	b.Print(52)
 }
 
 func TestTakingRooksDisableCastlingWhiteLong(t *testing.T) {
@@ -211,7 +208,16 @@ func TestMoveRookLoosesHalfCastleRights(t *testing.T) {
 
 }
 
+func TestInitialMoveCounters(t *testing.T) {
+	b := Initial()
+	if (b.GetFullMoves() != 1) {
+		t.Errorf("Expected GetFullMoves to start at 1, got %v", b.GetFullMoves())
+	}
+	if (b.GetHalfMoves() != 0) {
+		t.Errorf("Expected GetHalfMoves to start at 1, got %v", b.GetHalfMoves())
+	}
 
+}
 
 func TestInitialCastlingRights(t *testing.T) {
 	b := testCastlingBoard()
@@ -231,9 +237,6 @@ func TestInitialCastlingRights(t *testing.T) {
 	if (!b.HasCastleRights(BLACK, CASTLE_SHORT)) {
 		t.Errorf("Expected BLACK to have CASTLE_SHORT initially")
 	}
-
-
-
 
 }
 
@@ -450,10 +453,13 @@ func TestEnemyOccupriedSquare(t *testing.T) {
 func TestCopy(t *testing.T) {
 	b1 := Initial()
 	b1.PlayTurn(1, 18, EMPTY)
-
+	b1.SetFullMoves(25)
+	b1.SetHalfMoves(26)
 	b2 := b1.Copy()
 
-	t.Errorf("Test halfmoves, fullmoves gets copied")
+	if (b2.GetFullMoves() != 25 || b2.GetHalfMoves() != 26) {
+		t.Errorf("Expected full moves to be copied")
+	}
 
 	if (b2.PieceOfSquare(18) != KNIGHT || b2.ColorOfSquare(18) != WHITE) {
 		t.Errorf("square 18 isn't a white knight")
