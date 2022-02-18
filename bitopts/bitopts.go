@@ -7,6 +7,12 @@ import (
   "errors"
 )
 
+func SquareToAlgebraic(pos int8) string {
+  rank, file := SquareToRankFile(pos)
+  ranks := []string{"1","2","3","4","5","6","7","8"}
+  files := []string{"a","b","c","d","e","f","g","h"}
+  return files[int(file)] + ranks[int(rank)]
+}
 
 func AlgebraicToSquare(algrbraicSquare string) (int8, error) {
   var result int8

@@ -6,6 +6,30 @@ import (
 )
 
 
+func TestSquareToAlgebraic(t *testing.T) {
+		sq1 := SquareToAlgebraic(26)
+		if sq1 != "c4" {
+			t.Errorf("Expected %v to be %v", sq1, "c4")
+		}
+
+		sq2 := SquareToAlgebraic(0)
+		if sq2 != "a1" {
+			t.Errorf("Expected %v to be %v", sq2, "a1")
+		}
+
+		sq3 := SquareToAlgebraic(63)
+		if sq3 != "h8" {
+			t.Errorf("Expected %v to be %v", sq3, "h8")
+		}
+
+		sq4 := SquareToAlgebraic(53)
+		if sq4 != "f7" {
+			t.Errorf("Expected %v to be %v", sq4, "f7")
+		}
+
+
+}
+
 func TestAlgebraicToSquare(t *testing.T) {
 
 	val, err := AlgebraicToSquare("c4")

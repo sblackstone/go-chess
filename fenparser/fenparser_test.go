@@ -4,6 +4,8 @@ package fenparser
 import (
   "testing"
   "fmt"
+  "github.com/sblackstone/go-chess/boardstate"
+
 )
 
 
@@ -25,4 +27,11 @@ func TestFENParserBigXBoard(t *testing.T) {
   } else {
     b.Print(125)
   }
+}
+
+
+func TestToFEN(t *testing.T) {
+  b := boardstate.Initial()
+  str, _ := ToFEN(b)
+  t.Errorf(str)
 }
