@@ -8,7 +8,17 @@ import (
 
 )
 
-
+func TestsMissing(t *testing.T) {
+  t.Errorf("caslting on import")
+  t.Errorf("caslting on export")
+  t.Errorf("enpassasnt on import")
+  t.Errorf("enpassasnt on export")
+  t.Errorf("halfmove on import")
+  t.Errorf("halfmove on export")
+  t.Errorf("turn on import")
+  t.Errorf("turn on export")
+  t.Errorf("complete fen parser tests")
+}
 func TestFENParserDefaultBoard(t *testing.T) {
   testStr := "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
   b, err := FromFEN(testStr)
