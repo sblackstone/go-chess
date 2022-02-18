@@ -6,6 +6,55 @@ import (
 )
 
 
+
+func TestHalfMoveClockWorks(t *testing.T) {
+	t.Errorf("TODO")
+}
+
+func TestFullMoveCountWorks(t *testing.T) {
+	t.Errorf("TODO")
+}
+
+func TestIncrementHalfMoves(t *testing.T) {
+	t.Errorf("TODO")
+
+}
+
+func IncrementFullMoves(t *testing.T) {
+	t.Errorf("TODO")
+
+}
+
+func TestGetHalfMoves(t *testing.T) {
+	t.Errorf("TODO")
+
+}
+
+func TestGetFullMoves(t *testing.T) {
+	t.Errorf("TODO")
+
+}
+
+func TestSetHalfMoves(t *testing.T) {
+	t.Errorf("TODO")
+
+}
+
+func TestSetFullMoves(t *testing.T) {
+	t.Errorf("TODO")
+}
+
+func TestFullMoveCountProperlyIncrementsOnMoves(t *testing.T) {
+	t.Errorf("TODO")
+}
+
+func TestHalfMoveCountProperlyIncrementsOnMoves(t *testing.T) {
+	t.Errorf("TODO")
+}
+
+
+
+
 func testCastlingBoard() *BoardState {
 	b := Blank()
 	b.SetSquare(0, WHITE, ROOK)
@@ -41,6 +90,7 @@ func TestGenerateSuccessors(t *testing.T)  {
 }
 
 func TestDebugPrint(t *testing.T) {
+	t.Errorf("Full moves starts at 1")
 	b := Initial()
 	b.Print(52)
 }
@@ -402,6 +452,8 @@ func TestCopy(t *testing.T) {
 	b1.PlayTurn(1, 18, EMPTY)
 
 	b2 := b1.Copy()
+
+	t.Errorf("Test halfmoves, fullmoves gets copied")
 
 	if (b2.PieceOfSquare(18) != KNIGHT || b2.ColorOfSquare(18) != WHITE) {
 		t.Errorf("square 18 isn't a white knight")
