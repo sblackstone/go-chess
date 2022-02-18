@@ -48,7 +48,29 @@ func TestSetGetFullMoves(t *testing.T) {
 }
 
 func TestFullMoveCountProperlyIncrementsOnMoves(t *testing.T) {
-	t.Errorf("TODO")
+	b := Initial()
+	if (b.GetFullMoves() != 1) {
+		t.Errorf("Expected half moves to be 1, got %v", b.GetFullMoves())
+	}
+	b.PlayTurn(1,16,EMPTY)
+	if (b.GetFullMoves() != 1) {
+		t.Errorf("Expected half moves to be 1, got %v", b.GetFullMoves())
+	}
+	b.PlayTurn(57,40,EMPTY)
+	if (b.GetFullMoves() != 2) {
+		t.Errorf("Expected half moves to be 2, got %v", b.GetFullMoves())
+	}
+	b.PlayTurn(11,27,EMPTY)
+	if (b.GetFullMoves() != 2) {
+		t.Errorf("Expected half moves to be 2, got %v", b.GetFullMoves())
+	}
+	b.PlayTurn(48,40,EMPTY)
+	if (b.GetFullMoves() != 3) {
+		t.Errorf("Expected half moves to be 3, got %v", b.GetFullMoves())
+	}
+
+
+
 }
 
 func TestHalfMoveCountResetsOnPawnMoves(t *testing.T) {
