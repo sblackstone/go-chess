@@ -6,6 +6,19 @@ import (
 //  "fmt"
 )
 
+func TestEnemyColor(t *testing.T) {
+  b := Initial()
+  if (b.EnemyColor() != BLACK) {
+    t.Errorf("Expected EnemyColor to be Black")
+  }
+
+  b.ToggleTurn()
+
+  if (b.EnemyColor() != WHITE) {
+    t.Errorf("Expected EnemyColor to be WHITE")
+  }
+}
+
 
 func TestEnpassent(t *testing.T) {
   b := Initial()

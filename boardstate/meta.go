@@ -56,6 +56,10 @@ func (b *BoardState) GetTurn() int8 {
   return b.turn
 }
 
+func (b *BoardState) EnemyColor() int8 {
+  return b.turn ^ 1
+}
+
 func (b *BoardState) SetTurn(color int8) {
   b.turn = color
 }
