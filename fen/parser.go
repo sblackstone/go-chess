@@ -122,15 +122,20 @@ func applyCastlingString(b *boardstate.BoardState, castlingString string) error 
 	b.SetCastleRights(boardstate.WHITE, boardstate.CASTLE_SHORT, false)
 	for j = range(castlingString) {
 		char := string(castlingString[j])
-		if char == "k" {
-			b.SetCastleRights(boardstate.BLACK, boardstate.CASTLE_SHORT, false)
-		} else if char == "q" {
-			b.SetCastleRights(boardstate.BLACK, boardstate.CASTLE_LONG, false)
-		} else if char == "K" {
-			b.SetCastleRights(boardstate.WHITE, boardstate.CASTLE_SHORT, false)
-		} else if char == "Q" {
-			b.SetCastleRights(boardstate.WHITE, boardstate.CASTLE_LONG, false)
-		} else if char != "-" {
+		fmt.Printf("CS = %v\n", char)
+
+		switch char {
+		case "-":
+			return nil
+		case "k":
+			b.SetCastleRights(boardstate.BLACK, boardstate.CASTLE_SHORT, true)
+		case "q":
+			b.SetCastleRights(boardstate.BLACK, boardstate.CASTLE_LONG, true)
+		case "K":
+			b.SetCastleRights(boardstate.WHITE, boardstate.CASTLE_SHORT, true)
+		case "Q":
+			b.SetCastleRights(boardstate.WHITE, boardstate.CASTLE_LONG, true)
+		default:
 			return errors.New("Unknown character in casting string: " + char)
 		}
 	}

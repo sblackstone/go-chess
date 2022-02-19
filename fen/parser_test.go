@@ -36,18 +36,55 @@ func TestImportEnpassant(t *testing.T) {
   }
 }
 
+func TestImportCastlingNone(t *testing.T) {
+  testStr := "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - - 0 1"
+  b, err := FromFEN(testStr)
+  if (err != nil) {
+    t.Errorf("Expected valid import: %v", err)
+  }
+  if (b.HasCastleRights(boardstate.WHITE, boardstate.CASTLE_LONG)) {
+      t.Errorf("expected not to have  WHITE LONG")
+  }
+  if (b.HasCastleRights(boardstate.WHITE, boardstate.CASTLE_SHORT)) {
+      t.Errorf("expected not to have  WHITE SHORT")
+  }
+  if (b.HasCastleRights(boardstate.BLACK, boardstate.CASTLE_LONG)) {
+      t.Errorf("expected not to have  BLACK LONG")
+  }
+  if (b.HasCastleRights(boardstate.BLACK, boardstate.CASTLE_SHORT)) {
+      t.Errorf("expected not to have  BLACK SHORT")
+  }
+}
 
 
+func TestImportCastlingSome(t *testing.T) {
+  testStr := "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w Kk - 0 1"
+  b, err := FromFEN(testStr)
+  if (err != nil) {
+    t.Errorf("Expected valid import: %v", err)
+  }
+  if (b.HasCastleRights(boardstate.WHITE, boardstate.CASTLE_LONG)) {
+      t.Errorf("expected not to have  WHITE LONG")
+  }
+  if (!b.HasCastleRights(boardstate.WHITE, boardstate.CASTLE_SHORT)) {
+      t.Errorf("expected TO have  WHITE SHORT")
+  }
+  if (b.HasCastleRights(boardstate.BLACK, boardstate.CASTLE_LONG)) {
+      t.Errorf("expected not to have  BLACK LONG")
+  }
+  if (!b.HasCastleRights(boardstate.BLACK, boardstate.CASTLE_SHORT)) {
+      t.Errorf("expected TO have  BLACK SHORT")
+  }
+}
+
+
+
+func TestErrortCases(t *testing.T) {
+  t.Errorf("complete fen parser tests")
+}
 
 func TestsMissing(t *testing.T) {
-  t.Errorf("enpassnt on export")
-  t.Errorf("turn on export")
-  t.Errorf("halfmove on export")
-  t.Errorf("fullmove on export")
-
   t.Errorf("caslting on import")
-  t.Errorf("caslting on export")
-  t.Errorf("complete fen parser tests")
 }
 func TestFENParserDefaultBoard(t *testing.T) {
   testStr := "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
