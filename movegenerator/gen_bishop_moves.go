@@ -52,9 +52,9 @@ func genSingleBishopMoves(b *boardstate.BoardState, bishopPos int8) []*boardstat
 }
 
 
-func genAllBishopMoves(b *boardstate.BoardState) []*boardstate.Move {
+func genAllBishopMoves(b *boardstate.BoardState, color int8) []*boardstate.Move {
 	var result []*boardstate.Move;
-	bishopPositions := b.FindPieces(b.GetTurn(), boardstate.BISHOP)
+	bishopPositions := b.FindPieces(color, boardstate.BISHOP)
 	for i := 0; i < len(bishopPositions); i++ {
 		result = append(result, genSingleBishopMoves(b, bishopPositions[i])...)
 	}
@@ -62,5 +62,5 @@ func genAllBishopMoves(b *boardstate.BoardState) []*boardstate.Move {
 }
 
 func genBishopSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
-	return b.GenerateSuccessors(genAllBishopMoves(b))
+	return b.GenerateSuccessors(genAllBishopMoves(b, b.GetTurn()))
 }

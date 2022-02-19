@@ -85,9 +85,9 @@ func genSingleKingMoves(b *boardstate.BoardState, kingPos int8) []*boardstate.Mo
 
 
 /* TODO: CASTLING */
-func genAllKingMoves(b *boardstate.BoardState) []*boardstate.Move {
+func genAllKingMoves(b *boardstate.BoardState, color int8) []*boardstate.Move {
 	var result []*boardstate.Move;
-	kingPositions := b.FindPieces(b.GetTurn(), boardstate.KING)
+	kingPositions := b.FindPieces(color, boardstate.KING)
 	//fmt.Printf("%v\n", rookPositions)
 	for i := 0; i < len(kingPositions); i++ {
 		result = append(result, genSingleKingMoves(b, kingPositions[i])...)
@@ -97,5 +97,5 @@ func genAllKingMoves(b *boardstate.BoardState) []*boardstate.Move {
 
 
 func genKingSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
-	return b.GenerateSuccessors(genAllKingMoves(b))
+	return b.GenerateSuccessors(genAllKingMoves(b, b.GetTurn()))
 }

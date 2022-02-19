@@ -11,9 +11,9 @@ func genSingleQueenMoves(b *boardstate.BoardState, queenPos int8) []*boardstate.
 	return result
 }
 
-func genAllQueenMoves(b *boardstate.BoardState) []*boardstate.Move {
+func genAllQueenMoves(b *boardstate.BoardState, color int8) []*boardstate.Move {
 	var result []*boardstate.Move;
-	queenPositions := b.FindPieces(b.GetTurn(), boardstate.QUEEN)
+	queenPositions := b.FindPieces(color, boardstate.QUEEN)
 	for i := 0; i < len(queenPositions); i++ {
 		result = append(result, genSingleQueenMoves(b, queenPositions[i])...)
 	}
@@ -21,5 +21,5 @@ func genAllQueenMoves(b *boardstate.BoardState) []*boardstate.Move {
 }
 
 func genQueenSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
-	return b.GenerateSuccessors(genAllQueenMoves(b))
+	return b.GenerateSuccessors(genAllQueenMoves(b, b.GetTurn()))
 }

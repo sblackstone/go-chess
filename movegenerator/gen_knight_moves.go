@@ -93,9 +93,9 @@ func genSingleKnightMoves(b *boardstate.BoardState, knightPos int8) []*boardstat
 }
 
 
-func genAllKnightMoves(b *boardstate.BoardState) []*boardstate.Move {
+func genAllKnightMoves(b *boardstate.BoardState, color int8) []*boardstate.Move {
 	var result []*boardstate.Move;
-	knightPositions := b.FindPieces(b.GetTurn(), boardstate.KNIGHT)
+	knightPositions := b.FindPieces(color, boardstate.KNIGHT)
 	for i := 0; i < len(knightPositions); i++ {
 		result = append(result, genSingleKnightMoves(b, knightPositions[i])...)
 	}
@@ -104,5 +104,5 @@ func genAllKnightMoves(b *boardstate.BoardState) []*boardstate.Move {
 
 
 func genKnightSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
-	return b.GenerateSuccessors(genAllKnightMoves(b))
+	return b.GenerateSuccessors(genAllKnightMoves(b, b.GetTurn()))
 }

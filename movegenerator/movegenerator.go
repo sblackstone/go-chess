@@ -18,11 +18,11 @@ func GenSucessors(b *boardstate.BoardState) []*boardstate.BoardState {
 
 func GenAllMoves(b *boardstate.BoardState) []*boardstate.Move {
   var result []*boardstate.Move;
-  result = append(result, genAllPawnMoves(b)...);
-  result = append(result, genAllKingMoves(b)...);
-  result = append(result, genAllQueenMoves(b)...);
-  result = append(result, genAllBishopMoves(b)...);
-  result = append(result, genAllKnightMoves(b)...);
-  result = append(result, genAllRookMoves(b)...);
+  result = append(result, genAllPawnMoves(b, b.GetTurn())...);
+  result = append(result, genAllKingMoves(b, b.GetTurn())...);
+  result = append(result, genAllQueenMoves(b, b.GetTurn())...);
+  result = append(result, genAllBishopMoves(b, b.GetTurn())...);
+  result = append(result, genAllKnightMoves(b, b.GetTurn())...);
+  result = append(result, genAllRookMoves(b, b.GetTurn())...);
   return result;
 }

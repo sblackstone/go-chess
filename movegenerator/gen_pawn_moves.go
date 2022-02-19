@@ -79,9 +79,9 @@ func genSinglePawnMoves(b *boardstate.BoardState, pawnPos int8) []*boardstate.Mo
 	return result
 }
 
-func genAllPawnMoves(b *boardstate.BoardState) []*boardstate.Move {
+func genAllPawnMoves(b *boardstate.BoardState, color int8) []*boardstate.Move {
 	var result []*boardstate.Move;
-	pawnPositions := b.FindPieces(b.GetTurn(), boardstate.PAWN)
+	pawnPositions := b.FindPieces(color, boardstate.PAWN)
 	for i := 0; i < len(pawnPositions); i++ {
 		result = append(result, genSinglePawnMoves(b, pawnPositions[i])...)
 	}
@@ -91,5 +91,5 @@ func genAllPawnMoves(b *boardstate.BoardState) []*boardstate.Move {
 
 
 func genPawnSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
-	return b.GenerateSuccessors(genAllPawnMoves(b))
+	return b.GenerateSuccessors(genAllPawnMoves(b, b.GetTurn()))
 }
