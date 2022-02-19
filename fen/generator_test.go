@@ -1,5 +1,4 @@
 package fen
-/*
 
 import (
   "testing"
@@ -16,7 +15,9 @@ func TestsMissingGenerator(t *testing.T) {
 
 func TestToFEN(t *testing.T) {
   b := boardstate.Initial()
+  correctStr := "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
   str, _ := ToFEN(b)
-  t.Errorf(str)
+  if (str != correctStr) {
+    t.Errorf("Expected %v to be %v", str, correctStr)
+  }
 }
-*/
