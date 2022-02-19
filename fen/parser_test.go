@@ -5,10 +5,10 @@ import (
   "testing"
   "fmt"
   "github.com/sblackstone/go-chess/boardstate"
-
+  "reflect"
 )
 
-func TestImportTurn(t *testing.T) {
+func TestParseTurn(t *testing.T) {
   testStr := "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
   b, err := FromFEN(testStr)
   if (err != nil || b.GetTurn() != boardstate.WHITE) {
@@ -22,7 +22,7 @@ func TestImportTurn(t *testing.T) {
   }
 }
 
-func TestImportEnpassant(t *testing.T) {
+func TestParseEnpassant(t *testing.T) {
   testStr := "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
   b, err := FromFEN(testStr)
   if (err != nil || b.GetEnpassant() != boardstate.NO_ENPASSANT) {
@@ -36,7 +36,7 @@ func TestImportEnpassant(t *testing.T) {
   }
 }
 
-func TestImportCastlingNone(t *testing.T) {
+func TestParseCastlingNone(t *testing.T) {
   testStr := "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - - 0 1"
   b, err := FromFEN(testStr)
   if (err != nil) {
@@ -57,7 +57,7 @@ func TestImportCastlingNone(t *testing.T) {
 }
 
 
-func TestImportCastlingShortOnly(t *testing.T) {
+func TestParseCastlingShortOnly(t *testing.T) {
   testStr := "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w Kk - 0 1"
   b, err := FromFEN(testStr)
   if (err != nil) {
@@ -78,7 +78,7 @@ func TestImportCastlingShortOnly(t *testing.T) {
 }
 
 
-func TestImportCastlingLongOnly(t *testing.T) {
+func TestParseCastlingLongOnly(t *testing.T) {
   testStr := "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w Qq - 0 1"
   b, err := FromFEN(testStr)
   if (err != nil) {
@@ -101,31 +101,32 @@ func TestImportCastlingLongOnly(t *testing.T) {
 
 
 func TestErrortCases(t *testing.T) {
-  t.Errorf("complete fen parser tests")
+  t.Errorf("complete fen parser tests for error cases")
 }
 
-func TestsMissing(t *testing.T) {
-  t.Errorf("caslting on import")
+
+func TestAAdditionalBoardCases(t *testing.T) {
+  t.Errorf("complete fen parser test other board configurations for import")
 }
+
 func TestFENParserDefaultBoard(t *testing.T) {
+  correct := boardstate.Initial()
   testStr := "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
   b, err := FromFEN(testStr)
-  t.Errorf("TODO: TESTME")
 
   if err != nil {
     fmt.Printf("%v\n", err)
-  } else {
-    b.Print(125)
   }
 
-
+  if !reflect.DeepEqual(correct,b) {
+    t.Errorf("Expected import of default board to match the default board")
+  }
 
 }
 
-func TestImportMoveCounters(t *testing.T) {
+func TestParseMoveCounters(t *testing.T) {
   testStr := "p6P/1p4P1/2p2P2/3pP3/3Pp3/2P2p2/1P4p1/P6p w - - 25 26"
   b, err := FromFEN(testStr)
-  t.Errorf("TODO: TESTME")
   if err != nil {
     fmt.Printf("%v\n", err)
   }
@@ -137,11 +138,4 @@ func TestImportMoveCounters(t *testing.T) {
   }
 
 
-}
-
-
-func TestToFEN(t *testing.T) {
-  b := boardstate.Initial()
-  str, _ := ToFEN(b)
-  t.Errorf(str)
 }

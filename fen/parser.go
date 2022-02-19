@@ -6,7 +6,7 @@ import (
 	"github.com/sblackstone/go-chess/boardstate"
 	"regexp"
   "errors"
-  "fmt"
+  //"fmt"
 	"strconv"
 )
 
@@ -24,75 +24,53 @@ func applyBoardString(b *boardstate.BoardState, boardStr string) error {
 
 	for j = range(boardStr) {
 		char := string(boardStr[j])
-		//fmt.Printf("%v %v %v\n", rank, file, char)
-
-		if (char == "p") {
+		switch char {
+		case "p":
 			addPiece(rank, file, boardstate.BLACK, boardstate.PAWN)
-		}
-		if (char == "r") {
+		case "r":
 			addPiece(rank, file, boardstate.BLACK, boardstate.ROOK)
-		}
-
-		if (char == "n") {
+		case "n":
 			addPiece(rank, file, boardstate.BLACK, boardstate.KNIGHT)
-		}
-		if (char == "b") {
+		case "b":
 			addPiece(rank, file, boardstate.BLACK, boardstate.BISHOP)
-		}
-		if (char == "q") {
+		case "q":
 			addPiece(rank, file, boardstate.BLACK, boardstate.QUEEN)
-		}
-		if (char == "k") {
+		case "k":
 			addPiece(rank, file, boardstate.BLACK, boardstate.KING)
-		}
 
-		if (char == "P") {
+		case "P":
 			addPiece(rank, file, boardstate.WHITE, boardstate.PAWN)
-		}
-		if (char == "R") {
+		case "R":
 			addPiece(rank, file, boardstate.WHITE, boardstate.ROOK)
-		}
-
-		if (char == "N") {
+		case "N":
 			addPiece(rank, file, boardstate.WHITE, boardstate.KNIGHT)
-		}
-		if (char == "B") {
+		case "B":
 			addPiece(rank, file, boardstate.WHITE, boardstate.BISHOP)
-		}
-		if (char == "Q") {
+		case "Q":
 			addPiece(rank, file, boardstate.WHITE, boardstate.QUEEN)
-		}
-		if (char == "K") {
+		case "K":
 			addPiece(rank, file, boardstate.WHITE, boardstate.KING)
-		}
-
-		if (char == "1") {
-				file += 1
-		}
-		if (char == "2") {
-				file += 2
-		}
-		if (char == "3") {
-				file += 3
-		}
-		if (char == "4") {
-				file += 4
-		}
-		if (char == "5") {
-				file += 5
-		}
-		if (char == "6") {
-				file += 6
-		}
-		if (char == "7") {
-				file += 7
-		}
-		if (char == "8") {
-				file = 8
-		}
-		if char == "/" {
+		case "1":
+			file += 1
+		case "2":
+			file += 2
+		case "3":
+			file += 3
+		case "4":
+			file += 4
+		case "5":
+			file += 5
+		case "6":
+			file += 6
+		case "7":
+			file += 7
+		case "8":
+			file += 8
+		case "/":
 			rank -= 1
 			file = 0
+		default:
+			return errors.New("Unexpected character in FEN string: " + char)
 		}
 	}
 
@@ -122,8 +100,6 @@ func applyCastlingString(b *boardstate.BoardState, castlingString string) error 
 	b.SetCastleRights(boardstate.WHITE, boardstate.CASTLE_SHORT, false)
 	for j = range(castlingString) {
 		char := string(castlingString[j])
-		fmt.Printf("CS = %v\n", char)
-
 		switch char {
 		case "-":
 			return nil
@@ -159,8 +135,6 @@ func applyEnpassantString(b *boardstate.BoardState, enpassantString string) erro
 
 func FromFEN(fenString string) (*boardstate.BoardState, error) {
   b := boardstate.Blank()
-	fmt.Println(fenString)
-
 	re := regexp.MustCompile("([^\\s]+)([\\s]{1})([wb]+)([\\s]{1})([-KQkq]+)([\\s]{1})([-a-z0-9]+)([\\s]{1})([0-9]*)([\\s]{1})([0-9]*)")
 	m := re.FindStringSubmatch(fenString)
 
