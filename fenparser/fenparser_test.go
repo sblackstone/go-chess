@@ -8,6 +8,37 @@ import (
 
 )
 
+func TestImportTurn(t *testing.T) {
+  testStr := "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+  b, err := FromFEN(testStr)
+  if (err != nil || b.GetTurn() != boardstate.WHITE) {
+    t.Errorf("Expected turn to be WHITE after import: %v %v", b.GetTurn(), err)
+  }
+
+  testStr2 := "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1"
+  b2, err2 := FromFEN(testStr2)
+  if (err != nil || b2.GetTurn() != boardstate.BLACK) {
+    t.Errorf("Expected turn to be WHITE after import: %v %v", b2.GetTurn(), err2)
+  }
+}
+
+func TestImportEnpassant(t *testing.T) {
+  testStr := "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+  b, err := FromFEN(testStr)
+  if (err != nil || b.GetEnpassant() != boardstate.NO_ENPASSANT) {
+    t.Errorf("Expected GetEnpassant to be NO_ENPASSANT after import: %v %v", b.GetEnpassant(), err)
+  }
+
+  testStr2 := "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq c4 0 1"
+  b2, err2 := FromFEN(testStr2)
+  if (err2 != nil || b2.GetEnpassant() != 26) {
+    t.Errorf("Expected GetEnpassant to be 26 after import: %v %v", b2.GetEnpassant(), err2)
+  }
+}
+
+
+
+
 func TestsMissing(t *testing.T) {
   t.Errorf("caslting on import")
   t.Errorf("caslting on export")
