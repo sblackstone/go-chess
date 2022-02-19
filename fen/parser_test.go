@@ -57,7 +57,7 @@ func TestImportCastlingNone(t *testing.T) {
 }
 
 
-func TestImportCastlingSome(t *testing.T) {
+func TestImportCastlingShortOnly(t *testing.T) {
   testStr := "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w Kk - 0 1"
   b, err := FromFEN(testStr)
   if (err != nil) {
@@ -74,6 +74,27 @@ func TestImportCastlingSome(t *testing.T) {
   }
   if (!b.HasCastleRights(boardstate.BLACK, boardstate.CASTLE_SHORT)) {
       t.Errorf("expected TO have  BLACK SHORT")
+  }
+}
+
+
+func TestImportCastlingLongOnly(t *testing.T) {
+  testStr := "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w Qq - 0 1"
+  b, err := FromFEN(testStr)
+  if (err != nil) {
+    t.Errorf("Expected valid import: %v", err)
+  }
+  if (!b.HasCastleRights(boardstate.WHITE, boardstate.CASTLE_LONG)) {
+      t.Errorf("expected TO have  WHITE LONG")
+  }
+  if (b.HasCastleRights(boardstate.WHITE, boardstate.CASTLE_SHORT)) {
+      t.Errorf("expected NOT TO have  WHITE SHORT")
+  }
+  if (!b.HasCastleRights(boardstate.BLACK, boardstate.CASTLE_LONG)) {
+      t.Errorf("expected TO have  BLACK LONG")
+  }
+  if (b.HasCastleRights(boardstate.BLACK, boardstate.CASTLE_SHORT)) {
+      t.Errorf("expected NOT have  BLACK SHORT")
   }
 }
 
