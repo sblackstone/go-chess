@@ -172,11 +172,6 @@ func TestErrortCases(t *testing.T) {
   t.Errorf("complete fen parser tests for error cases")
 }
 
-
-func TestAAdditionalBoardCases(t *testing.T) {
-  t.Errorf("complete fen parser test other board configurations for import")
-}
-
 func TestFENParserDefaultBoard(t *testing.T) {
   correct := boardstate.Initial()
   testStr := "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
