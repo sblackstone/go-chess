@@ -10,7 +10,7 @@ func genSinglePawnMoves(b *boardstate.BoardState, pawnPos int8) []*boardstate.Mo
 	pawnPosRank, pawnPosFile := bitopts.SquareToRankFile(pawnPos)
 	var promotionRank,pushFoardTwoRank,pushForwardOne,pushForwardTwo,captureToLowerFilePos,captureToHigherFilePos,fromEnpassantRank int8
 
-	if (b.GetTurn() == boardstate.WHITE) {
+	if (b.ColorOfSquare(pawnPos) == boardstate.WHITE) {
 		promotionRank          = int8(7)
 		pushFoardTwoRank       = int8(1)
 		pushForwardOne         = pawnPos + 8

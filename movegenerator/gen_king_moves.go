@@ -53,12 +53,12 @@ func genSingleKingMoves(b *boardstate.BoardState, kingPos int8) []*boardstate.Mo
 	allKingMoves := pregenerateAllKingMoves(); // TODO: THIS MUST BE MEMOIZED SOMEHOW.
 	for i := range(allKingMoves[kingPos]) {
 		move := allKingMoves[kingPos][i];
-		if b.ColorOfSquare(move) != b.GetTurn() {
+		if b.ColorOfSquare(move) != b.ColorOfSquare(kingPos) {
 			result = append(result, boardstate.CreateMove(kingPos, move, boardstate.EMPTY))
 		}
 	}
 
-	turn := b.GetTurn()
+	turn := b.ColorOfSquare(kingPos)
 
   // TODO: NEEDS TO CHECK IF KING MOVES THROUGH CHECK
 

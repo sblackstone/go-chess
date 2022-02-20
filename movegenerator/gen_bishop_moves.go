@@ -13,7 +13,7 @@ func genSingleBishopMoves(b *boardstate.BoardState, bishopPos int8) []*boardstat
 	file := bitopts.FileOfSquare(bishopPos)
 
 	for r := bishopPos+9; r < 64 && bitopts.FileOfSquare(r) > file; r += 9 {
-			if b.EmptyOrEnemyOccupiedSquare(r) {
+			if b.ColorOfSquare(r) != b.ColorOfSquare(bishopPos) {
 				result = append(result, boardstate.CreateMove(bishopPos, r, boardstate.EMPTY))
 			}
 			if !b.EmptySquare(r) {
@@ -22,7 +22,7 @@ func genSingleBishopMoves(b *boardstate.BoardState, bishopPos int8) []*boardstat
 	}
 
 	for r := bishopPos+7; r < 64 && bitopts.FileOfSquare(r) < file; r += 7 {
-		if b.EmptyOrEnemyOccupiedSquare(r) {
+		if b.ColorOfSquare(r) != b.ColorOfSquare(bishopPos) {
 			result = append(result, boardstate.CreateMove(bishopPos, r, boardstate.EMPTY))
 		}
 		if !b.EmptySquare(r) {
@@ -32,7 +32,7 @@ func genSingleBishopMoves(b *boardstate.BoardState, bishopPos int8) []*boardstat
 
 
 	for r := bishopPos-7; r >= 0 && bitopts.FileOfSquare(r) > file; r -= 7 {
-		if b.EmptyOrEnemyOccupiedSquare(r) {
+		if b.ColorOfSquare(r) != b.ColorOfSquare(bishopPos) {
 			result = append(result, boardstate.CreateMove(bishopPos, r, boardstate.EMPTY))
 		}
 		if !b.EmptySquare(r) {
@@ -41,7 +41,7 @@ func genSingleBishopMoves(b *boardstate.BoardState, bishopPos int8) []*boardstat
 	}
 
 	for r := bishopPos-9; r >= 0 && bitopts.FileOfSquare(r) < file; r -= 9 {
-		if b.EmptyOrEnemyOccupiedSquare(r) {
+		if b.ColorOfSquare(r) != b.ColorOfSquare(bishopPos) {
 			result = append(result, boardstate.CreateMove(bishopPos, r, boardstate.EMPTY))
 		}
 		if !b.EmptySquare(r) {

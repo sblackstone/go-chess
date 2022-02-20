@@ -85,7 +85,7 @@ func genSingleKnightMoves(b *boardstate.BoardState, knightPos int8) []*boardstat
 	allKnightMoves := pregenerateKnightMoves(); // TODO: THIS MUST BE MEMOIZED SOMEHOW.
 	for i := range(allKnightMoves[knightPos]) {
 		move := allKnightMoves[knightPos][i];
-		if b.ColorOfSquare(move) != b.GetTurn() {
+		if b.ColorOfSquare(move) != b.ColorOfSquare(knightPos) {
 			result = append(result, boardstate.CreateMove(knightPos, move, boardstate.EMPTY))
 		}
 	}

@@ -10,7 +10,7 @@ import (
 func genSingleRookMoves(b *boardstate.BoardState, rookPos int8) []*boardstate.Move {
 	var result []*boardstate.Move;
 	for r := rookPos+8; r < 64; r += 8 {
-		if b.EmptyOrEnemyOccupiedSquare(r) {
+		if b.ColorOfSquare(r) != b.ColorOfSquare(rookPos) {
 			result = append(result, boardstate.CreateMove(rookPos, r, boardstate.EMPTY))
 		}
 		if !b.EmptySquare(r) {
@@ -19,7 +19,7 @@ func genSingleRookMoves(b *boardstate.BoardState, rookPos int8) []*boardstate.Mo
 	}
 
 	for r := rookPos-8; r >= 0; r -= 8 {
-		if b.EmptyOrEnemyOccupiedSquare(r) {
+		if b.ColorOfSquare(r) != b.ColorOfSquare(rookPos) {
 			result = append(result, boardstate.CreateMove(rookPos, r, boardstate.EMPTY))
 		}
 		if !b.EmptySquare(r) {
@@ -28,7 +28,7 @@ func genSingleRookMoves(b *boardstate.BoardState, rookPos int8) []*boardstate.Mo
 	}
 
 	for r := rookPos+1; bitopts.FileOfSquare(r) > 0; r += 1 {
-		if b.EmptyOrEnemyOccupiedSquare(r) {
+		if b.ColorOfSquare(r) != b.ColorOfSquare(rookPos) {
 			result = append(result, boardstate.CreateMove(rookPos, r, boardstate.EMPTY))
 		}
 		if !b.EmptySquare(r) {
@@ -37,7 +37,7 @@ func genSingleRookMoves(b *boardstate.BoardState, rookPos int8) []*boardstate.Mo
 	}
 
 	for r := rookPos-1; r >= 0 && bitopts.FileOfSquare(r) < 7; r -= 1 {
-		if b.EmptyOrEnemyOccupiedSquare(r) {
+		if b.ColorOfSquare(r) != b.ColorOfSquare(rookPos) {
 			result = append(result, boardstate.CreateMove(rookPos, r, boardstate.EMPTY))
 		}
 		if !b.EmptySquare(r) {
