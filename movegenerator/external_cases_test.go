@@ -1,4 +1,5 @@
 package movegenerator
+/*
 
 import (
   "testing"
@@ -24,3 +25,4 @@ func TestLetsTryIt(t *testing.T) {
   }
 
 }
+*/

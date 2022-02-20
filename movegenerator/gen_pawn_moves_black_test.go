@@ -9,6 +9,10 @@ import (
 
 )
 
+func TestGenerateCapturesOnlyBlack(t *testing.T) {
+	t.Errorf("TODO")
+}
+
 
 func TestPushPawnBlack(t *testing.T) {
   b := boardstate.Blank()

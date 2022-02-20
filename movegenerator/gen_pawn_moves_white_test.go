@@ -9,6 +9,11 @@ import (
 
 )
 
+
+func TestGenerateCapturesOnlyWhite(t *testing.T) {
+	t.Errorf("TODO")
+}
+
 func TestPushPawnWhite(t *testing.T) {
   b := boardstate.Blank()
 	b.SetSquare(27, boardstate.WHITE, boardstate.PAWN)
