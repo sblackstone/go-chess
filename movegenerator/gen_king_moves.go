@@ -58,24 +58,24 @@ func genSingleKingMoves(b *boardstate.BoardState, kingPos int8) []*boardstate.Mo
 		}
 	}
 
-	turn := b.ColorOfSquare(kingPos)
+	kingColor := b.ColorOfSquare(kingPos)
 
   // TODO: NEEDS TO CHECK IF KING MOVES THROUGH CHECK
 
-	if (turn == boardstate.WHITE) {
-		if b.HasCastleRights(turn, boardstate.CASTLE_SHORT) && b.EmptySquare(5) && b.EmptySquare(6) {
+	if (kingColor == boardstate.WHITE) {
+		if b.HasCastleRights(kingColor, boardstate.CASTLE_SHORT) && b.EmptySquare(5) && b.EmptySquare(6) {
 			result = append(result, boardstate.CreateMove(4, 6, boardstate.EMPTY))
 		}
-		if b.HasCastleRights(turn, boardstate.CASTLE_LONG) && b.EmptySquare(1) && b.EmptySquare(2) && b.EmptySquare(3) {
+		if b.HasCastleRights(kingColor, boardstate.CASTLE_LONG) && b.EmptySquare(1) && b.EmptySquare(2) && b.EmptySquare(3) {
 			result = append(result, boardstate.CreateMove(4, 2, boardstate.EMPTY))
 		}
 	}
 
-	if (turn == boardstate.BLACK) {
-		if b.HasCastleRights(turn, boardstate.CASTLE_SHORT) && b.EmptySquare(61) && b.EmptySquare(62) {
+	if (kingColor == boardstate.BLACK) {
+		if b.HasCastleRights(kingColor, boardstate.CASTLE_SHORT) && b.EmptySquare(61) && b.EmptySquare(62) {
 			result = append(result, boardstate.CreateMove(60, 62, boardstate.EMPTY))
 		}
-		if b.HasCastleRights(turn, boardstate.CASTLE_LONG) && b.EmptySquare(57) && b.EmptySquare(58) && b.EmptySquare(59) {
+		if b.HasCastleRights(kingColor, boardstate.CASTLE_LONG) && b.EmptySquare(57) && b.EmptySquare(58) && b.EmptySquare(59) {
 			result = append(result, boardstate.CreateMove(60, 58, boardstate.EMPTY))
 		}
 	}
