@@ -82,12 +82,11 @@ func applyBoardString(b *boardstate.BoardState, boardStr string) error {
 }
 
 func applyTurnString(b *boardstate.BoardState, turnString string) error {
+	// regex ensures this is already a w or b.
 	if turnString == "w" {
     b.SetTurn(boardstate.WHITE)
   } else if turnString == "b" {
     b.SetTurn(boardstate.BLACK)
-  } else {
-    return errors.New("Expected value for turn: " + turnString)
   }
 	return nil
 }
@@ -98,6 +97,7 @@ func applyCastlingString(b *boardstate.BoardState, castlingString string) error 
 	b.SetCastleRights(boardstate.WHITE, boardstate.CASTLE_LONG, false)
 	b.SetCastleRights(boardstate.BLACK, boardstate.CASTLE_SHORT, false)
 	b.SetCastleRights(boardstate.WHITE, boardstate.CASTLE_SHORT, false)
+	// We're sure its one of these cases via the REGEX
 	for j = range(castlingString) {
 		char := string(castlingString[j])
 		switch char {
@@ -111,8 +111,6 @@ func applyCastlingString(b *boardstate.BoardState, castlingString string) error 
 			b.SetCastleRights(boardstate.WHITE, boardstate.CASTLE_SHORT, true)
 		case "Q":
 			b.SetCastleRights(boardstate.WHITE, boardstate.CASTLE_LONG, true)
-		default:
-			return errors.New("Unknown character in casting string: " + char)
 		}
 	}
 	return nil

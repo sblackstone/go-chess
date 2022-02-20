@@ -8,6 +8,74 @@ import (
   "reflect"
 )
 
+func TestAllFileOffsets(t *testing.T) {
+  var i int8
+  testStr := "P7/1P6/2P5/3P4/4P3/5P2/6P1/7P w - - 0 1"
+  b, err := FromFEN(testStr)
+  if (err != nil) {
+    t.Errorf("Unexpected error with parsing fen: %v", err)
+  }
+  for  i = 7; i <= 56; i += 7 {
+    if b.PieceOfSquare(i) != boardstate.PAWN || b.ColorOfSquare(i) != boardstate.WHITE {
+      t.Errorf("Expected a pawn on (%v)\n", i)
+    }
+  }
+
+}
+
+func TestInvalidHalfMoveClock(t *testing.T) {
+  testStr := "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq c9 ABCD 1"
+  _, err := FromFEN(testStr)
+  if (err == nil) {
+    t.Errorf("Expected error with bad half move clock string")
+  }
+}
+
+func TestInvalidFullMoveClock(t *testing.T) {
+  testStr := "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq c9 0 ABCD"
+  _, err := FromFEN(testStr)
+  if (err == nil) {
+    t.Errorf("Expected error with bad full move clock string")
+  }
+}
+
+
+
+func TestInvalidEnpassantString(t *testing.T) {
+  testStr := "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq c9 0 1"
+  _, err := FromFEN(testStr)
+  if (err == nil) {
+    t.Errorf("Expected error with bad enpassant string")
+  }
+}
+
+
+func TestBadTurnString(t *testing.T) {
+  testStr := "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR X KQkq - 0 1"
+  _, err := FromFEN(testStr)
+  if (err == nil) {
+    t.Errorf("Expected error with bad castling string")
+  }
+}
+
+
+func TestBadCharInFenString(t *testing.T) {
+  testStr := "rnbqkbnr/pppppppp/8/8/8/8/PPPPXPPP/RNBQKBNR w - - 0 1"
+  _, err := FromFEN(testStr)
+  if (err == nil) {
+    t.Errorf("Expected error with bad castling string")
+  }
+}
+
+func TestMalShapedFenString(t *testing.T) {
+  testStr := "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBN w - - 0 1"
+  _, err := FromFEN(testStr)
+  if (err == nil) {
+    t.Errorf("Expected error with bad castling string")
+  }
+}
+
+
 func TestParseTurn(t *testing.T) {
   testStr := "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
   b, err := FromFEN(testStr)
