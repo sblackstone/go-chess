@@ -166,12 +166,6 @@ func TestParseCastlingLongOnly(t *testing.T) {
   }
 }
 
-
-
-func TestErrortCases(t *testing.T) {
-  t.Errorf("complete fen parser tests for error cases")
-}
-
 func TestFENParserDefaultBoard(t *testing.T) {
   correct := boardstate.Initial()
   testStr := "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
