@@ -3,6 +3,7 @@ package movegenerator
 import (
   "testing"
 	"github.com/sblackstone/go-chess/boardstate"
+  //"fmt"
 )
 
 
@@ -29,8 +30,16 @@ func TestGenSucessorsInitialPosition(t *testing.T) {
 
 
 }
+/*
+func TestGenAllCheckedSquaresInitialPosition(t *testing.T) {
+  b := boardstate.Initial()
+  squares := genSortedCheckedSquares(b, boardstate.WHITE)
 
+  fmt.Printf("%v\n", squares)
 
+}
+*/
+/*
 
 func TestGenAllMovesInitialPosition(t *testing.T) {
     b := boardstate.Initial()
@@ -53,3 +62,4 @@ func TestGenAllMovesInitialPosition(t *testing.T) {
     }
 
 }
+*/

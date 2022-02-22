@@ -5,7 +5,7 @@ import (
 	"github.com/sblackstone/go-chess/bitopts"
 )
 
-func genSinglePawnMoves(b *boardstate.BoardState, pawnPos int8, attacksOnly bool) []*boardstate.Move {
+func genSinglePawnMoves(b *boardstate.BoardState, pawnPos int8, calculateChecks bool) []*boardstate.Move {
 	var result []*boardstate.Move;
 	pawnPosRank, pawnPosFile := bitopts.SquareToRankFile(pawnPos)
 	var promotionRank,pushFoardTwoRank,pushForwardOne,pushForwardTwo,captureToLowerFilePos,captureToHigherFilePos,fromEnpassantRank int8
@@ -42,6 +42,22 @@ func genSinglePawnMoves(b *boardstate.BoardState, pawnPos int8, attacksOnly bool
 		}
 	}
 
+	if (calculateChecks) {
+		// Capture to Higher file
+		if (bitopts.FileOfSquare(captureToHigherFilePos) > pawnPosFile) {
+			appendPawnMovesFn(captureToHigherFilePos)
+		}
+
+		// Cpature to Lower file
+		if (bitopts.FileOfSquare(captureToLowerFilePos) < pawnPosFile) {
+			appendPawnMovesFn(captureToLowerFilePos)
+		}
+
+		return result
+
+
+	}
+
 
 	// Capture to Higher file
 	if (b.EnemyOccupiedSquare(captureToHigherFilePos) && bitopts.FileOfSquare(captureToHigherFilePos) > pawnPosFile) {
@@ -68,11 +84,6 @@ func genSinglePawnMoves(b *boardstate.BoardState, pawnPos int8, attacksOnly bool
 		}
 	}
 
-
-	if (attacksOnly) {
-		return result
-	}
-
 	// Push 2, never has to promote.
 	if bitopts.RankOfSquare(pawnPos) == pushFoardTwoRank && b.EmptySquare(pushForwardOne) && b.EmptySquare(pushForwardTwo) {
 		result = append(result, boardstate.CreateMove(pawnPos, pushForwardTwo, boardstate.EMPTY))
@@ -87,11 +98,11 @@ func genSinglePawnMoves(b *boardstate.BoardState, pawnPos int8, attacksOnly bool
 	return result
 }
 
-func genAllPawnMoves(b *boardstate.BoardState, color int8) []*boardstate.Move {
+func genAllPawnMoves(b *boardstate.BoardState, color int8, calculateChecks bool) []*boardstate.Move {
 	var result []*boardstate.Move;
 	pawnPositions := b.FindPieces(color, boardstate.PAWN)
 	for i := 0; i < len(pawnPositions); i++ {
-		result = append(result, genSinglePawnMoves(b, pawnPositions[i], false)...)
+		result = append(result, genSinglePawnMoves(b, pawnPositions[i], calculateChecks)...)
 	}
   return result;
 
@@ -99,5 +110,5 @@ func genAllPawnMoves(b *boardstate.BoardState, color int8) []*boardstate.Move {
 
 
 func genPawnSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
-	return b.GenerateSuccessors(genAllPawnMoves(b, b.GetTurn()))
+	return b.GenerateSuccessors(genAllPawnMoves(b, b.GetTurn(), false))
 }

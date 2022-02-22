@@ -36,3 +36,12 @@ func genSortedBoardLocationsKings(b *boardstate.BoardState) []int8 {
 func genSortedBoardLocationsPawns(b *boardstate.BoardState) []int8 {
   return genSortedBoardLocationsGeneric(b.GetTurn(), boardstate.PAWN, genPawnSuccessors(b))
 }
+
+
+func genSortedCheckedSquares(b *boardstate.BoardState, color int8) []int8 {
+
+  squares := GenAllCheckedSquares(b, color)
+  sort.Slice(squares, func(i, j int) bool { return squares[i] < squares[j] })
+  return squares
+
+}

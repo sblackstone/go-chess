@@ -10,8 +10,13 @@ import (
 )
 
 
-func TestGenerateCapturesOnlyWhite(t *testing.T) {
-	t.Errorf("TODO")
+func TestGenerateChecksOnlyWhite(t *testing.T) {
+	b := boardstate.Initial()
+	squares := genSortedCheckedSquares(b, boardstate.WHITE)
+	expected := []int8{16, 16, 17, 17, 18, 18, 18, 19, 19, 20, 20, 21, 21, 21, 22, 22, 23, 23}
+	if !reflect.DeepEqual(squares, expected) {
+		t.Errorf("Expected %v to be %v", squares, expected)
+	}
 }
 
 func TestPushPawnWhite(t *testing.T) {
