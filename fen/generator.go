@@ -49,7 +49,7 @@ func ToFEN(b *boardstate.BoardState) (string, error) {
 			result += fmt.Sprint(emptyCount)
 		}
     if rank != 0 {
-      result += "/"      
+      result += "/"
     }
 	}
 
