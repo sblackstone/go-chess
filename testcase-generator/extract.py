@@ -23,15 +23,15 @@ while game:
         board.push(move)
         expected.append({
             "move": move.uci(),
-            "fen": board.fen()
+            "fen": board.fen(en_passant="fen")
         })
         board.pop()
     result["testCases"].append({
-        "start": board.fen(),
+        "start": { "fen": board.fen(en_passant="fen") },
         "expected": expected
     })
     max += 1
-    if max > 25000:
+    if max > 24999:
         break
 
 print(json.dumps(result))
