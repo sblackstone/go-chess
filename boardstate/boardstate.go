@@ -112,28 +112,28 @@ func (b *BoardState) MovePiece(src int8, dst int8) {
 	b.pieces[piece]    = bitopts.SetBit(b.pieces[piece],   dst)
 }
 
+
 // Returns an array of positions for a given set of pieces.
 func (b *BoardState) FindPieces(color int8, pieceType int8) []int8 {
+	// TODO: We can't rely on using upper/lower if we aren't sure there hasn't been promotions
+	// If we track promotions, we can make this go faster by skipping the loop between upper and lower.
 	pieceBitboard := b.colors[color] & b.pieces[pieceType]
 	twoPiecePos := bitopts.FindTwoPiecePositions(pieceBitboard)
 
-	if pieceType == PAWN {
-		// [1] or []
-		if len(twoPiecePos) < 2 {
-			return twoPiecePos
-		}
-		// [8,15]
-		var result []int8
-		var i int8
-		for i = twoPiecePos[0]; i <= twoPiecePos[1]; i++ {
-			if bitopts.TestBit(pieceBitboard, i) {
-				result = append(result, i)
-			}
-		}
-		return result
-	} else {
+	// [1] or []
+	if len(twoPiecePos) < 2 {
 		return twoPiecePos
 	}
+	// [8,15]
+	var result []int8
+	var i int8
+	for i = twoPiecePos[0]; i <= twoPiecePos[1]; i++ {
+		if bitopts.TestBit(pieceBitboard, i) {
+			result = append(result, i)
+		}
+	}
+	return result
+
 }
 
 // ColorOfSquare returns WHITE,BLACK, or EMPTY
