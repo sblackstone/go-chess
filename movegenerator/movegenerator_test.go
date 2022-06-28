@@ -3,7 +3,7 @@ package movegenerator
 import (
   "testing"
 	"github.com/sblackstone/go-chess/boardstate"
-  //"fmt"
+  "reflect"
 )
 
 
@@ -30,36 +30,27 @@ func TestGenGenSuccessorsInitialPosition(t *testing.T) {
 
 
 }
-/*
-func TestGenAllCheckedSquaresInitialPosition(t *testing.T) {
-  b := boardstate.Initial()
-  squares := genSortedCheckedSquares(b, boardstate.WHITE)
 
-  fmt.Printf("%v\n", squares)
 
+func TestGenLegalSuccessorsOpposition(t *testing.T) {
+  b := boardstate.Blank()
+  b.ClearCastling()
+	b.SetSquare(43, boardstate.WHITE, boardstate.KING)
+  b.SetSquare(27, boardstate.BLACK, boardstate.KING)
+
+  legalWhite := genSortedBoardLocationsGeneric(b.GetTurn(), boardstate.KING, GenLegalSuccessors(b))
+
+  expectedWhite := []int8{42, 44, 50, 51, 52}
+  if !reflect.DeepEqual(legalWhite, expectedWhite) {
+    t.Errorf("Expected %v to be %v", legalWhite, expectedWhite)
+  }
+
+  b.SetTurn(boardstate.BLACK)
+
+  legalBlack := genSortedBoardLocationsGeneric(b.GetTurn(), boardstate.KING, GenLegalSuccessors(b))
+  expectedBlack := []int8{18, 19, 20, 26, 28}
+  if !reflect.DeepEqual(legalBlack, expectedBlack) {
+    t.Errorf("Expected %v to be %v", legalBlack, expectedBlack)
+  }
+  
 }
-*/
-/*
-
-func TestGenAllMovesInitialPosition(t *testing.T) {
-    b := boardstate.Initial()
-    moves1 := GenAllMoves(b)
-
-    if len(moves1) != 20 {
-      t.Errorf("Expected initial successors to be 20, got %v", len(moves1))
-    }
-
-    b.PlayTurn(8, 24, boardstate.EMPTY)
-
-
-    moves2 := GenAllMoves(b)
-
-    if len(moves2) != 20 {
-      t.Errorf("Expected initial successors to be 20, got %v", len(moves2))
-      for i := range(moves2) {
-        t.Errorf("Move %v", moves2[i])
-      }
-    }
-
-}
-*/

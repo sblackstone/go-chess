@@ -102,6 +102,15 @@ func (b *BoardState) HasCastleRights(color int8, side int8) bool {
   return !bitopts.TestBit(b.meta, castleBit(color, side))
 }
 
+// Only used in testing, removes all castling rights.
+func (b *BoardState) ClearCastling() {
+  b.SetCastleRights(WHITE, CASTLE_SHORT, false)
+  b.SetCastleRights(WHITE, CASTLE_LONG,  false)
+  b.SetCastleRights(BLACK, CASTLE_SHORT, false)
+  b.SetCastleRights(BLACK, CASTLE_LONG,  false)
+
+}
+
 func (b *BoardState) SetCastleRights(color int8, side int8, enabled bool) {
   bit := castleBit(color, side)
   if enabled {
