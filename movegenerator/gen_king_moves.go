@@ -6,45 +6,48 @@ import (
 	//"fmt"
 )
 
+var pregeneratedKingMoves [64][]int8;
 
-func pregenerateAllKingMoves() [64][]int8 {
-  var result [64][]int8;
+func getKingMoves() [64][]int8 {
+	return pregeneratedKingMoves;
+}
+
+func init() {
   var rank,file int8
   for rank = 7; rank >= 0; rank-- {
     for file =0; file < 8; file++ {
       pos := bitopts.RankFileToSquare(rank,file)
 			if (rank >= 1) {
-				result[pos] = append(result[pos], pos - 8);
+				pregeneratedKingMoves[pos] = append(pregeneratedKingMoves[pos], pos - 8);
 				if (file > 0) {
-					result[pos] = append(result[pos], pos - 9);
+					pregeneratedKingMoves[pos] = append(pregeneratedKingMoves[pos], pos - 9);
 				}
 				if (file < 7) {
-					result[pos] = append(result[pos], pos - 7);
+					pregeneratedKingMoves[pos] = append(pregeneratedKingMoves[pos], pos - 7);
 				}
 			}
 
 			if (rank <= 6) {
-				result[pos] = append(result[pos], pos + 8);
+				pregeneratedKingMoves[pos] = append(pregeneratedKingMoves[pos], pos + 8);
 				if (file > 0) {
-					result[pos] = append(result[pos], pos + 7);
+					pregeneratedKingMoves[pos] = append(pregeneratedKingMoves[pos], pos + 7);
 				}
 				if (file < 7) {
-					result[pos] = append(result[pos], pos + 9);
+					pregeneratedKingMoves[pos] = append(pregeneratedKingMoves[pos], pos + 9);
 				}
 			}
 
 
 			if (file > 0) {
-				result[pos] = append(result[pos], pos - 1);
+				pregeneratedKingMoves[pos] = append(pregeneratedKingMoves[pos], pos - 1);
 			}
 			if (file < 7) {
-				result[pos] = append(result[pos], pos + 1);
+				pregeneratedKingMoves[pos] = append(pregeneratedKingMoves[pos], pos + 1);
 			}
 
 
 		}
   }
-  return result;
 }
 
 
@@ -60,9 +63,7 @@ func contains(arr []int8, value int8) bool {
 
 func genSingleKingMoves(b *boardstate.BoardState, kingPos int8, calculateChecks bool) []*boardstate.Move {
 	var result []*boardstate.Move;
-	allKingMoves := pregenerateAllKingMoves(); // TODO: THIS MUST BE MEMOIZED SOMEHOW.
-	for i := range(allKingMoves[kingPos]) {
-		move := allKingMoves[kingPos][i];
+	for _, move := range(pregeneratedKingMoves[kingPos]) {
 		if b.ColorOfSquare(move) != b.ColorOfSquare(kingPos) {
 			result = append(result, boardstate.CreateMove(kingPos, move, boardstate.EMPTY))
 		}

@@ -3,7 +3,7 @@ package movegenerator
 import (
   "testing"
   "github.com/sblackstone/go-chess/fen"
-  "fmt"
+  //"fmt"
   "encoding/json"
   "io/ioutil"
   "errors"
@@ -80,10 +80,10 @@ func testFromFile(t *testing.T, fileName string ) error {
   var testCaseFile TestCaseFile;
   json.Unmarshal(byteValue, &testCaseFile)
 
-  fmt.Printf("Processing %v with %v entries\n", testCaseFile.Description, len(testCaseFile.TestCases))
+  //fmt.Printf("Processing %v with %v entries\n", testCaseFile.Description, len(testCaseFile.TestCases))
 
   for i := range(testCaseFile.TestCases) {
-    fmt.Printf("Processing #%v\n", i)
+    //fmt.Printf("Processing #%v\n", i)
     tc := testCaseFile.TestCases[i]
     b, err := fen.FromFEN(tc.Start.Fen)
     if err != nil {

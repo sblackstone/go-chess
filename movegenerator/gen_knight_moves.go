@@ -27,8 +27,14 @@ import (
 */
 
 
-func pregenerateKnightMoves() [64][]int8 {
-  var result [64][]int8;
+
+var pregeneratedKnightMoves [64][]int8;
+
+func getPregeneratedKnightMoves() [64][]int8 {
+	return pregeneratedKnightMoves;
+}
+
+func init() {
   var rank,file int8
   for rank = 0; rank < 8; rank++ {
     for file =0; file < 8; file++ {
@@ -36,55 +42,53 @@ func pregenerateKnightMoves() [64][]int8 {
       // A
       if file >= 2 {
         if rank >= 1 {
-          result[pos] = append(result[pos], pos - 10)
+          pregeneratedKnightMoves[pos] = append(pregeneratedKnightMoves[pos], pos - 10)
         }
         if rank <= 6 {
-          result[pos] = append(result[pos], pos + 6)
+          pregeneratedKnightMoves[pos] = append(pregeneratedKnightMoves[pos], pos + 6)
         }
       }
 
       // B
       if file >= 1 {
         if rank >= 2 {
-          result[pos] = append(result[pos], pos - 17)
+          pregeneratedKnightMoves[pos] = append(pregeneratedKnightMoves[pos], pos - 17)
 
         }
         if rank <= 5 {
-          result[pos] = append(result[pos], pos + 15)
+          pregeneratedKnightMoves[pos] = append(pregeneratedKnightMoves[pos], pos + 15)
         }
       }
 
       // C
       if file <= 6 {
         if rank >= 2 {
-          result[pos] = append(result[pos], pos - 15)
+          pregeneratedKnightMoves[pos] = append(pregeneratedKnightMoves[pos], pos - 15)
         }
         if rank <= 5 {
-          result[pos] = append(result[pos], pos + 17)
+          pregeneratedKnightMoves[pos] = append(pregeneratedKnightMoves[pos], pos + 17)
         }
       }
 
       // D
       if file <= 5 {
         if rank >= 1 {
-          result[pos] = append(result[pos], pos - 6)
+          pregeneratedKnightMoves[pos] = append(pregeneratedKnightMoves[pos], pos - 6)
         }
         if rank <= 6 {
-          result[pos] = append(result[pos], pos + 10)
+          pregeneratedKnightMoves[pos] = append(pregeneratedKnightMoves[pos], pos + 10)
         }
       }
 
 
     }
   }
-  return result;
 }
 
 func genSingleKnightMoves(b *boardstate.BoardState, knightPos int8) []*boardstate.Move {
 	var result []*boardstate.Move;
-	allKnightMoves := pregenerateKnightMoves(); // TODO: THIS MUST BE MEMOIZED SOMEHOW.
-	for i := range(allKnightMoves[knightPos]) {
-		move := allKnightMoves[knightPos][i];
+	for i := range(pregeneratedKnightMoves[knightPos]) {
+		move := pregeneratedKnightMoves[knightPos][i];
 		if b.ColorOfSquare(move) != b.ColorOfSquare(knightPos) {
 			result = append(result, boardstate.CreateMove(knightPos, move, boardstate.EMPTY))
 		}
