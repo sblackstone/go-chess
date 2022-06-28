@@ -48,7 +48,17 @@ func pregenerateAllKingMoves() [64][]int8 {
 }
 
 
-func genSingleKingMoves(b *boardstate.BoardState, kingPos int8) []*boardstate.Move {
+func contains(arr []int8, value int8) bool {
+	for _, v := range arr {
+		if v == value {
+			return true
+		}
+	}
+
+	return false
+}
+
+func genSingleKingMoves(b *boardstate.BoardState, kingPos int8, calculateChecks bool) []*boardstate.Move {
 	var result []*boardstate.Move;
 	allKingMoves := pregenerateAllKingMoves(); // TODO: THIS MUST BE MEMOIZED SOMEHOW.
 	for i := range(allKingMoves[kingPos]) {
@@ -60,42 +70,56 @@ func genSingleKingMoves(b *boardstate.BoardState, kingPos int8) []*boardstate.Mo
 
 	kingColor := b.ColorOfSquare(kingPos)
 
-  // TODO: NEEDS TO CHECK IF KING MOVES THROUGH CHECK
 
-	if (kingColor == boardstate.WHITE) {
-		if b.HasCastleRights(kingColor, boardstate.CASTLE_SHORT) && b.EmptySquare(5) && b.EmptySquare(6) {
-			result = append(result, boardstate.CreateMove(4, 6, boardstate.EMPTY))
+	// If we aren't calculating attacks...
+	if (!calculateChecks) {
+
+		checkedSquares := GenAllCheckedSquares(b, b.EnemyColor())
+
+
+		// And the king isn't in check....
+		if !contains(checkedSquares, kingPos) {
+
+			if (kingColor == boardstate.WHITE) {
+				if b.HasCastleRights(kingColor, boardstate.CASTLE_SHORT) && b.EmptySquare(5) && b.EmptySquare(6) && !contains(checkedSquares, 5) && !contains(checkedSquares, 6) {
+					result = append(result, boardstate.CreateMove(4, 6, boardstate.EMPTY))
+				}
+				if b.HasCastleRights(kingColor, boardstate.CASTLE_LONG) && b.EmptySquare(1) && b.EmptySquare(2) && b.EmptySquare(3) && !contains(checkedSquares, 2) && !contains(checkedSquares, 3) {
+					result = append(result, boardstate.CreateMove(4, 2, boardstate.EMPTY))
+				}
+			}
+
+			if (kingColor == boardstate.BLACK) {
+				if b.HasCastleRights(kingColor, boardstate.CASTLE_SHORT) && b.EmptySquare(61) && b.EmptySquare(62) && !contains(checkedSquares, 61) && !contains(checkedSquares, 62) {
+					result = append(result, boardstate.CreateMove(60, 62, boardstate.EMPTY))
+				}
+				if b.HasCastleRights(kingColor, boardstate.CASTLE_LONG) && b.EmptySquare(57) && b.EmptySquare(58) && b.EmptySquare(59) && !contains(checkedSquares, 58) && !contains(checkedSquares, 59) {
+					result = append(result, boardstate.CreateMove(60, 58, boardstate.EMPTY))
+				}
+			}
+
+
 		}
-		if b.HasCastleRights(kingColor, boardstate.CASTLE_LONG) && b.EmptySquare(1) && b.EmptySquare(2) && b.EmptySquare(3) {
-			result = append(result, boardstate.CreateMove(4, 2, boardstate.EMPTY))
-		}
+
 	}
 
-	if (kingColor == boardstate.BLACK) {
-		if b.HasCastleRights(kingColor, boardstate.CASTLE_SHORT) && b.EmptySquare(61) && b.EmptySquare(62) {
-			result = append(result, boardstate.CreateMove(60, 62, boardstate.EMPTY))
-		}
-		if b.HasCastleRights(kingColor, boardstate.CASTLE_LONG) && b.EmptySquare(57) && b.EmptySquare(58) && b.EmptySquare(59) {
-			result = append(result, boardstate.CreateMove(60, 58, boardstate.EMPTY))
-		}
-	}
 
 	return result
 }
 
 
 /* TODO: CASTLING */
-func genAllKingMoves(b *boardstate.BoardState, color int8) []*boardstate.Move {
+func genAllKingMoves(b *boardstate.BoardState, color int8, calculateChecks bool) []*boardstate.Move {
 	var result []*boardstate.Move;
 	kingPositions := b.FindPieces(color, boardstate.KING)
 	//fmt.Printf("%v\n", rookPositions)
 	for i := 0; i < len(kingPositions); i++ {
-		result = append(result, genSingleKingMoves(b, kingPositions[i])...)
+		result = append(result, genSingleKingMoves(b, kingPositions[i], calculateChecks)...)
 	}
   return result;
 }
 
 
 func genKingSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
-	return b.GenerateSuccessors(genAllKingMoves(b, b.GetTurn()))
+	return b.GenerateSuccessors(genAllKingMoves(b, b.GetTurn(), false))
 }

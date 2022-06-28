@@ -53,7 +53,7 @@ func GenLegalSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
 func GenAllCheckedSquares(b *boardstate.BoardState, color int8) []int8 {
 	var moves []*boardstate.Move;
   moves = append(moves, genAllPawnMoves(b, color, true)...);
-  moves = append(moves, genAllKingMoves(b, color)...);
+  moves = append(moves, genAllKingMoves(b, color, true)...);
   moves = append(moves, genAllQueenMoves(b, color)...);
   moves = append(moves, genAllBishopMoves(b, color)...);
   moves = append(moves, genAllKnightMoves(b, color)...);
