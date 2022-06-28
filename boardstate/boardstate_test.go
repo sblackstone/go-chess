@@ -881,9 +881,9 @@ func TestPieceOfSquare(t *testing.T) {
     {48,PAWN},
   }
 
-  for i := range(expected) {
-    if b.PieceOfSquare(expected[i][0]) != expected[i][1] {
-        t.Errorf("Expected square %v to be %v", expected[i][0], expected[i][1])
+  for _, expect := range(expected) {
+    if b.PieceOfSquare(expect[0]) != expect[1] {
+        t.Errorf("Expected square %v to be %v", expect[0], expect[1])
     }
   }
 }

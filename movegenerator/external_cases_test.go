@@ -36,8 +36,8 @@ type TestCaseFile struct {
 
 func (t *TestCase) ExpectedFens() []string {
   var result []string
-  for i := range(t.Expected) {
-    result = append(result, t.Expected[i].Fen)
+  for _, expect := range(t.Expected) {
+    result = append(result, expect.Fen)
   }
   sort.Strings(result)
   return result
@@ -76,15 +76,10 @@ func testFromFile(t *testing.T, fileName string ) error {
     return err
   }
 
-  //fmt.Printf("byteValue = %s\n", byteValue)
   var testCaseFile TestCaseFile;
   json.Unmarshal(byteValue, &testCaseFile)
 
-  //fmt.Printf("Processing %v with %v entries\n", testCaseFile.Description, len(testCaseFile.TestCases))
-
-  for i := range(testCaseFile.TestCases) {
-    //fmt.Printf("Processing #%v\n", i)
-    tc := testCaseFile.TestCases[i]
+  for _, tc := range(testCaseFile.TestCases) {
     b, err := fen.FromFEN(tc.Start.Fen)
     if err != nil {
       return err
@@ -93,8 +88,8 @@ func testFromFile(t *testing.T, fileName string ) error {
     successors := GenLegalSuccessors(b)
 
     var fens []string
-    for i := range(successors) {
-      f, err := fen.ToFEN(successors[i])
+    for _, succ := range(successors) {
+      f, err := fen.ToFEN(succ)
       if err != nil {
         return err
       }
@@ -108,35 +103,34 @@ func testFromFile(t *testing.T, fileName string ) error {
 
       t.Errorf("Initial %v", tc.Start.Fen)
 
-      for j := range(expected) {
+      for _, expect := range(expected) {
         seen := false
-        for k := range(fens) {
-          if expected[j] == fens[k] {
+        for _, fen := range(fens) {
+          if expect == fen {
             seen = true
             break
           }
         }
         if !seen {
-          t.Errorf("Missing    %v", expected[j])
+          t.Errorf("Missing    %v", expect)
         }
       }
 
 
-      for j := range(fens) {
+      for _, fen := range(fens) {
         seen := false
-        for k := range(expected) {
-          if fens[j] == expected[k] {
+        for _, expect := range(expected) {
+          if fen == expect {
             seen = true
             break
           }
         }
         if !seen {
-          t.Errorf("Unexpected %v", fens[j])
+          t.Errorf("Unexpected %v", fen)
         }
       }
       return errors.New("False")
     }
   }
-  //t.Errorf("BLARG")
   return nil
 }

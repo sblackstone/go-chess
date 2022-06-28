@@ -216,8 +216,8 @@ func TestKingCanCaptureOtherPieces(t *testing.T) {
 	b.SetCastleRights(boardstate.WHITE, boardstate.CASTLE_SHORT, false)
 
 	expected := []int8{18, 19, 20, 26, 28, 34, 35, 36}
-	for i := range(expected) {
-		b.SetSquare(expected[i], boardstate.BLACK, boardstate.PAWN)
+	for _, expect := range(expected) {
+		b.SetSquare(expect, boardstate.BLACK, boardstate.PAWN)
 	}
   b.SetSquare(27, boardstate.WHITE, boardstate.KING)
   locations := genSortedBoardLocationsKings(b)

@@ -87,8 +87,8 @@ func (b *BoardState) EmptyOrEnemyOccupiedSquare(n int8) bool{
 
 func (b *BoardState) GenerateSuccessors(moves []*Move) []*BoardState {
 	var result []*BoardState;
-	for i := range(moves) {
-		result = append(result, b.CopyPlayTurnFromMove(moves[i]))
+	for _, move := range(moves) {
+		result = append(result, b.CopyPlayTurnFromMove(move))
 	}
 	return result
 }

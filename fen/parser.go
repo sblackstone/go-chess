@@ -92,15 +92,13 @@ func applyTurnString(b *boardstate.BoardState, turnString string) error {
 }
 
 func applyCastlingString(b *boardstate.BoardState, castlingString string) error {
-	var j int
 	b.SetCastleRights(boardstate.BLACK, boardstate.CASTLE_LONG, false)
 	b.SetCastleRights(boardstate.WHITE, boardstate.CASTLE_LONG, false)
 	b.SetCastleRights(boardstate.BLACK, boardstate.CASTLE_SHORT, false)
 	b.SetCastleRights(boardstate.WHITE, boardstate.CASTLE_SHORT, false)
 	// We're sure its one of these cases via the REGEX
-	for j = range(castlingString) {
-		char := string(castlingString[j])
-		switch char {
+	for _, char := range(castlingString) {
+		switch string(char) {
 		case "-":
 			return nil
 		case "k":

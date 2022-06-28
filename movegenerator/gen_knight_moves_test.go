@@ -140,19 +140,4 @@ func TestGenAllKnightMoves(t *testing.T) {
 				t.Errorf("Expected %v to be %v", boards[i], cases[i]);
 			}
 	}
-
-/*
-	// Print out all the knight bitboards
-  var pos int8;
-	var tmp uint64
-	var i int
-  for pos = 0; pos < 64; pos++ {
-		tmp = 0
-		for i = range(boards[pos]) {
-			tmp = bitopts.SetBit(tmp, boards[pos][i])
-		}
-		fmt.Printf("%v: %v\n", pos, boards[pos]);
-		bitopts.Print(tmp, pos)
-  }
-*/
 }
