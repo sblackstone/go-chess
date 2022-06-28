@@ -4,8 +4,8 @@ import (
 	"testing"
   "reflect"
   "github.com/sblackstone/go-chess/boardstate"
-	"github.com/sblackstone/go-chess/fen"
-	"fmt"
+//	"github.com/sblackstone/go-chess/fen"
+//	"fmt"
 )
 
 
@@ -53,36 +53,36 @@ func TestGenQueenMovesMiddleOfBoard(t *testing.T) {
 //R1Q4R/3Q4/1Q4Q1/4Q3/7Q/Q4Q2/pp1Q4/kBNN1KB1 b - - 1 1
 
 
-// Used to test bug...
-func TestFromFamous(t *testing.T) {
-
-	b, _ := fen.FromFEN("R1Q4R/3Q4/1Q4Q1/4Q3/7Q/Q4Q2/pp1Q4/kBNN1KB1 b - - 1 1")
-
-	qms := genAllQueenMoves(b, boardstate.WHITE)
-
-	for q := range(qms) {
-		move := qms[q]
-		if move.Dst() == 18 {
-			fmt.Printf("%v\n", move)
-			// newBoard := b.CopyPlayTurnFromMove(move)
-			// newBoard.Print(127)
-		}
-	}
-
-	// locations := genSortedBoardLocationsQueens(b)
-	//
-	// expected := []int8{2, 9, 17, 18, 24, 25, 32, 40, 48 }
-  // if !reflect.DeepEqual(locations, expected) {
-  //   t.Errorf("Expected %v to be %v", locations, expected)
-  // }
-	//
-	// positions := genQueenSuccessors(b)
-	// for p := range(positions) {
-	// 	positions[p].Print(127)
-	// }
-	//
-	//
-	//
-	// b.Print(127)
-	t.Errorf("a")
-}
+// // Used to test bug...
+// func TestFromFamous(t *testing.T) {
+//
+// 	b, _ := fen.FromFEN("R1Q4R/3Q4/1Q4Q1/4Q3/7Q/Q4Q2/pp1Q4/kBNN1KB1 b - - 1 1")
+//
+// 	qms := genAllQueenMoves(b, boardstate.WHITE)
+//
+// 	for q := range(qms) {
+// 		move := qms[q]
+// 		if move.Dst() == 18 {
+// 			fmt.Printf("%v\n", move)
+// 			// newBoard := b.CopyPlayTurnFromMove(move)
+// 			// newBoard.Print(127)
+// 		}
+// 	}
+//
+// 	// locations := genSortedBoardLocationsQueens(b)
+// 	//
+// 	// expected := []int8{2, 9, 17, 18, 24, 25, 32, 40, 48 }
+//   // if !reflect.DeepEqual(locations, expected) {
+//   //   t.Errorf("Expected %v to be %v", locations, expected)
+//   // }
+// 	//
+// 	// positions := genQueenSuccessors(b)
+// 	// for p := range(positions) {
+// 	// 	positions[p].Print(127)
+// 	// }
+// 	//
+// 	//
+// 	//
+// 	// b.Print(127)
+// 	t.Errorf("a")
+// }
