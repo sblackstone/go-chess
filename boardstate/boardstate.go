@@ -96,8 +96,18 @@ func (b *BoardState) GenerateSuccessors(moves []*Move) []*BoardState {
 func (b *BoardState) MovePiece(src int8, dst int8) {
 	color := b.ColorOfSquare(src)
 	piece := b.PieceOfSquare(src)
+
+  // Clear the source square.
 	b.pieces[piece]    = bitopts.ClearBit(b.pieces[piece], src)
 	b.colors[color]    = bitopts.ClearBit(b.colors[color], src)
+
+	// Clear the destination square.
+	if !b.EmptySquare(dst) {
+		b.pieces[b.PieceOfSquare(dst)]    = bitopts.ClearBit(b.pieces[b.PieceOfSquare(dst)], dst)
+		b.colors[b.ColorOfSquare(dst)]    = bitopts.ClearBit(b.colors[b.ColorOfSquare(dst)], dst)
+	}
+
+	// Set the new piece.
 	b.colors[color]    = bitopts.SetBit(b.colors[color],   dst)
 	b.pieces[piece]    = bitopts.SetBit(b.pieces[piece],   dst)
 }

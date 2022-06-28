@@ -56,7 +56,6 @@ func TestFromFile(t *testing.T) {
   fmt.Printf("Processing %v\n", testCaseFile.Description)
 
   for i := range(testCaseFile.TestCases) {
-    fmt.Printf("i = %v\n", i)
     tc := testCaseFile.TestCases[i]
     b, err := fen.FromFEN(tc.Start.Fen)
     if err != nil {
@@ -109,22 +108,8 @@ func TestFromFile(t *testing.T) {
           t.Errorf("Unexpected %v", fens[j])
         }
       }
-
-
-
-
-
-
-
   	}
-
-
-    b.Print(127)
-//    fmt.Printf("%s\n", b.Print(127))
   }
-
-
-  t.Errorf("BLARG")
 }
 
 // func TestLetsTryIt(t *testing.T) {
