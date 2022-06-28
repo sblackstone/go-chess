@@ -31,7 +31,7 @@ while game:
         "expected": expected
     })
     max += 1
-    if max > 1000:
+    if max > 25000:
         break
 
 print(json.dumps(result))
