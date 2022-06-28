@@ -11,11 +11,11 @@ import (
 func genPerf(state *boardstate.BoardState, depth int) int {
   successors := GenLegalSuccessors(state)
   result := 0
-  if (depth == 3) {
+  if (depth == 0) {
     return len(successors)
   } else {
     for _, succ := range(successors) {
-      result += genPerf(succ, depth + 1)
+      result += genPerf(succ, depth - 1)
     }
   }
   return result
@@ -24,6 +24,7 @@ func genPerf(state *boardstate.BoardState, depth int) int {
 
 func TestPerft(t *testing.T) {
   b := boardstate.Initial()
-  t.Errorf("%v\n", genPerf(b, 0))
+  result := genPerf(b, 3)
+  t.Errorf("%v\n", result)
 
 }
