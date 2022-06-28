@@ -14,7 +14,7 @@ func TestLetsTryIt(t *testing.T) {
     t.Errorf("Err: %v", err)
   }
 
-  sucessors := GenSucessors(b)
+  successors := GenSuccessors(b)
 
   for i := range(sucessors) {
     fenStr, err := fen.ToFEN(sucessors[i])

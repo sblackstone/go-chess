@@ -4,7 +4,7 @@ import (
 	"github.com/sblackstone/go-chess/boardstate"
 )
 
-func GenSucessors(b *boardstate.BoardState) []*boardstate.BoardState {
+func GenSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
   var result []*boardstate.BoardState;
   result = append(result, genPawnSuccessors(b)...);
   result = append(result, genKingSuccessors(b)...);
@@ -15,18 +15,10 @@ func GenSucessors(b *boardstate.BoardState) []*boardstate.BoardState {
   return result;
 }
 
-/*
-func GenAllMoves(b *boardstate.BoardState) []*boardstate.Move {
-  var result []*boardstate.Move;
-  result = append(result, genAllPawnMoves(b, b.GetTurn())...);
-  result = append(result, genAllKingMoves(b, b.GetTurn())...);
-  result = append(result, genAllQueenMoves(b, b.GetTurn())...);
-  result = append(result, genAllBishopMoves(b, b.GetTurn())...);
-  result = append(result, genAllKnightMoves(b, b.GetTurn())...);
-  result = append(result, genAllRookMoves(b, b.GetTurn())...);
-  return result;
+func GenLegalSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
+	successors := GenSucessors(b)
+	return successors;
 }
-*/
 
 func GenAllCheckedSquares(b *boardstate.BoardState, color int8) []int8 {
 	var moves []*boardstate.Move;

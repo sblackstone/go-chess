@@ -8,9 +8,9 @@ import (
 
 
 
-func TestGenSucessorsInitialPosition(t *testing.T) {
+func TestGenGenSuccessorsInitialPosition(t *testing.T) {
   b := boardstate.Initial()
-  successors := GenSucessors(b)
+  successors := GenSuccessors(b)
 
   if len(successors) != 20 {
     t.Errorf("Expected initial successors to be 20, got %v", len(successors))
@@ -19,7 +19,7 @@ func TestGenSucessorsInitialPosition(t *testing.T) {
   b.PlayTurn(8, 24, boardstate.EMPTY)
 
 
-  successors2 := GenSucessors(b)
+  successors2 := GenSuccessors(b)
 
   if len(successors2) != 20 {
     t.Errorf("Expected initial successors to be 20, got %v", len(successors2))
