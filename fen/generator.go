@@ -65,9 +65,9 @@ func ToFEN(b *boardstate.BoardState) (string, error) {
 
 	/// Add castling rights
   wlong  := b.HasCastleRights(boardstate.WHITE, boardstate.CASTLE_LONG)
-	wshort := b.HasCastleRights(boardstate.WHITE, boardstate.CASTLE_LONG)
+	wshort := b.HasCastleRights(boardstate.WHITE, boardstate.CASTLE_SHORT)
 	blong  := b.HasCastleRights(boardstate.BLACK, boardstate.CASTLE_LONG)
-	bshort := b.HasCastleRights(boardstate.BLACK, boardstate.CASTLE_LONG)
+	bshort := b.HasCastleRights(boardstate.BLACK, boardstate.CASTLE_SHORT)
 
 	if (!wlong && !wshort && !blong && !bshort) {
 		result += "-"

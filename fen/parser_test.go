@@ -8,6 +8,25 @@ import (
   "reflect"
 )
 
+
+func TestMoreCastling(t *testing.T) {
+  testCase := "8/4k3/8/8/8/8/r6r/R3K2R w KQ - 0 1"
+  expected := "8/4k3/8/8/8/8/R6r/4K2R b K - 0 1"
+  b, _ := FromFEN(testCase)
+
+  b.PlayTurn(0, 8, boardstate.EMPTY)
+
+  newFen, _ := ToFEN(b)
+
+  if newFen != expected {
+    t.Errorf("Initial  %v\n", testCase)
+    t.Errorf("Expected %v\n", expected)
+    t.Errorf("Actual   %v\n", newFen)
+
+  }
+
+}
+
 func TestAllFileOffsets(t *testing.T) {
   var i int8
   testStr := "P7/1P6/2P5/3P4/4P3/5P2/6P1/7P w - - 0 1"
