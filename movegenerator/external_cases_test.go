@@ -43,24 +43,29 @@ func (t *TestCase) ExpectedFens() []string {
   return result
 }
 
+func TestLichessBank(t *testing.T) {
+  testFromFile(t, "../test-cases/generated.json")
+}
+
+
 func TestCastling(t *testing.T) {
-  testFromFile(t, "../chessmovegen-test-suites/src/main/resources/testcases/castling.json")
+  testFromFile(t, "../test-cases/chessmovegen/castling.json")
 }
 
 func TestFamous(t *testing.T) {
-  testFromFile(t, "../chessmovegen-test-suites/src/main/resources/testcases/famous.json")
+  testFromFile(t, "../test-cases/chessmovegen/famous.json")
 }
 
 func TestPawns(t *testing.T) {
-  testFromFile(t, "../chessmovegen-test-suites/src/main/resources/testcases/pawns.json")
+  testFromFile(t, "../test-cases/chessmovegen/pawns.json")
 }
 
 func TestStandard(t *testing.T) {
-  testFromFile(t, "../chessmovegen-test-suites/src/main/resources/testcases/standard.json")
+  testFromFile(t, "../test-cases/chessmovegen/standard.json")
 }
 
 func TestTaxing(t *testing.T) {
-  testFromFile(t, "../chessmovegen-test-suites/src/main/resources/testcases/taxing.json")
+  testFromFile(t, "../test-cases/chessmovegen/taxing.json")
 }
 
 

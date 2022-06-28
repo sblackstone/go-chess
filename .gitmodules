@@ -1,3 +1,0 @@
-[submodule "chessmovegen"]
-	path = chessmovegen-test-suites
-	url = git@github.com:schnitzi/chessmovegen.git
