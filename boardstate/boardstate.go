@@ -5,6 +5,17 @@ import (
 	//"fmt"
 )
 
+type MoveData struct {
+	src int8
+	dst int8
+	srcColor int8
+	srcPiece int8
+	dstColor int8
+	dstPiece int8
+	preHalfMoves int
+	preMoveEnpassantSquare int8
+	preMoveMeta uint64
+}
 
 // BoardState contains the state of the Board
 type BoardState struct {
@@ -15,6 +26,7 @@ type BoardState struct {
 	turn int8
 	halfMoves int
 	fullMoves int
+	movesData []MoveData;
 }
 
 // Blank returns a blank board with no pieces on it
@@ -47,6 +59,7 @@ func (b *BoardState) Copy() *BoardState {
 		turn: b.turn,
 		halfMoves: b.halfMoves,
 		fullMoves: b.fullMoves,
+		movesData: b.movesData,
 	}
 
 	return &boardCopy
@@ -91,6 +104,11 @@ func (b *BoardState) GenerateSuccessors(moves []*Move) []*BoardState {
 		result = append(result, b.CopyPlayTurnFromMove(move))
 	}
 	return result
+}
+
+func (b *BoardState) ClearSquare(n int8) {
+	b.pieces[b.PieceOfSquare(n)]    = bitopts.ClearBit(b.pieces[b.PieceOfSquare(n)], n)
+	b.colors[b.ColorOfSquare(n)]    = bitopts.ClearBit(b.colors[b.ColorOfSquare(n)], n)
 }
 
 func (b *BoardState) MovePiece(src int8, dst int8) {

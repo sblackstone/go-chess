@@ -66,8 +66,22 @@ func (b *BoardState) handleCastling(src int8, dst int8) {
 }
 
 func (b *BoardState) PlayTurn(src int8, dst int8, promotePiece int8) {
+	  color := b.ColorOfSquare(src)
 		piece := b.PieceOfSquare(src)
+		dstPiece := b.PieceOfSquare(dst)
 		dstColor := b.ColorOfSquare(dst)
+
+		b.movesData = append(b.movesData, MoveData{
+			src: src,
+			dst: dst,
+			srcColor: color,
+			srcPiece: piece,
+			dstPiece: dstPiece,
+			dstColor: dstColor,
+			preMoveEnpassantSquare: b.enpassantSquare,
+			preMoveMeta: b.meta,
+			preHalfMoves: b.halfMoves,
+		})
 
 		// Set or Clear enpassant flag
 		if (piece == PAWN) {
@@ -102,6 +116,27 @@ func (b *BoardState) PlayTurn(src int8, dst int8, promotePiece int8) {
 		}
 
 		b.ToggleTurn()
+
+}
+
+func (b *BoardState) PopTurn() {
+	idx := len(b.movesData) - 1
+  md := b.movesData[idx]
+	b.movesData = b.movesData[:idx]
+
+	b.MovePiece(md.dst, md.src)
+
+	b.SetSquare(md.dst, md.dstColor, md.dstPiece)
+
+	b.meta = md.preMoveMeta
+	b.enpassantSquare = md.preMoveEnpassantSquare
+	b.halfMoves = md.preHalfMoves
+	if b.turn == WHITE {
+		b.fullMoves -= 1
+	}
+
+	b.ToggleTurn()
+
 
 }
 
