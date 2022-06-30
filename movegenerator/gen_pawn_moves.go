@@ -44,12 +44,12 @@ func genSinglePawnMoves(b *boardstate.BoardState, pawnPos int8, calculateChecks 
 
 	if (calculateChecks) {
 		// Capture to Higher file
-		if (bitopts.FileOfSquare(captureToHigherFilePos) > pawnPosFile) {
+		if (captureToHigherFilePos >= 0 && captureToHigherFilePos <= 63 && bitopts.FileOfSquare(captureToHigherFilePos) > pawnPosFile) {
 			appendPawnMovesFn(captureToHigherFilePos)
 		}
 
 		// Cpature to Lower file
-		if (bitopts.FileOfSquare(captureToLowerFilePos) < pawnPosFile) {
+		if (captureToLowerFilePos >= 0 && captureToLowerFilePos <= 64 && bitopts.FileOfSquare(captureToLowerFilePos) < pawnPosFile) {
 			appendPawnMovesFn(captureToLowerFilePos)
 		}
 

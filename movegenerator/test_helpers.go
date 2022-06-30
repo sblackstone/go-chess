@@ -38,10 +38,6 @@ func genSortedBoardLocationsPawns(b *boardstate.BoardState) []int8 {
 }
 
 
-func genSortedCheckedSquares(b *boardstate.BoardState, color int8) []int8 {
-
-  squares := GenAllCheckedSquares(b, color)
-  sort.Slice(squares, func(i, j int) bool { return squares[i] < squares[j] })
-  return squares
-
+func genSortedCheckedSquares(b *boardstate.BoardState, color int8) uint64 {
+  return GenAllCheckedSquares(b, color)
 }

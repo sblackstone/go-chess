@@ -2,7 +2,7 @@ package movegenerator
 
 import (
 	"github.com/sblackstone/go-chess/boardstate"
-	//"fmt"
+	"github.com/sblackstone/go-chess/bitopts"
 )
 
 func GenSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
@@ -36,35 +36,51 @@ func GenLegalSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
 
 		// Find all the checked squares for the opposing side
 		attacks := GenAllCheckedSquares(successors[i], oppTurnColor)
-		attacked := false
-		for j := range(attacks) {
-			if attacks[j] == kingPos[0] {
-				attacked = true
-				break
-			}
-		}
-		if !attacked {
+		if !bitopts.TestBit(attacks, kingPos[0]) {
 			result = append(result, successors[i])
 		}
 	}
 	return result;
 }
 
-func GenAllCheckedSquares(b *boardstate.BoardState, color int8) []int8 {
-	var moves []*boardstate.Move;
-  moves = append(moves, genAllPawnMoves(b, color, true)...);
-  moves = append(moves, genAllKingMoves(b, color, true)...);
-  moves = append(moves, genAllQueenMoves(b, color)...);
-  moves = append(moves, genAllBishopMoves(b, color)...);
-  moves = append(moves, genAllKnightMoves(b, color)...);
-  moves = append(moves, genAllRookMoves(b, color)...);
+func GenAllCheckedSquares(b *boardstate.BoardState, color int8) uint64 {
+	var result uint64;
+	pawnMoves := genAllPawnMoves(b, color, true)
+	kingMoves := genAllKingMoves(b, color, true)
+	queenMoves := genAllQueenMoves(b, color)
+	bishopMoves := genAllBishopMoves(b, color)
+	knightMoves := genAllKnightMoves(b, color)
+	rookMoves := genAllRookMoves(b, color)
 
-	var result []int8
-	for j := range(moves) {
-		result = append(result, moves[j].Dst())
+	for _, m := range(pawnMoves) {
+		result = bitopts.SetBit(result, m.Dst())
 	}
 
-	return result
+
+	for _, m := range(kingMoves) {
+		result = bitopts.SetBit(result, m.Dst())
+	}
+
+	for _, m := range(queenMoves) {
+		result = bitopts.SetBit(result, m.Dst())
+	}
+
+	for _, m := range(bishopMoves) {
+		result = bitopts.SetBit(result, m.Dst())
+	}
+
+	for _, m := range(knightMoves) {
+		result = bitopts.SetBit(result, m.Dst())
+	}
+
+	for _, m := range(rookMoves) {
+		result = bitopts.SetBit(result, m.Dst())
+	}
+
+
+
+
+	return result;
 
 
 

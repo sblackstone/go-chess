@@ -51,14 +51,8 @@ func init() {
 }
 
 
-func contains(arr []int8, value int8) bool {
-	for _, v := range arr {
-		if v == value {
-			return true
-		}
-	}
-
-	return false
+func contains(arr uint64, value int8) bool {
+	return bitopts.TestBit(arr, value);
 }
 
 func genSingleKingMoves(b *boardstate.BoardState, kingPos int8, calculateChecks bool) []*boardstate.Move {
