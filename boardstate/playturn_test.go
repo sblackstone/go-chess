@@ -77,14 +77,14 @@ func TestPopTurnPromote(t *testing.T) {
 
 func TestPopTurnCapture(t *testing.T) {
   t.Errorf("not implemented");
-  
+
 }
 
 
 func TestPopTurn(t *testing.T) {
    b1 := Initial()
-   b2 := b1.CopyPlayTurnFromMove(&Move{src: 8, dst: 24, promotePiece: EMPTY})
-   b3 := b2.CopyPlayTurnFromMove(&Move{src: 48, dst: 32, promotePiece: EMPTY})
+   b2 := b1.CopyPlayTurnFromMove(&Move{Src: 8, Dst: 24, PromotePiece: EMPTY})
+   b3 := b2.CopyPlayTurnFromMove(&Move{Src: 48, Dst: 32, PromotePiece: EMPTY})
 
    fmt.Printf("b2 movesData %p\n", &(b2.movesData[0]))
    fmt.Printf("b3 movesData %p\n", &(b3.movesData[0]))

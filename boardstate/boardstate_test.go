@@ -367,7 +367,7 @@ func TestCopyPlayMove(t *testing.T) {
 
 func TestCopyPlayMoveFromTurn(t *testing.T) {
 	b1 := Initial()
-	b2 := b1.CopyPlayTurnFromMove(&Move{src: 1, dst: 18, promotePiece: EMPTY})
+	b2 := b1.CopyPlayTurnFromMove(&Move{Src: 1, Dst: 18, PromotePiece: EMPTY})
 	if (b1 == b2) {
 		t.Errorf("Expected b1 to be different than b2")
 	}
@@ -568,7 +568,7 @@ func TestPlayTurnMove(t *testing.T) {
 		t.Errorf("Expected initial turn to be white");
 	}
 
-	b.PlayTurnFromMove(&Move{src: 1, dst: 18, promotePiece: EMPTY})
+	b.PlayTurnFromMove(&Move{Src: 1, Dst: 18, PromotePiece: EMPTY})
 
 	if (b.PieceOfSquare(18) != KNIGHT || b.ColorOfSquare(18) != WHITE) {
 		t.Errorf("square 18 isn't a white knight")

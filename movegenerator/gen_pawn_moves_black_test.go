@@ -5,16 +5,23 @@ import (
 	//"fmt"
   "reflect"
   "github.com/sblackstone/go-chess/boardstate"
-	//"github.com/sblackstone/go-chess/bitopts"
-
+	"github.com/sblackstone/go-chess/bitopts"
 )
 
 func TestGenerateChecksOnlyBlack(t *testing.T) {
 	b := boardstate.Initial()
 	squares := genSortedCheckedSquares(b, boardstate.BLACK)
-	expected := []int8{40, 40, 41, 41, 42, 42, 42, 43, 43, 44, 44, 45, 45, 45, 46, 46, 47, 47}
-	if !reflect.DeepEqual(squares, expected) {
-		t.Errorf("Expected %v to be %v", squares, expected)
+	expected := []int8{40, 41, 42, 43, 44, 45, 46, 47,}
+	var actual []int8
+	var i int8
+	for i = 0; i < 64; i++ {
+		if bitopts.TestBit(squares, i) {
+			actual = append(actual, i)
+		}
+	}
+
+	if !reflect.DeepEqual(actual, expected) {
+		t.Errorf("Expected %v to be %v", actual, expected)
 	}
 }
 
