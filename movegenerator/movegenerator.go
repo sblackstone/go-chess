@@ -53,28 +53,28 @@ func GenAllCheckedSquares(b *boardstate.BoardState, color int8) uint64 {
 	rookMoves := genAllRookMoves(b, color)
 
 	for _, m := range(pawnMoves) {
-		result = bitopts.SetBit(result, m.Dst())
+		result = bitopts.SetBit(result, m.Dst)
 	}
 
 
 	for _, m := range(kingMoves) {
-		result = bitopts.SetBit(result, m.Dst())
+		result = bitopts.SetBit(result, m.Dst)
 	}
 
 	for _, m := range(queenMoves) {
-		result = bitopts.SetBit(result, m.Dst())
+		result = bitopts.SetBit(result, m.Dst)
 	}
 
 	for _, m := range(bishopMoves) {
-		result = bitopts.SetBit(result, m.Dst())
+		result = bitopts.SetBit(result, m.Dst)
 	}
 
 	for _, m := range(knightMoves) {
-		result = bitopts.SetBit(result, m.Dst())
+		result = bitopts.SetBit(result, m.Dst)
 	}
 
 	for _, m := range(rookMoves) {
-		result = bitopts.SetBit(result, m.Dst())
+		result = bitopts.SetBit(result, m.Dst)
 	}
 
 

@@ -2,28 +2,15 @@ package boardstate
 
 
 type Move struct {
-  src            int8
-  dst            int8
-  promotePiece   int8
+  Src            int8
+  Dst            int8
+  PromotePiece   int8
 }
 
 func CreateMove(src int8, dst int8, promotePiece int8) *Move {
   return &Move{
-    src: src,
-    dst: dst,
-    promotePiece: promotePiece,
+    Src: src,
+    Dst: dst,
+    PromotePiece: promotePiece,
   }
-}
-
-func (m *Move) Src() int8 {
-  return m.src;
-}
-
-func (m *Move) Dst() int8 {
-  return m.dst;
-}
-
-
-func (m *Move) PromotePiece() int8 {
-  return m.promotePiece;
 }

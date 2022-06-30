@@ -141,11 +141,11 @@ func (b *BoardState) PopTurn() {
 }
 
 func (b *BoardState) PlayTurnFromMove(m *Move) {
-	b.PlayTurn(m.src, m.dst, m.promotePiece)
+	b.PlayTurn(m.Src, m.Dst, m.PromotePiece)
 }
 
 func (b *BoardState) CopyPlayTurnFromMove(m *Move) *BoardState {
-	return b.CopyPlayTurn(m.src, m.dst, m.promotePiece)
+	return b.CopyPlayTurn(m.Src, m.Dst, m.PromotePiece)
 }
 
 
