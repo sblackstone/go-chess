@@ -29,3 +29,8 @@ func TestGenPawnMovesUnderstandsTurn(t *testing.T) {
     t.Errorf("Expected %v to be %v", locations2, expected2)
   }
 }
+
+
+func TestPregeneratedPawnAttacks(t *testing.T) {
+	t.Errorf("Not implemented")
+}

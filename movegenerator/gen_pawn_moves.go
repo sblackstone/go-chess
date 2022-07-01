@@ -5,6 +5,27 @@ import (
 	"github.com/sblackstone/go-chess/bitopts"
 )
 
+
+var pregeneratedPawnAttacks [2][64]uint64
+
+func init() {
+	var color, pos int8
+	for color = 0; color < 2; color++ {
+		for pos = 0; pos < 64; pos++ {
+			pregeneratedPawnAttacks[color][pos] = 0
+			b := boardstate.Blank()
+			b.SetSquare(pos, color, boardstate.PAWN)
+
+			updateFunc := func(dst int8) {
+				pregeneratedPawnAttacks[color][pos] = bitopts.SetBit(pregeneratedPawnAttacks[color][pos], dst)
+			}
+
+			genSinglePawnMovesGeneric(b, pos, true, updateFunc)
+
+		}
+	}
+}
+
 func genSinglePawnMovesGeneric(b *boardstate.BoardState, pawnPos int8, calculateChecks bool, updateFunc func(int8)) []*boardstate.Move {
 	var result []*boardstate.Move;
 	pawnPosRank, pawnPosFile := bitopts.SquareToRankFile(pawnPos)
@@ -108,15 +129,8 @@ func genSinglePawnMoves(b *boardstate.BoardState, piecePos int8, calculateChecks
 
 
 func genSinglePawnMovesBitboard(b *boardstate.BoardState, piecePos int8, calculateChecks bool) uint64 {
-	var result uint64
-
-	updateFunc := func(dst int8) {
-		result = bitopts.SetBit(result, dst)
-	}
-
-	genSinglePawnMovesGeneric(b, piecePos, calculateChecks, updateFunc)
-
-	return result
+	color := b.ColorOfSquare(piecePos)
+  return (pregeneratedPawnAttacks[color][piecePos] ^ b.GetColors(color)) & pregeneratedPawnAttacks[color][piecePos];
 }
 
 
