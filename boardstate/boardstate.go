@@ -5,18 +5,6 @@ import (
 	//"fmt"
 )
 
-type MoveData struct {
-	src int8
-	dst int8
-	srcColor int8
-	srcPiece int8
-	dstColor int8
-	dstPiece int8
-	preHalfMoves int
-	preMoveEnpassantSquare int8
-	preMoveMeta uint64
-}
-
 // BoardState contains the state of the Board
 type BoardState struct {
 	colors [2]uint64
@@ -26,7 +14,6 @@ type BoardState struct {
 	turn int8
 	halfMoves int
 	fullMoves int
-	movesData []MoveData;
 }
 
 // Blank returns a blank board with no pieces on it
@@ -59,7 +46,6 @@ func (b *BoardState) Copy() *BoardState {
 		turn: b.turn,
 		halfMoves: b.halfMoves,
 		fullMoves: b.fullMoves,
-		movesData: b.movesData,
 	}
 
 	return &boardCopy
@@ -93,8 +79,7 @@ func (b *BoardState) EnemyOccupiedSquare(n int8) bool{
 }
 
 func (b *BoardState) EmptySquare(n int8) bool {
-	c := b.ColorOfSquare(n)
-	return c == EMPTY
+	return !bitopts.TestBit(b.colors[BLACK] | b.colors[WHITE], n)
 }
 
 func (b *BoardState) EmptyOrEnemyOccupiedSquare(n int8) bool{
