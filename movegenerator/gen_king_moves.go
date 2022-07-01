@@ -55,11 +55,11 @@ func contains(arr uint64, value int8) bool {
 	return bitopts.TestBit(arr, value);
 }
 
-func genSingleKingMoves(b *boardstate.BoardState, kingPos int8, calculateChecks bool) []*boardstate.Move {
+func genSingleKingMovesGeneric(b *boardstate.BoardState, kingPos int8, calculateChecks bool, updateFunc func(int8)) []*boardstate.Move {
 	var result []*boardstate.Move;
 	for _, move := range(pregeneratedKingMoves[kingPos]) {
 		if b.ColorOfSquare(move) != b.ColorOfSquare(kingPos) {
-			result = append(result, boardstate.CreateMove(kingPos, move, boardstate.EMPTY))
+			updateFunc(move)
 		}
 	}
 
@@ -77,42 +77,82 @@ func genSingleKingMoves(b *boardstate.BoardState, kingPos int8, calculateChecks 
 
 			if (kingColor == boardstate.WHITE) {
 				if b.HasCastleRights(kingColor, boardstate.CASTLE_SHORT) && b.EmptySquare(5) && b.EmptySquare(6) && !contains(checkedSquares, 5) && !contains(checkedSquares, 6) {
-					result = append(result, boardstate.CreateMove(4, 6, boardstate.EMPTY))
+					updateFunc(6)
+
 				}
 				if b.HasCastleRights(kingColor, boardstate.CASTLE_LONG) && b.EmptySquare(1) && b.EmptySquare(2) && b.EmptySquare(3) && !contains(checkedSquares, 2) && !contains(checkedSquares, 3) {
-					result = append(result, boardstate.CreateMove(4, 2, boardstate.EMPTY))
+					updateFunc(2)
 				}
 			}
 
 			if (kingColor == boardstate.BLACK) {
 				if b.HasCastleRights(kingColor, boardstate.CASTLE_SHORT) && b.EmptySquare(61) && b.EmptySquare(62) && !contains(checkedSquares, 61) && !contains(checkedSquares, 62) {
-					result = append(result, boardstate.CreateMove(60, 62, boardstate.EMPTY))
+					updateFunc(62)
 				}
 				if b.HasCastleRights(kingColor, boardstate.CASTLE_LONG) && b.EmptySquare(57) && b.EmptySquare(58) && b.EmptySquare(59) && !contains(checkedSquares, 58) && !contains(checkedSquares, 59) {
-					result = append(result, boardstate.CreateMove(60, 58, boardstate.EMPTY))
+					updateFunc(58)
 				}
 			}
-
-
 		}
-
 	}
-
 
 	return result
 }
 
 
-/* TODO: CASTLING */
+
+// This will be almost identical everywhere.
+func genAllKingMovesBitboard(b *boardstate.BoardState, color int8, calculateChecks bool) uint64 {
+	var result uint64
+
+
+	kingPositions := b.FindPieces(color, boardstate.KING)
+
+	updateFunc := func(dst int8) {
+		result = bitopts.SetBit(result, dst)
+	}
+
+	if (len(kingPositions) == 0) {
+		return 0
+	}
+
+	genSingleKingMovesGeneric(b, kingPositions[0], calculateChecks, updateFunc)
+
+	return result
+}
+
+// This will be almost identical everywhere.
 func genAllKingMoves(b *boardstate.BoardState, color int8, calculateChecks bool) []*boardstate.Move {
 	var result []*boardstate.Move;
+
 	kingPositions := b.FindPieces(color, boardstate.KING)
-	//fmt.Printf("%v\n", rookPositions)
-	for i := 0; i < len(kingPositions); i++ {
-		result = append(result, genSingleKingMoves(b, kingPositions[i], calculateChecks)...)
+
+  if (len(kingPositions) == 0) {
+		return result
 	}
-  return result;
+	updateFunc := func(dst int8) {
+		result = append(result, boardstate.CreateMove(kingPositions[0], dst, boardstate.EMPTY))
+	}
+
+	genSingleKingMovesGeneric(b, kingPositions[0], calculateChecks, updateFunc)
+
+	return result;
 }
+
+
+
+// func genAllKingMoves(b *boardstate.BoardState, color int8) []*boardstate.Move {
+// 	var result []*boardstate.Move;
+// 	kingPositions := b.FindPieces(color, boardstate.KING)
+// 	return genSingleKnightMoves(b, kingPositions[0])
+// }
+//
+// func genAllKingMovesBitboard(b *boardstate.BoardState, color int8) []*boardstate.Move {
+// 	var result []*boardstate.Move;
+// 	kingPositions := b.FindPieces(color, boardstate.KING)
+// 	return genSingleKnightMoves(b, kingPositions[0])
+// }
+
 
 
 func genKingSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
