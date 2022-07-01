@@ -121,6 +121,14 @@ func genSingleKnightMoves(b *boardstate.BoardState, knightPos int8) []*boardstat
 }
 
 
+func genAllKnightMovesBitboard(b *boardstate.BoardState, color int8) uint64 {
+	var result uint64
+	knightPositions := b.FindPieces(color, boardstate.KNIGHT)
+	for i := 0; i < len(knightPositions); i++ {
+		result = result | genSingleKnightMovesBitboard(b, knightPositions[i])
+	}
+	return result
+}
 
 func genAllKnightMoves(b *boardstate.BoardState, color int8) []*boardstate.Move {
 	var result []*boardstate.Move;

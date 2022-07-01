@@ -5,6 +5,33 @@ import (
 	"github.com/sblackstone/go-chess/bitopts"
 )
 
+
+// Will need this for testing....
+func bitboardToMovesList(originPos int8, moveBitBoard uint64) []*boardstate.Move {
+	var result []*boardstate.Move;
+	var i int8
+
+	twoPiecePos := bitopts.FindTwoPiecePositions(moveBitBoard)
+
+	if len(twoPiecePos) == 0 {
+		return result
+	}
+
+	if len(twoPiecePos) == 1 {
+		return append(result, boardstate.CreateMove(originPos, twoPiecePos[0], boardstate.EMPTY))
+	}
+
+
+	for i = twoPiecePos[0]; i <= twoPiecePos[1]; i++ {
+		if bitopts.TestBit(moveBitBoard, i) {
+			result = append(result, boardstate.CreateMove(originPos, i, boardstate.EMPTY))
+		}
+	}
+
+	return result
+}
+
+
 func GenSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
   var result []*boardstate.BoardState;
   result = append(result, genPawnSuccessors(b)...);
@@ -45,11 +72,14 @@ func GenLegalSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
 
 func GenAllCheckedSquares(b *boardstate.BoardState, color int8) uint64 {
 	var result uint64;
+
+	result = result | genAllKnightMovesBitboard(b, color)
+
 	pawnMoves := genAllPawnMoves(b, color, true)
 	kingMoves := genAllKingMoves(b, color, true)
 	queenMoves := genAllQueenMoves(b, color)
 	bishopMoves := genAllBishopMoves(b, color)
-	knightMoves := genAllKnightMoves(b, color)
+	//knightMoves := genAllKnightMoves(b, color)
 	rookMoves := genAllRookMoves(b, color)
 
 	for _, m := range(pawnMoves) {
@@ -69,9 +99,9 @@ func GenAllCheckedSquares(b *boardstate.BoardState, color int8) uint64 {
 		result = bitopts.SetBit(result, m.Dst)
 	}
 
-	for _, m := range(knightMoves) {
-		result = bitopts.SetBit(result, m.Dst)
-	}
+	// for _, m := range(knightMoves) {
+	// 	result = bitopts.SetBit(result, m.Dst)
+	// }
 
 	for _, m := range(rookMoves) {
 		result = bitopts.SetBit(result, m.Dst)
