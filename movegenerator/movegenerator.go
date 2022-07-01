@@ -71,26 +71,13 @@ func GenLegalSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
 }
 
 func GenAllCheckedSquares(b *boardstate.BoardState, color int8) uint64 {
-	var result uint64;
+	return genAllKnightAttacks(b, color) |
+		     genAllBishopAttacks(b, color) |
+				 genAllRookAttacks(b, color)   |
+				 genAllQueenAttacks(b, color)  |
+				 genAllKingAttacks(b, color)   |
+				 genAllPawnAttacks(b, color, true)
 
-	result = result | genAllKnightAttacks(b, color)
-	result = result | genAllBishopAttacks(b, color)
-	result = result | genAllRookAttacks(b, color)
-	result = result | genAllQueenAttacks(b, color)
-	result = result | genAllKingAttacks(b, color)
-	result = result | genAllPawnAttacks(b, color, true)
 
-	// pawnMoves := genAllPawnMoves(b, color, true)
-	//kingMoves := genAllKingMoves(b, color, true)
-
-	// for _, m := range(pawnMoves) {
-	// 	result = bitopts.SetBit(result, m.Dst)
-	// }
-
-	// for _, m := range(kingMoves) {
-	// 	result = bitopts.SetBit(result, m.Dst)
-	// }
-
-	return result;
 
 }
