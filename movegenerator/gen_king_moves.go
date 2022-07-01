@@ -110,7 +110,7 @@ func genSingleKingMovesGeneric(b *boardstate.BoardState, kingPos int8, calculate
 
 
 // This will be almost identical everywhere.
-func genAllKingAttacks(b *boardstate.BoardState, color int8, calculateChecks bool) uint64 {
+func genAllKingAttacks(b *boardstate.BoardState, color int8) uint64 {
 
 	kingPositions := b.FindPieces(color, boardstate.KING)
 	if len(kingPositions) == 0 {

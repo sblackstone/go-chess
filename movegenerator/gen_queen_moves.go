@@ -20,7 +20,7 @@ func genAllQueenMoves(b *boardstate.BoardState, color int8) []*boardstate.Move {
 	return result
 }
 
-func genAllQueenMovesBitboard(b *boardstate.BoardState, color int8) uint64 {
+func genAllQueenAttacks(b *boardstate.BoardState, color int8) uint64 {
 	var result uint64
 	queenPositions := b.FindPieces(color, boardstate.QUEEN)
 	for i := 0; i < len(queenPositions); i++ {

@@ -130,7 +130,7 @@ func genAllPawnMoves(b *boardstate.BoardState, color int8, calculateChecks bool)
 
 }
 
-func genAllPawnMovesBitboard(b *boardstate.BoardState, color int8, calculateChecks bool) uint64 {
+func genAllPawnAttacks(b *boardstate.BoardState, color int8, calculateChecks bool) uint64 {
 	var result uint64
 	pawnPositions := b.FindPieces(color, boardstate.PAWN)
 	for i := 0; i < len(pawnPositions); i++ {

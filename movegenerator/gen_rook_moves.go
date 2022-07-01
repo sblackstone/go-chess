@@ -71,7 +71,7 @@ func genSingleRookMoves(b *boardstate.BoardState, piecePos int8) []*boardstate.M
 	return result;
 }
 
-func genAllRookMovesBitboard(b *boardstate.BoardState, color int8) uint64 {
+func genAllRookAttacks(b *boardstate.BoardState, color int8) uint64 {
 	var result uint64
 	rookPositions := b.FindPieces(color, boardstate.ROOK)
 	for i := 0; i < len(rookPositions); i++ {
