@@ -130,7 +130,41 @@ func genSinglePawnMoves(b *boardstate.BoardState, piecePos int8, calculateChecks
 
 func genSinglePawnMovesBitboard(b *boardstate.BoardState, piecePos int8, calculateChecks bool) uint64 {
 	color := b.ColorOfSquare(piecePos)
-  return (pregeneratedPawnAttacks[color][piecePos] ^ b.GetColors(color)) & pregeneratedPawnAttacks[color][piecePos];
+
+	/*
+
+	 TODO: We need to handle EN_PASSANT better, somehow.
+
+	 Pre-generated attack bitboards don't include enpassant...
+
+	 - When calculating checks, I don't think it matters.
+	 - But if we're later using this for other purposes, then it might.
+	 - If we only set enpassant when a capture is possible, then this might be a little more streamlined.
+	     - But then we break the FEN parsers in test?
+
+
+	 So for now, if enpassant is set, we fall back to the move generator!
+
+	*/
+
+
+
+	if b.GetEnpassant() == boardstate.NO_ENPASSANT {
+		return (pregeneratedPawnAttacks[color][piecePos] ^ b.GetColors(color)) & pregeneratedPawnAttacks[color][piecePos];
+	}
+
+	var result uint64
+
+	updateFunc := func(dst int8) {
+		result = bitopts.SetBit(result, dst)
+	}
+
+	genSinglePawnMovesGeneric(b, piecePos, calculateChecks, updateFunc)
+
+
+	return result
+
+
 }
 
 
