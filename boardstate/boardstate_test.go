@@ -5,6 +5,21 @@ import (
   "fmt"
 )
 
+
+func TestGetColorBitboard(t *testing.T) {
+	b := Initial()
+
+	if b.colors[WHITE] != b.GetColorBitboard(WHITE) {
+	  t.Errorf("GetColorBitboard wasn't right for WHITE")
+	}
+
+	if b.colors[BLACK] != b.GetColorBitboard(BLACK) {
+	  t.Errorf("GetColorBitboard wasn't right for BLACK")
+	}
+
+
+}
+
 func TestIncrementHalfMoves(t *testing.T) {
 	b := Initial()
 	if b.GetHalfMoves() != 0 {
@@ -529,60 +544,7 @@ func TestCopy(t *testing.T) {
 
 }
 
-func TestPlayTurnPromote(t *testing.T) {
-	b := Initial()
-	b.PlayTurn(1, 18, QUEEN)
 
-	if (b.PieceOfSquare(18) != QUEEN || b.ColorOfSquare(18) != WHITE) {
-		t.Errorf("square 18 isn't a white queen")
-	}
-
-}
-
-func TestPlayTurn(t *testing.T) {
-	b := Initial()
-	if b.GetTurn() != WHITE {
-		t.Errorf("Expected initial turn to be white");
-	}
-
-	b.PlayTurn(1, 18, EMPTY)
-
-	if (b.PieceOfSquare(18) != KNIGHT || b.ColorOfSquare(18) != WHITE) {
-		t.Errorf("square 18 isn't a white knight")
-	}
-
-	if (b.PieceOfSquare(1) != EMPTY || b.ColorOfSquare(1) != EMPTY) {
-		t.Errorf("square 1 isn't empty")
-	}
-
-
-	if b.GetTurn() != BLACK {
-		t.Errorf("Expected turn after PlayTurn to be black");
-	}
-}
-
-
-func TestPlayTurnMove(t *testing.T) {
-	b := Initial()
-	if b.GetTurn() != WHITE {
-		t.Errorf("Expected initial turn to be white");
-	}
-
-	b.PlayTurnFromMove(&Move{Src: 1, Dst: 18, PromotePiece: EMPTY})
-
-	if (b.PieceOfSquare(18) != KNIGHT || b.ColorOfSquare(18) != WHITE) {
-		t.Errorf("square 18 isn't a white knight")
-	}
-
-	if (b.PieceOfSquare(1) != EMPTY || b.ColorOfSquare(1) != EMPTY) {
-		t.Errorf("square 1 isn't empty")
-	}
-
-
-	if b.GetTurn() != BLACK {
-		t.Errorf("Expected turn after PlayTurn to be black");
-	}
-}
 
 
 func TestFindPieces(t *testing.T) {
