@@ -21,3 +21,5 @@ cover.out
 cover.html
 
 go-chess
+
+test-cases/generated.json

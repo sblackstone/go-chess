@@ -13,25 +13,32 @@ result = {
     "testCases": []
 }
 
-max = 0
+count = 0
 
 while game:
     game = chess.pgn.read_game(pgn)
     board = game.board()
-    expected = []
-    for move in board.legal_moves:
-        board.push(move)
-        expected.append({
-            "move": move.uci(),
-            "fen": board.fen(en_passant="fen")
+    for game_move in game.mainline_moves():
+        board.push(game_move)
+        expected = []
+        for move in board.legal_moves:
+            board.push(move)
+            expected.append({
+                "move": move.uci(),
+                "fen": board.fen(en_passant="fen")
+            })
+            board.pop()
+        result["testCases"].append({
+            "start": { "fen": board.fen(en_passant="fen") },
+            "expected": expected
         })
-        board.pop()
-    result["testCases"].append({
-        "start": { "fen": board.fen(en_passant="fen") },
-        "expected": expected
-    })
-    max += 1
-    if max > 24999:
+
+        # print(result)
+        # exit()
+
+
+    count += 1
+    if count > 1000:
         break
 
 print(json.dumps(result))
