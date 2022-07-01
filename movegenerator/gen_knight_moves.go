@@ -28,7 +28,9 @@ import (
 
 
 
-var pregeneratedKnightMoves [64][]int8;
+var pregeneratedKnightMoves [64][]int8
+var pregeneratedKnightMovesBitboard [64]uint64
+
 
 func getPregeneratedKnightMoves() [64][]int8 {
 	return pregeneratedKnightMoves;
@@ -39,44 +41,50 @@ func init() {
   for rank = 0; rank < 8; rank++ {
     for file =0; file < 8; file++ {
       pos := bitopts.RankFileToSquare(rank,file)
+			pregeneratedKnightMovesBitboard[pos] = 0
+
+			appendPos := func (dst int8) {
+				pregeneratedKnightMovesBitboard[pos] = bitopts.SetBit(pregeneratedKnightMovesBitboard[pos], dst)
+				pregeneratedKnightMoves[pos]         = append(pregeneratedKnightMoves[pos], dst)
+			}
+
       // A
       if file >= 2 {
         if rank >= 1 {
-          pregeneratedKnightMoves[pos] = append(pregeneratedKnightMoves[pos], pos - 10)
+					appendPos(pos-10)
         }
         if rank <= 6 {
-          pregeneratedKnightMoves[pos] = append(pregeneratedKnightMoves[pos], pos + 6)
+					appendPos(pos+6)
         }
       }
 
       // B
       if file >= 1 {
         if rank >= 2 {
-          pregeneratedKnightMoves[pos] = append(pregeneratedKnightMoves[pos], pos - 17)
-
+					appendPos(pos - 17)
         }
         if rank <= 5 {
-          pregeneratedKnightMoves[pos] = append(pregeneratedKnightMoves[pos], pos + 15)
+					appendPos(pos + 15)
         }
       }
 
       // C
       if file <= 6 {
         if rank >= 2 {
-          pregeneratedKnightMoves[pos] = append(pregeneratedKnightMoves[pos], pos - 15)
+					appendPos(pos - 15)
         }
         if rank <= 5 {
-          pregeneratedKnightMoves[pos] = append(pregeneratedKnightMoves[pos], pos + 17)
+					appendPos(pos + 17)
         }
       }
 
       // D
       if file <= 5 {
         if rank >= 1 {
-          pregeneratedKnightMoves[pos] = append(pregeneratedKnightMoves[pos], pos - 6)
+					appendPos(pos - 6)
         }
         if rank <= 6 {
-          pregeneratedKnightMoves[pos] = append(pregeneratedKnightMoves[pos], pos + 10)
+					appendPos(pos + 10)
         }
       }
 
@@ -99,15 +107,16 @@ func genSingleKnightMovesGeneric(b *boardstate.BoardState, knightPos int8, updat
 
 // This will be almost identical everywhere.
 func genSingleKnightMovesBitboard(b *boardstate.BoardState, piecePos int8) uint64 {
-	var result uint64
-
-	updateFunc := func(dst int8) {
-		result = bitopts.SetBit(result, dst)
-	}
-
-	genSingleKnightMovesGeneric(b, piecePos, updateFunc)
-
-	return result
+	return (pregeneratedKnightMovesBitboard[piecePos] ^ b.GetColors(b.ColorOfSquare(piecePos))) & pregeneratedKnightMovesBitboard[piecePos];
+	// var result uint64
+	//
+	// updateFunc := func(dst int8) {
+	// 	result = bitopts.SetBit(result, dst)
+	// }
+	//
+	// genSingleKnightMovesGeneric(b, piecePos, updateFunc)
+	//
+	// return result
 }
 
 // This will be almost identical everywhere.

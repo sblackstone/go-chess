@@ -83,6 +83,10 @@ func initialManual() *BoardState {
 	return b
 }
 
+func (b *BoardState) GetColors(color int8) uint64 {
+	return b.colors[color]
+}
+
 func (b *BoardState) EnemyOccupiedSquare(n int8) bool{
 	c := b.ColorOfSquare(n)
 	return c != EMPTY && c != b.GetTurn()
