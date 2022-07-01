@@ -110,11 +110,6 @@ func (b *BoardState) GenerateSuccessors(moves []*Move) []*BoardState {
 	return result
 }
 
-func (b *BoardState) ClearSquare(n int8) {
-	b.pieces[b.PieceOfSquare(n)]    = bitopts.ClearBit(b.pieces[b.PieceOfSquare(n)], n)
-	b.colors[b.ColorOfSquare(n)]    = bitopts.ClearBit(b.colors[b.ColorOfSquare(n)], n)
-}
-
 func (b *BoardState) MovePiece(src int8, dst int8) {
 	color := b.ColorOfSquare(src)
 	piece := b.PieceOfSquare(src)
