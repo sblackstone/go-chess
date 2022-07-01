@@ -50,6 +50,12 @@ func TestGenQueenMovesMiddleOfBoard(t *testing.T) {
 
 }
 
+
+func TestGenQueenAttacksBitboard(t *testing.T) {
+	t.Errorf("Not implemented")
+}
+
+
 //R1Q4R/3Q4/1Q4Q1/4Q3/7Q/Q4Q2/pp1Q4/kBNN1KB1 b - - 1 1
 
 

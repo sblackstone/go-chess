@@ -305,3 +305,12 @@ func TestEnPassantCaptureAsBlackUnavailableAfterAdditionalMove(t *testing.T) {
 	// }
 	// t.Errorf("TODO")
 }
+
+
+func TestGenPawnAttacksBitboardBlack(t *testing.T) {
+	t.Errorf("Not implemented")
+}
+
+func TestGenPawnAttacksBitboardBlackEnpassant(t *testing.T) {
+	t.Errorf("Not implemented")
+}

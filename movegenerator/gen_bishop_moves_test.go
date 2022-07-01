@@ -126,3 +126,8 @@ func TestGenBishopMovesStopsAtCaptures(t *testing.T) {
     t.Errorf("Expected %v to be %v", locations, expected)
   }
 }
+
+
+func TestGenBishopAttacksBitboard(t *testing.T) {
+	t.Errorf("Not implemented")
+}

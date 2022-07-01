@@ -141,3 +141,7 @@ func TestGenAllKnightMoves(t *testing.T) {
 			}
 	}
 }
+
+func TestGenKnightAttacksBitboard(t *testing.T) {
+	t.Errorf("Not implemented")
+}
