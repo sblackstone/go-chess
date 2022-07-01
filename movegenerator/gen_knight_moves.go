@@ -86,6 +86,7 @@ func init() {
 }
 
 
+// All the base generators need to look like this.....
 func genSingleKnightMovesGeneric(b *boardstate.BoardState, knightPos int8, updateFunc func(int8)) {
 	for i := range(pregeneratedKnightMoves[knightPos]) {
 		move := pregeneratedKnightMoves[knightPos][i];
@@ -95,32 +96,35 @@ func genSingleKnightMovesGeneric(b *boardstate.BoardState, knightPos int8, updat
 	}
 }
 
-func genSingleKnightMovesBitboard(b *boardstate.BoardState, knightPos int8) uint64 {
+
+// This will be almost identical everywhere.
+func genSingleKnightMovesBitboard(b *boardstate.BoardState, piecePos int8) uint64 {
 	var result uint64
 
 	updateFunc := func(dst int8) {
 		result = bitopts.SetBit(result, dst)
 	}
 
-	genSingleKnightMovesGeneric(b, knightPos, updateFunc)
+	genSingleKnightMovesGeneric(b, piecePos, updateFunc)
 
 	return result
 }
 
-
-func genSingleKnightMoves(b *boardstate.BoardState, knightPos int8) []*boardstate.Move {
+// This will be almost identical everywhere.
+func genSingleKnightMoves(b *boardstate.BoardState, piecePos int8) []*boardstate.Move {
 	var result []*boardstate.Move;
 
 	updateFunc := func(dst int8) {
-		result = append(result, boardstate.CreateMove(knightPos, dst, boardstate.EMPTY))
+		result = append(result, boardstate.CreateMove(piecePos, dst, boardstate.EMPTY))
 	}
 
-	genSingleKnightMovesGeneric(b, knightPos, updateFunc)
+	genSingleKnightMovesGeneric(b, piecePos, updateFunc)
 
 	return result;
 }
 
 
+// This will be almost identical everywhere.
 func genAllKnightMovesBitboard(b *boardstate.BoardState, color int8) uint64 {
 	var result uint64
 	knightPositions := b.FindPieces(color, boardstate.KNIGHT)
