@@ -20,6 +20,17 @@ func genAllQueenMoves(b *boardstate.BoardState, color int8) []*boardstate.Move {
 	return result
 }
 
+func genAllQueenMovesBitboard(b *boardstate.BoardState, color int8) uint64 {
+	var result uint64
+	queenPositions := b.FindPieces(color, boardstate.QUEEN)
+	for i := 0; i < len(queenPositions); i++ {
+		result = result | genSingleRookMovesBitboard(b, queenPositions[i])
+		result = result | genSingleBishopMovesBitboard(b, queenPositions[i])
+	}
+	return result
+}
+
+
 func genQueenSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
 	return b.GenerateSuccessors(genAllQueenMoves(b, b.GetTurn()))
 }
