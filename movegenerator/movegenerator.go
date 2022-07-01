@@ -74,11 +74,12 @@ func GenAllCheckedSquares(b *boardstate.BoardState, color int8) uint64 {
 	var result uint64;
 
 	result = result | genAllKnightMovesBitboard(b, color)
+	result = result | genAllBishopMovesBitboard(b, color)
 
 	pawnMoves := genAllPawnMoves(b, color, true)
 	kingMoves := genAllKingMoves(b, color, true)
 	queenMoves := genAllQueenMoves(b, color)
-	bishopMoves := genAllBishopMoves(b, color)
+	//bishopMoves := genAllBishopMoves(b, color)
 	//knightMoves := genAllKnightMoves(b, color)
 	rookMoves := genAllRookMoves(b, color)
 
@@ -95,9 +96,9 @@ func GenAllCheckedSquares(b *boardstate.BoardState, color int8) uint64 {
 		result = bitopts.SetBit(result, m.Dst)
 	}
 
-	for _, m := range(bishopMoves) {
-		result = bitopts.SetBit(result, m.Dst)
-	}
+	// for _, m := range(bishopMoves) {
+	// 	result = bitopts.SetBit(result, m.Dst)
+	// }
 
 	// for _, m := range(knightMoves) {
 	// 	result = bitopts.SetBit(result, m.Dst)
