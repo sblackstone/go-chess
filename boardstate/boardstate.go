@@ -83,7 +83,7 @@ func initialManual() *BoardState {
 	return b
 }
 
-func (b *BoardState) GetColors(color int8) uint64 {
+func (b *BoardState) GetColorBitboard(color int8) uint64 {
 	return b.colors[color]
 }
 

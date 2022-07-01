@@ -116,7 +116,7 @@ func genAllKingAttacks(b *boardstate.BoardState, color int8) uint64 {
 	if len(kingPositions) == 0 {
 			return 0
 	} else {
-		return (pregeneratedKingMovesBitboard[kingPositions[0]] ^ b.GetColors(b.ColorOfSquare(kingPositions[0]))) & pregeneratedKingMovesBitboard[kingPositions[0]];
+		return (pregeneratedKingMovesBitboard[kingPositions[0]] ^ b.GetColorBitboard(b.ColorOfSquare(kingPositions[0]))) & pregeneratedKingMovesBitboard[kingPositions[0]];
 	}
 
 }

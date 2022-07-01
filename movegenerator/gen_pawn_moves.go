@@ -150,7 +150,7 @@ func genSinglePawnMovesBitboard(b *boardstate.BoardState, piecePos int8, calcula
 
 
 	if b.GetEnpassant() == boardstate.NO_ENPASSANT {
-		return (pregeneratedPawnAttacks[color][piecePos] ^ b.GetColors(color)) & pregeneratedPawnAttacks[color][piecePos];
+		return (pregeneratedPawnAttacks[color][piecePos] ^ b.GetColorBitboard(color)) & pregeneratedPawnAttacks[color][piecePos];
 	}
 
 	var result uint64
