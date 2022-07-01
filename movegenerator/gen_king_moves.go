@@ -140,21 +140,6 @@ func genAllKingMoves(b *boardstate.BoardState, color int8, calculateChecks bool)
 }
 
 
-
-// func genAllKingMoves(b *boardstate.BoardState, color int8) []*boardstate.Move {
-// 	var result []*boardstate.Move;
-// 	kingPositions := b.FindPieces(color, boardstate.KING)
-// 	return genSingleKnightMoves(b, kingPositions[0])
-// }
-//
-// func genAllKingMovesBitboard(b *boardstate.BoardState, color int8) []*boardstate.Move {
-// 	var result []*boardstate.Move;
-// 	kingPositions := b.FindPieces(color, boardstate.KING)
-// 	return genSingleKnightMoves(b, kingPositions[0])
-// }
-
-
-
 func genKingSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
 	return b.GenerateSuccessors(genAllKingMoves(b, b.GetTurn(), false))
 }

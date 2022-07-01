@@ -73,7 +73,7 @@ func GenLegalSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
 func GenAllCheckedSquares(b *boardstate.BoardState, color int8) uint64 {
 	var result uint64;
 
-	result = result | genAllKnightMovesBitboard(b, color)
+	result = result | genAllKnightAttacks(b, color)
 	result = result | genAllBishopMovesBitboard(b, color)
 	result = result | genAllRookMovesBitboard(b, color)
 	result = result | genAllQueenMovesBitboard(b, color)
