@@ -6,7 +6,8 @@ import (
 	//"fmt"
 )
 
-var pregeneratedKingMoves [64][]int8;
+var pregeneratedKingMoves [64][]int8
+var pregeneratedKingMovesBitboard [64]uint64
 
 func getKingMoves() [64][]int8 {
 	return pregeneratedKingMoves;
@@ -17,32 +18,39 @@ func init() {
   for rank = 7; rank >= 0; rank-- {
     for file =0; file < 8; file++ {
       pos := bitopts.RankFileToSquare(rank,file)
+			pregeneratedKingMovesBitboard[pos] = 0
+
+			appendPos := func (dst int8) {
+				pregeneratedKingMovesBitboard[pos] = bitopts.SetBit(pregeneratedKingMovesBitboard[pos], dst)
+				pregeneratedKingMoves[pos]         = append(pregeneratedKingMoves[pos], dst)
+			}
+
 			if (rank >= 1) {
-				pregeneratedKingMoves[pos] = append(pregeneratedKingMoves[pos], pos - 8);
+				appendPos(pos - 8)
 				if (file > 0) {
-					pregeneratedKingMoves[pos] = append(pregeneratedKingMoves[pos], pos - 9);
+					appendPos(pos -9)
 				}
 				if (file < 7) {
-					pregeneratedKingMoves[pos] = append(pregeneratedKingMoves[pos], pos - 7);
+					appendPos(pos -7)
 				}
 			}
 
 			if (rank <= 6) {
-				pregeneratedKingMoves[pos] = append(pregeneratedKingMoves[pos], pos + 8);
+				appendPos(pos +8)
 				if (file > 0) {
-					pregeneratedKingMoves[pos] = append(pregeneratedKingMoves[pos], pos + 7);
+					appendPos(pos +7)
 				}
 				if (file < 7) {
-					pregeneratedKingMoves[pos] = append(pregeneratedKingMoves[pos], pos + 9);
+					appendPos(pos +9)
 				}
 			}
 
 
 			if (file > 0) {
-				pregeneratedKingMoves[pos] = append(pregeneratedKingMoves[pos], pos - 1);
+				appendPos(pos - 1)
 			}
 			if (file < 7) {
-				pregeneratedKingMoves[pos] = append(pregeneratedKingMoves[pos], pos + 1);
+				appendPos(pos + 1)
 			}
 
 
@@ -102,23 +110,15 @@ func genSingleKingMovesGeneric(b *boardstate.BoardState, kingPos int8, calculate
 
 
 // This will be almost identical everywhere.
-func genAllKingMovesBitboard(b *boardstate.BoardState, color int8, calculateChecks bool) uint64 {
-	var result uint64
-
+func genAllKingAttacks(b *boardstate.BoardState, color int8, calculateChecks bool) uint64 {
 
 	kingPositions := b.FindPieces(color, boardstate.KING)
-
-	updateFunc := func(dst int8) {
-		result = bitopts.SetBit(result, dst)
+	if len(kingPositions) == 0 {
+			return 0
+	} else {
+		return (pregeneratedKingMovesBitboard[kingPositions[0]] ^ b.GetColors(b.ColorOfSquare(kingPositions[0]))) & pregeneratedKingMovesBitboard[kingPositions[0]];
 	}
 
-	if (len(kingPositions) == 0) {
-		return 0
-	}
-
-	genSingleKingMovesGeneric(b, kingPositions[0], calculateChecks, updateFunc)
-
-	return result
 }
 
 // This will be almost identical everywhere.

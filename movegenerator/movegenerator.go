@@ -77,7 +77,7 @@ func GenAllCheckedSquares(b *boardstate.BoardState, color int8) uint64 {
 	result = result | genAllBishopMovesBitboard(b, color)
 	result = result | genAllRookMovesBitboard(b, color)
 	result = result | genAllQueenMovesBitboard(b, color)
-	result = result | genAllKingMovesBitboard(b, color, true)
+	result = result | genAllKingAttacks(b, color, true)
 	result = result | genAllPawnMovesBitboard(b, color, true)
 
 	// pawnMoves := genAllPawnMoves(b, color, true)
