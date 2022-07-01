@@ -85,16 +85,47 @@ func init() {
   }
 }
 
-func genSingleKnightMoves(b *boardstate.BoardState, knightPos int8) []*boardstate.Move {
-	var result []*boardstate.Move;
+func genSingleKnightMovesBitboard(b *boardstate.BoardState, knightPos int8) uint64 {
+	var result uint64
 	for i := range(pregeneratedKnightMoves[knightPos]) {
 		move := pregeneratedKnightMoves[knightPos][i];
 		if b.ColorOfSquare(move) != b.ColorOfSquare(knightPos) {
-			result = append(result, boardstate.CreateMove(knightPos, move, boardstate.EMPTY))
+			result = bitopts.SetBit(result, move)
 		}
 	}
 	return result
 }
+
+
+func genSingleKnightMoves(b *boardstate.BoardState, knightPos int8) []*boardstate.Move {
+	return bitboardToMovesList(knightPos, genSingleKnightMovesBitboard(b, knightPos))
+}
+
+
+func bitboardToMovesList(originPos int8, moveBitBoard uint64) []*boardstate.Move {
+	var result []*boardstate.Move;
+	var i int8
+
+	twoPiecePos := bitopts.FindTwoPiecePositions(moveBitBoard)
+
+	if len(twoPiecePos) == 0 {
+		return result
+	}
+
+	if len(twoPiecePos) == 1 {
+		return append(result, boardstate.CreateMove(originPos, twoPiecePos[0], boardstate.EMPTY))
+	}
+
+
+	for i = twoPiecePos[0]; i <= twoPiecePos[1]; i++ {
+		if bitopts.TestBit(moveBitBoard, i) {
+			result = append(result, boardstate.CreateMove(originPos, i, boardstate.EMPTY))
+		}
+	}
+
+	return result
+}
+
 
 
 func genAllKnightMoves(b *boardstate.BoardState, color int8) []*boardstate.Move {
