@@ -5,31 +5,6 @@ import (
 	"github.com/sblackstone/go-chess/bitopts"
 )
 
-func bitboardToMovesList(originPos int8, moveBitBoard uint64) []*boardstate.Move {
-	var result []*boardstate.Move;
-	var i int8
-
-	twoPiecePos := bitopts.FindTwoPiecePositions(moveBitBoard)
-
-	if len(twoPiecePos) == 0 {
-		return result
-	}
-
-	if len(twoPiecePos) == 1 {
-		return append(result, boardstate.CreateMove(originPos, twoPiecePos[0], boardstate.EMPTY))
-	}
-
-
-	for i = twoPiecePos[0]; i <= twoPiecePos[1]; i++ {
-		if bitopts.TestBit(moveBitBoard, i) {
-			result = append(result, boardstate.CreateMove(originPos, i, boardstate.EMPTY))
-		}
-	}
-
-	return result
-}
-
-
 func GenSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
   var result []*boardstate.BoardState;
   result = append(result, genPawnSuccessors(b)...);
