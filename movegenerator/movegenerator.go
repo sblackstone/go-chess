@@ -58,6 +58,18 @@ func GenSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
 }
 
 
+// For testing at the moment, not tested.
+func genAllMoves(b *boardstate.BoardState) []*boardstate.Move {
+		var result []*boardstate.Move;
+		result = append(result, genAllPawnMoves(b, b.GetTurn(), false)...);
+	  result = append(result, genAllKingMoves(b, b.GetTurn(), false)...);
+	  result = append(result, genAllQueenMoves(b, b.GetTurn())...);
+	  result = append(result, genAllBishopMoves(b, b.GetTurn())...);
+	  result = append(result, genAllKnightMoves(b, b.GetTurn())...);
+	  result = append(result, genAllRookMoves(b, b.GetTurn())...);
+		return result
+}
+
 // We can do much better here, naieve O(n^2) first attempt.
 func GenLegalSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
 

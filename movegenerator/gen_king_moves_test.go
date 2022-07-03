@@ -23,22 +23,24 @@ func testCastlingBoard() *boardstate.BoardState {
 
 func TestCastleWhite(t *testing.T) {
 	b := testCastlingBoard()
-  locations := genSortedBoardLocationsKings(b)
   expected := []int8{2, 3, 5, 6, 11, 12, 13}
-  if !reflect.DeepEqual(locations, expected) {
-    t.Errorf("Expected %v to be %v", locations, expected)
-  }
+	testSuccessorsHelper(t, b, boardstate.KING, expected)
+
+	expectedAttacks := []int8{3, 5, 11, 12, 13}
+	testAttacksHelper(t, b, boardstate.KING, expectedAttacks)
 }
 
 
 func TestCastleBlack(t *testing.T) {
 	b := testCastlingBoard()
 	b.SetTurn(boardstate.BLACK)
-  locations := genSortedBoardLocationsKings(b)
+
   expected := []int8{51, 52, 53, 58,59, 61, 62}
-  if !reflect.DeepEqual(locations, expected) {
-    t.Errorf("Expected %v to be %v", locations, expected)
-  }
+	testSuccessorsHelper(t, b, boardstate.KING, expected)
+
+	expectedAttacks := []int8{51, 52, 53,59, 61}
+	testAttacksHelper(t, b, boardstate.KING, expectedAttacks)
+
 }
 
 
@@ -47,11 +49,9 @@ func TestCastleWhiteBlocked(t *testing.T) {
 	b := testCastlingBoard()
 	b.SetSquare(3, boardstate.WHITE, boardstate.BISHOP)
 	b.SetSquare(5, boardstate.WHITE, boardstate.KNIGHT)
-  locations := genSortedBoardLocationsKings(b)
   expected := []int8{11,12,13}
-  if !reflect.DeepEqual(locations, expected) {
-    t.Errorf("Expected %v to be %v", locations, expected)
-  }
+	testSuccessorsHelper(t, b, boardstate.KING, expected)
+	testAttacksHelper(t, b, boardstate.KING, expected)
 }
 
 
@@ -60,22 +60,18 @@ func TestCastleBlackBlocked(t *testing.T) {
 	b.SetSquare(59, boardstate.BLACK, boardstate.BISHOP)
 	b.SetSquare(61, boardstate.BLACK, boardstate.KNIGHT)
 	b.SetTurn(boardstate.BLACK)
-  locations := genSortedBoardLocationsKings(b)
   expected := []int8{51,52,53}
-  if !reflect.DeepEqual(locations, expected) {
-    t.Errorf("Expected %v to be %v", locations, expected)
-  }
+	testSuccessorsHelper(t, b, boardstate.KING, expected)
+	testAttacksHelper(t, b, boardstate.KING, expected)
 }
 
 func TestCastleWhiteBlocked2(t *testing.T) {
 	b := testCastlingBoard()
 	b.SetSquare(2, boardstate.WHITE, boardstate.BISHOP)
 	b.SetSquare(6, boardstate.WHITE, boardstate.KNIGHT)
-  locations := genSortedBoardLocationsKings(b)
   expected := []int8{3,5,11,12,13}
-  if !reflect.DeepEqual(locations, expected) {
-    t.Errorf("Expected %v to be %v", locations, expected)
-  }
+	testSuccessorsHelper(t, b, boardstate.KING, expected)
+	testAttacksHelper(t, b, boardstate.KING, expected)
 }
 
 
@@ -84,22 +80,18 @@ func TestCastleBlackBlocked2(t *testing.T) {
 	b.SetSquare(58, boardstate.BLACK, boardstate.BISHOP)
 	b.SetSquare(62, boardstate.BLACK, boardstate.KNIGHT)
 	b.SetTurn(boardstate.BLACK)
-  locations := genSortedBoardLocationsKings(b)
   expected := []int8{51,52,53,59,61}
-  if !reflect.DeepEqual(locations, expected) {
-    t.Errorf("Expected %v to be %v", locations, expected)
-  }
+	testSuccessorsHelper(t, b, boardstate.KING, expected)
+	testAttacksHelper(t, b, boardstate.KING, expected)
 }
 
 func TestCastleWhiteBlocked3(t *testing.T) {
 	b := testCastlingBoard()
 	b.SetSquare(5, boardstate.WHITE, boardstate.BISHOP)
 	b.SetSquare(1, boardstate.WHITE, boardstate.KNIGHT)
-  locations := genSortedBoardLocationsKings(b)
   expected := []int8{3,11,12,13}
-  if !reflect.DeepEqual(locations, expected) {
-    t.Errorf("Expected %v to be %v", locations, expected)
-  }
+	testSuccessorsHelper(t, b, boardstate.KING, expected)
+	testAttacksHelper(t, b, boardstate.KING, expected)
 }
 
 
@@ -108,11 +100,9 @@ func TestCastleBlackBlocked3(t *testing.T) {
 	b.SetSquare(61, boardstate.BLACK, boardstate.BISHOP)
 	b.SetSquare(57, boardstate.BLACK, boardstate.KNIGHT)
 	b.SetTurn(boardstate.BLACK)
-  locations := genSortedBoardLocationsKings(b)
   expected := []int8{51,52,53,59}
-  if !reflect.DeepEqual(locations, expected) {
-    t.Errorf("Expected %v to be %v", locations, expected)
-  }
+	testSuccessorsHelper(t, b, boardstate.KING, expected)
+	testAttacksHelper(t, b, boardstate.KING, expected)
 }
 
 
@@ -202,11 +192,9 @@ func TestKingCenterOfBoard(t *testing.T) {
 	b.SetCastleRights(boardstate.WHITE, boardstate.CASTLE_SHORT, false)
 
   b.SetSquare(27, boardstate.WHITE, boardstate.KING)
-  locations := genSortedBoardLocationsKings(b)
   expected := []int8{18, 19, 20, 26, 28, 34, 35, 36}
-  if !reflect.DeepEqual(locations, expected) {
-    t.Errorf("Expected %v to be %v", locations, expected)
-  }
+	testSuccessorsHelper(t, b, boardstate.KING, expected)
+	testAttacksHelper(t, b, boardstate.KING, expected)
 }
 
 
@@ -220,12 +208,8 @@ func TestKingCanCaptureOtherPieces(t *testing.T) {
 		b.SetSquare(expect, boardstate.BLACK, boardstate.PAWN)
 	}
   b.SetSquare(27, boardstate.WHITE, boardstate.KING)
-  locations := genSortedBoardLocationsKings(b)
-
-
-  if !reflect.DeepEqual(locations, expected) {
-    t.Errorf("Expected %v to be %v", locations, expected)
-  }
+	testSuccessorsHelper(t, b, boardstate.KING, expected)
+	testAttacksHelper(t, b, boardstate.KING, expected)
 }
 
 
@@ -244,12 +228,9 @@ func TestKingBlockedByOwnPieces(t *testing.T) {
 	b.SetSquare(36, boardstate.WHITE, boardstate.PAWN)
 
   b.SetSquare(27, boardstate.WHITE, boardstate.KING)
-  locations := genSortedBoardLocationsKings(b)
 	var expected []int8
-
-	if !reflect.DeepEqual(locations, expected) {
-    t.Errorf("Expected %v to be %v", locations, expected)
-  }
+	testSuccessorsHelper(t, b, boardstate.KING, expected)
+	testAttacksHelper(t, b, boardstate.KING, expected)
 }
 
 
@@ -262,17 +243,150 @@ func TestGenKingMovesKnowsAboutTurns(t *testing.T) {
 
 	b.SetSquare(43,  boardstate.WHITE, boardstate.KING)
 	b.SetSquare(19,  boardstate.BLACK, boardstate.KING)
-	moves := genSortedBoardLocationsKings(b)
 
 	expected := []int8{34, 35, 36, 42, 44, 50, 51, 52}
-	if (!reflect.DeepEqual(moves, expected)) {
-		t.Errorf("Expected %v to be %v", moves, expected)
+
+	testSuccessorsHelper(t, b, boardstate.KING, expected)
+	testAttacksHelper(t, b, boardstate.KING, expected)
+	b.ToggleTurn()
+	expectedBlack := []int8{10, 11, 12, 18, 20, 26, 27, 28}
+	testSuccessorsHelper(t, b, boardstate.KING, expectedBlack)
+	testAttacksHelper(t, b, boardstate.KING, expectedBlack)
+}
+
+
+func testLegalKingSuccessors(t *testing.T, b *boardstate.BoardState, expected []int8) {
+	successors := GenLegalSuccessors(b)
+	locations  := genSortedBoardLocationsGeneric(b.GetTurn(), boardstate.KING, successors)
+	if !reflect.DeepEqual(locations, expected) {
+		t.Errorf("Expected %v to be %v", locations, expected)
 	}
+}
+
+func TestKingCantMoveIntoCheck(t *testing.T) {
+	b := boardstate.Blank()
+	b.SetCastleRights(boardstate.WHITE, boardstate.CASTLE_LONG, false)
+	b.SetCastleRights(boardstate.WHITE, boardstate.CASTLE_SHORT, false)
+	b.SetCastleRights(boardstate.BLACK, boardstate.CASTLE_LONG, false)
+	b.SetCastleRights(boardstate.BLACK, boardstate.CASTLE_SHORT, false)
+
+	b.SetSquare(43, boardstate.BLACK, boardstate.KING)
+	b.SetSquare(27, boardstate.WHITE, boardstate.KING)
+
+
+	expected := []int8{18,19,20,26,28}
+	testLegalKingSuccessors(t, b, expected)
+
+	expectedAttacks := []int8{18,19,20,26,28,34,35,36}
+	testAttacksHelper(t, b, boardstate.KING, expectedAttacks)
+
 
 	b.ToggleTurn()
-	movesBlack := genSortedBoardLocationsKings(b)
-	expectedBlack := []int8{10, 11, 12, 18, 20, 26, 27, 28}
-	if (!reflect.DeepEqual(movesBlack, expectedBlack)) {
-		t.Errorf("Expected %v to be %v", movesBlack, expected)
-	}
+
+	expectedBlack := []int8{42,44,50,51,52}
+	testLegalKingSuccessors(t, b, expectedBlack)
+
+	expectedAttacksBlack := []int8{34,35,36,42,44,50,51,52}
+	testAttacksHelper(t, b, boardstate.KING, expectedAttacksBlack)
+
+}
+
+
+func TestKingHasToMoveOutOfCheck(t *testing.T) {
+	b := boardstate.Blank()
+	b.SetCastleRights(boardstate.WHITE, boardstate.CASTLE_LONG, false)
+	b.SetCastleRights(boardstate.WHITE, boardstate.CASTLE_SHORT, false)
+	b.SetCastleRights(boardstate.BLACK, boardstate.CASTLE_LONG, false)
+	b.SetCastleRights(boardstate.BLACK, boardstate.CASTLE_SHORT, false)
+	b.SetSquare(27, boardstate.WHITE, boardstate.KING)
+	b.SetSquare(45, boardstate.BLACK, boardstate.BISHOP)
+
+	expected := []int8{19,20,26,28,34,35}
+	testLegalKingSuccessors(t, b, expected)
+}
+
+func TestKingCantCastleInCheckWhite(t *testing.T) {
+	b := testCastlingBoard()
+	expected := []int8{2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 6, 11, 12, 13}
+	testLegalKingSuccessors(t, b, expected)
+	b.SetSquare(22, boardstate.BLACK, boardstate.BISHOP)
+
+	expectedNoLong := []int8{3,5,11,12}
+	testLegalKingSuccessors(t, b, expectedNoLong)
+}
+
+func TestKingCantCastleInCheckBlack(t *testing.T) {
+	b := testCastlingBoard()
+	b.SetTurn(boardstate.BLACK)
+	expected := []int8{51, 52, 53, 58, 59, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 61, 62}
+	testLegalKingSuccessors(t, b, expected)
+
+	b.SetSquare(42, boardstate.WHITE, boardstate.BISHOP)
+	expectedNoLong := []int8{52, 53, 59, 61}
+	testLegalKingSuccessors(t, b, expectedNoLong)
+}
+
+
+
+func TestCantCastleThroughCheckWhite(t *testing.T) {
+	b := testCastlingBoard()
+
+	// baseline
+	expected := []int8{2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 6, 11, 12, 13}
+	testLegalKingSuccessors(t, b, expected)
+
+
+	expected3Attacked := []int8{4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 6, 11, 12, 13}
+	b.SetSquare(10, boardstate.BLACK, boardstate.PAWN)
+	testLegalKingSuccessors(t, b, expected3Attacked)
+	b.SetSquare(10, boardstate.EMPTY, boardstate.EMPTY)
+
+	expected2Attacked := []int8{3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 6, 11, 12, 13}
+	b.SetSquare(9, boardstate.BLACK, boardstate.PAWN)
+	testLegalKingSuccessors(t, b, expected2Attacked)
+	b.SetSquare(9, boardstate.EMPTY, boardstate.EMPTY)
+
+	expected5Attacked := []int8{2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 11, 12, 13}
+	b.SetSquare(14, boardstate.BLACK, boardstate.PAWN)
+	testLegalKingSuccessors(t, b, expected5Attacked)
+	b.SetSquare(14, boardstate.EMPTY, boardstate.EMPTY)
+
+	expected6Attacked := []int8{2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 11, 12}
+	b.SetSquare(41, boardstate.BLACK, boardstate.BISHOP)
+	testLegalKingSuccessors(t, b, expected6Attacked)
+	b.SetSquare(41, boardstate.EMPTY, boardstate.EMPTY)
+
+}
+
+
+func TestCantCastleThroughCheckBlack(t *testing.T) {
+	b := testCastlingBoard()
+	b.SetTurn(boardstate.BLACK)
+	expected := []int8{51, 52, 53, 58, 59, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 61, 62}
+	testLegalKingSuccessors(t, b, expected)
+
+	expected59Attacked := []int8{51, 52, 53, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 61, 62}
+	b.SetSquare(50, boardstate.WHITE, boardstate.PAWN)
+	testLegalKingSuccessors(t, b, expected59Attacked)
+	b.SetSquare(50, boardstate.EMPTY, boardstate.EMPTY)
+
+	expected58Attacked := []int8{51, 52, 53, 59, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 61, 62}
+	b.SetSquare(49, boardstate.WHITE, boardstate.PAWN)
+	testLegalKingSuccessors(t, b, expected58Attacked)
+	b.SetSquare(49, boardstate.EMPTY, boardstate.EMPTY)
+
+
+	expected61Attacked := []int8{51, 52, 53, 58, 59, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60}
+	b.SetSquare(54, boardstate.WHITE, boardstate.PAWN)
+	testLegalKingSuccessors(t, b, expected61Attacked)
+	b.SetSquare(54, boardstate.EMPTY, boardstate.EMPTY)
+
+	expected62Attacked := []int8{51, 52, 58, 59, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 61}
+	b.SetSquare(17, boardstate.WHITE, boardstate.BISHOP)
+	testLegalKingSuccessors(t, b, expected62Attacked)
+	b.SetSquare(17, boardstate.EMPTY, boardstate.EMPTY)
+
+
+
+
 }
