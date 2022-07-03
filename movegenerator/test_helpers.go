@@ -13,6 +13,16 @@ func genSortedBoardLocationsGeneric(turn int8, piece int8, result[]*boardstate.B
   return locations
 }
 
+func testSuccessorsHelper(t *testing.T, b *boardstate.BoardState, pieceType int8, expected []int8) {
+		successors := genSuccessorsForPiece(b, pieceType)
+		locations  := genSortedBoardLocationsGeneric(b.GetTurn(), pieceType, successors)
+		if !reflect.DeepEqual(locations, expected) {
+	    t.Errorf("Expected %v to be %v", locations, expected)
+	  }
+}
+
+
+// DEPRECATED BELOW HERE.
 func genSortedBoardLocationsRooks(b *boardstate.BoardState) []int8 {
 	return genSortedBoardLocationsGeneric(b.GetTurn(), boardstate.ROOK, genRookSuccessors(b))
 }

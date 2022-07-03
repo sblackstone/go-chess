@@ -3,10 +3,28 @@ package movegenerator
 import (
 	"github.com/sblackstone/go-chess/boardstate"
 	"github.com/sblackstone/go-chess/bitopts"
+	"fmt"
 )
 
 
-
+func genSuccessorsForPiece(b *boardstate.BoardState, pieceType int8) []*boardstate.BoardState {
+		switch pieceType {
+		case  boardstate.PAWN:
+			return genPawnSuccessors(b)
+		case  boardstate.KING:
+			return genKingSuccessors(b)
+		case  boardstate.QUEEN:
+			return genQueenSuccessors(b)
+		case  boardstate.BISHOP:
+			return genBishopSuccessors(b)
+		case  boardstate.KNIGHT:
+			return genKnightSuccessors(b)
+		case  boardstate.ROOK:
+			return genRookSuccessors(b)
+		default:
+			panic("GenSuccessorsForPiece: Unknown piece type " + fmt.Sprint(pieceType))
+		}
+}
 
 
 func GenSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
