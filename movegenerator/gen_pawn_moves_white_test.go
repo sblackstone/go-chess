@@ -29,31 +29,27 @@ func TestGenerateChecksOnlyWhite(t *testing.T) {
 func TestPushPawnWhite(t *testing.T) {
   b := boardstate.Blank()
 	b.SetSquare(27, boardstate.WHITE, boardstate.PAWN)
-	locations := genSortedBoardLocationsPawns(b)
-  expected := []int8{35}
-  if !reflect.DeepEqual(locations, expected) {
-    t.Errorf("Expected %v to be %v", locations, expected)
-  }
+
+	expected := []int8{35}
+	testSuccessorsHelper(t, b, boardstate.PAWN, expected)
+	expectedAttacks := []int8{34,36}
+	testAttacksHelper(t, b, boardstate.PAWN, expectedAttacks)
+
 
 	// Obstructed by SELF
 	b.SetSquare(35, boardstate.WHITE, boardstate.QUEEN)
-	var expected2 []int8
-	locations2 := genSortedBoardLocationsPawns(b)
 
-  if !reflect.DeepEqual(locations2, expected2) {
-    t.Errorf("Expected %v to be %v", locations2, expected2)
-  }
+	var expectedObstructed []int8
+	testSuccessorsHelper(t, b, boardstate.PAWN, expectedObstructed)
+	expectedObstructedAttacks := []int8{34,36}
+	testAttacksHelper(t, b, boardstate.PAWN, expectedObstructedAttacks)
+
+
 
 	/// Obstructed by ENEMY
 	b.SetSquare(35, boardstate.BLACK, boardstate.QUEEN)
-	var expected3 []int8
-	locations3 := genSortedBoardLocationsPawns(b)
-
-  if !reflect.DeepEqual(locations3, expected3) {
-    t.Errorf("Expected %v to be %v", locations3, expected3)
-  }
-
-
+	testSuccessorsHelper(t, b, boardstate.PAWN, expectedObstructed)
+	testAttacksHelper(t, b, boardstate.PAWN, expectedObstructedAttacks)
 
 }
 
