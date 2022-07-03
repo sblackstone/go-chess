@@ -57,11 +57,10 @@ func TestPushPawnTwoWhite(t *testing.T) {
 	// Setup the inital board with a pawn on 8, expect to be pushable 1 or 2 squares.
   b := boardstate.Blank()
   b.SetSquare(8, boardstate.WHITE, boardstate.PAWN)
-  expected := []int8{16,24}
-	locations := genSortedBoardLocationsPawns(b)
-  if !reflect.DeepEqual(locations, expected) {
-    t.Errorf("Expected %v to be %v", locations, expected)
-  }
+	expected := []int8{16,24}
+	expectedAttacks := []int8{17}
+	testSuccessorsHelper(t, b, boardstate.PAWN, expected)
+	testAttacksHelper(t, b, boardstate.PAWN, expectedAttacks)
 
 	positions := genPawnSuccessors(b)
 	for i := range(positions) {
@@ -77,26 +76,23 @@ func TestPushPawnTwoWhite(t *testing.T) {
 		}
 	}
 
-
+	// Test double push behaviors
 	var expected2 []int8
-
+	expected2Attacks := []int8{17}
 	b.SetSquare(16, boardstate.WHITE, boardstate.QUEEN)
-	locations2 := genSortedBoardLocationsPawns(b)
+	testSuccessorsHelper(t, b, boardstate.PAWN, expected2)
+	testAttacksHelper(t, b, boardstate.PAWN, expected2Attacks)
 
 
-	if !reflect.DeepEqual(locations2, expected2) {
-    t.Errorf("Expected %v to be %v", locations2	, expected2)
-  }
 
 	b.SetSquare(16, boardstate.EMPTY, boardstate.EMPTY)
 	b.SetSquare(24, boardstate.BLACK, boardstate.QUEEN)
 
-	locations3 := genSortedBoardLocationsPawns(b)
-	expected3 := []int8{16}
 
-	if !reflect.DeepEqual(locations3, expected3) {
-    t.Errorf("Expected %v to be %v", locations3	, expected3)
-  }
+	expected3 := []int8{16}
+	expected3Attacks := []int8{17}
+	testSuccessorsHelper(t, b, boardstate.PAWN, expected3)
+	testAttacksHelper(t, b, boardstate.PAWN, expected3Attacks)
 
 }
 
@@ -105,11 +101,13 @@ func TestCaptureHigherFileWhite(t *testing.T) {
 	b.SetSquare(19, boardstate.WHITE, boardstate.PAWN)
 	b.SetSquare(28, boardstate.BLACK, boardstate.PAWN)
 
+
 	expected := []int8{27,28}
-	locations := genSortedBoardLocationsPawns(b)
-	if !reflect.DeepEqual(locations, expected) {
-    t.Errorf("Expected %v to be %v", locations	, expected)
-  }
+	expectedAttacks := []int8{26,28}
+
+	testSuccessorsHelper(t, b, boardstate.PAWN, expected)
+	testAttacksHelper(t, b, boardstate.PAWN, expectedAttacks)
+
 }
 
 func TestCaptureLowerFileWhite(t *testing.T) {
@@ -118,10 +116,11 @@ func TestCaptureLowerFileWhite(t *testing.T) {
 	b.SetSquare(26, boardstate.BLACK, boardstate.PAWN)
 
 	expected := []int8{26,27}
-	locations := genSortedBoardLocationsPawns(b)
-	if !reflect.DeepEqual(locations, expected) {
-    t.Errorf("Expected %v to be %v", locations	, expected)
-  }
+  expectedAttacks := []int8{26,28}
+
+  testSuccessorsHelper(t, b, boardstate.PAWN, expected)
+  testAttacksHelper(t, b, boardstate.PAWN, expectedAttacks)
+
 }
 
 func TestCaptureHigherFileWhiteWithPromotion(t *testing.T) {
@@ -132,8 +131,8 @@ func TestCaptureHigherFileWhiteWithPromotion(t *testing.T) {
 	b.SetSquare(62, boardstate.BLACK, boardstate.QUEEN)
 	boards := genPawnSuccessors(b)
 	var sum int8
-	for i := range(boards) {
-		sum += boards[i].PieceOfSquare(62)
+	for _, board := range(boards) {
+		sum += board.PieceOfSquare(62)
 	}
 	if (sum != 6) {
 		t.Errorf("Expected square 6 to have rook,knight,bishop or queen")
@@ -148,8 +147,8 @@ func TestCaptureLowerFileWhiteWithPromotion(t *testing.T) {
 	b.SetSquare(60, boardstate.BLACK, boardstate.QUEEN)
 	boards := genPawnSuccessors(b)
 	var sum int8
-	for i := range(boards) {
-		sum += boards[i].PieceOfSquare(60)
+	for _, board := range(boards) {
+		sum += board.PieceOfSquare(60)
 	}
 	if (sum != 6) {
 		t.Errorf("Expected square 6 to have rook,knight,bishop or queen")
@@ -165,10 +164,9 @@ func TestCaptureNoWarpingCapturesHigherFileWhite(t *testing.T) {
 	b.SetSquare(32, boardstate.BLACK, boardstate.PAWN)
 
 	expected := []int8{30,31}
-	locations := genSortedBoardLocationsPawns(b)
-	if !reflect.DeepEqual(locations, expected) {
-    t.Errorf("Expected %v to be %v", locations	, expected)
-  }
+	expectedAttacks := []int8{30}
+	testSuccessorsHelper(t, b, boardstate.PAWN, expected)
+	testAttacksHelper(t, b, boardstate.PAWN, expectedAttacks)
 }
 
 func TestCaptureNoWarpingCapturesLowerFileWhite(t *testing.T) {
@@ -178,10 +176,9 @@ func TestCaptureNoWarpingCapturesLowerFileWhite(t *testing.T) {
 	b.SetSquare(25, boardstate.BLACK, boardstate.PAWN)
 
 	expected := []int8{24,25}
-	locations := genSortedBoardLocationsPawns(b)
-	if !reflect.DeepEqual(locations, expected) {
-    t.Errorf("Expected %v to be %v", locations	, expected)
-  }
+	expectedAttacks := []int8{25}
+	testSuccessorsHelper(t, b, boardstate.PAWN, expected)
+	testAttacksHelper(t, b, boardstate.PAWN, expectedAttacks)
 }
 
 
@@ -190,11 +187,12 @@ func TestCaptureNoSelfCapturesWhite(t *testing.T) {
 	b.SetSquare(27, boardstate.WHITE, boardstate.PAWN)
 	b.SetSquare(34, boardstate.WHITE, boardstate.QUEEN)
 	b.SetSquare(36, boardstate.WHITE, boardstate.QUEEN)
+
 	expected := []int8{35}
-	locations := genSortedBoardLocationsPawns(b)
-	if !reflect.DeepEqual(locations, expected) {
-    t.Errorf("Expected %v to be %v", locations	, expected)
-  }
+	var expectedAttacks []int8
+	testSuccessorsHelper(t, b, boardstate.PAWN, expected)
+	testAttacksHelper(t, b, boardstate.PAWN, expectedAttacks)
+
 }
 
 
@@ -204,8 +202,8 @@ func TestPushPawnPromoteWhite(t *testing.T) {
   b.SetSquare(49, boardstate.WHITE, boardstate.PAWN)
 	boards := genPawnSuccessors(b)
 	var sum int8
-	for i := range(boards) {
-		sum += boards[i].PieceOfSquare(57)
+	for _,board := range(boards) {
+		sum += board.PieceOfSquare(57)
 	}
 	if (sum != 6) {
 		t.Errorf("Expected square 6 to have rook,knight,bishop or queen")
@@ -224,11 +222,10 @@ func TestEnPassantCaptureAsWhiteLowerFile(t *testing.T) {
 	// Black pushes two setting up enpassant
 	b.PlayTurn(48, 32, boardstate.EMPTY)
 
-	locations := genSortedBoardLocationsPawns(b)
 	expected := []int8{40,41}
-	if !reflect.DeepEqual(locations, expected) {
-    t.Errorf("Expected %v to be %v", locations	, expected)
-  }
+	expectedAttacks := []int8{40,42}
+	testSuccessorsHelper(t, b, boardstate.PAWN, expected)
+	testAttacksHelper(t, b, boardstate.PAWN, expectedAttacks)
 }
 
 
@@ -242,11 +239,10 @@ func TestEnPassantCaptureAsWhiteHigherFile(t *testing.T) {
 	// Black pushes two setting up enpassant
 	b.PlayTurn(53, 37, boardstate.EMPTY)
 
-	locations := genSortedBoardLocationsPawns(b)
 	expected := []int8{44,45}
-	if !reflect.DeepEqual(locations, expected) {
-    t.Errorf("Expected %v to be %v", locations	, expected)
-  }
+	expectedAttacks := []int8{43,45}
+	testSuccessorsHelper(t, b, boardstate.PAWN, expected)
+	testAttacksHelper(t, b, boardstate.PAWN, expectedAttacks)
 }
 
 
@@ -263,11 +259,11 @@ func TestEnPassantCaptureAsWhiteUnavailableAfterAdditionalMove(t *testing.T) {
 	// Black pushes two setting up enpassant
 	b.PlayTurn(48, 32, boardstate.EMPTY)
 
-	locations1 := genSortedBoardLocationsPawns(b)
-	expected1 := []int8{40,41}
-	if !reflect.DeepEqual(locations1, expected1) {
-    t.Errorf("Expected %v to be %v", locations1	, expected1)
-  }
+	expectedInitial := []int8{40,41}
+	expectedInitialAttacks := []int8{40,42}
+	testSuccessorsHelper(t, b, boardstate.PAWN, expectedInitial)
+	testAttacksHelper(t, b, boardstate.PAWN, expectedInitialAttacks)
+
 
 
 	// White pushes something else`
@@ -276,9 +272,9 @@ func TestEnPassantCaptureAsWhiteUnavailableAfterAdditionalMove(t *testing.T) {
 	// Black pushes something else
 	b.PlayTurn(55, 47, boardstate.EMPTY)
 
-	locations2 := genSortedBoardLocationsPawns(b)
-	expected2 := []int8{41}
-	if !reflect.DeepEqual(locations2, expected2) {
-    t.Errorf("Expected %v to be %v", locations2	, expected2)
-  }
+	expectedAfter := []int8{41}
+	expectedAfterAttacks := []int8{40,42}
+	testSuccessorsHelper(t, b, boardstate.PAWN, expectedAfter)
+	testAttacksHelper(t, b, boardstate.PAWN, expectedAfterAttacks)
+
 }
