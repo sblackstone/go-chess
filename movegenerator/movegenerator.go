@@ -26,6 +26,25 @@ func genSuccessorsForPiece(b *boardstate.BoardState, pieceType int8) []*boardsta
 		}
 }
 
+func genAttacksForPiece(b *boardstate.BoardState, color int8, pieceType int8) uint64 {
+		switch pieceType {
+		case  boardstate.PAWN:
+			return genAllPawnAttacks(b, color)
+		case  boardstate.KING:
+			return genAllKingAttacks(b, color)
+		case  boardstate.QUEEN:
+			return genAllQueenAttacks(b, color)
+		case  boardstate.BISHOP:
+			return genAllBishopAttacks(b, color)
+		case  boardstate.KNIGHT:
+			return genAllKnightAttacks(b, color)
+		case  boardstate.ROOK:
+			return genAllRookAttacks(b, color)
+		default:
+			panic("GenSuccessorsForPiece: Unknown piece type " + fmt.Sprint(pieceType))
+		}
+}
+
 
 func GenSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
   var result []*boardstate.BoardState;
@@ -71,7 +90,7 @@ func GenAllCheckedSquares(b *boardstate.BoardState, color int8) uint64 {
 				 genAllRookAttacks(b, color)   |
 				 genAllQueenAttacks(b, color)  |
 				 genAllKingAttacks(b, color)   |
-				 genAllPawnAttacks(b, color, true)
+				 genAllPawnAttacks(b, color)
 
 
 

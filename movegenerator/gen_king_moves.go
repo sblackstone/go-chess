@@ -65,14 +65,14 @@ func contains(arr uint64, value int8) bool {
 
 func genSingleKingMovesGeneric(b *boardstate.BoardState, kingPos int8, calculateChecks bool, updateFunc func(int8)) []*boardstate.Move {
 	var result []*boardstate.Move;
-	for _, move := range(pregeneratedKingMoves[kingPos]) {
-		if b.ColorOfSquare(move) != b.ColorOfSquare(kingPos) {
-			updateFunc(move)
-		}
-	}
 
 	kingColor := b.ColorOfSquare(kingPos)
 
+	for _, move := range(pregeneratedKingMoves[kingPos]) {
+		if b.ColorOfSquare(move) != kingColor {
+			updateFunc(move)
+		}
+	}
 
 	// If we aren't calculating attacks...
 	if (!calculateChecks) {

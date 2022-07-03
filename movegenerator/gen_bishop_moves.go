@@ -80,9 +80,9 @@ func genSingleBishopMoves(b *boardstate.BoardState, piecePos int8) []*boardstate
 
 func genAllBishopAttacks(b *boardstate.BoardState, color int8) uint64 {
 	var result uint64
-	knightPositions := b.FindPieces(color, boardstate.BISHOP)
-	for i := 0; i < len(knightPositions); i++ {
-		result = result | genSingleBishopMovesBitboard(b, knightPositions[i])
+	bishopPositions := b.FindPieces(color, boardstate.BISHOP)
+	for _, bp := range(bishopPositions) {
+		result = result | genSingleBishopMovesBitboard(b, bp)
 	}
 	return result
 }

@@ -15,6 +15,7 @@ func TestGenBishopMovesMiddleOfBoard(t *testing.T) {
   b.SetSquare(5, boardstate.WHITE, boardstate.BISHOP)
   expected := []int8{12, 14, 19, 23, 26, 33, 40}
 	testSuccessorsHelper(t, b, boardstate.BISHOP, expected)
+	testAttacksHelper(t, b, boardstate.BISHOP, expected)
 }
 
 func TestGenBishopMovesSq42(t *testing.T) {
@@ -22,6 +23,7 @@ func TestGenBishopMovesSq42(t *testing.T) {
   b.SetSquare(42, boardstate.WHITE, boardstate.BISHOP)
   expected := []int8{7, 14, 21, 24, 28, 33, 35, 49, 51, 56, 60}
   testSuccessorsHelper(t, b, boardstate.BISHOP, expected)
+	testAttacksHelper(t, b, boardstate.BISHOP, expected)
 }
 
 func TestGenBishopMovesSq37(t *testing.T) {
@@ -29,6 +31,7 @@ func TestGenBishopMovesSq37(t *testing.T) {
   b.SetSquare(37, boardstate.WHITE, boardstate.BISHOP)
   expected := []int8{1, 10, 19, 23, 28, 30, 44, 46, 51, 55, 58}
 	testSuccessorsHelper(t, b, boardstate.BISHOP, expected)
+	testAttacksHelper(t, b, boardstate.BISHOP, expected)
 }
 
 func TestGenBishopMovesSqNWCorner(t *testing.T) {
@@ -36,6 +39,7 @@ func TestGenBishopMovesSqNWCorner(t *testing.T) {
   b.SetSquare(56, boardstate.WHITE, boardstate.BISHOP)
 	expected := []int8{7, 14, 21, 28,35,42,49}
 	testSuccessorsHelper(t, b, boardstate.BISHOP, expected)
+	testAttacksHelper(t, b, boardstate.BISHOP, expected)
 }
 
 func TestGenBishopMovesSqSECorner(t *testing.T) {
@@ -43,6 +47,7 @@ func TestGenBishopMovesSqSECorner(t *testing.T) {
   b.SetSquare(7, boardstate.WHITE, boardstate.BISHOP)
 	expected := []int8{14, 21, 28,35,42,49,56}
 	testSuccessorsHelper(t, b, boardstate.BISHOP, expected)
+	testAttacksHelper(t, b, boardstate.BISHOP, expected)
 }
 
 func TestTwoBishopsOnBoard(t *testing.T) {
@@ -51,6 +56,9 @@ func TestTwoBishopsOnBoard(t *testing.T) {
 	b.SetSquare(63, boardstate.WHITE, boardstate.BISHOP)
 	expected := []int8{0, 7, 7, 7, 7, 7, 7, 7, 9, 14, 18, 21, 27, 28, 35, 36, 42, 45, 49, 54, 56, 63, 63, 63, 63, 63, 63, 63}
 	testSuccessorsHelper(t, b, boardstate.BISHOP, expected)
+
+	expectedAttacks := []int8{0, 9, 14, 18, 21, 27, 28, 35, 36, 42, 45, 49, 54, 56}
+	testAttacksHelper(t, b, boardstate.BISHOP, expectedAttacks)
 }
 
 func TestGenBishopMovesKnowsAboutTurns(t *testing.T) {
@@ -59,11 +67,14 @@ func TestGenBishopMovesKnowsAboutTurns(t *testing.T) {
 	b.SetSquare(63, boardstate.BLACK, boardstate.BISHOP)
 	expectedWhite := []int8{14, 21, 28,35,42,49,56}
 	testSuccessorsHelper(t, b, boardstate.BISHOP, expectedWhite)
+	testAttacksHelper(t, b, boardstate.BISHOP, expectedWhite)
 
 	b.ToggleTurn()
 
 	expectedBlack := []int8{0,9,18,27,36,45,54}
 	testSuccessorsHelper(t, b, boardstate.BISHOP, expectedBlack)
+	testAttacksHelper(t, b, boardstate.BISHOP, expectedBlack)
+
 }
 
 func TestGenBishopMovesBlockedByOwnPieces(t *testing.T) {
@@ -76,6 +87,7 @@ func TestGenBishopMovesBlockedByOwnPieces(t *testing.T) {
 	b.SetSquare(21, boardstate.WHITE, boardstate.PAWN)
 	expected := []int8{26,28,42,44}
 	testSuccessorsHelper(t, b, boardstate.BISHOP, expected)
+	testAttacksHelper(t, b, boardstate.BISHOP, expected)
 }
 
 func TestGenBishopMovesStopsAtCaptures(t *testing.T) {
@@ -87,4 +99,5 @@ func TestGenBishopMovesStopsAtCaptures(t *testing.T) {
 	b.SetSquare(21, boardstate.BLACK, boardstate.PAWN)
 	expected := []int8{17,21,26,28,42,44,49,53}
 	testSuccessorsHelper(t, b, boardstate.BISHOP, expected)
+	testAttacksHelper(t, b, boardstate.BISHOP, expected)
 }
