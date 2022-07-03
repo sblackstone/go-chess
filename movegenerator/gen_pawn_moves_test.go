@@ -3,7 +3,7 @@ package movegenerator
 import (
 	"testing"
 	//"fmt"
-  "reflect"
+  //"reflect"
   "github.com/sblackstone/go-chess/boardstate"
 	//"github.com/sblackstone/go-chess/bitopts"
 
@@ -15,22 +15,20 @@ func TestGenPawnMovesUnderstandsTurn(t *testing.T) {
 	b.SetSquare(27, boardstate.WHITE, boardstate.PAWN)
 	b.SetSquare(45, boardstate.BLACK, boardstate.PAWN)
 
-	locations := genSortedBoardLocationsPawns(b)
   expected := []int8{35}
-  if !reflect.DeepEqual(locations, expected) {
-    t.Errorf("Expected %v to be %v", locations, expected)
-  }
+	testSuccessorsHelper(t, b, boardstate.PAWN, expected)
+	expectedAttacks := []int8{34,36}
+	testAttacksHelper(t, b, boardstate.PAWN, expectedAttacks)
 
 	b.ToggleTurn()
 
-	locations2 := genSortedBoardLocationsPawns(b)
-  expected2 := []int8{37}
-  if !reflect.DeepEqual(locations2, expected2) {
-    t.Errorf("Expected %v to be %v", locations2, expected2)
-  }
+  expectedBlack := []int8{37}
+	testSuccessorsHelper(t, b, boardstate.PAWN, expectedBlack)
+	expectedBlackAttacks := []int8{36,38}
+	testAttacksHelper(t, b, boardstate.PAWN, expectedBlackAttacks)
 }
 
 
-func TestPregeneratedPawnAttacks(t *testing.T) {
-	t.Errorf("Not implemented")
-}
+// func TestPregeneratedPawnAttacks(t *testing.T) {
+// 	t.Errorf("Not implemented")
+// }
