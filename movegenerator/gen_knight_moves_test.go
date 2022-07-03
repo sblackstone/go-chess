@@ -11,23 +11,21 @@ import (
 
 
 
+
 func TestGenKnightMovesKnowsAboutTurns(t *testing.T) {
 	b := boardstate.Blank()
 	b.SetSquare(1,  boardstate.WHITE, boardstate.KNIGHT)
 	b.SetSquare(57, boardstate.BLACK, boardstate.KNIGHT)
-	moves := genSortedBoardLocationsKnights(b)
 
 	expected := []int8{11,16,18}
-	if (!reflect.DeepEqual(moves, expected)) {
-		t.Errorf("Expected %v to be %v", moves, expected)
-	}
+
+	testSuccessorsHelper(t, b, boardstate.KNIGHT, expected)
+	testAttacksHelper(t, b, boardstate.KNIGHT, expected)
 
 	b.ToggleTurn()
-	movesBlack := genSortedBoardLocationsKnights(b)
 	expectedBlack := []int8{40,42,51}
-	if (!reflect.DeepEqual(movesBlack, expectedBlack)) {
-		t.Errorf("Expected %v to be %v", movesBlack, expected)
-	}
+	testSuccessorsHelper(t, b, boardstate.KNIGHT, expectedBlack)
+	testAttacksHelper(t, b, boardstate.KNIGHT, expectedBlack)
 }
 
 
@@ -37,13 +35,9 @@ func TestGenKnightMovesBlockedBySelf(t *testing.T) {
 	b.SetSquare(57, boardstate.BLACK, boardstate.KNIGHT)
 	b.SetSquare(11, boardstate.WHITE, boardstate.PAWN)
 	b.SetSquare(16, boardstate.WHITE, boardstate.PAWN)
-
-	moves := genSortedBoardLocationsKnights(b)
-
 	expected := []int8{18}
-	if (!reflect.DeepEqual(moves, expected)) {
-		t.Errorf("Expected %v to be %v", moves, expected)
-	}
+	testSuccessorsHelper(t, b, boardstate.KNIGHT, expected)
+	testAttacksHelper(t, b, boardstate.KNIGHT, expected)
 }
 
 func TestGenKnightMovesCaptures(t *testing.T) {
@@ -53,12 +47,11 @@ func TestGenKnightMovesCaptures(t *testing.T) {
 	b.SetSquare(11, boardstate.BLACK, boardstate.PAWN)
 	b.SetSquare(16, boardstate.BLACK, boardstate.PAWN)
 
-	moves := genSortedBoardLocationsKnights(b)
 
 	expected := []int8{11,16,18}
-	if (!reflect.DeepEqual(moves, expected)) {
-		t.Errorf("Expected %v to be %v", moves, expected)
-	}
+	testSuccessorsHelper(t, b, boardstate.KNIGHT, expected)
+	testAttacksHelper(t, b, boardstate.KNIGHT, expected)
+
 }
 
 
