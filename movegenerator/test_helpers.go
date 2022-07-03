@@ -21,7 +21,7 @@ func testSuccessorsHelper(t *testing.T, b *boardstate.BoardState, pieceType int8
 		successors := genSuccessorsForPiece(b, pieceType)
 		locations  := genSortedBoardLocationsGeneric(b.GetTurn(), pieceType, successors)
 		if !reflect.DeepEqual(locations, expected) {
-	    t.Errorf("Expected %v to be %v", locations, expected)
+	    t.Errorf("Expected\n%v\nto be\n%v", locations, expected)
 	  }
 }
 
@@ -37,7 +37,7 @@ func testAttacksHelper(t *testing.T, b *boardstate.BoardState, pieceType int8, e
     }
 
 		if !reflect.DeepEqual(locations, expected) {
-	    t.Errorf("Expected %v to be %v", locations, expected)
+      t.Errorf("Expected\n%v\nto be\n%v", locations, expected)
 	  }
 }
 
