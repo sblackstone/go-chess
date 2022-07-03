@@ -10,7 +10,7 @@ import (
 
 func TestGenerateChecksOnlyBlack(t *testing.T) {
 	b := boardstate.Initial()
-	squares := genSortedCheckedSquares(b, boardstate.BLACK)
+	squares := GenAllCheckedSquares(b, boardstate.BLACK)
 	expected := []int8{40, 41, 42, 43, 44, 45, 46, 47,}
 	var actual []int8
 	var i int8
