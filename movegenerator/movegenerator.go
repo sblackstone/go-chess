@@ -96,6 +96,32 @@ func GenLegalSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
 	return result;
 }
 
+
+const (
+	GAME_STATE_PLAYING = iota
+	GAME_STATE_CHECKMATE
+	GAME_STATE_STALEMATE
+)
+
+func CheckEndOfGame(b *boardstate.BoardState) int8 {
+	successors := GenLegalSuccessors(b)
+	if len(successors) > 0 {
+		return GAME_STATE_PLAYING;
+	}
+
+	currentTurnColor := b.GetTurn()
+	oppTurnColor     := b.EnemyColor()
+
+	kingPos := b.FindPieces(currentTurnColor, boardstate.KING)
+	attacks := GenAllCheckedSquares(b, oppTurnColor)
+	if bitopts.TestBit(attacks, kingPos[0]) {
+		return GAME_STATE_CHECKMATE
+	}
+
+	return GAME_STATE_STALEMATE
+
+}
+
 func GenAllCheckedSquares(b *boardstate.BoardState, color int8) uint64 {
 	return genAllKnightAttacks(b, color) |
 		     genAllBishopAttacks(b, color) |

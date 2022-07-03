@@ -7,6 +7,43 @@ import (
 )
 
 
+func TestCheckEndOfGameFoolsMate(t *testing.T) {
+  b := boardstate.Initial()
+  if (CheckEndOfGame(b) != GAME_STATE_PLAYING) {
+    t.Errorf("Expected %v to be GAME_STATE_PLAYING", CheckEndOfGame(b))
+  }
+
+  b.PlayTurn(13, 21, boardstate.EMPTY) // f3
+  b.PlayTurn(52, 44, boardstate.EMPTY) // e6
+  b.PlayTurn(14, 30, boardstate.EMPTY) // g4
+  b.PlayTurn(59, 31, boardstate.EMPTY)
+
+  if (CheckEndOfGame(b) != GAME_STATE_CHECKMATE) {
+    t.Errorf("Expected %v to be GAME_STATE_CHECKMATE", CheckEndOfGame(b))
+  }
+
+}
+
+func TestCheckEndOfGameStalemate(t *testing.T) {
+  b := boardstate.Blank()
+  b.SetCastleRights(boardstate.WHITE, boardstate.CASTLE_LONG, false)
+	b.SetCastleRights(boardstate.WHITE, boardstate.CASTLE_SHORT, false)
+	b.SetCastleRights(boardstate.BLACK, boardstate.CASTLE_LONG, false)
+	b.SetCastleRights(boardstate.BLACK, boardstate.CASTLE_SHORT, false)
+  b.SetSquare(7, boardstate.WHITE, boardstate.KING)
+  b.SetSquare(56, boardstate.BLACK, boardstate.KING)
+
+  if (CheckEndOfGame(b) != GAME_STATE_PLAYING) {
+    t.Errorf("Expected %v to be GAME_STATE_PLAYING", CheckEndOfGame(b))
+  }
+  b.SetSquare(13, boardstate.BLACK, boardstate.QUEEN)
+
+  if (CheckEndOfGame(b) != GAME_STATE_STALEMATE) {
+    t.Errorf("Expected %v to be GAME_STATE_STALEMATE", CheckEndOfGame(b))
+  }
+
+}
+
 
 func TestGenGenSuccessorsInitialPosition(t *testing.T) {
   b := boardstate.Initial()
@@ -52,5 +89,5 @@ func TestGenLegalSuccessorsOpposition(t *testing.T) {
   if !reflect.DeepEqual(legalBlack, expectedBlack) {
     t.Errorf("Expected %v to be %v", legalBlack, expectedBlack)
   }
-  
+
 }
