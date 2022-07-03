@@ -1,7 +1,8 @@
 package evaluator
 
 import (
-	"github.com/sblackstone/go-chess/boardstate"
+	"testing"
+	//"github.com/sblackstone/go-chess/boardstate"
 	//"fmt"
 )
 

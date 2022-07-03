@@ -37,7 +37,7 @@ func genSortedBoardLocationsPawns(b *boardstate.BoardState) []int8 {
   return genSortedBoardLocationsGeneric(b.GetTurn(), boardstate.PAWN, genPawnSuccessors(b))
 }
 
-
-func genSortedCheckedSquares(b *boardstate.BoardState, color int8) uint64 {
-  return GenAllCheckedSquares(b, color)
-}
+//
+// func genSortedCheckedSquares(b *boardstate.BoardState, color int8) uint64 {
+//   return GenAllCheckedSquares(b, color)
+// }
