@@ -2,7 +2,6 @@ package movegenerator
 
 import (
 	"testing"
-  "reflect"
   "github.com/sblackstone/go-chess/boardstate"
 //	"sort"
 
@@ -88,9 +87,4 @@ func TestGenBishopMovesStopsAtCaptures(t *testing.T) {
 	b.SetSquare(21, boardstate.BLACK, boardstate.PAWN)
 	expected := []int8{17,21,26,28,42,44,49,53}
 	testSuccessorsHelper(t, b, boardstate.BISHOP, expected)
-}
-
-
-func TestGenBishopAttacksBitboard(t *testing.T) {
-	t.Errorf("Not implemented")
 }

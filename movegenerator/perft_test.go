@@ -23,14 +23,8 @@ func genPerf(state *boardstate.BoardState, depth int) int {
 func BenchmarkPerf(b *testing.B) {
   board, _ := fen.FromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
   for n := 0; n < b.N; n++ {
-    genPerf(board, 6)
+    genPerf(board, 5)
   }
-}
-
-func TestSpeed(t *testing.T) {
-  board, _ := fen.FromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
-  result := genPerf(board, 5)
-  t.Errorf("%v", result)
 }
 
 func TestPerftPositions(t *testing.T) {

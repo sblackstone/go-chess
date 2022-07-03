@@ -285,21 +285,4 @@ func TestEnPassantCaptureAsWhiteUnavailableAfterAdditionalMove(t *testing.T) {
 	if !reflect.DeepEqual(locations2, expected2) {
     t.Errorf("Expected %v to be %v", locations2	, expected2)
   }
-
-
-	// fmt.Println(b.GetEnpassant())
-	// pawnMoves := genPawnSuccessors(b)
-	// for i := range(pawnMoves) {
-	// 	fmt.Println()
-	// 	pawnMoves[i].Print(255)
-	// }
-	// t.Errorf("TODO")
-}
-
-func TestGenPawnAttacksBitboardWhite(t *testing.T) {
-	t.Errorf("Not implemented")
-}
-
-func TestGenPawnAttacksBitboardWhiteEnpassant(t *testing.T) {
-	t.Errorf("Not implemented")
 }

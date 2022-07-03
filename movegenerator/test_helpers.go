@@ -3,6 +3,8 @@ package movegenerator
 import(
   "sort"
   "github.com/sblackstone/go-chess/boardstate"
+  "reflect"
+  "testing"
 )
 func genSortedBoardLocationsGeneric(turn int8, piece int8, result[]*boardstate.BoardState) []int8 {
 	var locations []int8

@@ -276,7 +276,3 @@ func TestGenKingMovesKnowsAboutTurns(t *testing.T) {
 		t.Errorf("Expected %v to be %v", movesBlack, expected)
 	}
 }
-
-func TestGenKingAttacksBitboard(t *testing.T) {
-	t.Errorf("Not implemented")
-}

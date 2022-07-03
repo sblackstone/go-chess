@@ -109,7 +109,3 @@ func TestGenRookMovesMiddleOfBoard(t *testing.T) {
   }
 
 }
-
-func TestGenRookAttacksBitboard(t *testing.T) {
-	t.Errorf("Not implemented")
-}

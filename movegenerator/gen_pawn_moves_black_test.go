@@ -307,10 +307,10 @@ func TestEnPassantCaptureAsBlackUnavailableAfterAdditionalMove(t *testing.T) {
 }
 
 
-func TestGenPawnAttacksBitboardBlack(t *testing.T) {
-	t.Errorf("Not implemented")
-}
-
-func TestGenPawnAttacksBitboardBlackEnpassant(t *testing.T) {
-	t.Errorf("Not implemented")
-}
+// func TestGenPawnAttacksBitboardBlack(t *testing.T) {
+// 	t.Errorf("Not implemented")
+// }
+//
+// func TestGenPawnAttacksBitboardBlackEnpassant(t *testing.T) {
+// 	t.Errorf("Not implemented")
+// }
