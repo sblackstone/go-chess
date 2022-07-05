@@ -1,9 +1,10 @@
 package movegenerator
 
 import (
+	"testing"
+
 	"github.com/sblackstone/go-chess/boardstate"
 	"github.com/sblackstone/go-chess/fen"
-	"testing"
 )
 
 func genPerf(state *boardstate.BoardState, depth int) int {
