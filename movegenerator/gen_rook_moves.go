@@ -1,50 +1,48 @@
 package movegenerator
 
 import (
-	"github.com/sblackstone/go-chess/boardstate"
 	"github.com/sblackstone/go-chess/bitopts"
-
-//	"fmt"
+	"github.com/sblackstone/go-chess/boardstate"
+	//	"fmt"
 )
 
 func genSingleRookMovesGeneric(b *boardstate.BoardState, rookPos int8, updateFunc func(int8)) {
-	for r := rookPos+8; r < 64; r += 8 {
+	for r := rookPos + 8; r < 64; r += 8 {
 		if b.ColorOfSquare(r) != b.ColorOfSquare(rookPos) {
 			updateFunc(r)
 		}
 		if !b.EmptySquare(r) {
-			break;
+			break
 		}
 	}
 
-	for r := rookPos-8; r >= 0; r -= 8 {
+	for r := rookPos - 8; r >= 0; r -= 8 {
 		if b.ColorOfSquare(r) != b.ColorOfSquare(rookPos) {
 			updateFunc(r)
 		}
 		if !b.EmptySquare(r) {
-			break;
+			break
 		}
 	}
 
-	for r := rookPos+1; bitopts.FileOfSquare(r) > 0; r += 1 {
+	for r := rookPos + 1; bitopts.FileOfSquare(r) > 0; r += 1 {
 		if b.ColorOfSquare(r) != b.ColorOfSquare(rookPos) {
 			updateFunc(r)
 		}
 		if !b.EmptySquare(r) {
-			break;
+			break
 		}
 	}
 
-	for r := rookPos-1; r >= 0 && bitopts.FileOfSquare(r) < 7; r -= 1 {
+	for r := rookPos - 1; r >= 0 && bitopts.FileOfSquare(r) < 7; r -= 1 {
 		if b.ColorOfSquare(r) != b.ColorOfSquare(rookPos) {
 			updateFunc(r)
 		}
 		if !b.EmptySquare(r) {
-			break;
+			break
 		}
 	}
 }
-
 
 func genSingleRookMovesBitboard(b *boardstate.BoardState, piecePos int8) uint64 {
 	var result uint64
@@ -60,7 +58,7 @@ func genSingleRookMovesBitboard(b *boardstate.BoardState, piecePos int8) uint64 
 
 // This will be almost identical everywhere.
 func genSingleRookMoves(b *boardstate.BoardState, piecePos int8) []*boardstate.Move {
-	var result []*boardstate.Move;
+	var result []*boardstate.Move
 
 	updateFunc := func(dst int8) {
 		result = append(result, boardstate.CreateMove(piecePos, dst, boardstate.EMPTY))
@@ -68,7 +66,7 @@ func genSingleRookMoves(b *boardstate.BoardState, piecePos int8) []*boardstate.M
 
 	genSingleRookMovesGeneric(b, piecePos, updateFunc)
 
-	return result;
+	return result
 }
 
 func genAllRookAttacks(b *boardstate.BoardState, color int8) uint64 {
@@ -80,10 +78,8 @@ func genAllRookAttacks(b *boardstate.BoardState, color int8) uint64 {
 	return result
 }
 
-
-
 func genAllRookMoves(b *boardstate.BoardState, color int8) []*boardstate.Move {
-	var result []*boardstate.Move;
+	var result []*boardstate.Move
 	rookPositions := b.FindPieces(color, boardstate.ROOK)
 	for i := 0; i < len(rookPositions); i++ {
 		result = append(result, genSingleRookMoves(b, rookPositions[i])...)

@@ -7,13 +7,13 @@ import (
 
 // BoardState contains the state of the Board
 type BoardState struct {
-	colors [2]uint64
-	pieces [6]uint64
+	colors          [2]uint64
+	pieces          [6]uint64
 	enpassantSquare int8
-	meta   uint64
-	turn int8
-	halfMoves int
-	fullMoves int
+	meta            uint64
+	turn            int8
+	halfMoves       int
+	fullMoves       int
 }
 
 // Blank returns a blank board with no pieces on it
@@ -30,7 +30,7 @@ func Blank() *BoardState {
 func Initial() *BoardState {
 	b := Blank()
 	// These constants are pre-calculated using InitialManual (see below)...
-	b.colors = [2]uint64{65535, 18446462598732840960 }
+	b.colors = [2]uint64{65535, 18446462598732840960}
 	b.pieces = [6]uint64{9295429630892703873, 4755801206503243842, 2594073385365405732, 576460752303423496, 1152921504606846992, 71776119061282560}
 	b.fullMoves = 1
 	return b
@@ -39,13 +39,13 @@ func Initial() *BoardState {
 // Copy returns a copy of a BoardState
 func (b *BoardState) Copy() *BoardState {
 	boardCopy := BoardState{
-		meta: b.meta,
-		colors: b.colors,
-		pieces: b.pieces,
+		meta:            b.meta,
+		colors:          b.colors,
+		pieces:          b.pieces,
 		enpassantSquare: b.enpassantSquare,
-		turn: b.turn,
-		halfMoves: b.halfMoves,
-		fullMoves: b.fullMoves,
+		turn:            b.turn,
+		halfMoves:       b.halfMoves,
+		fullMoves:       b.fullMoves,
 	}
 
 	return &boardCopy
@@ -77,23 +77,23 @@ func (b *BoardState) GetPieceBitboard(color int8, piece int8) uint64 {
 	return b.pieces[piece] & b.colors[color]
 }
 
-func (b *BoardState) EnemyOccupiedSquare(n int8) bool{
+func (b *BoardState) EnemyOccupiedSquare(n int8) bool {
 	c := b.ColorOfSquare(n)
 	return c != EMPTY && c != b.GetTurn()
 }
 
 func (b *BoardState) EmptySquare(n int8) bool {
-	return !bitopts.TestBit(b.colors[BLACK] | b.colors[WHITE], n)
+	return !bitopts.TestBit(b.colors[BLACK]|b.colors[WHITE], n)
 }
 
-func (b *BoardState) EmptyOrEnemyOccupiedSquare(n int8) bool{
+func (b *BoardState) EmptyOrEnemyOccupiedSquare(n int8) bool {
 	c := b.ColorOfSquare(n)
 	return c != b.GetTurn()
 }
 
 func (b *BoardState) GenerateSuccessors(moves []*Move) []*BoardState {
-	var result []*BoardState;
-	for _, move := range(moves) {
+	var result []*BoardState
+	for _, move := range moves {
 		result = append(result, b.CopyPlayTurnFromMove(move))
 	}
 	return result
@@ -103,21 +103,20 @@ func (b *BoardState) MovePiece(src int8, dst int8) {
 	color := b.ColorOfSquare(src)
 	piece := b.PieceOfSquare(src)
 
-  // Clear the source square.
-	b.pieces[piece]    = bitopts.ClearBit(b.pieces[piece], src)
-	b.colors[color]    = bitopts.ClearBit(b.colors[color], src)
+	// Clear the source square.
+	b.pieces[piece] = bitopts.ClearBit(b.pieces[piece], src)
+	b.colors[color] = bitopts.ClearBit(b.colors[color], src)
 
 	// Clear the destination square.
 	if !b.EmptySquare(dst) {
-		b.pieces[b.PieceOfSquare(dst)]    = bitopts.ClearBit(b.pieces[b.PieceOfSquare(dst)], dst)
-		b.colors[b.ColorOfSquare(dst)]    = bitopts.ClearBit(b.colors[b.ColorOfSquare(dst)], dst)
+		b.pieces[b.PieceOfSquare(dst)] = bitopts.ClearBit(b.pieces[b.PieceOfSquare(dst)], dst)
+		b.colors[b.ColorOfSquare(dst)] = bitopts.ClearBit(b.colors[b.ColorOfSquare(dst)], dst)
 	}
 
 	// Set the new piece.
-	b.colors[color]    = bitopts.SetBit(b.colors[color],   dst)
-	b.pieces[piece]    = bitopts.SetBit(b.pieces[piece],   dst)
+	b.colors[color] = bitopts.SetBit(b.colors[color], dst)
+	b.pieces[piece] = bitopts.SetBit(b.pieces[piece], dst)
 }
-
 
 // Returns an array of positions for a given set of pieces.
 func (b *BoardState) FindPieces(color int8, pieceType int8) []int8 {
@@ -168,21 +167,21 @@ func (b *BoardState) PieceOfSquare(n int8) int8 {
 func (b *BoardState) SetSquare(n int8, color int8, piece int8) {
 	// Theres gotta be room for improvement here...
 	// we really only need to update the bitboard that is currently set.
-	b.pieces[ROOK]    = bitopts.ClearBit(b.pieces[ROOK],   n)
-	b.pieces[BISHOP]  = bitopts.ClearBit(b.pieces[BISHOP], n)
-	b.pieces[KNIGHT]  = bitopts.ClearBit(b.pieces[KNIGHT], n)
-	b.pieces[QUEEN]   = bitopts.ClearBit(b.pieces[QUEEN],  n)
-	b.pieces[KING]    = bitopts.ClearBit(b.pieces[KING],   n)
-	b.pieces[PAWN]    = bitopts.ClearBit(b.pieces[PAWN],   n)
-	b.colors[WHITE]   = bitopts.ClearBit(b.colors[WHITE],  n)
-	b.colors[BLACK]   = bitopts.ClearBit(b.colors[BLACK],  n)
-	if (color != EMPTY) {
-		b.colors[color]   = bitopts.SetBit(b.colors[color], n)
-		b.pieces[piece]   = bitopts.SetBit(b.pieces[piece], n)
+	b.pieces[ROOK] = bitopts.ClearBit(b.pieces[ROOK], n)
+	b.pieces[BISHOP] = bitopts.ClearBit(b.pieces[BISHOP], n)
+	b.pieces[KNIGHT] = bitopts.ClearBit(b.pieces[KNIGHT], n)
+	b.pieces[QUEEN] = bitopts.ClearBit(b.pieces[QUEEN], n)
+	b.pieces[KING] = bitopts.ClearBit(b.pieces[KING], n)
+	b.pieces[PAWN] = bitopts.ClearBit(b.pieces[PAWN], n)
+	b.colors[WHITE] = bitopts.ClearBit(b.colors[WHITE], n)
+	b.colors[BLACK] = bitopts.ClearBit(b.colors[BLACK], n)
+	if color != EMPTY {
+		b.colors[color] = bitopts.SetBit(b.colors[color], n)
+		b.pieces[piece] = bitopts.SetBit(b.pieces[piece], n)
 	}
 }
 
 // SetSquareRankFile removes any existing piece and sets the square to the new piece/color with (x,y) coordinates.
 func (b *BoardState) SetSquareRankFile(rank int8, file int8, color int8, piece int8) {
-	b.SetSquare(bitopts.RankFileToSquare(rank, file), color, piece);
+	b.SetSquare(bitopts.RankFileToSquare(rank, file), color, piece)
 }

@@ -1,15 +1,15 @@
 package fen
+
 import (
-  //"strings"
+	//"strings"
+	"fmt"
 	"github.com/sblackstone/go-chess/bitopts"
 	"github.com/sblackstone/go-chess/boardstate"
 	"strings"
-  "fmt"
 )
 
-
 func ToFEN(b *boardstate.BoardState) (string, error) {
-	var rank,file int8
+	var rank, file int8
 	result := ""
 	for rank = 7; rank >= 0; rank-- {
 		emptyCount := 0
@@ -18,28 +18,28 @@ func ToFEN(b *boardstate.BoardState) (string, error) {
 			color := b.ColorOfSquare(pos)
 			piece := b.PieceOfSquare(pos)
 			if color == boardstate.EMPTY {
-				emptyCount +=1;
+				emptyCount += 1
 			} else {
 				sqStr := ""
-				switch(piece) {
-					case boardstate.PAWN:
-						sqStr = "p"
-					case boardstate.ROOK:
-						sqStr = "r"
-					case boardstate.KNIGHT:
-						sqStr = "n"
-					case boardstate.BISHOP:
-						sqStr = "b"
-					case boardstate.QUEEN:
-						sqStr = "q"
-					case boardstate.KING:
-						sqStr = "k"
+				switch piece {
+				case boardstate.PAWN:
+					sqStr = "p"
+				case boardstate.ROOK:
+					sqStr = "r"
+				case boardstate.KNIGHT:
+					sqStr = "n"
+				case boardstate.BISHOP:
+					sqStr = "b"
+				case boardstate.QUEEN:
+					sqStr = "q"
+				case boardstate.KING:
+					sqStr = "k"
 				}
 				if color == boardstate.WHITE {
 					sqStr = strings.ToUpper(sqStr)
 				}
-				if (emptyCount > 0) {
-					result += fmt.Sprint(emptyCount);
+				if emptyCount > 0 {
+					result += fmt.Sprint(emptyCount)
 					emptyCount = 0
 				}
 				result += sqStr
@@ -48,9 +48,9 @@ func ToFEN(b *boardstate.BoardState) (string, error) {
 		if emptyCount > 0 {
 			result += fmt.Sprint(emptyCount)
 		}
-    if rank != 0 {
-      result += "/"
-    }
+		if rank != 0 {
+			result += "/"
+		}
 	}
 
 	result += " "
@@ -62,20 +62,27 @@ func ToFEN(b *boardstate.BoardState) (string, error) {
 
 	result += " "
 
-
 	/// Add castling rights
-  wlong  := b.HasCastleRights(boardstate.WHITE, boardstate.CASTLE_LONG)
+	wlong := b.HasCastleRights(boardstate.WHITE, boardstate.CASTLE_LONG)
 	wshort := b.HasCastleRights(boardstate.WHITE, boardstate.CASTLE_SHORT)
-	blong  := b.HasCastleRights(boardstate.BLACK, boardstate.CASTLE_LONG)
+	blong := b.HasCastleRights(boardstate.BLACK, boardstate.CASTLE_LONG)
 	bshort := b.HasCastleRights(boardstate.BLACK, boardstate.CASTLE_SHORT)
 
-	if (!wlong && !wshort && !blong && !bshort) {
+	if !wlong && !wshort && !blong && !bshort {
 		result += "-"
 	} else {
-		if wshort { result += "K" }
-		if wlong  { result += "Q" }
-		if bshort { result += "k" }
-		if blong  { result += "q" }
+		if wshort {
+			result += "K"
+		}
+		if wlong {
+			result += "Q"
+		}
+		if bshort {
+			result += "k"
+		}
+		if blong {
+			result += "q"
+		}
 	}
 
 	result += " "

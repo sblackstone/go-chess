@@ -3,16 +3,15 @@ package movegenerator
 import (
 	"testing"
 	//"fmt"
-  "reflect"
-  "github.com/sblackstone/go-chess/boardstate"
 	"github.com/sblackstone/go-chess/bitopts"
-
+	"github.com/sblackstone/go-chess/boardstate"
+	"reflect"
 )
 
 func TestGenerateChecksOnlyWhite(t *testing.T) {
 	b := boardstate.Initial()
 	squares := GenAllCheckedSquares(b, boardstate.WHITE)
-	expected := []int8{16, 17, 18, 19, 20, 21, 22, 23,}
+	expected := []int8{16, 17, 18, 19, 20, 21, 22, 23}
 	var actual []int8
 	var i int8
 	for i = 0; i < 64; i++ {
@@ -27,24 +26,21 @@ func TestGenerateChecksOnlyWhite(t *testing.T) {
 }
 
 func TestPushPawnWhite(t *testing.T) {
-  b := boardstate.Blank()
+	b := boardstate.Blank()
 	b.SetSquare(27, boardstate.WHITE, boardstate.PAWN)
 
 	expected := []int8{35}
 	testSuccessorsHelper(t, b, boardstate.PAWN, expected)
-	expectedAttacks := []int8{34,36}
+	expectedAttacks := []int8{34, 36}
 	testAttacksHelper(t, b, boardstate.PAWN, expectedAttacks)
-
 
 	// Obstructed by SELF
 	b.SetSquare(35, boardstate.WHITE, boardstate.QUEEN)
 
 	var expectedObstructed []int8
 	testSuccessorsHelper(t, b, boardstate.PAWN, expectedObstructed)
-	expectedObstructedAttacks := []int8{34,36}
+	expectedObstructedAttacks := []int8{34, 36}
 	testAttacksHelper(t, b, boardstate.PAWN, expectedObstructedAttacks)
-
-
 
 	/// Obstructed by ENEMY
 	b.SetSquare(35, boardstate.BLACK, boardstate.QUEEN)
@@ -55,22 +51,22 @@ func TestPushPawnWhite(t *testing.T) {
 
 func TestPushPawnTwoWhite(t *testing.T) {
 	// Setup the inital board with a pawn on 8, expect to be pushable 1 or 2 squares.
-  b := boardstate.Blank()
-  b.SetSquare(8, boardstate.WHITE, boardstate.PAWN)
-	expected := []int8{16,24}
+	b := boardstate.Blank()
+	b.SetSquare(8, boardstate.WHITE, boardstate.PAWN)
+	expected := []int8{16, 24}
 	expectedAttacks := []int8{17}
 	testSuccessorsHelper(t, b, boardstate.PAWN, expected)
 	testAttacksHelper(t, b, boardstate.PAWN, expectedAttacks)
 
 	positions := genPawnSuccessors(b)
-	for i := range(positions) {
+	for i := range positions {
 		if positions[i].PieceOfSquare(24) == boardstate.PAWN {
 			if positions[i].GetEnpassant() != 16 {
-			  t.Errorf("Expected 16 to be enpassant after double push")
+				t.Errorf("Expected 16 to be enpassant after double push")
 			}
 		} else {
 			if positions[i].GetEnpassant() == 16 {
-			  t.Errorf("Expected 16 to NOT be enpassant after double push")
+				t.Errorf("Expected 16 to NOT be enpassant after double push")
 			}
 
 		}
@@ -83,11 +79,8 @@ func TestPushPawnTwoWhite(t *testing.T) {
 	testSuccessorsHelper(t, b, boardstate.PAWN, expected2)
 	testAttacksHelper(t, b, boardstate.PAWN, expected2Attacks)
 
-
-
 	b.SetSquare(16, boardstate.EMPTY, boardstate.EMPTY)
 	b.SetSquare(24, boardstate.BLACK, boardstate.QUEEN)
-
 
 	expected3 := []int8{16}
 	expected3Attacks := []int8{17}
@@ -101,9 +94,8 @@ func TestCaptureHigherFileWhite(t *testing.T) {
 	b.SetSquare(19, boardstate.WHITE, boardstate.PAWN)
 	b.SetSquare(28, boardstate.BLACK, boardstate.PAWN)
 
-
-	expected := []int8{27,28}
-	expectedAttacks := []int8{26,28}
+	expected := []int8{27, 28}
+	expectedAttacks := []int8{26, 28}
 
 	testSuccessorsHelper(t, b, boardstate.PAWN, expected)
 	testAttacksHelper(t, b, boardstate.PAWN, expectedAttacks)
@@ -115,11 +107,11 @@ func TestCaptureLowerFileWhite(t *testing.T) {
 	b.SetSquare(19, boardstate.WHITE, boardstate.PAWN)
 	b.SetSquare(26, boardstate.BLACK, boardstate.PAWN)
 
-	expected := []int8{26,27}
-  expectedAttacks := []int8{26,28}
+	expected := []int8{26, 27}
+	expectedAttacks := []int8{26, 28}
 
-  testSuccessorsHelper(t, b, boardstate.PAWN, expected)
-  testAttacksHelper(t, b, boardstate.PAWN, expectedAttacks)
+	testSuccessorsHelper(t, b, boardstate.PAWN, expected)
+	testAttacksHelper(t, b, boardstate.PAWN, expectedAttacks)
 
 }
 
@@ -131,10 +123,10 @@ func TestCaptureHigherFileWhiteWithPromotion(t *testing.T) {
 	b.SetSquare(62, boardstate.BLACK, boardstate.QUEEN)
 	boards := genPawnSuccessors(b)
 	var sum int8
-	for _, board := range(boards) {
+	for _, board := range boards {
 		sum += board.PieceOfSquare(62)
 	}
-	if (sum != 6) {
+	if sum != 6 {
 		t.Errorf("Expected square 6 to have rook,knight,bishop or queen")
 	}
 }
@@ -147,15 +139,13 @@ func TestCaptureLowerFileWhiteWithPromotion(t *testing.T) {
 	b.SetSquare(60, boardstate.BLACK, boardstate.QUEEN)
 	boards := genPawnSuccessors(b)
 	var sum int8
-	for _, board := range(boards) {
+	for _, board := range boards {
 		sum += board.PieceOfSquare(60)
 	}
-	if (sum != 6) {
+	if sum != 6 {
 		t.Errorf("Expected square 6 to have rook,knight,bishop or queen")
 	}
 }
-
-
 
 func TestCaptureNoWarpingCapturesHigherFileWhite(t *testing.T) {
 	b := boardstate.Blank()
@@ -163,7 +153,7 @@ func TestCaptureNoWarpingCapturesHigherFileWhite(t *testing.T) {
 	b.SetSquare(30, boardstate.BLACK, boardstate.PAWN)
 	b.SetSquare(32, boardstate.BLACK, boardstate.PAWN)
 
-	expected := []int8{30,31}
+	expected := []int8{30, 31}
 	expectedAttacks := []int8{30}
 	testSuccessorsHelper(t, b, boardstate.PAWN, expected)
 	testAttacksHelper(t, b, boardstate.PAWN, expectedAttacks)
@@ -175,12 +165,11 @@ func TestCaptureNoWarpingCapturesLowerFileWhite(t *testing.T) {
 	b.SetSquare(23, boardstate.BLACK, boardstate.PAWN)
 	b.SetSquare(25, boardstate.BLACK, boardstate.PAWN)
 
-	expected := []int8{24,25}
+	expected := []int8{24, 25}
 	expectedAttacks := []int8{25}
 	testSuccessorsHelper(t, b, boardstate.PAWN, expected)
 	testAttacksHelper(t, b, boardstate.PAWN, expectedAttacks)
 }
-
 
 func TestCaptureNoSelfCapturesWhite(t *testing.T) {
 	b := boardstate.Blank()
@@ -195,22 +184,18 @@ func TestCaptureNoSelfCapturesWhite(t *testing.T) {
 
 }
 
-
-
 func TestPushPawnPromoteWhite(t *testing.T) {
-  b := boardstate.Blank()
-  b.SetSquare(49, boardstate.WHITE, boardstate.PAWN)
+	b := boardstate.Blank()
+	b.SetSquare(49, boardstate.WHITE, boardstate.PAWN)
 	boards := genPawnSuccessors(b)
 	var sum int8
-	for _,board := range(boards) {
+	for _, board := range boards {
 		sum += board.PieceOfSquare(57)
 	}
-	if (sum != 6) {
+	if sum != 6 {
 		t.Errorf("Expected square 6 to have rook,knight,bishop or queen")
 	}
 }
-
-
 
 func TestEnPassantCaptureAsWhiteLowerFile(t *testing.T) {
 	b := boardstate.Blank()
@@ -222,12 +207,11 @@ func TestEnPassantCaptureAsWhiteLowerFile(t *testing.T) {
 	// Black pushes two setting up enpassant
 	b.PlayTurn(48, 32, boardstate.EMPTY)
 
-	expected := []int8{40,41}
-	expectedAttacks := []int8{40,42}
+	expected := []int8{40, 41}
+	expectedAttacks := []int8{40, 42}
 	testSuccessorsHelper(t, b, boardstate.PAWN, expected)
 	testAttacksHelper(t, b, boardstate.PAWN, expectedAttacks)
 }
-
 
 func TestEnPassantCaptureAsWhiteHigherFile(t *testing.T) {
 	b := boardstate.Blank()
@@ -239,12 +223,11 @@ func TestEnPassantCaptureAsWhiteHigherFile(t *testing.T) {
 	// Black pushes two setting up enpassant
 	b.PlayTurn(53, 37, boardstate.EMPTY)
 
-	expected := []int8{44,45}
-	expectedAttacks := []int8{43,45}
+	expected := []int8{44, 45}
+	expectedAttacks := []int8{43, 45}
 	testSuccessorsHelper(t, b, boardstate.PAWN, expected)
 	testAttacksHelper(t, b, boardstate.PAWN, expectedAttacks)
 }
-
 
 func TestEnPassantCaptureAsWhiteUnavailableAfterAdditionalMove(t *testing.T) {
 	b := boardstate.Blank()
@@ -259,12 +242,10 @@ func TestEnPassantCaptureAsWhiteUnavailableAfterAdditionalMove(t *testing.T) {
 	// Black pushes two setting up enpassant
 	b.PlayTurn(48, 32, boardstate.EMPTY)
 
-	expectedInitial := []int8{40,41}
-	expectedInitialAttacks := []int8{40,42}
+	expectedInitial := []int8{40, 41}
+	expectedInitialAttacks := []int8{40, 42}
 	testSuccessorsHelper(t, b, boardstate.PAWN, expectedInitial)
 	testAttacksHelper(t, b, boardstate.PAWN, expectedInitialAttacks)
-
-
 
 	// White pushes something else`
 	b.PlayTurn(14, 22, boardstate.EMPTY)
@@ -273,7 +254,7 @@ func TestEnPassantCaptureAsWhiteUnavailableAfterAdditionalMove(t *testing.T) {
 	b.PlayTurn(55, 47, boardstate.EMPTY)
 
 	expectedAfter := []int8{41}
-	expectedAfterAttacks := []int8{40,42}
+	expectedAfterAttacks := []int8{40, 42}
 	testSuccessorsHelper(t, b, boardstate.PAWN, expectedAfter)
 	testAttacksHelper(t, b, boardstate.PAWN, expectedAfterAttacks)
 

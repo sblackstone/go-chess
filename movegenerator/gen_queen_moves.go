@@ -5,14 +5,14 @@ import (
 )
 
 func genSingleQueenMoves(b *boardstate.BoardState, queenPos int8) []*boardstate.Move {
-	var result []*boardstate.Move;
+	var result []*boardstate.Move
 	result = append(result, genSingleBishopMoves(b, queenPos)...)
 	result = append(result, genSingleRookMoves(b, queenPos)...)
 	return result
 }
 
 func genAllQueenMoves(b *boardstate.BoardState, color int8) []*boardstate.Move {
-	var result []*boardstate.Move;
+	var result []*boardstate.Move
 	queenPositions := b.FindPieces(color, boardstate.QUEEN)
 	for i := 0; i < len(queenPositions); i++ {
 		result = append(result, genSingleQueenMoves(b, queenPositions[i])...)
@@ -29,7 +29,6 @@ func genAllQueenAttacks(b *boardstate.BoardState, color int8) uint64 {
 	}
 	return result
 }
-
 
 func genQueenSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
 	return b.GenerateSuccessors(genAllQueenMoves(b, b.GetTurn()))

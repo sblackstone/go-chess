@@ -1,10 +1,9 @@
 package movegenerator
 
 import (
-	"github.com/sblackstone/go-chess/boardstate"
 	"github.com/sblackstone/go-chess/bitopts"
+	"github.com/sblackstone/go-chess/boardstate"
 )
-
 
 var pregeneratedPawnAttacks [2][64]uint64
 
@@ -27,52 +26,50 @@ func init() {
 }
 
 func genSinglePawnMovesGeneric(b *boardstate.BoardState, pawnPos int8, calculateChecks bool, updateFunc func(int8)) []*boardstate.Move {
-	var result []*boardstate.Move;
+	var result []*boardstate.Move
 	pawnPosRank, pawnPosFile := bitopts.SquareToRankFile(pawnPos)
-	var pushFoardTwoRank,pushForwardOne,pushForwardTwo,captureToLowerFilePos,captureToHigherFilePos,fromEnpassantRank int8
+	var pushFoardTwoRank, pushForwardOne, pushForwardTwo, captureToLowerFilePos, captureToHigherFilePos, fromEnpassantRank int8
 
-	if (b.ColorOfSquare(pawnPos) == boardstate.WHITE) {
+	if b.ColorOfSquare(pawnPos) == boardstate.WHITE {
 		//promotionRank          = int8(7)
-		pushFoardTwoRank       = int8(1)
-		pushForwardOne         = pawnPos + 8
-		pushForwardTwo         = pawnPos + 16
-		captureToLowerFilePos  = pawnPos + 7
+		pushFoardTwoRank = int8(1)
+		pushForwardOne = pawnPos + 8
+		pushForwardTwo = pawnPos + 16
+		captureToLowerFilePos = pawnPos + 7
 		captureToHigherFilePos = pawnPos + 9
-		fromEnpassantRank      = int8(4)
+		fromEnpassantRank = int8(4)
 	} else {
 		//promotionRank          = int8(0)
-		pushFoardTwoRank       = int8(6)
-		pushForwardOne         = pawnPos - 8
-		pushForwardTwo         = pawnPos - 16
-		captureToLowerFilePos  = pawnPos - 9
+		pushFoardTwoRank = int8(6)
+		pushForwardOne = pawnPos - 8
+		pushForwardTwo = pawnPos - 16
+		captureToLowerFilePos = pawnPos - 9
 		captureToHigherFilePos = pawnPos - 7
-		fromEnpassantRank      = int8(3)
+		fromEnpassantRank = int8(3)
 	}
 
-	if (calculateChecks) {
+	if calculateChecks {
 		// Capture to Higher file
-		if (captureToHigherFilePos >= 0 && captureToHigherFilePos <= 63 && bitopts.FileOfSquare(captureToHigherFilePos) > pawnPosFile) {
+		if captureToHigherFilePos >= 0 && captureToHigherFilePos <= 63 && bitopts.FileOfSquare(captureToHigherFilePos) > pawnPosFile {
 			updateFunc(captureToHigherFilePos)
 		}
 
 		// Cpature to Lower file
-		if (captureToLowerFilePos >= 0 && captureToLowerFilePos <= 64 && bitopts.FileOfSquare(captureToLowerFilePos) < pawnPosFile) {
+		if captureToLowerFilePos >= 0 && captureToLowerFilePos <= 64 && bitopts.FileOfSquare(captureToLowerFilePos) < pawnPosFile {
 			updateFunc(captureToLowerFilePos)
 		}
 
 		return result
 
-
 	}
 
-
 	// Capture to Higher file
-	if (captureToHigherFilePos <= 63 && b.EnemyOccupiedSquare(captureToHigherFilePos) && bitopts.FileOfSquare(captureToHigherFilePos) > pawnPosFile) {
+	if captureToHigherFilePos <= 63 && b.EnemyOccupiedSquare(captureToHigherFilePos) && bitopts.FileOfSquare(captureToHigherFilePos) > pawnPosFile {
 		updateFunc(captureToHigherFilePos)
 	}
 
-  // Cpature to Lower file
-	if (captureToLowerFilePos >= 0 && b.EnemyOccupiedSquare(captureToLowerFilePos) && bitopts.FileOfSquare(captureToLowerFilePos) < pawnPosFile) {
+	// Cpature to Lower file
+	if captureToLowerFilePos >= 0 && b.EnemyOccupiedSquare(captureToLowerFilePos) && bitopts.FileOfSquare(captureToLowerFilePos) < pawnPosFile {
 		updateFunc(captureToLowerFilePos)
 	}
 
@@ -104,18 +101,17 @@ func genSinglePawnMovesGeneric(b *boardstate.BoardState, pawnPos int8, calculate
 	return result
 }
 
-
 // This will be almost identical everywhere.
 func genSinglePawnMoves(b *boardstate.BoardState, piecePos int8, calculateChecks bool) []*boardstate.Move {
-	var result []*boardstate.Move;
+	var result []*boardstate.Move
 
 	updateFunc := func(dst int8) {
 		rank := bitopts.RankOfSquare(dst)
-		if (rank == 0 || rank == 7) {
+		if rank == 0 || rank == 7 {
 			// With Promotion
 			var i int8
 			for i = boardstate.ROOK; i <= boardstate.QUEEN; i++ {
-				result = append(result,  boardstate.CreateMove(piecePos, dst, i))
+				result = append(result, boardstate.CreateMove(piecePos, dst, i))
 			}
 		} else {
 			result = append(result, boardstate.CreateMove(piecePos, dst, boardstate.PAWN))
@@ -124,9 +120,8 @@ func genSinglePawnMoves(b *boardstate.BoardState, piecePos int8, calculateChecks
 
 	genSinglePawnMovesGeneric(b, piecePos, calculateChecks, updateFunc)
 
-	return result;
+	return result
 }
-
 
 func genSinglePawnMovesBitboard(b *boardstate.BoardState, piecePos int8, calculateChecks bool) uint64 {
 	color := b.ColorOfSquare(piecePos)
@@ -147,10 +142,8 @@ func genSinglePawnMovesBitboard(b *boardstate.BoardState, piecePos int8, calcula
 
 	*/
 
-
-
 	if b.GetEnpassant() == boardstate.NO_ENPASSANT {
-		return (pregeneratedPawnAttacks[color][piecePos] ^ b.GetColorBitboard(color)) & pregeneratedPawnAttacks[color][piecePos];
+		return (pregeneratedPawnAttacks[color][piecePos] ^ b.GetColorBitboard(color)) & pregeneratedPawnAttacks[color][piecePos]
 	}
 
 	var result uint64
@@ -161,20 +154,17 @@ func genSinglePawnMovesBitboard(b *boardstate.BoardState, piecePos int8, calcula
 
 	genSinglePawnMovesGeneric(b, piecePos, calculateChecks, updateFunc)
 
-
 	return result
-
 
 }
 
-
 func genAllPawnMoves(b *boardstate.BoardState, color int8, calculateChecks bool) []*boardstate.Move {
-	var result []*boardstate.Move;
+	var result []*boardstate.Move
 	pawnPositions := b.FindPieces(color, boardstate.PAWN)
 	for i := 0; i < len(pawnPositions); i++ {
 		result = append(result, genSinglePawnMoves(b, pawnPositions[i], calculateChecks)...)
 	}
-  return result;
+	return result
 
 }
 
@@ -186,8 +176,6 @@ func genAllPawnAttacks(b *boardstate.BoardState, color int8) uint64 {
 	}
 	return result
 }
-
-
 
 func genPawnSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
 	return b.GenerateSuccessors(genAllPawnMoves(b, b.GetTurn(), false))

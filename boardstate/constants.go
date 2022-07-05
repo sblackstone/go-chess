@@ -18,5 +18,5 @@ const (
 
 // Empty is for multiple things.
 const (
-	EMPTY=99
+	EMPTY = 99
 )

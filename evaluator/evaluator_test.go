@@ -6,7 +6,6 @@ import (
 	//"fmt"
 )
 
-
 func TestEvaluateBoard(t *testing.T) {
-  t.Errorf("not implemented")
+	t.Errorf("not implemented")
 }

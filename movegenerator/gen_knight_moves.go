@@ -1,8 +1,8 @@
 package movegenerator
 
 import (
+	"github.com/sblackstone/go-chess/bitopts"
 	"github.com/sblackstone/go-chess/boardstate"
-  "github.com/sblackstone/go-chess/bitopts"
 )
 
 /*
@@ -26,88 +26,82 @@ import (
 
 */
 
-
-
 var pregeneratedKnightMoves [64][]int8
 var pregeneratedKnightMovesBitboard [64]uint64
 
-
 func getPregeneratedKnightMoves() [64][]int8 {
-	return pregeneratedKnightMoves;
+	return pregeneratedKnightMoves
 }
 
 func init() {
-  var rank,file int8
-  for rank = 0; rank < 8; rank++ {
-    for file =0; file < 8; file++ {
-      pos := bitopts.RankFileToSquare(rank,file)
+	var rank, file int8
+	for rank = 0; rank < 8; rank++ {
+		for file = 0; file < 8; file++ {
+			pos := bitopts.RankFileToSquare(rank, file)
 			pregeneratedKnightMovesBitboard[pos] = 0
 
-			appendPos := func (dst int8) {
+			appendPos := func(dst int8) {
 				pregeneratedKnightMovesBitboard[pos] = bitopts.SetBit(pregeneratedKnightMovesBitboard[pos], dst)
-				pregeneratedKnightMoves[pos]         = append(pregeneratedKnightMoves[pos], dst)
+				pregeneratedKnightMoves[pos] = append(pregeneratedKnightMoves[pos], dst)
 			}
 
-      // A
-      if file >= 2 {
-        if rank >= 1 {
-					appendPos(pos-10)
-        }
-        if rank <= 6 {
-					appendPos(pos+6)
-        }
-      }
+			// A
+			if file >= 2 {
+				if rank >= 1 {
+					appendPos(pos - 10)
+				}
+				if rank <= 6 {
+					appendPos(pos + 6)
+				}
+			}
 
-      // B
-      if file >= 1 {
-        if rank >= 2 {
+			// B
+			if file >= 1 {
+				if rank >= 2 {
 					appendPos(pos - 17)
-        }
-        if rank <= 5 {
+				}
+				if rank <= 5 {
 					appendPos(pos + 15)
-        }
-      }
+				}
+			}
 
-      // C
-      if file <= 6 {
-        if rank >= 2 {
+			// C
+			if file <= 6 {
+				if rank >= 2 {
 					appendPos(pos - 15)
-        }
-        if rank <= 5 {
+				}
+				if rank <= 5 {
 					appendPos(pos + 17)
-        }
-      }
+				}
+			}
 
-      // D
-      if file <= 5 {
-        if rank >= 1 {
+			// D
+			if file <= 5 {
+				if rank >= 1 {
 					appendPos(pos - 6)
-        }
-        if rank <= 6 {
+				}
+				if rank <= 6 {
 					appendPos(pos + 10)
-        }
-      }
+				}
+			}
 
-
-    }
-  }
+		}
+	}
 }
-
 
 // All the base generators need to look like this.....
 func genSingleKnightMovesGeneric(b *boardstate.BoardState, knightPos int8, updateFunc func(int8)) {
-	for i := range(pregeneratedKnightMoves[knightPos]) {
-		move := pregeneratedKnightMoves[knightPos][i];
+	for i := range pregeneratedKnightMoves[knightPos] {
+		move := pregeneratedKnightMoves[knightPos][i]
 		if b.ColorOfSquare(move) != b.ColorOfSquare(knightPos) {
 			updateFunc(move)
 		}
 	}
 }
 
-
 // This will be almost identical everywhere.
 func genSingleKnightAttack(b *boardstate.BoardState, piecePos int8) uint64 {
-	return (pregeneratedKnightMovesBitboard[piecePos] ^ b.GetColorBitboard(b.ColorOfSquare(piecePos))) & pregeneratedKnightMovesBitboard[piecePos];
+	return (pregeneratedKnightMovesBitboard[piecePos] ^ b.GetColorBitboard(b.ColorOfSquare(piecePos))) & pregeneratedKnightMovesBitboard[piecePos]
 	// var result uint64
 	//
 	// updateFunc := func(dst int8) {
@@ -121,7 +115,7 @@ func genSingleKnightAttack(b *boardstate.BoardState, piecePos int8) uint64 {
 
 // This will be almost identical everywhere.
 func genSingleKnightMoves(b *boardstate.BoardState, piecePos int8) []*boardstate.Move {
-	var result []*boardstate.Move;
+	var result []*boardstate.Move
 
 	updateFunc := func(dst int8) {
 		result = append(result, boardstate.CreateMove(piecePos, dst, boardstate.EMPTY))
@@ -129,9 +123,8 @@ func genSingleKnightMoves(b *boardstate.BoardState, piecePos int8) []*boardstate
 
 	genSingleKnightMovesGeneric(b, piecePos, updateFunc)
 
-	return result;
+	return result
 }
-
 
 // This will be almost identical everywhere.
 func genAllKnightAttacks(b *boardstate.BoardState, color int8) uint64 {
@@ -144,14 +137,13 @@ func genAllKnightAttacks(b *boardstate.BoardState, color int8) uint64 {
 }
 
 func genAllKnightMoves(b *boardstate.BoardState, color int8) []*boardstate.Move {
-	var result []*boardstate.Move;
+	var result []*boardstate.Move
 	knightPositions := b.FindPieces(color, boardstate.KNIGHT)
 	for i := 0; i < len(knightPositions); i++ {
 		result = append(result, genSingleKnightMoves(b, knightPositions[i])...)
 	}
 	return result
 }
-
 
 func genKnightSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
 	return b.GenerateSuccessors(genAllKnightMoves(b, b.GetTurn()))

@@ -5,28 +5,26 @@ import (
 	//  "github.com/sblackstone/go-chess/boardstate"
 )
 
-
 func TestSquareToAlgebraic(t *testing.T) {
-		sq1 := SquareToAlgebraic(26)
-		if sq1 != "c4" {
-			t.Errorf("Expected %v to be %v", sq1, "c4")
-		}
+	sq1 := SquareToAlgebraic(26)
+	if sq1 != "c4" {
+		t.Errorf("Expected %v to be %v", sq1, "c4")
+	}
 
-		sq2 := SquareToAlgebraic(0)
-		if sq2 != "a1" {
-			t.Errorf("Expected %v to be %v", sq2, "a1")
-		}
+	sq2 := SquareToAlgebraic(0)
+	if sq2 != "a1" {
+		t.Errorf("Expected %v to be %v", sq2, "a1")
+	}
 
-		sq3 := SquareToAlgebraic(63)
-		if sq3 != "h8" {
-			t.Errorf("Expected %v to be %v", sq3, "h8")
-		}
+	sq3 := SquareToAlgebraic(63)
+	if sq3 != "h8" {
+		t.Errorf("Expected %v to be %v", sq3, "h8")
+	}
 
-		sq4 := SquareToAlgebraic(53)
-		if sq4 != "f7" {
-			t.Errorf("Expected %v to be %v", sq4, "f7")
-		}
-
+	sq4 := SquareToAlgebraic(53)
+	if sq4 != "f7" {
+		t.Errorf("Expected %v to be %v", sq4, "f7")
+	}
 
 }
 
@@ -67,98 +65,94 @@ func TestAlgebraicToSquare(t *testing.T) {
 		t.Errorf("Expected empty string to give error, not %v %v", val7, err7)
 	}
 
-
-
 }
 
 func TestPrint(t *testing.T) {
-	var val uint64 = 5;
-	Print(val,52)
+	var val uint64 = 5
+	Print(val, 52)
 }
 
 func TestFindTwoPiecePositions(t *testing.T) {
-	  var val uint64;
+	var val uint64
 
-		val = 0
-		posOfZero := FindTwoPiecePositions(val)
-		if len(posOfZero) != 0 {
-			t.Errorf("Expected %v to be []", posOfZero)
-		}
+	val = 0
+	posOfZero := FindTwoPiecePositions(val)
+	if len(posOfZero) != 0 {
+		t.Errorf("Expected %v to be []", posOfZero)
+	}
 
-		val = SetBit(val, 1)
-		//Print(val,64)
+	val = SetBit(val, 1)
+	//Print(val,64)
 
-		posOfOne := FindTwoPiecePositions(val)
-		if len(posOfOne) != 1 || posOfOne[0] != 1 {
-			t.Errorf("Expected %v to be [1]", posOfOne)
-		}
+	posOfOne := FindTwoPiecePositions(val)
+	if len(posOfOne) != 1 || posOfOne[0] != 1 {
+		t.Errorf("Expected %v to be [1]", posOfOne)
+	}
 
-		val = SetBit(val, 2)
-		//Print(val,64)
+	val = SetBit(val, 2)
+	//Print(val,64)
 
-		posOfThree := FindTwoPiecePositions(val)
-		if len(posOfThree) != 2 || posOfThree[0] != 1 || posOfThree[1] != 2 {
-			t.Errorf("Expected %v to be [1,2]", posOfThree)
-		}
+	posOfThree := FindTwoPiecePositions(val)
+	if len(posOfThree) != 2 || posOfThree[0] != 1 || posOfThree[1] != 2 {
+		t.Errorf("Expected %v to be [1,2]", posOfThree)
+	}
 
-		val = SetBit(0, 17)
-		val = SetBit(val, 19)
-		//Print(val,64)
-		posOfComplex := FindTwoPiecePositions(val)
-		if len(posOfComplex) != 2 || posOfComplex[0] != 17 || posOfComplex[1] != 19 {
-			t.Errorf("Expected %v to be [1,2]", posOfComplex)
-		}
+	val = SetBit(0, 17)
+	val = SetBit(val, 19)
+	//Print(val,64)
+	posOfComplex := FindTwoPiecePositions(val)
+	if len(posOfComplex) != 2 || posOfComplex[0] != 17 || posOfComplex[1] != 19 {
+		t.Errorf("Expected %v to be [1,2]", posOfComplex)
+	}
 
 }
 
 func TestRankFileToSquare(t *testing.T) {
 	cases := [][3]int8{
-		{0,0,0},
-		{7,7,63},
-		{7,3,59},
-		{3,7,31},
+		{0, 0, 0},
+		{7, 7, 63},
+		{7, 3, 59},
+		{3, 7, 31},
 	}
 
-	for i := range(cases) {
-		v := RankFileToSquare(cases[i][0],cases[i][1])
-		if (v != cases[i][2]) {
-				t.Errorf("Expected (%v,%v) to be %v, got %v", cases[i][0],cases[i][1], cases[i][2], v);
+	for i := range cases {
+		v := RankFileToSquare(cases[i][0], cases[i][1])
+		if v != cases[i][2] {
+			t.Errorf("Expected (%v,%v) to be %v, got %v", cases[i][0], cases[i][1], cases[i][2], v)
 		}
 	}
 }
 
 func TestSquareToRankFile(t *testing.T) {
 	cases := [][3]int8{
-		{0,0,0},
-		{7,7,63},
-		{7,3,59},
-		{3,7,31},
+		{0, 0, 0},
+		{7, 7, 63},
+		{7, 3, 59},
+		{3, 7, 31},
 	}
 
-	for i := range(cases) {
-		row,col := SquareToRankFile(cases[i][2])
-		if (row != cases[i][0] || col != cases[i][1]) {
-				t.Errorf("Expected %v to be (%v,%v), got (%v,%v)", cases[i][2], cases[i][0], cases[i][1], row,col);
+	for i := range cases {
+		row, col := SquareToRankFile(cases[i][2])
+		if row != cases[i][0] || col != cases[i][1] {
+			t.Errorf("Expected %v to be (%v,%v), got (%v,%v)", cases[i][2], cases[i][0], cases[i][1], row, col)
 		}
 	}
 }
 
-
-
 func TestFlipBit(t *testing.T) {
-	var v uint64;
+	var v uint64
 
 	v = 0b101
 
 	v = FlipBit(v, 1)
 
-	if (v != 0b111) {
+	if v != 0b111 {
 		t.Errorf("Expected 101 ^ 010 = 111 (7)")
 	}
 
 	v = FlipBit(v, 1)
 
-	if (v != 0b101) {
+	if v != 0b101 {
 		t.Errorf("Expected 111 ^ 010 = 101 (5)")
 	}
 
