@@ -1,11 +1,12 @@
 package fen
 
 import (
-	"github.com/sblackstone/go-chess/boardstate"
 	"testing"
+
+	"github.com/sblackstone/go-chess/boardstate"
 )
 
-func TestsMissingGenerator(t *testing.T) {
+func TestMissingGenerator(t *testing.T) {
 	t.Errorf("enpassnt on export")
 	t.Errorf("turn on export")
 	t.Errorf("halfmove on export")

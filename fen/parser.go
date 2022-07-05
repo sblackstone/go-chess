@@ -3,9 +3,11 @@ package fen
 import (
 	//"strings"
 	"errors"
+	"regexp"
+
 	"github.com/sblackstone/go-chess/bitopts"
 	"github.com/sblackstone/go-chess/boardstate"
-	"regexp"
+
 	//"fmt"
 	"strconv"
 )
@@ -69,12 +71,12 @@ func applyBoardString(b *boardstate.BoardState, boardStr string) error {
 			rank -= 1
 			file = 0
 		default:
-			return errors.New("Unexpected character in FEN string: " + char)
+			return errors.New("unexpected character in FEN string: " + char)
 		}
 	}
 
 	if rank != 0 || file != 8 {
-		return errors.New("Invalid FEN when parsing board string")
+		return errors.New("invalid FEN when parsing board string")
 	}
 	return nil
 
@@ -128,7 +130,7 @@ func applyEnpassantString(b *boardstate.BoardState, enpassantString string) erro
 
 func FromFEN(fenString string) (*boardstate.BoardState, error) {
 	b := boardstate.Blank()
-	re := regexp.MustCompile("([^\\s]+)([\\s]{1})([wb]+)([\\s]{1})([-KQkq]+)([\\s]{1})([-a-z0-9]+)([\\s]{1})([0-9]*)([\\s]{1})([0-9]*)")
+	re := regexp.MustCompile(`([^\s]+)([\s]{1})([wb]+)([\s]{1})([-KQkq]+)([\s]{1})([-a-z0-9]+)([\s]{1})([0-9]*)([\s]{1})([0-9]*)`)
 	m := re.FindStringSubmatch(fenString)
 
 	if len(m) != 12 {
