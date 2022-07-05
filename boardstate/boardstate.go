@@ -73,6 +73,10 @@ func (b *BoardState) GetColorBitboard(color int8) uint64 {
 	return b.colors[color]
 }
 
+func (b *BoardState) GetPieceBitboard(color int8, piece int8) uint64 {
+	return b.pieces[piece] & b.colors[color]
+}
+
 func (b *BoardState) EnemyOccupiedSquare(n int8) bool{
 	c := b.ColorOfSquare(n)
 	return c != EMPTY && c != b.GetTurn()
