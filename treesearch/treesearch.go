@@ -9,7 +9,7 @@ import (
 
 const INFINITY = float64(9999999999999)
 
-func AlphaBeta(b *boardstate.BoardState, depth int8, alpha float64, beta float64, maximizingPlayer bool) float64 {
+func alphaBeta(b *boardstate.BoardState, depth int8, alpha float64, beta float64, maximizingPlayer bool) float64 {
 	// Making this not a variable seems to be a performance boost?  not getting compiled away?
 	gameState := movegenerator.CheckEndOfGame(b)
   if depth == 0 || gameState > movegenerator.GAME_STATE_PLAYING {
@@ -19,7 +19,7 @@ func AlphaBeta(b *boardstate.BoardState, depth int8, alpha float64, beta float64
 	if maximizingPlayer {
 			value := -INFINITY
 			for _, succ := range(movegenerator.GenLegalSuccessors(b)) {
-				value = math.Max(value, AlphaBeta(succ, depth - 1, alpha, beta, false))
+				value = math.Max(value, alphaBeta(succ, depth - 1, alpha, beta, false))
 				if value >= beta {
 					break
 				}
@@ -30,7 +30,7 @@ func AlphaBeta(b *boardstate.BoardState, depth int8, alpha float64, beta float64
 	} else {
 		value := INFINITY
 		for _, succ := range(movegenerator.GenLegalSuccessors(b)) {
-			value = math.Min(value, AlphaBeta(succ, depth - 1, alpha, beta, true))
+			value = math.Min(value, alphaBeta(succ, depth - 1, alpha, beta, true))
 			if value <= alpha {
 				break
 			}
@@ -46,7 +46,7 @@ func BestSuccessor(b *boardstate.BoardState, depth int8) *boardstate.BoardState 
 	var bestSuccessor *boardstate.BoardState
 	bestValue = -INFINITY
 	for _, succ := range(movegenerator.GenLegalSuccessors(b)) {
-		value := AlphaBeta(succ, depth, -INFINITY, INFINITY, true)
+		value := alphaBeta(succ, depth, -INFINITY, INFINITY, true)
 		if value > bestValue {
 			bestValue = value
 			bestSuccessor = succ
