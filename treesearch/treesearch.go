@@ -4,6 +4,7 @@ import (
 	"github.com/sblackstone/go-chess/boardstate"
   "github.com/sblackstone/go-chess/evaluator"
   "github.com/sblackstone/go-chess/movegenerator"
+	"math/rand"
 	//"math"
 )
 
@@ -36,14 +37,19 @@ func alphaBeta(b *boardstate.BoardState, depth int8, alpha float64, beta float64
 
 func BestSuccessor(b *boardstate.BoardState, depth int8) *boardstate.BoardState {
 	var bestValue float64
-	var bestSuccessor *boardstate.BoardState
+	var bestSuccessors []*boardstate.BoardState
 	bestValue = -INFINITY
 	for _, succ := range(movegenerator.GenLegalSuccessors(b)) {
 		value := -alphaBeta(succ, depth, -INFINITY, INFINITY)
+		if value == bestValue {
+			bestSuccessors = append(bestSuccessors, succ)
+		}
 		if value > bestValue {
 			bestValue = value
-			bestSuccessor = succ
+			bestSuccessors = make([]*boardstate.BoardState, 1)
+			bestSuccessors[0] = succ
 		}
 	}
-	return bestSuccessor
+	randomIndex := rand.Intn(len(bestSuccessors))
+	return bestSuccessors[randomIndex]
 }
