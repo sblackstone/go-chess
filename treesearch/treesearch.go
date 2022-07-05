@@ -10,6 +10,7 @@ import (
 const INFINITY = float64(9999999999999)
 
 func AlphaBeta(b *boardstate.BoardState, depth int8, alpha float64, beta float64, maximizingPlayer bool) float64 {
+	// Making this not a variable seems to be a performance boost?  not getting compiled away?
 	gameState := movegenerator.CheckEndOfGame(b)
   if depth == 0 || gameState > movegenerator.GAME_STATE_PLAYING {
 		return evaluator.EvaluateBoard(b)
