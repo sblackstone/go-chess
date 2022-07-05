@@ -1,9 +1,10 @@
 package movegenerator
 
 import (
+	"sort"
+
 	"github.com/sblackstone/go-chess/bitopts"
 	"github.com/sblackstone/go-chess/boardstate"
-	"sort"
 
 	"reflect"
 	"testing"
@@ -41,33 +42,3 @@ func testAttacksHelper(t *testing.T, b *boardstate.BoardState, pieceType int8, e
 		t.Errorf("Expected\n%v\nto be\n%v", locations, expected)
 	}
 }
-
-// DEPRECATED BELOW HERE.
-func genSortedBoardLocationsRooks(b *boardstate.BoardState) []int8 {
-	return genSortedBoardLocationsGeneric(b.GetTurn(), boardstate.ROOK, genRookSuccessors(b))
-}
-
-func genSortedBoardLocationsKnights(b *boardstate.BoardState) []int8 {
-	return genSortedBoardLocationsGeneric(b.GetTurn(), boardstate.KNIGHT, genKnightSuccessors(b))
-}
-
-func genSortedBoardLocationsBishops(b *boardstate.BoardState) []int8 {
-	return genSortedBoardLocationsGeneric(b.GetTurn(), boardstate.BISHOP, genBishopSuccessors(b))
-}
-
-func genSortedBoardLocationsQueens(b *boardstate.BoardState) []int8 {
-	return genSortedBoardLocationsGeneric(b.GetTurn(), boardstate.QUEEN, genQueenSuccessors(b))
-}
-
-func genSortedBoardLocationsKings(b *boardstate.BoardState) []int8 {
-	return genSortedBoardLocationsGeneric(b.GetTurn(), boardstate.KING, genKingSuccessors(b))
-}
-
-func genSortedBoardLocationsPawns(b *boardstate.BoardState) []int8 {
-	return genSortedBoardLocationsGeneric(b.GetTurn(), boardstate.PAWN, genPawnSuccessors(b))
-}
-
-//
-// func genSortedCheckedSquares(b *boardstate.BoardState, color int8) uint64 {
-//   return GenAllCheckedSquares(b, color)
-// }

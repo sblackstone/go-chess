@@ -1,8 +1,10 @@
 package movegenerator
 
 import (
-	"github.com/sblackstone/go-chess/fen"
 	"testing"
+
+	"github.com/sblackstone/go-chess/fen"
+
 	//"fmt"
 	"encoding/json"
 	"errors"
@@ -23,7 +25,7 @@ type ExpectedPosition struct {
 
 type TestCase struct {
 	Start    StartingPosition   `json:"start"`
-	Expected []ExpectedPosition `json":expected"`
+	Expected []ExpectedPosition `json:"expected"`
 }
 
 type TestCaseFile struct {
