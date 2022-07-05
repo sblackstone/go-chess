@@ -46,7 +46,7 @@ func BestSuccessor(b *boardstate.BoardState, depth int8) *boardstate.BoardState 
 	var bestSuccessor *boardstate.BoardState
 	bestValue = -INFINITY
 	for _, succ := range(movegenerator.GenLegalSuccessors(b)) {
-		value := alphaBeta(succ, depth, -INFINITY, INFINITY, true)
+		value := alphaBeta(succ, depth, -INFINITY, INFINITY, false) // FALSE!
 		if value > bestValue {
 			bestValue = value
 			bestSuccessor = succ
