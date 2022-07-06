@@ -111,10 +111,10 @@ func genSinglePawnMoves(b *boardstate.BoardState, piecePos int8, calculateChecks
 			// With Promotion
 			var i int8
 			for i = boardstate.ROOK; i <= boardstate.QUEEN; i++ {
-				result = append(result, boardstate.CreateMove(piecePos, dst, i))
+				result = append(result, &boardstate.Move{Src: piecePos, Dst: dst, PromotePiece: i})
 			}
 		} else {
-			result = append(result, boardstate.CreateMove(piecePos, dst, boardstate.PAWN))
+			result = append(result, &boardstate.Move{Src: piecePos, Dst: dst, PromotePiece: boardstate.EMPTY})
 		}
 	}
 

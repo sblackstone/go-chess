@@ -160,8 +160,8 @@ func testCastlingBoard() *BoardState {
 func TestGenerateSuccessors(t *testing.T) {
 	b := Blank()
 	b.SetSquare(22, WHITE, PAWN)
-	m1 := CreateMove(22, 22+8, EMPTY)
-	m2 := CreateMove(22, 22+16, EMPTY)
+	m1 := &Move{Src: 22, Dst: 22 + 8, PromotePiece: EMPTY}
+	m2 := &Move{Src: 22, Dst: 22 + 16, PromotePiece: EMPTY}
 
 	var moves []*Move
 

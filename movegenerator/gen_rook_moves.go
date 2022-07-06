@@ -61,7 +61,7 @@ func genSingleRookMoves(b *boardstate.BoardState, piecePos int8) []*boardstate.M
 	var result []*boardstate.Move
 
 	updateFunc := func(dst int8) {
-		result = append(result, boardstate.CreateMove(piecePos, dst, boardstate.EMPTY))
+		result = append(result, &boardstate.Move{Src: piecePos, Dst: dst, PromotePiece: boardstate.EMPTY})
 	}
 
 	genSingleRookMovesGeneric(b, piecePos, updateFunc)

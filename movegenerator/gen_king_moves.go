@@ -125,7 +125,7 @@ func genAllKingMoves(b *boardstate.BoardState, color int8, calculateChecks bool)
 		return result
 	}
 	updateFunc := func(dst int8) {
-		result = append(result, boardstate.CreateMove(kingPositions[0], dst, boardstate.EMPTY))
+		result = append(result, &boardstate.Move{Src: kingPositions[0], Dst: dst, PromotePiece: boardstate.EMPTY})
 	}
 
 	genSingleKingMovesGeneric(b, kingPositions[0], calculateChecks, updateFunc)

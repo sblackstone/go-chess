@@ -118,7 +118,7 @@ func genSingleKnightMoves(b *boardstate.BoardState, piecePos int8) []*boardstate
 	var result []*boardstate.Move
 
 	updateFunc := func(dst int8) {
-		result = append(result, boardstate.CreateMove(piecePos, dst, boardstate.EMPTY))
+		result = append(result, &boardstate.Move{Src: piecePos, Dst: dst, PromotePiece: boardstate.EMPTY})
 	}
 
 	genSingleKnightMovesGeneric(b, piecePos, updateFunc)
