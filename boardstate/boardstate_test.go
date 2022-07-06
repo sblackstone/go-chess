@@ -5,6 +5,37 @@ import (
 	"testing"
 )
 
+func TestKingPosInitial(t *testing.T) {
+	b := Initial()
+	if b.GetKingPos(WHITE) != 4 {
+		t.Errorf("Expected white king at 4")
+	}
+	if b.GetKingPos(BLACK) != 60 {
+		t.Errorf("Expected black king at 60")
+	}
+
+	b.PlayTurn(12, 20, EMPTY)
+	b.PlayTurn(52, 36, EMPTY)
+	b.PlayTurn(4, 12, EMPTY)
+	b.PlayTurn(60, 52, EMPTY)
+	if b.GetKingPos(WHITE) != 12 {
+		t.Errorf("Expected white king at 12")
+	}
+	if b.GetKingPos(BLACK) != 52 {
+		t.Errorf("Expected black king at 52")
+	}
+
+	b.SetSquare(27, WHITE, KING)
+	b.SetSquare(35, BLACK, KING)
+	if b.GetKingPos(WHITE) != 27 {
+		t.Errorf("Expected white king at 27")
+	}
+	if b.GetKingPos(BLACK) != 35 {
+		t.Errorf("Expected black king at 35")
+	}
+
+}
+
 func TestGetColorBitboard(t *testing.T) {
 	b := Initial()
 

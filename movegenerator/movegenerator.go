@@ -2,6 +2,7 @@ package movegenerator
 
 import (
 	"fmt"
+
 	"github.com/sblackstone/go-chess/bitopts"
 	"github.com/sblackstone/go-chess/boardstate"
 )
@@ -81,11 +82,11 @@ func GenLegalSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
 	// For each candidate successor
 	for i := range successors {
 		// Find the position of the current turn's king after its move.
-		kingPos := successors[i].FindPieces(currentTurnColor, boardstate.KING)
-
+		//kingPos := successors[i].FindPieces(currentTurnColor, boardstate.KING)
+		kingPos := successors[i].GetKingPos(currentTurnColor)
 		// Find all the checked squares for the opposing side
 		attacks := GenAllCheckedSquares(successors[i], oppTurnColor)
-		if !bitopts.TestBit(attacks, kingPos[0]) {
+		if !bitopts.TestBit(attacks, kingPos) {
 			result = append(result, successors[i])
 		}
 	}
