@@ -11,8 +11,8 @@ import (
 type BoardState struct {
 	colors          [2]uint64
 	pieces          [6]uint64
+	castleData      [2][2]bool
 	enpassantSquare int8
-	meta            uint64
 	turn            int8
 	halfMoves       int
 	fullMoves       int
@@ -25,11 +25,11 @@ func (b *BoardState) GetKingPos(color int8) int8 {
 // Blank returns a blank board with no pieces on it
 func Blank() *BoardState {
 	b := BoardState{}
+	b.EnableAllCastling()
 	b.turn = WHITE
 	b.colors = [2]uint64{0, 0}
 	b.pieces = [6]uint64{0, 0, 0, 0, 0, 0}
 	b.enpassantSquare = NO_ENPASSANT
-	//b.kingPos = [2]int8{EMPTY, EMPTY}
 	return &b
 }
 
@@ -40,22 +40,20 @@ func Initial() *BoardState {
 	b.colors = [2]uint64{65535, 18446462598732840960}
 	b.pieces = [6]uint64{9295429630892703873, 4755801206503243842, 2594073385365405732, 576460752303423496, 1152921504606846992, 71776119061282560}
 	b.fullMoves = 1
-	//b.kingPos[WHITE] = 4
-	//b.kingPos[BLACK] = 60
+	b.EnableAllCastling()
 	return b
 }
 
 // Copy returns a copy of a BoardState
 func (b *BoardState) Copy() *BoardState {
 	boardCopy := BoardState{
-		meta:            b.meta,
 		colors:          b.colors,
 		pieces:          b.pieces,
 		enpassantSquare: b.enpassantSquare,
 		turn:            b.turn,
 		halfMoves:       b.halfMoves,
 		fullMoves:       b.fullMoves,
-		//kingPos:         b.kingPos,
+		castleData:      b.castleData,
 	}
 
 	return &boardCopy
@@ -75,6 +73,8 @@ func initialManual() *BoardState {
 		b.SetSquareRankFile(6, j, BLACK, PAWN)
 		b.SetSquareRankFile(1, j, WHITE, PAWN)
 	}
+	b.EnableAllCastling()
+
 	b.fullMoves = 1
 	// b.kingPos[WHITE] = 4
 	// b.kingPos[BLACK] = 60

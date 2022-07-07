@@ -1,9 +1,5 @@
 package boardstate
 
-import (
-	"github.com/sblackstone/go-chess/bitopts"
-)
-
 /*
 
 // All fields on an initial board should be 0 so no initializiation is necessary.
@@ -69,17 +65,6 @@ func (b *BoardState) ToggleTurn() {
 	b.turn = b.turn ^ 1
 }
 
-func castleBit(color int8, side int8) int8 {
-	// WHITE = 0, BLACK = 1
-	// SHORT = 0 LONG = 1
-	// So,
-	// WHITE SHORT = 1 + (2*0) + 0 = 1
-	// WHITE LONG  = 1 + (2*0) + 1 = 2
-	// BLACK SHORT = 1 + (2*1) + 0 = 3
-	// BLACK LONG  = 1 + (2*2) + 1 = 4
-	return 1 + (color * 2) + side
-}
-
 func (b *BoardState) ClearEnpassant() {
 	b.enpassantSquare = NO_ENPASSANT
 }
@@ -99,7 +84,7 @@ func (b *BoardState) IsEnpassant(file int8) bool {
 }
 
 func (b *BoardState) HasCastleRights(color int8, side int8) bool {
-	return !bitopts.TestBit(b.meta, castleBit(color, side))
+	return b.castleData[color][side]
 }
 
 // Only used in testing, removes all castling rights.
@@ -108,14 +93,15 @@ func (b *BoardState) ClearCastling() {
 	b.SetCastleRights(WHITE, CASTLE_LONG, false)
 	b.SetCastleRights(BLACK, CASTLE_SHORT, false)
 	b.SetCastleRights(BLACK, CASTLE_LONG, false)
+}
 
+func (b *BoardState) EnableAllCastling() {
+	b.SetCastleRights(WHITE, CASTLE_SHORT, true)
+	b.SetCastleRights(WHITE, CASTLE_LONG, true)
+	b.SetCastleRights(BLACK, CASTLE_SHORT, true)
+	b.SetCastleRights(BLACK, CASTLE_LONG, true)
 }
 
 func (b *BoardState) SetCastleRights(color int8, side int8, enabled bool) {
-	bit := castleBit(color, side)
-	if enabled {
-		b.meta = bitopts.ClearBit(b.meta, bit)
-	} else {
-		b.meta = bitopts.SetBit(b.meta, bit)
-	}
+	b.castleData[color][side] = enabled
 }
