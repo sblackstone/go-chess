@@ -1,6 +1,8 @@
 package boardstate
 
 import (
+	"math/bits"
+
 	"github.com/sblackstone/go-chess/bitopts"
 	//"fmt"
 )
@@ -9,7 +11,6 @@ import (
 type BoardState struct {
 	colors          [2]uint64
 	pieces          [6]uint64
-	kingPos         [2]int8
 	enpassantSquare int8
 	meta            uint64
 	turn            int8
@@ -18,7 +19,7 @@ type BoardState struct {
 }
 
 func (b *BoardState) GetKingPos(color int8) int8 {
-	return b.kingPos[color]
+	return int8(bits.TrailingZeros64(b.colors[color] & b.pieces[KING]))
 }
 
 // Blank returns a blank board with no pieces on it
@@ -28,7 +29,7 @@ func Blank() *BoardState {
 	b.colors = [2]uint64{0, 0}
 	b.pieces = [6]uint64{0, 0, 0, 0, 0, 0}
 	b.enpassantSquare = NO_ENPASSANT
-	b.kingPos = [2]int8{EMPTY, EMPTY}
+	//b.kingPos = [2]int8{EMPTY, EMPTY}
 	return &b
 }
 
@@ -39,8 +40,8 @@ func Initial() *BoardState {
 	b.colors = [2]uint64{65535, 18446462598732840960}
 	b.pieces = [6]uint64{9295429630892703873, 4755801206503243842, 2594073385365405732, 576460752303423496, 1152921504606846992, 71776119061282560}
 	b.fullMoves = 1
-	b.kingPos[WHITE] = 4
-	b.kingPos[BLACK] = 60
+	//b.kingPos[WHITE] = 4
+	//b.kingPos[BLACK] = 60
 	return b
 }
 
@@ -54,7 +55,7 @@ func (b *BoardState) Copy() *BoardState {
 		turn:            b.turn,
 		halfMoves:       b.halfMoves,
 		fullMoves:       b.fullMoves,
-		kingPos:         b.kingPos,
+		//kingPos:         b.kingPos,
 	}
 
 	return &boardCopy
@@ -75,8 +76,8 @@ func initialManual() *BoardState {
 		b.SetSquareRankFile(1, j, WHITE, PAWN)
 	}
 	b.fullMoves = 1
-	b.kingPos[WHITE] = 4
-	b.kingPos[BLACK] = 60
+	// b.kingPos[WHITE] = 4
+	// b.kingPos[BLACK] = 60
 
 	return b
 }
@@ -128,9 +129,6 @@ func (b *BoardState) MovePiece(src int8, dst int8) {
 	// Set the new piece.
 	b.colors[color] = bitopts.SetBit(b.colors[color], dst)
 	b.pieces[piece] = bitopts.SetBit(b.pieces[piece], dst)
-	if piece == KING {
-		b.kingPos[color] = dst
-	}
 }
 
 // Returns an array of positions for a given set of pieces.
@@ -179,10 +177,6 @@ func (b *BoardState) SetSquare(n int8, color int8, piece int8) {
 		b.colors[color] = bitopts.SetBit(b.colors[color], n)
 		b.pieces[piece] = bitopts.SetBit(b.pieces[piece], n)
 	}
-	if piece == KING {
-		b.kingPos[color] = n
-	}
-
 }
 
 // SetSquareRankFile removes any existing piece and sets the square to the new piece/color with (x,y) coordinates.

@@ -106,7 +106,7 @@ func genSingleKingMovesGeneric(b *boardstate.BoardState, kingPos int8, calculate
 // This will be almost identical everywhere.
 func genAllKingAttacks(b *boardstate.BoardState, color int8) uint64 {
 	kingPos := b.GetKingPos(color)
-	if kingPos != boardstate.EMPTY {
+	if kingPos != boardstate.NO_KING {
 		return (pregeneratedKingMovesBitboard[kingPos] ^ b.GetColorBitboard(b.ColorOfSquare(kingPos))) & pregeneratedKingMovesBitboard[kingPos]
 	} else {
 		return 0
@@ -134,6 +134,10 @@ func genAllKingMoves(b *boardstate.BoardState, color int8, calculateChecks bool)
 func genKingSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
 	kingPos := b.GetKingPos(b.GetTurn())
 	var result []*boardstate.BoardState
+
+	if kingPos == boardstate.NO_KING {
+		return result
+	}
 
 	updateFunc := func(dst int8) {
 		result = append(result, b.CopyPlayTurn(kingPos, dst, boardstate.EMPTY))

@@ -80,10 +80,21 @@ func TestFindSetBits(t *testing.T) {
 	}
 }
 
-func TestFindSetBitsZero(t *testing.T) {
+func TestFindSetBitsNone(t *testing.T) {
 	var v uint64
 	result := FindSetBits(v)
 	var expected []int8
+	if !reflect.DeepEqual(result, expected) {
+		t.Errorf("Expected %v to be %v\n", result, expected)
+	}
+}
+
+func TestFindSetBitsExtrema(t *testing.T) {
+	var v uint64
+	v = SetBit(v, 0)
+	v = SetBit(v, 63)
+	result := FindSetBits(v)
+	expected := []int8{0, 63}
 	if !reflect.DeepEqual(result, expected) {
 		t.Errorf("Expected %v to be %v\n", result, expected)
 	}
