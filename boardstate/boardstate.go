@@ -28,6 +28,7 @@ func Blank() *BoardState {
 	b.colors = [2]uint64{0, 0}
 	b.pieces = [6]uint64{0, 0, 0, 0, 0, 0}
 	b.enpassantSquare = NO_ENPASSANT
+	b.kingPos = [2]int8{EMPTY, EMPTY}
 	return &b
 }
 
