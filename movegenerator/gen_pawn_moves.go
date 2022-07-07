@@ -161,22 +161,41 @@ func genSinglePawnMovesBitboard(b *boardstate.BoardState, piecePos int8, calcula
 func genAllPawnMoves(b *boardstate.BoardState, color int8, calculateChecks bool) []*boardstate.Move {
 	var result []*boardstate.Move
 	pawnPositions := b.FindPieces(color, boardstate.PAWN)
-	for i := 0; i < len(pawnPositions); i++ {
-		result = append(result, genSinglePawnMoves(b, pawnPositions[i], calculateChecks)...)
+	for _, pos := range pawnPositions {
+		result = append(result, genSinglePawnMoves(b, pos, calculateChecks)...)
 	}
 	return result
 
 }
 
+// TODO: This should be updated to avoid extra steps, see other piece generators for examples.
 func genAllPawnAttacks(b *boardstate.BoardState, color int8) uint64 {
 	var result uint64
 	pawnPositions := b.FindPieces(color, boardstate.PAWN)
-	for i := 0; i < len(pawnPositions); i++ {
-		result = result | genSinglePawnMovesBitboard(b, pawnPositions[i], true)
+	for _, pos := range pawnPositions {
+		result = result | genSinglePawnMovesBitboard(b, pos, true)
 	}
 	return result
 }
 
 func genPawnSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
-	return b.GenerateSuccessors(genAllPawnMoves(b, b.GetTurn(), false))
+	color := b.GetTurn()
+	var result []*boardstate.BoardState
+	pawnPositions := b.FindPieces(color, boardstate.PAWN)
+
+	for _, pos := range pawnPositions {
+		updateFunc := func(dst int8) {
+			rank := bitopts.RankOfSquare(dst)
+			if rank == 0 || rank == 7 {
+				var i int8
+				for i = boardstate.ROOK; i <= boardstate.QUEEN; i++ {
+					result = append(result, b.CopyPlayTurn(pos, dst, i))
+				}
+			} else {
+				result = append(result, b.CopyPlayTurn(pos, dst, boardstate.EMPTY))
+			}
+		}
+		genSinglePawnMovesGeneric(b, pos, false, updateFunc)
+	}
+	return result
 }
