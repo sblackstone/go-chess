@@ -53,33 +53,8 @@ func FindSetBits(n uint64) []int8 {
 	var result []int8
 	for n > 0 {
 		leading := bits.TrailingZeros64(n)
-		fmt.Printf("%v\n", leading)
 		result = append(result, int8(leading))
 		n = ClearBit(n, int8(leading))
-	}
-
-	return result
-}
-
-func FindTwoPiecePositions(n uint64) []int8 {
-	var result []int8
-	trailing := bits.TrailingZeros64(n)
-
-	if trailing == 64 {
-		return result
-	}
-
-	leading := bits.LeadingZeros64(n)
-
-	if trailing < 64 {
-		result = append(result, int8(trailing))
-	}
-
-	if leading < 64 {
-		leadingPos := 64 - leading - 1
-		if leadingPos != trailing {
-			result = append(result, int8(leadingPos))
-		}
 	}
 
 	return result

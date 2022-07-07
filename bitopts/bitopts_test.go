@@ -94,41 +94,6 @@ func TestPrint(t *testing.T) {
 	Print(val, 52)
 }
 
-func TestFindTwoPiecePositions(t *testing.T) {
-	var val uint64
-
-	val = 0
-	posOfZero := FindTwoPiecePositions(val)
-	if len(posOfZero) != 0 {
-		t.Errorf("Expected %v to be []", posOfZero)
-	}
-
-	val = SetBit(val, 1)
-	//Print(val,64)
-
-	posOfOne := FindTwoPiecePositions(val)
-	if len(posOfOne) != 1 || posOfOne[0] != 1 {
-		t.Errorf("Expected %v to be [1]", posOfOne)
-	}
-
-	val = SetBit(val, 2)
-	//Print(val,64)
-
-	posOfThree := FindTwoPiecePositions(val)
-	if len(posOfThree) != 2 || posOfThree[0] != 1 || posOfThree[1] != 2 {
-		t.Errorf("Expected %v to be [1,2]", posOfThree)
-	}
-
-	val = SetBit(0, 17)
-	val = SetBit(val, 19)
-	//Print(val,64)
-	posOfComplex := FindTwoPiecePositions(val)
-	if len(posOfComplex) != 2 || posOfComplex[0] != 17 || posOfComplex[1] != 19 {
-		t.Errorf("Expected %v to be [1,2]", posOfComplex)
-	}
-
-}
-
 func TestRankFileToSquare(t *testing.T) {
 	cases := [][3]int8{
 		{0, 0, 0},
