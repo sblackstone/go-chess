@@ -100,38 +100,11 @@ func genSingleKnightMovesGeneric(b *boardstate.BoardState, knightPos int8, updat
 }
 
 // This will be almost identical everywhere.
-func genSingleKnightAttack(b *boardstate.BoardState, piecePos int8) uint64 {
-	return (pregeneratedKnightMovesBitboard[piecePos] ^ b.GetColorBitboard(b.ColorOfSquare(piecePos))) & pregeneratedKnightMovesBitboard[piecePos]
-	// var result uint64
-	//
-	// updateFunc := func(dst int8) {
-	// 	result = bitopts.SetBit(result, dst)
-	// }
-	//
-	// genSingleKnightMovesGeneric(b, piecePos, updateFunc)
-	//
-	// return result
-}
-
-// This will be almost identical everywhere.
-func genSingleKnightMoves(b *boardstate.BoardState, piecePos int8) []*boardstate.Move {
-	var result []*boardstate.Move
-
-	updateFunc := func(dst int8) {
-		result = append(result, &boardstate.Move{Src: piecePos, Dst: dst, PromotePiece: boardstate.EMPTY})
-	}
-
-	genSingleKnightMovesGeneric(b, piecePos, updateFunc)
-
-	return result
-}
-
-// This will be almost identical everywhere.
 func genAllKnightAttacks(b *boardstate.BoardState, color int8) uint64 {
 	var result uint64
 	knightPositions := b.FindPieces(color, boardstate.KNIGHT)
-	for i := 0; i < len(knightPositions); i++ {
-		result = result | genSingleKnightAttack(b, knightPositions[i])
+	for _, pos := range knightPositions {
+		result = result | ((pregeneratedKnightMovesBitboard[pos] ^ b.GetColorBitboard(b.ColorOfSquare(pos))) & pregeneratedKnightMovesBitboard[pos])
 	}
 	return result
 }
@@ -139,12 +112,26 @@ func genAllKnightAttacks(b *boardstate.BoardState, color int8) uint64 {
 func genAllKnightMoves(b *boardstate.BoardState, color int8) []*boardstate.Move {
 	var result []*boardstate.Move
 	knightPositions := b.FindPieces(color, boardstate.KNIGHT)
-	for i := 0; i < len(knightPositions); i++ {
-		result = append(result, genSingleKnightMoves(b, knightPositions[i])...)
+
+	for _, pos := range knightPositions {
+		updateFunc := func(dst int8) {
+			result = append(result, &boardstate.Move{Src: pos, Dst: dst, PromotePiece: boardstate.EMPTY})
+		}
+		genSingleKnightMovesGeneric(b, pos, updateFunc)
 	}
 	return result
 }
 
 func genKnightSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
-	return b.GenerateSuccessors(genAllKnightMoves(b, b.GetTurn()))
+	color := b.GetTurn()
+	var result []*boardstate.BoardState
+	knightPositions := b.FindPieces(color, boardstate.KNIGHT)
+
+	for _, pos := range knightPositions {
+		updateFunc := func(dst int8) {
+			result = append(result, b.CopyPlayTurn(pos, dst, boardstate.EMPTY))
+		}
+		genSingleKnightMovesGeneric(b, pos, updateFunc)
+	}
+	return result
 }
