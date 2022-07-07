@@ -101,7 +101,7 @@ func FileOfSquare(n int8) int8 {
 }
 
 func SquareToRankFile(n int8) (int8, int8) {
-	return RankOfSquare(n), FileOfSquare(n)
+	return ranks[n], files[n]
 }
 
 func Print(n uint64, highlight int8) {
