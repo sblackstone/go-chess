@@ -77,9 +77,13 @@ func genSingleBishopMoves(b *boardstate.BoardState, piecePos int8) []*boardstate
 
 func genAllBishopAttacks(b *boardstate.BoardState, color int8) uint64 {
 	var result uint64
+
+	updateFunc := func(dst int8) {
+		result = bitopts.SetBit(result, dst)
+	}
 	bishopPositions := b.FindPieces(color, boardstate.BISHOP)
 	for _, bp := range bishopPositions {
-		result = result | genSingleBishopMovesBitboard(b, bp)
+		genSingleBishopMovesGeneric(b, bp, updateFunc)
 	}
 	return result
 }
@@ -94,5 +98,15 @@ func genAllBishopMoves(b *boardstate.BoardState, color int8) []*boardstate.Move 
 }
 
 func genBishopSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
-	return b.GenerateSuccessors(genAllBishopMoves(b, b.GetTurn()))
+	color := b.GetTurn()
+	var result []*boardstate.BoardState
+	bishopPositions := b.FindPieces(color, boardstate.BISHOP)
+
+	for _, pos := range bishopPositions {
+		updateFunc := func(dst int8) {
+			result = append(result, b.CopyPlayTurn(pos, dst, boardstate.EMPTY))
+		}
+		genSingleBishopMovesGeneric(b, pos, updateFunc)
+	}
+	return result
 }
