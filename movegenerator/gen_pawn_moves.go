@@ -31,7 +31,6 @@ func genSinglePawnMovesGeneric(b *boardstate.BoardState, pawnPos int8, calculate
 	var pushFoardTwoRank, pushForwardOne, pushForwardTwo, captureToLowerFilePos, captureToHigherFilePos, fromEnpassantRank int8
 
 	if b.ColorOfSquare(pawnPos) == boardstate.WHITE {
-		//promotionRank          = int8(7)
 		pushFoardTwoRank = int8(1)
 		pushForwardOne = pawnPos + 8
 		pushForwardTwo = pawnPos + 16
@@ -39,7 +38,6 @@ func genSinglePawnMovesGeneric(b *boardstate.BoardState, pawnPos int8, calculate
 		captureToHigherFilePos = pawnPos + 9
 		fromEnpassantRank = int8(4)
 	} else {
-		//promotionRank          = int8(0)
 		pushFoardTwoRank = int8(6)
 		pushForwardOne = pawnPos - 8
 		pushForwardTwo = pawnPos - 16
