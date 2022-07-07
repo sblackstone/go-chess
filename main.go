@@ -9,17 +9,29 @@ import (
 )
 
 func main() {
+	logFile, _ := os.Create("/tmp/go-chess-log")
 	buf := bufio.NewScanner(os.Stdin)
-	for {
-		buf.Scan()
-		fmt.Println(buf.Text())
+
+	sendReply := func(line string) {
+		logFile.WriteString(line + "\n")
+		fmt.Println(line)
+		logFile.Sync()
 	}
 
-	// b := boardstate.Initial();
-	// b.Print(65)
-	// fmt.Println()
-	// //bitopts.Print(18446462598732840960, 0);
-	// info := unsafe.Sizeof(b)
-	// fmt.Printf("%v", info)
+	for {
+		buf.Scan()
+		command := buf.Text()
+		logFile.WriteString(command + "\n")
+		logFile.Sync()
 
+		if command == "uci" {
+			sendReply("id name StephenChess 1.0")
+			sendReply("id author Stephen Blackstone")
+			sendReply("uciok")
+		}
+
+		if command == "isready" {
+			sendReply("readyok")
+		}
+	}
 }
