@@ -22,6 +22,9 @@ func genPerf(state *boardstate.BoardState, depth int) int {
 
 func BenchmarkPerf(b *testing.B) {
 	board, _ := fen.FromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+	// v := genPerf(board, 5)
+	// fmt.Printf("genPerf(board,5) = %v\n", v)
+	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
 		genPerf(board, 5)
 	}
@@ -34,7 +37,7 @@ func TestPerftPositions(t *testing.T) {
 		depth    int
 		expected int
 	}{
-		{"Initial Position", "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 4, 197281},
+		{"Initial Position", "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 5, 4865609},
 		{"Position 2", "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 0", 3, 97862},
 		{"Position 3", "8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - - 0 0", 5, 674624},
 		{"Position 4A", "r3k2r/Pppp1ppp/1b3nbN/nP6/BBP1P3/q4N2/Pp1P2PP/R2Q1RK1 w kq - 0 1", 3, 9467},
