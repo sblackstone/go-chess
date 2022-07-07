@@ -88,5 +88,15 @@ func genAllRookMoves(b *boardstate.BoardState, color int8) []*boardstate.Move {
 }
 
 func genRookSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
-	return b.GenerateSuccessors(genAllRookMoves(b, b.GetTurn()))
+	color := b.GetTurn()
+	var result []*boardstate.BoardState
+	rookPositions := b.FindPieces(color, boardstate.ROOK)
+
+	for _, pos := range rookPositions {
+		updateFunc := func(dst int8) {
+			result = append(result, b.CopyPlayTurn(pos, dst, boardstate.EMPTY))
+		}
+		genSingleRookMovesGeneric(b, pos, updateFunc)
+	}
+	return result
 }

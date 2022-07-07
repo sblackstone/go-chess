@@ -30,6 +30,20 @@ func genAllQueenAttacks(b *boardstate.BoardState, color int8) uint64 {
 	return result
 }
 
+// func genQueenSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
+// 	return b.GenerateSuccessors(genAllQueenMoves(b, b.GetTurn()))
+// }
 func genQueenSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
-	return b.GenerateSuccessors(genAllQueenMoves(b, b.GetTurn()))
+	color := b.GetTurn()
+	var result []*boardstate.BoardState
+	rookPositions := b.FindPieces(color, boardstate.QUEEN)
+
+	for _, pos := range rookPositions {
+		updateFunc := func(dst int8) {
+			result = append(result, b.CopyPlayTurn(pos, dst, boardstate.EMPTY))
+		}
+		genSingleBishopMovesGeneric(b, pos, updateFunc)
+		genSingleRookMovesGeneric(b, pos, updateFunc)
+	}
+	return result
 }
