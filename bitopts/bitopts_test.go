@@ -1,6 +1,7 @@
 package bitopts
 
 import (
+	"reflect"
 	"testing"
 	//  "github.com/sblackstone/go-chess/boardstate"
 )
@@ -65,6 +66,27 @@ func TestAlgebraicToSquare(t *testing.T) {
 		t.Errorf("Expected empty string to give error, not %v %v", val7, err7)
 	}
 
+}
+
+func TestFindSetBits(t *testing.T) {
+	var v uint64
+	v = SetBit(v, 2)
+	v = SetBit(v, 4)
+	v = SetBit(v, 6)
+	result := FindSetBits(v)
+	expected := []int8{2, 4, 6}
+	if !reflect.DeepEqual(result, expected) {
+		t.Errorf("Expected %v to be %v\n", result, expected)
+	}
+}
+
+func TestFindSetBitsZero(t *testing.T) {
+	var v uint64
+	result := FindSetBits(v)
+	var expected []int8
+	if !reflect.DeepEqual(result, expected) {
+		t.Errorf("Expected %v to be %v\n", result, expected)
+	}
 }
 
 func TestPrint(t *testing.T) {

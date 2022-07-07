@@ -49,6 +49,18 @@ func SetBit(n uint64, pos int8) uint64 {
 	return n
 }
 
+func FindSetBits(n uint64) []int8 {
+	var result []int8
+	for n > 0 {
+		leading := bits.TrailingZeros64(n)
+		fmt.Printf("%v\n", leading)
+		result = append(result, int8(leading))
+		n = ClearBit(n, int8(leading))
+	}
+
+	return result
+}
+
 func FindTwoPiecePositions(n uint64) []int8 {
 	var result []int8
 	trailing := bits.TrailingZeros64(n)
