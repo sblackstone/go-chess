@@ -55,7 +55,7 @@ func genSinglePawnMovesGeneric(b *boardstate.BoardState, pawnPos int8, calculate
 		}
 
 		// Cpature to Lower file
-		if captureToLowerFilePos >= 0 && captureToLowerFilePos <= 64 && bitopts.FileOfSquare(captureToLowerFilePos) < pawnPosFile {
+		if captureToLowerFilePos >= 0 && captureToLowerFilePos <= 63 && bitopts.FileOfSquare(captureToLowerFilePos) < pawnPosFile {
 			updateFunc(captureToLowerFilePos)
 		}
 

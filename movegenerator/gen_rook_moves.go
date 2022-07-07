@@ -25,7 +25,7 @@ func genSingleRookMovesGeneric(b *boardstate.BoardState, rookPos int8, updateFun
 		}
 	}
 
-	for r := rookPos + 1; bitopts.FileOfSquare(r) > 0; r += 1 {
+	for r := rookPos + 1; r <= 63 && bitopts.FileOfSquare(r) > 0; r += 1 {
 		if b.ColorOfSquare(r) != b.ColorOfSquare(rookPos) {
 			updateFunc(r)
 		}

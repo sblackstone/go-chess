@@ -8,6 +8,20 @@ import (
 	"strings"
 )
 
+var clearMasks [64]uint64
+var setMasks [64]uint64
+var ranks [64]int8
+var files [64]int8
+
+func init() {
+	for pos := 0; pos < 64; pos++ {
+		setMasks[pos] = (1 << pos)
+		clearMasks[pos] = ^(1 << pos)
+		ranks[pos] = int8(pos / 8)
+		files[pos] = int8(pos % 8)
+	}
+}
+
 func SquareToAlgebraic(pos int8) string {
 	rank, file := SquareToRankFile(pos)
 	ranks := []string{"1", "2", "3", "4", "5", "6", "7", "8"}
@@ -45,7 +59,7 @@ func AlgebraicToSquare(algrbraicSquare string) (int8, error) {
 }
 
 func SetBit(n uint64, pos int8) uint64 {
-	n |= (1 << pos)
+	n |= setMasks[pos]
 	return n
 }
 
@@ -61,17 +75,16 @@ func FindSetBits(n uint64) []int8 {
 }
 
 func ClearBit(n uint64, pos int8) uint64 {
-	var mask uint64 = ^(1 << pos)
-	n &= mask
+	n &= clearMasks[pos]
 	return n
 }
 
 func TestBit(n uint64, pos int8) bool {
-	return n&(1<<pos) > 0
+	return n&(setMasks[pos]) > 0
 }
 
 func FlipBit(n uint64, pos int8) uint64 {
-	n ^= (1 << pos)
+	n ^= (setMasks[pos])
 	return n
 }
 
@@ -80,11 +93,11 @@ func RankFileToSquare(rank int8, file int8) int8 {
 }
 
 func RankOfSquare(n int8) int8 {
-	return n / 8
+	return ranks[n]
 }
 
 func FileOfSquare(n int8) int8 {
-	return n % 8
+	return files[n]
 }
 
 func SquareToRankFile(n int8) (int8, int8) {

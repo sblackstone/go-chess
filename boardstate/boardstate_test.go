@@ -24,16 +24,6 @@ func TestKingPosInitial(t *testing.T) {
 	if b.GetKingPos(BLACK) != 52 {
 		t.Errorf("Expected black king at 52")
 	}
-
-	b.SetSquare(27, WHITE, KING)
-	b.SetSquare(35, BLACK, KING)
-	if b.GetKingPos(WHITE) != 27 {
-		t.Errorf("Expected white king at 27")
-	}
-	if b.GetKingPos(BLACK) != 35 {
-		t.Errorf("Expected black king at 35")
-	}
-
 }
 
 func TestGetColorBitboard(t *testing.T) {
