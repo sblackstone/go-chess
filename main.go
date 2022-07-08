@@ -1,17 +1,15 @@
 package main
 
 import (
-	//  "github.com/sblackstone/go-chess/boardstate"
-	//"github.com/sblackstone/go-chess/bitopts"
 	"bufio"
 	"fmt"
 	"os"
 	"strings"
 
-	"github.com/sblackstone/go-chess/bitopts"
 	"github.com/sblackstone/go-chess/boardstate"
 	"github.com/sblackstone/go-chess/fen"
 	"github.com/sblackstone/go-chess/treesearch"
+	"github.com/sblackstone/go-chess/uci"
 )
 
 func main() {
@@ -64,10 +62,7 @@ func main() {
 			if hasMoves {
 				moveList := strings.Split(strings.ToLower(moves), " ")
 				for _, moveStr := range moveList {
-					src, _ := bitopts.AlgebraicToSquare(moveStr[0:2])
-					dst, _ := bitopts.AlgebraicToSquare(moveStr[2:4])
-					logFile.WriteString(fmt.Sprintf("moveStr: %v src=%v dst=%v\n", moveStr, src, dst))
-					board.PlayTurn(src, dst, boardstate.EMPTY) // TODO: Promotion
+					board.PlayTurnFromMove(uci.MoveFromUCI(moveStr)) // TODO: Promotion
 				}
 			}
 		}

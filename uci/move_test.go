@@ -1,13 +1,17 @@
-package boardstate
+package uci
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/sblackstone/go-chess/boardstate"
+)
 
 func TestMoveFromUCI(t *testing.T) {
 	m, err := MoveFromUCI("a2a4")
 	if err != nil {
 		t.Error(err)
 	}
-	if m.Src != 8 || m.Dst != 24 || m.PromotePiece != EMPTY {
+	if m.Src != 8 || m.Dst != 24 || m.PromotePiece != boardstate.EMPTY {
 		t.Errorf("Bad Move: %v", m)
 	}
 }
@@ -45,10 +49,10 @@ func TestMoveFromUCIPromotion(t *testing.T) {
 		str           string
 		expectedPromo int8
 	}{
-		{"a7a8q", QUEEN},
-		{"a7a8n", KNIGHT},
-		{"a7a8r", ROOK},
-		{"a7a8b", BISHOP},
+		{"a7a8q", boardstate.QUEEN},
+		{"a7a8n", boardstate.KNIGHT},
+		{"a7a8r", boardstate.ROOK},
+		{"a7a8b", boardstate.BISHOP},
 	}
 
 	for _, pt := range promoTests {
