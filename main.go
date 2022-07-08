@@ -66,7 +66,7 @@ func main() {
 					if err != nil {
 						panic(fmt.Sprintf("Unknown moveStr: %s", moveStr))
 					}
-					board.PlayTurnFromMove(move) // TODO: Promotion
+					board.PlayTurnFromMove(move)
 				}
 			}
 		}
