@@ -62,7 +62,11 @@ func main() {
 			if hasMoves {
 				moveList := strings.Split(strings.ToLower(moves), " ")
 				for _, moveStr := range moveList {
-					board.PlayTurnFromMove(uci.MoveFromUCI(moveStr)) // TODO: Promotion
+					move, err := uci.MoveFromUCI(moveStr)
+					if err != nil {
+						panic(fmt.Sprintf("Unknown moveStr: %s", moveStr))
+					}
+					board.PlayTurnFromMove(move) // TODO: Promotion
 				}
 			}
 		}
