@@ -2,10 +2,8 @@ package movegenerator
 
 import (
 	"testing"
-	//"fmt"
-	//"reflect"
+
 	"github.com/sblackstone/go-chess/boardstate"
-	//"github.com/sblackstone/go-chess/bitopts"
 )
 
 func TestGenPawnMovesUnderstandsTurn(t *testing.T) {

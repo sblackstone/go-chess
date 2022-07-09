@@ -4,7 +4,6 @@ import (
 	"math/bits"
 
 	"github.com/sblackstone/go-chess/bitopts"
-	//"fmt"
 )
 
 // BoardState contains the state of the Board

@@ -3,14 +3,13 @@ package movegenerator
 import (
 	"testing"
 
-	"github.com/sblackstone/go-chess/fen"
-
-	//"fmt"
 	"encoding/json"
 	"errors"
 	"io/ioutil"
 	"reflect"
 	"sort"
+
+	"github.com/sblackstone/go-chess/fen"
 )
 
 type StartingPosition struct {

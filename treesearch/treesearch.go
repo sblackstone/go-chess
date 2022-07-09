@@ -1,11 +1,11 @@
 package treesearch
 
 import (
+	"math/rand"
+
 	"github.com/sblackstone/go-chess/boardstate"
 	"github.com/sblackstone/go-chess/evaluator"
 	"github.com/sblackstone/go-chess/movegenerator"
-	"math/rand"
-	//"math"
 )
 
 const INFINITY = float64(9999999999999)

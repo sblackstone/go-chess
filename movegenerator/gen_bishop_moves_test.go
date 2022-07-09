@@ -1,11 +1,9 @@
 package movegenerator
 
 import (
-	"github.com/sblackstone/go-chess/boardstate"
 	"testing"
-	//	"sort"
-	//  "fmt"
-	//	"github.com/sblackstone/go-chess/bitopts"
+
+	"github.com/sblackstone/go-chess/boardstate"
 )
 
 func TestGenBishopMovesMiddleOfBoard(t *testing.T) {

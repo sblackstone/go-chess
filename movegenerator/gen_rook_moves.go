@@ -3,7 +3,6 @@ package movegenerator
 import (
 	"github.com/sblackstone/go-chess/bitopts"
 	"github.com/sblackstone/go-chess/boardstate"
-	//	"fmt"
 )
 
 func genSingleRookMovesGeneric(b *boardstate.BoardState, rookPos int8, updateFunc func(int8)) {

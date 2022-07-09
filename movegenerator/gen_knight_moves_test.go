@@ -1,11 +1,10 @@
 package movegenerator
 
 import (
-	"github.com/sblackstone/go-chess/boardstate"
 	"reflect"
 	"testing"
-	//	"sort"
-	//	"github.com/sblackstone/go-chess/bitopts"
+
+	"github.com/sblackstone/go-chess/boardstate"
 )
 
 func TestGenKnightMovesKnowsAboutTurns(t *testing.T) {

@@ -3,7 +3,6 @@ package movegenerator
 import (
 	"github.com/sblackstone/go-chess/bitopts"
 	"github.com/sblackstone/go-chess/boardstate"
-	//	"fmt"
 )
 
 func genSingleBishopMovesGeneric(b *boardstate.BoardState, bishopPos int8, updateFunc func(int8)) []*boardstate.Move {

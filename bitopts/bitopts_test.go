@@ -3,7 +3,6 @@ package bitopts
 import (
 	"reflect"
 	"testing"
-	//  "github.com/sblackstone/go-chess/boardstate"
 )
 
 func TestSquareToAlgebraic(t *testing.T) {

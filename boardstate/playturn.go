@@ -1,10 +1,5 @@
 package boardstate
 
-import (
-//"github.com/sblackstone/go-chess/bitopts"
-//"fmt"
-)
-
 func (b *BoardState) updateCastlingRights(src int8, dst int8) {
 	if src == 4 {
 		b.SetCastleRights(WHITE, CASTLE_LONG, false)

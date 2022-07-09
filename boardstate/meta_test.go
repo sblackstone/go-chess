@@ -2,7 +2,6 @@ package boardstate
 
 import (
 	"testing"
-	//  "fmt"
 )
 
 func TestEnemyColor(t *testing.T) {

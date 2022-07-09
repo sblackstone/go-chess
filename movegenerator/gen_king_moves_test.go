@@ -3,7 +3,7 @@ package movegenerator
 import (
 	"reflect"
 	"testing"
-	//"fmt"
+
 	"github.com/sblackstone/go-chess/boardstate"
 )
 

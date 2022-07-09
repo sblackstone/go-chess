@@ -3,7 +3,6 @@ package movegenerator
 import (
 	"github.com/sblackstone/go-chess/bitopts"
 	"github.com/sblackstone/go-chess/boardstate"
-	//"fmt"
 )
 
 var pregeneratedKingMoves [64][]int8

@@ -1,11 +1,11 @@
 package movegenerator
 
 import (
+	"reflect"
 	"testing"
-	//"fmt"
+
 	"github.com/sblackstone/go-chess/bitopts"
 	"github.com/sblackstone/go-chess/boardstate"
-	"reflect"
 )
 
 func TestGenerateChecksOnlyWhite(t *testing.T) {
