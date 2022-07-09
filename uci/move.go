@@ -42,3 +42,24 @@ func MoveFromUCI(uciStr string) (*boardstate.Move, error) {
 	return &boardstate.Move{Src: src, Dst: dst, PromotePiece: promotePiece}, nil
 
 }
+
+func MoveToUCI(move *boardstate.Move) string {
+	src := bitopts.SquareToAlgebraic(move.Src)
+	dst := bitopts.SquareToAlgebraic(move.Dst)
+
+	promotionPiece := ""
+
+	switch move.PromotePiece {
+	case boardstate.QUEEN:
+		promotionPiece = "q"
+	case boardstate.KNIGHT:
+		promotionPiece = "n"
+	case boardstate.BISHOP:
+		promotionPiece = "b"
+	case boardstate.ROOK:
+		promotionPiece = "r"
+	}
+
+	return src + dst + promotionPiece
+
+}

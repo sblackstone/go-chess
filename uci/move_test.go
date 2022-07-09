@@ -66,6 +66,27 @@ func TestMoveFromUCIPromotion(t *testing.T) {
 	}
 }
 
+func TestMoveToUCI(t *testing.T) {
+	var moveTests = []struct {
+		move     *boardstate.Move
+		expected string
+	}{
+		{&boardstate.Move{Src: 8, Dst: 16, PromotePiece: boardstate.EMPTY}, "a2a3"},
+		{&boardstate.Move{Src: 48, Dst: 56, PromotePiece: boardstate.QUEEN}, "a7a8q"},
+		{&boardstate.Move{Src: 48, Dst: 56, PromotePiece: boardstate.KNIGHT}, "a7a8n"},
+		{&boardstate.Move{Src: 48, Dst: 56, PromotePiece: boardstate.BISHOP}, "a7a8b"},
+		{&boardstate.Move{Src: 48, Dst: 56, PromotePiece: boardstate.ROOK}, "a7a8r"},
+	}
+
+	for _, mt := range moveTests {
+		result := MoveToUCI(mt.move)
+		if result != mt.expected {
+			t.Errorf("Expected %v to be %v", result, mt.expected)
+		}
+
+	}
+}
+
 /*
 	var perfTests = []struct {
 		name     string
