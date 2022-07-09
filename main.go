@@ -7,7 +7,6 @@ import (
 	"strings"
 
 	"github.com/sblackstone/go-chess/boardstate"
-	"github.com/sblackstone/go-chess/fen"
 	"github.com/sblackstone/go-chess/treesearch"
 	"github.com/sblackstone/go-chess/uci"
 )
@@ -17,7 +16,6 @@ func main() {
 	buf := bufio.NewScanner(os.Stdin)
 
 	var board *boardstate.BoardState
-	var err error
 
 	sendReply := func(line string) {
 		logFile.WriteString(line + "\n")
@@ -47,28 +45,7 @@ func main() {
 		}
 
 		if strings.HasPrefix(command, "position") {
-			command = command[9:]
-			fenStr, moves, hasMoves := strings.Cut(command, "moves")
-			fenStr = strings.Trim(fenStr, " ")
-			moves = strings.Trim(moves, " ")
-			if fenStr == "startpos" {
-				board = boardstate.Initial()
-			} else {
-				board, err = fen.FromFEN(fenStr)
-				if err != nil {
-					logFile.WriteString(fmt.Sprintf("%v\n", err))
-				}
-			}
-			if hasMoves {
-				moveList := strings.Split(strings.ToLower(moves), " ")
-				for _, moveStr := range moveList {
-					move, err := uci.MoveFromUCI(moveStr)
-					if err != nil {
-						panic(fmt.Sprintf("Unknown moveStr: %s", moveStr))
-					}
-					board.PlayTurnFromMove(move)
-				}
-			}
+			board = uci.BoardFromUCIPosition(command)
 		}
 	}
 }
