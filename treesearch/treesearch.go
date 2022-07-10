@@ -39,7 +39,7 @@ func BestSuccessor(b *boardstate.BoardState, depth int8) *boardstate.BoardState 
 	var bestSuccessors []*boardstate.BoardState
 	bestValue = -INFINITY
 	for _, succ := range movegenerator.GenLegalSuccessors(b) {
-		value := -alphaBeta(succ, depth, -INFINITY, INFINITY)
+		value := -alphaBeta(succ, depth-1, -INFINITY, INFINITY)
 		if value == bestValue {
 			bestSuccessors = append(bestSuccessors, succ)
 		}
@@ -59,7 +59,7 @@ func BestMove(b *boardstate.BoardState, depth int8) *boardstate.Move {
 	bestValue = -INFINITY
 	for _, move := range movegenerator.GenMoves(b) {
 		succ := b.CopyPlayTurnFromMove(move)
-		value := -alphaBeta(succ, depth, -INFINITY, INFINITY)
+		value := -alphaBeta(succ, depth-1, -INFINITY, INFINITY)
 		if value == bestValue {
 			bestMoves = append(bestMoves, move)
 		}
