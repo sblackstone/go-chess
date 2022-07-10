@@ -52,3 +52,23 @@ func BestSuccessor(b *boardstate.BoardState, depth int8) *boardstate.BoardState 
 	randomIndex := rand.Intn(len(bestSuccessors))
 	return bestSuccessors[randomIndex]
 }
+
+func BestMove(b *boardstate.BoardState, depth int8) *boardstate.Move {
+	var bestValue float64
+	var bestMoves []*boardstate.Move
+	bestValue = -INFINITY
+	for _, move := range movegenerator.GenMoves(b) {
+		succ := b.CopyPlayTurnFromMove(move)
+		value := -alphaBeta(succ, depth, -INFINITY, INFINITY)
+		if value == bestValue {
+			bestMoves = append(bestMoves, move)
+		}
+		if value > bestValue {
+			bestValue = value
+			bestMoves = make([]*boardstate.Move, 1)
+			bestMoves[0] = move
+		}
+	}
+	randomIndex := rand.Intn(len(bestMoves))
+	return bestMoves[randomIndex]
+}

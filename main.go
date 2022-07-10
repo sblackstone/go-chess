@@ -40,8 +40,8 @@ func main() {
 		}
 
 		if strings.HasPrefix(command, "go ") {
-			move := treesearch.BestSuccessor(board, 3)
-			logFile.WriteString(fmt.Sprintf("Best move: %v\n", move))
+			move := treesearch.BestMove(board, 3)
+			sendReply(fmt.Sprintf("bestmove %s", uci.MoveToUCI(move)))
 		}
 
 		if strings.HasPrefix(command, "position") {
