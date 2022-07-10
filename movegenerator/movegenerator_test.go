@@ -1,10 +1,41 @@
 package movegenerator
 
 import (
-	"github.com/sblackstone/go-chess/boardstate"
 	"reflect"
 	"testing"
+
+	"github.com/sblackstone/go-chess/boardstate"
 )
+
+func TestIsInCheckWhite(t *testing.T) {
+	b := boardstate.Blank()
+	b.SetSquare(0, boardstate.WHITE, boardstate.KING)
+	b.SetSquare(16, boardstate.BLACK, boardstate.QUEEN)
+
+	if !IsInCheck(b, boardstate.WHITE) {
+		t.Errorf("Expected WHITE to be in check")
+	}
+
+	if IsInCheck(b, boardstate.BLACK) {
+		t.Errorf("Expected BLACK to NOT be in check")
+	}
+
+}
+
+func TestIsInCheckBlack(t *testing.T) {
+	b := boardstate.Blank()
+	b.SetSquare(0, boardstate.BLACK, boardstate.KING)
+	b.SetSquare(16, boardstate.WHITE, boardstate.QUEEN)
+
+	if !IsInCheck(b, boardstate.BLACK) {
+		t.Errorf("Expected BLACK to be in check")
+	}
+
+	if IsInCheck(b, boardstate.WHITE) {
+		t.Errorf("Expected WHITE to NOT be in check")
+	}
+
+}
 
 func TestCheckEndOfGameFoolsMate(t *testing.T) {
 	b := boardstate.Initial()

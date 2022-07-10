@@ -68,26 +68,27 @@ func GenSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
 // 	return result
 // }
 
+func IsInCheck(b *boardstate.BoardState, color int8) bool {
+	kingPos := b.GetKingPos(color)
+	if kingPos == boardstate.NO_KING {
+		return false
+	}
+	// Find all the checked squares for the opposing side
+	attacks := GenAllCheckedSquares(b, color^1)
+	return bitopts.TestBit(attacks, kingPos)
+}
+
 // We can do much better here, naieve O(n^2) first attempt.
 func GenLegalSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
-
-	currentTurnColor := b.GetTurn()
-	oppTurnColor := b.EnemyColor()
-
 	// Find all the successors for B...
 	successors := GenSuccessors(b)
-
+	color := b.GetTurn()
 	var result []*boardstate.BoardState
 
 	// For each candidate successor
-	for i := range successors {
-		// Find the position of the current turn's king after its move.
-		//kingPos := successors[i].FindPieces(currentTurnColor, boardstate.KING)
-		kingPos := successors[i].GetKingPos(currentTurnColor)
-		// Find all the checked squares for the opposing side
-		attacks := GenAllCheckedSquares(successors[i], oppTurnColor)
-		if !bitopts.TestBit(attacks, kingPos) {
-			result = append(result, successors[i])
+	for _, succ := range successors {
+		if !IsInCheck(succ, color) {
+			result = append(result, succ)
 		}
 	}
 	return result
