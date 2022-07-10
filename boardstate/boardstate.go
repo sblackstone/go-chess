@@ -15,7 +15,7 @@ type BoardState struct {
 	turn            int8
 	halfMoves       int
 	fullMoves       int
-	moveStack       []*MoveStackData
+	moveStack       *MoveStackData
 }
 
 type MoveStackData struct {
@@ -26,6 +26,7 @@ type MoveStackData struct {
 	enpassantSquare int8
 	halfMoves       int
 	castleData      [2][2]bool
+	prev            *MoveStackData
 }
 
 func (b *BoardState) GetKingPos(color int8) int8 {
