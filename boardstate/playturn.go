@@ -77,6 +77,7 @@ func (b *BoardState) UnplayTurn() {
 	b.MovePiece(msd.dst, msd.src)
 
 	// Deal with un-promotion.
+	// TODO: This is an expensive way to do this.
 	if msd.srcPiece == PAWN {
 		b.SetSquare(msd.src, b.EnemyColor(), PAWN)
 	}
