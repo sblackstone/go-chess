@@ -12,23 +12,38 @@ func getKingMoves() [64][]int8 {
 	return pregeneratedKingMoves
 }
 
-var castlingTestEmptyMasks [2][2]uint64
-var castlingTestAttackMasks [2][2]uint64
+type CastlingConfig struct {
+	emptyMask  uint64
+	attackMask uint64
+	kingDst    int8
+}
+
+var castlingConfigs [2][2]*CastlingConfig
 
 func initCastlingMasks() {
+	castlingConfigs[boardstate.WHITE][boardstate.CASTLE_SHORT] = &CastlingConfig{
+		emptyMask:  bitopts.Mask(5) | bitopts.Mask(6),
+		attackMask: bitopts.Mask(5) | bitopts.Mask(6),
+		kingDst:    6,
+	}
 
-	castlingTestEmptyMasks[boardstate.WHITE][boardstate.CASTLE_SHORT] = bitopts.Mask(5) | bitopts.Mask(6)
-	castlingTestAttackMasks[boardstate.WHITE][boardstate.CASTLE_SHORT] = bitopts.Mask(5) | bitopts.Mask(6)
+	castlingConfigs[boardstate.WHITE][boardstate.CASTLE_LONG] = &CastlingConfig{
+		emptyMask:  bitopts.Mask(1) | bitopts.Mask(2) | bitopts.Mask(3),
+		attackMask: bitopts.Mask(2) | bitopts.Mask(3),
+		kingDst:    2,
+	}
 
-	castlingTestEmptyMasks[boardstate.WHITE][boardstate.CASTLE_LONG] = bitopts.Mask(1) | bitopts.Mask(2) | bitopts.Mask(3)
-	castlingTestAttackMasks[boardstate.WHITE][boardstate.CASTLE_LONG] = bitopts.Mask(2) | bitopts.Mask(3)
+	castlingConfigs[boardstate.BLACK][boardstate.CASTLE_SHORT] = &CastlingConfig{
+		emptyMask:  bitopts.Mask(61) | bitopts.Mask(62),
+		attackMask: bitopts.Mask(61) | bitopts.Mask(62),
+		kingDst:    62,
+	}
 
-	castlingTestEmptyMasks[boardstate.BLACK][boardstate.CASTLE_SHORT] = bitopts.Mask(61) | bitopts.Mask(62)
-	castlingTestAttackMasks[boardstate.BLACK][boardstate.CASTLE_SHORT] = bitopts.Mask(61) | bitopts.Mask(62)
-
-	castlingTestEmptyMasks[boardstate.BLACK][boardstate.CASTLE_LONG] = bitopts.Mask(57) | bitopts.Mask(58) | bitopts.Mask(59)
-	castlingTestAttackMasks[boardstate.BLACK][boardstate.CASTLE_LONG] = bitopts.Mask(58) | bitopts.Mask(59)
-
+	castlingConfigs[boardstate.BLACK][boardstate.CASTLE_LONG] = &CastlingConfig{
+		emptyMask:  bitopts.Mask(57) | bitopts.Mask(58) | bitopts.Mask(59),
+		attackMask: bitopts.Mask(58) | bitopts.Mask(59),
+		kingDst:    58,
+	}
 }
 
 func init() {
@@ -79,10 +94,6 @@ func initPregeneratedKingMoves() {
 	}
 }
 
-func contains(arr uint64, value int8) bool {
-	return bitopts.TestBit(arr, value)
-}
-
 func genSingleKingMovesGeneric(b *boardstate.BoardState, kingPos int8, calculateChecks bool, updateFunc func(int8)) []*boardstate.Move {
 	var result []*boardstate.Move
 
@@ -99,37 +110,20 @@ func genSingleKingMovesGeneric(b *boardstate.BoardState, kingPos int8, calculate
 
 		checkedSquares := GenAllCheckedSquares(b, b.EnemyColor())
 		occupied := b.GetOccupiedBitboard()
+
 		// And the king isn't in check....
-		if !contains(checkedSquares, kingPos) {
+		if !bitopts.TestBit(checkedSquares, kingPos) {
 
-			if kingColor == boardstate.WHITE {
-				if b.HasCastleRights(kingColor, boardstate.CASTLE_SHORT) &&
-					(occupied&castlingTestEmptyMasks[boardstate.WHITE][boardstate.CASTLE_SHORT] == 0) &&
-					(checkedSquares&castlingTestAttackMasks[boardstate.WHITE][boardstate.CASTLE_SHORT] == 0) {
-					updateFunc(6)
-				}
-
-				if b.HasCastleRights(kingColor, boardstate.CASTLE_LONG) &&
-					(occupied&castlingTestEmptyMasks[boardstate.WHITE][boardstate.CASTLE_LONG] == 0) &&
-					(checkedSquares&castlingTestAttackMasks[boardstate.WHITE][boardstate.CASTLE_LONG] == 0) {
-					updateFunc(2)
-				}
+			if b.HasCastleRights(kingColor, boardstate.CASTLE_SHORT) &&
+				(occupied&castlingConfigs[kingColor][boardstate.CASTLE_SHORT].emptyMask == 0) &&
+				(checkedSquares&castlingConfigs[kingColor][boardstate.CASTLE_SHORT].attackMask == 0) {
+				updateFunc(castlingConfigs[kingColor][boardstate.CASTLE_SHORT].kingDst)
 			}
 
-			if kingColor == boardstate.BLACK {
-
-				if b.HasCastleRights(kingColor, boardstate.CASTLE_SHORT) &&
-					(occupied&castlingTestEmptyMasks[boardstate.BLACK][boardstate.CASTLE_SHORT] == 0) &&
-					(checkedSquares&castlingTestAttackMasks[boardstate.BLACK][boardstate.CASTLE_SHORT] == 0) {
-					updateFunc(62)
-				}
-
-				if b.HasCastleRights(kingColor, boardstate.CASTLE_LONG) &&
-					(occupied&castlingTestEmptyMasks[boardstate.BLACK][boardstate.CASTLE_LONG] == 0) &&
-					(checkedSquares&castlingTestAttackMasks[boardstate.BLACK][boardstate.CASTLE_LONG] == 0) {
-					updateFunc(58)
-				}
-
+			if b.HasCastleRights(kingColor, boardstate.CASTLE_LONG) &&
+				(occupied&castlingConfigs[kingColor][boardstate.CASTLE_LONG].emptyMask == 0) &&
+				(checkedSquares&castlingConfigs[kingColor][boardstate.CASTLE_LONG].attackMask == 0) {
+				updateFunc(castlingConfigs[kingColor][boardstate.CASTLE_LONG].kingDst)
 			}
 		}
 	}
