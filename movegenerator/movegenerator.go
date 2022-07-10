@@ -7,6 +7,7 @@ import (
 	"github.com/sblackstone/go-chess/boardstate"
 )
 
+// Used in testing only.
 func genSuccessorsForPiece(b *boardstate.BoardState, pieceType int8) []*boardstate.BoardState {
 	switch pieceType {
 	case boardstate.PAWN:
@@ -26,6 +27,7 @@ func genSuccessorsForPiece(b *boardstate.BoardState, pieceType int8) []*boardsta
 	}
 }
 
+// Used in testing only.
 func genAttacksForPiece(b *boardstate.BoardState, color int8, pieceType int8) uint64 {
 	switch pieceType {
 	case boardstate.PAWN:
@@ -56,17 +58,17 @@ func GenSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
 	return result
 }
 
-// // For testing at the moment, not tested.
-// func genAllMoves(b *boardstate.BoardState) []*boardstate.Move {
-// 	var result []*boardstate.Move
-// 	result = append(result, genAllPawnMoves(b, b.GetTurn(), false)...)
-// 	result = append(result, genAllKingMoves(b, b.GetTurn(), false)...)
-// 	result = append(result, genAllQueenMoves(b, b.GetTurn())...)
-// 	result = append(result, genAllBishopMoves(b, b.GetTurn())...)
-// 	result = append(result, genAllKnightMoves(b, b.GetTurn())...)
-// 	result = append(result, genAllRookMoves(b, b.GetTurn())...)
-// 	return result
-// }
+// For testing at the moment, not tested.
+func GenMoves(b *boardstate.BoardState) []*boardstate.Move {
+	var result []*boardstate.Move
+	result = append(result, genAllPawnMoves(b, b.GetTurn(), false)...)
+	result = append(result, genAllKingMoves(b, b.GetTurn(), false)...)
+	result = append(result, genAllQueenMoves(b, b.GetTurn())...)
+	result = append(result, genAllBishopMoves(b, b.GetTurn())...)
+	result = append(result, genAllKnightMoves(b, b.GetTurn())...)
+	result = append(result, genAllRookMoves(b, b.GetTurn())...)
+	return result
+}
 
 func IsInCheck(b *boardstate.BoardState, color int8) bool {
 	kingPos := b.GetKingPos(color)

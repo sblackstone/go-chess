@@ -117,3 +117,13 @@ func TestGenLegalSuccessorsOpposition(t *testing.T) {
 	}
 
 }
+
+// GenMoves is just using all of the underlying infrastructure thats already well tested
+// So we just check a simple case to ensure basic functionality
+func TestGenMoves(t *testing.T) {
+	b := boardstate.Initial()
+	moves := GenMoves(b)
+	if len(moves) != 20 {
+		t.Errorf("Expected Gen Moves to find 20 inital moves")
+	}
+}
