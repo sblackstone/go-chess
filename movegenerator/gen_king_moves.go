@@ -12,7 +12,31 @@ func getKingMoves() [64][]int8 {
 	return pregeneratedKingMoves
 }
 
+var castlingTestEmptyMasks [2][2]uint64
+var castlingTestAttackMasks [2][2]uint64
+
+func initCastlingMasks() {
+
+	castlingTestEmptyMasks[boardstate.WHITE][boardstate.CASTLE_SHORT] = bitopts.Mask(5) | bitopts.Mask(6)
+	castlingTestAttackMasks[boardstate.WHITE][boardstate.CASTLE_SHORT] = bitopts.Mask(5) | bitopts.Mask(6)
+
+	castlingTestEmptyMasks[boardstate.WHITE][boardstate.CASTLE_LONG] = bitopts.Mask(1) | bitopts.Mask(2) | bitopts.Mask(3)
+	castlingTestAttackMasks[boardstate.WHITE][boardstate.CASTLE_LONG] = bitopts.Mask(2) | bitopts.Mask(3)
+
+	castlingTestEmptyMasks[boardstate.BLACK][boardstate.CASTLE_SHORT] = bitopts.Mask(61) | bitopts.Mask(62)
+	castlingTestAttackMasks[boardstate.BLACK][boardstate.CASTLE_SHORT] = bitopts.Mask(61) | bitopts.Mask(62)
+
+	castlingTestEmptyMasks[boardstate.BLACK][boardstate.CASTLE_LONG] = bitopts.Mask(57) | bitopts.Mask(58) | bitopts.Mask(59)
+	castlingTestAttackMasks[boardstate.BLACK][boardstate.CASTLE_LONG] = bitopts.Mask(58) | bitopts.Mask(59)
+
+}
+
 func init() {
+	initPregeneratedKingMoves()
+	initCastlingMasks()
+}
+
+func initPregeneratedKingMoves() {
 	var rank, file int8
 	for rank = 7; rank >= 0; rank-- {
 		for file = 0; file < 8; file++ {
@@ -74,27 +98,38 @@ func genSingleKingMovesGeneric(b *boardstate.BoardState, kingPos int8, calculate
 	if !calculateChecks {
 
 		checkedSquares := GenAllCheckedSquares(b, b.EnemyColor())
-
+		occupied := b.GetOccupiedBitboard()
 		// And the king isn't in check....
 		if !contains(checkedSquares, kingPos) {
 
 			if kingColor == boardstate.WHITE {
-				if b.HasCastleRights(kingColor, boardstate.CASTLE_SHORT) && b.EmptySquare(5) && b.EmptySquare(6) && !contains(checkedSquares, 5) && !contains(checkedSquares, 6) {
+				if b.HasCastleRights(kingColor, boardstate.CASTLE_SHORT) &&
+					(occupied&castlingTestEmptyMasks[boardstate.WHITE][boardstate.CASTLE_SHORT] == 0) &&
+					(checkedSquares&castlingTestAttackMasks[boardstate.WHITE][boardstate.CASTLE_SHORT] == 0) {
 					updateFunc(6)
-
 				}
-				if b.HasCastleRights(kingColor, boardstate.CASTLE_LONG) && b.EmptySquare(1) && b.EmptySquare(2) && b.EmptySquare(3) && !contains(checkedSquares, 2) && !contains(checkedSquares, 3) {
+
+				if b.HasCastleRights(kingColor, boardstate.CASTLE_LONG) &&
+					(occupied&castlingTestEmptyMasks[boardstate.WHITE][boardstate.CASTLE_LONG] == 0) &&
+					(checkedSquares&castlingTestAttackMasks[boardstate.WHITE][boardstate.CASTLE_LONG] == 0) {
 					updateFunc(2)
 				}
 			}
 
 			if kingColor == boardstate.BLACK {
-				if b.HasCastleRights(kingColor, boardstate.CASTLE_SHORT) && b.EmptySquare(61) && b.EmptySquare(62) && !contains(checkedSquares, 61) && !contains(checkedSquares, 62) {
+
+				if b.HasCastleRights(kingColor, boardstate.CASTLE_SHORT) &&
+					(occupied&castlingTestEmptyMasks[boardstate.BLACK][boardstate.CASTLE_SHORT] == 0) &&
+					(checkedSquares&castlingTestAttackMasks[boardstate.BLACK][boardstate.CASTLE_SHORT] == 0) {
 					updateFunc(62)
 				}
-				if b.HasCastleRights(kingColor, boardstate.CASTLE_LONG) && b.EmptySquare(57) && b.EmptySquare(58) && b.EmptySquare(59) && !contains(checkedSquares, 58) && !contains(checkedSquares, 59) {
+
+				if b.HasCastleRights(kingColor, boardstate.CASTLE_LONG) &&
+					(occupied&castlingTestEmptyMasks[boardstate.BLACK][boardstate.CASTLE_LONG] == 0) &&
+					(checkedSquares&castlingTestAttackMasks[boardstate.BLACK][boardstate.CASTLE_LONG] == 0) {
 					updateFunc(58)
 				}
+
 			}
 		}
 	}

@@ -94,6 +94,10 @@ func initialManual() *BoardState {
 	return b
 }
 
+func (b *BoardState) GetOccupiedBitboard() uint64 {
+	return b.colors[BLACK] | b.colors[WHITE]
+}
+
 func (b *BoardState) GetColorBitboard(color int8) uint64 {
 	return b.colors[color]
 }

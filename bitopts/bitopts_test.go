@@ -5,6 +5,13 @@ import (
 	"testing"
 )
 
+func TestMask(t *testing.T) {
+	v := Mask(1)
+	if v != 2 {
+		t.Errorf("expected Mask(1) to be 2")
+	}
+}
+
 func TestSquareToAlgebraic(t *testing.T) {
 	sq1 := SquareToAlgebraic(26)
 	if sq1 != "c4" {

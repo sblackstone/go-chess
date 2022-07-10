@@ -5,6 +5,15 @@ import (
 	"testing"
 )
 
+func TestGetOccupiedBitboard(t *testing.T) {
+	b := Initial()
+	occ := b.GetOccupiedBitboard()
+	expected := b.colors[BLACK] | b.colors[WHITE]
+	if occ != expected {
+		t.Errorf("Expected %v to be %v", occ, expected)
+	}
+}
+
 func TestKingPosInitial(t *testing.T) {
 	b := Initial()
 	if b.GetKingPos(WHITE) != 4 {

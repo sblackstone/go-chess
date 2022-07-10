@@ -22,6 +22,10 @@ func init() {
 	}
 }
 
+func Mask(pos int8) uint64 {
+	return setMasks[pos]
+}
+
 func SquareToAlgebraic(pos int8) string {
 	rank, file := SquareToRankFile(pos)
 	ranks := []string{"1", "2", "3", "4", "5", "6", "7", "8"}
