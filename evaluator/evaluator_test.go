@@ -1,11 +1,8 @@
 package evaluator
 
-import (
-	"testing"
-	//"github.com/sblackstone/go-chess/boardstate"
-	//"fmt"
-)
+//"github.com/sblackstone/go-chess/boardstate"
+//"fmt"
 
-func TestEvaluateBoard(t *testing.T) {
-	t.Errorf("not implemented")
-}
+// func TestEvaluateBoard(t *testing.T) {
+// 	t.Errorf("not implemented")
+// }

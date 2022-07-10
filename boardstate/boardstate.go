@@ -15,6 +15,17 @@ type BoardState struct {
 	turn            int8
 	halfMoves       int
 	fullMoves       int
+	moveStack       []*MoveStackData
+}
+
+type MoveStackData struct {
+	src             int8
+	dst             int8
+	srcPiece        int8
+	dstPiece        int8
+	enpassantSquare int8
+	halfMoves       int
+	castleData      [2][2]bool
 }
 
 func (b *BoardState) GetKingPos(color int8) int8 {
@@ -53,6 +64,7 @@ func (b *BoardState) Copy() *BoardState {
 		halfMoves:       b.halfMoves,
 		fullMoves:       b.fullMoves,
 		castleData:      b.castleData,
+		moveStack:       b.moveStack,
 	}
 
 	return &boardCopy

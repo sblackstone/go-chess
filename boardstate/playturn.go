@@ -58,11 +58,60 @@ func (b *BoardState) handleCastling(src int8, dst int8) {
 	}
 }
 
+func (b *BoardState) handleUncastling(src int8, dst int8) {
+	if src-dst == 2 {
+		b.MovePiece(src-1, src-4)
+	}
+	if src-dst == -2 {
+		b.MovePiece(src+1, src+3)
+	}
+}
+
+func (b *BoardState) UnplayTurn() {
+	l := len(b.moveStack)
+	msd := b.moveStack[l-1]
+	b.moveStack = b.moveStack[:l-1]
+	b.enpassantSquare = msd.enpassantSquare
+	b.castleData = msd.castleData
+	b.halfMoves = msd.halfMoves
+	b.MovePiece(msd.dst, msd.src)
+
+	// Deal with un-promotion.
+	if msd.srcPiece == PAWN {
+		b.SetSquare(msd.src, b.EnemyColor(), PAWN)
+	}
+
+	if msd.dstPiece != EMPTY {
+		b.SetSquare(msd.dst, b.GetTurn(), msd.dstPiece)
+	}
+
+	if b.GetTurn() == WHITE {
+		b.fullMoves -= 1
+	}
+
+	if msd.srcPiece == KING {
+		b.handleUncastling(msd.src, msd.dst)
+	}
+	// handle uncastling...
+
+	b.ToggleTurn()
+}
+
 func (b *BoardState) PlayTurn(src int8, dst int8, promotePiece int8) {
 	// color := b.ColorOfSquare(src)
 	piece := b.PieceOfSquare(src)
-	//dstPiece := b.PieceOfSquare(dst)
+	dstPiece := b.PieceOfSquare(dst)
 	dstColor := b.ColorOfSquare(dst)
+
+	b.moveStack = append(b.moveStack, &MoveStackData{
+		src:             src,
+		srcPiece:        piece,
+		dst:             dst,
+		dstPiece:        dstPiece,
+		enpassantSquare: b.enpassantSquare,
+		castleData:      b.castleData,
+		halfMoves:       b.halfMoves,
+	})
 
 	// Set or Clear enpassant flag
 	if piece == PAWN {
@@ -86,13 +135,13 @@ func (b *BoardState) PlayTurn(src int8, dst int8, promotePiece int8) {
 	}
 
 	if b.GetTurn() == BLACK {
-		b.IncrementFullMoves()
+		b.fullMoves += 1
 	}
 
 	if piece == PAWN || dstColor != EMPTY {
-		b.SetHalfMoves(0)
+		b.halfMoves = 0
 	} else {
-		b.IncrementHalfMoves()
+		b.halfMoves += 1
 	}
 
 	b.ToggleTurn()

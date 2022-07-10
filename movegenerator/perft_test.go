@@ -20,13 +20,35 @@ func genPerf(state *boardstate.BoardState, depth int) int {
 	return result
 }
 
+func genPerfMakeUnmake(b *boardstate.BoardState, depth int) int {
+	moves := GenMoves(b)
+	result := 0
+	for _, move := range moves {
+		b.PlayTurnFromMove(move)
+		if !IsInCheck(b, b.EnemyColor()) {
+			if depth == 1 {
+				result += 1
+			} else {
+				result += genPerf(b, depth-1)
+			}
+		}
+		b.UnplayTurn()
+	}
+	return result
+}
 func BenchmarkPerf(b *testing.B) {
 	board, _ := fen.FromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
-	// v := genPerf(board, 5)
-	// fmt.Printf("genPerf(board,5) = %v\n", v)
 	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
 		genPerf(board, 5)
+	}
+}
+
+func BenchmarkPerfMakeUnmake(b *testing.B) {
+	board, _ := fen.FromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+	b.ResetTimer()
+	for n := 0; n < b.N; n++ {
+		genPerfMakeUnmake(board, 5)
 	}
 }
 
@@ -52,9 +74,15 @@ func TestPerftPositions(t *testing.T) {
 			t.Errorf("%v\n", err)
 		} else {
 			result := genPerf(b, pt.depth)
+			result2 := genPerfMakeUnmake(b, pt.depth)
+
 			if result != pt.expected {
 				t.Errorf("%v: Expected %v, got %v", pt.fen, pt.expected, result)
 			}
+			if result2 != pt.expected {
+				t.Errorf("%v: Expected %v, got %v", pt.fen, pt.expected, result)
+			}
+
 		}
 	}
 

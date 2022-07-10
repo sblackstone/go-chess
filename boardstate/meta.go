@@ -25,14 +25,6 @@ const (
 	CASTLE_LONG
 )
 
-func (b *BoardState) IncrementHalfMoves() {
-	b.halfMoves += 1
-}
-
-func (b *BoardState) IncrementFullMoves() {
-	b.fullMoves += 1
-}
-
 func (b *BoardState) GetHalfMoves() int {
 	return b.halfMoves
 }

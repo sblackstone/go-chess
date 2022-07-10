@@ -39,32 +39,6 @@ func TestGetColorBitboard(t *testing.T) {
 
 }
 
-func TestIncrementHalfMoves(t *testing.T) {
-	b := Initial()
-	if b.GetHalfMoves() != 0 {
-		t.Errorf("Expected halfMoves to be 0, got %v", b.GetHalfMoves())
-	}
-
-	b.IncrementHalfMoves()
-
-	if b.GetHalfMoves() != 1 {
-		t.Errorf("Expected halfMoves to be 1, got %v", b.GetHalfMoves())
-	}
-}
-
-func IncrementFullMoves(t *testing.T) {
-	b := Initial()
-	if b.GetHalfMoves() != 0 {
-		t.Errorf("Expected halfMoves to be 0, got %v", b.GetHalfMoves())
-	}
-
-	b.IncrementHalfMoves()
-
-	if b.GetHalfMoves() != 1 {
-		t.Errorf("Expected halfMoves to be 1, got %v", b.GetHalfMoves())
-	}
-}
-
 func TestSetGetHalfMoves(t *testing.T) {
 	b := Initial()
 	b.SetHalfMoves(512)
