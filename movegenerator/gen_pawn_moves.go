@@ -129,7 +129,6 @@ func genAllPawnMoves(b *boardstate.BoardState, color int8, calculateChecks bool)
 
 }
 
-// TODO: This should be updated to avoid extra steps, see other piece generators for examples.
 func genAllPawnAttacks(b *boardstate.BoardState, color int8) uint64 {
 	var result uint64
 	pawnPositions := b.FindPieces(color, boardstate.PAWN)
