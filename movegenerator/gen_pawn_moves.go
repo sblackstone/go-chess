@@ -10,7 +10,7 @@ var pregeneratedPawnAttacks [2][64]uint64
 func init() {
 	var color, pos int8
 
-	updateFunc := func(src, dst int8) {
+	updateFunc := func(src, dst, promotePiece int8) {
 		pregeneratedPawnAttacks[color][src] = bitopts.SetBit(pregeneratedPawnAttacks[color][src], dst)
 	}
 
@@ -26,9 +26,21 @@ func init() {
 	}
 }
 
-func genSinglePawnMovesGeneric(b *boardstate.BoardState, pawnPos int8, calculateChecks bool, updateFunc func(int8, int8)) {
+func genSinglePawnMovesGeneric(b *boardstate.BoardState, pawnPos int8, calculateChecks bool, origUpdateFunc func(int8, int8, int8)) {
 	pawnPosRank, pawnPosFile := bitopts.SquareToRankFile(pawnPos)
 	var pushFoardTwoRank, pushForwardOne, pushForwardTwo, captureToLowerFilePos, captureToHigherFilePos, fromEnpassantRank int8
+
+	updateFunc := func(src, dst int8) {
+		rank := bitopts.RankOfSquare(dst)
+		if rank == 0 || rank == 7 {
+			origUpdateFunc(src, dst, boardstate.ROOK)
+			origUpdateFunc(src, dst, boardstate.KNIGHT)
+			origUpdateFunc(src, dst, boardstate.BISHOP)
+			origUpdateFunc(src, dst, boardstate.QUEEN)
+		} else {
+			origUpdateFunc(src, dst, boardstate.EMPTY)
+		}
+	}
 
 	if b.ColorOfSquare(pawnPos) == boardstate.WHITE {
 		pushFoardTwoRank = int8(1)
@@ -97,36 +109,11 @@ func genSinglePawnMovesGeneric(b *boardstate.BoardState, pawnPos int8, calculate
 	}
 }
 
-// This will be almost identical everywhere.
-func genSinglePawnMoves(b *boardstate.BoardState, piecePos int8, calculateChecks bool) []*boardstate.Move {
-	var result []*boardstate.Move
-
-	updateFunc := func(src, dst int8) {
-		rank := bitopts.RankOfSquare(dst)
-		if rank == 0 || rank == 7 {
-			// With Promotion
-			var i int8
-			for i = boardstate.ROOK; i <= boardstate.QUEEN; i++ {
-				result = append(result, &boardstate.Move{Src: src, Dst: dst, PromotePiece: i})
-			}
-		} else {
-			result = append(result, &boardstate.Move{Src: src, Dst: dst, PromotePiece: boardstate.EMPTY})
-		}
-	}
-
-	genSinglePawnMovesGeneric(b, piecePos, calculateChecks, updateFunc)
-
-	return result
-}
-
-func genAllPawnMoves(b *boardstate.BoardState, color int8, calculateChecks bool) []*boardstate.Move {
-	var result []*boardstate.Move
+func genAllPawnMovesGeneric(b *boardstate.BoardState, color int8, calculateChecks bool, updateFunc func(int8, int8, int8)) {
 	pawnPositions := b.FindPieces(color, boardstate.PAWN)
 	for _, pos := range pawnPositions {
-		result = append(result, genSinglePawnMoves(b, pos, calculateChecks)...)
+		genSinglePawnMovesGeneric(b, pos, calculateChecks, updateFunc)
 	}
-	return result
-
 }
 
 func genAllPawnAttacks(b *boardstate.BoardState, color int8) uint64 {
@@ -139,24 +126,10 @@ func genAllPawnAttacks(b *boardstate.BoardState, color int8) uint64 {
 }
 
 func genPawnSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
-	color := b.GetTurn()
 	var result []*boardstate.BoardState
-	pawnPositions := b.FindPieces(color, boardstate.PAWN)
-
-	updateFunc := func(src, dst int8) {
-		rank := bitopts.RankOfSquare(dst)
-		if rank == 0 || rank == 7 {
-			var i int8
-			for i = boardstate.ROOK; i <= boardstate.QUEEN; i++ {
-				result = append(result, b.CopyPlayTurn(src, dst, i))
-			}
-		} else {
-			result = append(result, b.CopyPlayTurn(src, dst, boardstate.EMPTY))
-		}
+	updateFunc := func(src, dst, promotePiece int8) {
+		result = append(result, b.CopyPlayTurn(src, dst, promotePiece))
 	}
-	for _, pos := range pawnPositions {
-
-		genSinglePawnMovesGeneric(b, pos, false, updateFunc)
-	}
+	genAllPawnMovesGeneric(b, b.GetTurn(), false, updateFunc)
 	return result
 }

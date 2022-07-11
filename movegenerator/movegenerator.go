@@ -66,14 +66,16 @@ func GenMoves(b *boardstate.BoardState) []*boardstate.Move {
 		result = append(result, &boardstate.Move{Src: src, Dst: dst, PromotePiece: boardstate.EMPTY})
 	}
 
+	updateFuncPawns := func(src, dst, promotePiece int8) {
+		result = append(result, &boardstate.Move{Src: src, Dst: dst, PromotePiece: promotePiece})
+	}
+
 	genAllQueenMovesGeneric(b, b.GetTurn(), updateFunc)
 	genAllBishopMovesGeneric(b, b.GetTurn(), updateFunc)
 	genAllKnightMovesGeneric(b, b.GetTurn(), updateFunc)
 	genAllRookMovesGeneric(b, b.GetTurn(), updateFunc)
 	genAllKingMovesGeneric(b, b.GetTurn(), false, updateFunc)
-	//genAllPawnMovesGeneric(b, b.GetTurn(), false, updateFunc)
-	result = append(result, genAllPawnMoves(b, b.GetTurn(), false)...)
-	//result = append(result, genAllKingMoves(b, b.GetTurn(), false)...)
+	genAllPawnMovesGeneric(b, b.GetTurn(), false, updateFuncPawns)
 	return result
 }
 
