@@ -94,13 +94,13 @@ func initPregeneratedKingMoves() {
 	}
 }
 
-func genSingleKingMovesGeneric(b *boardstate.BoardState, kingPos int8, calculateChecks bool, updateFunc func(int8)) {
+func genSingleKingMovesGeneric(b *boardstate.BoardState, kingPos int8, calculateChecks bool, updateFunc func(int8, int8)) {
 
 	kingColor := b.ColorOfSquare(kingPos)
 
 	for _, move := range pregeneratedKingMoves[kingPos] {
 		if b.ColorOfSquare(move) != kingColor {
-			updateFunc(move)
+			updateFunc(kingPos, move)
 		}
 	}
 
@@ -116,13 +116,13 @@ func genSingleKingMovesGeneric(b *boardstate.BoardState, kingPos int8, calculate
 			if b.HasCastleRights(kingColor, boardstate.CASTLE_SHORT) &&
 				(occupied&castlingConfigs[kingColor][boardstate.CASTLE_SHORT].emptyMask == 0) &&
 				(checkedSquares&castlingConfigs[kingColor][boardstate.CASTLE_SHORT].attackMask == 0) {
-				updateFunc(castlingConfigs[kingColor][boardstate.CASTLE_SHORT].kingDst)
+				updateFunc(kingPos, castlingConfigs[kingColor][boardstate.CASTLE_SHORT].kingDst)
 			}
 
 			if b.HasCastleRights(kingColor, boardstate.CASTLE_LONG) &&
 				(occupied&castlingConfigs[kingColor][boardstate.CASTLE_LONG].emptyMask == 0) &&
 				(checkedSquares&castlingConfigs[kingColor][boardstate.CASTLE_LONG].attackMask == 0) {
-				updateFunc(castlingConfigs[kingColor][boardstate.CASTLE_LONG].kingDst)
+				updateFunc(kingPos, castlingConfigs[kingColor][boardstate.CASTLE_LONG].kingDst)
 			}
 		}
 	}
@@ -138,22 +138,15 @@ func genAllKingAttacks(b *boardstate.BoardState, color int8) uint64 {
 	}
 }
 
-// This will be almost identical everywhere.
-func genAllKingMoves(b *boardstate.BoardState, color int8, calculateChecks bool) []*boardstate.Move {
-	var result []*boardstate.Move
-
+func genAllKingMovesGeneric(b *boardstate.BoardState, color int8, calculateChecks bool, updateFunc func(int8, int8)) {
 	kingPositions := b.FindPieces(color, boardstate.KING)
 
-	if len(kingPositions) == 0 {
-		return result
-	}
-	updateFunc := func(dst int8) {
-		result = append(result, &boardstate.Move{Src: kingPositions[0], Dst: dst, PromotePiece: boardstate.EMPTY})
+	if len(kingPositions) > 0 {
+		for _, kingPos := range kingPositions {
+			genSingleKingMovesGeneric(b, kingPos, calculateChecks, updateFunc)
+		}
 	}
 
-	genSingleKingMovesGeneric(b, kingPositions[0], calculateChecks, updateFunc)
-
-	return result
 }
 
 func genKingSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
@@ -164,8 +157,8 @@ func genKingSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
 		return result
 	}
 
-	updateFunc := func(dst int8) {
-		result = append(result, b.CopyPlayTurn(kingPos, dst, boardstate.EMPTY))
+	updateFunc := func(src, dst int8) {
+		result = append(result, b.CopyPlayTurn(src, dst, boardstate.EMPTY))
 	}
 
 	genSingleKingMovesGeneric(b, kingPos, false, updateFunc)

@@ -61,12 +61,19 @@ func GenSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
 // For testing at the moment, not tested.
 func GenMoves(b *boardstate.BoardState) []*boardstate.Move {
 	var result []*boardstate.Move
+
+	updateFunc := func(src int8, dst int8) {
+		result = append(result, &boardstate.Move{Src: src, Dst: dst, PromotePiece: boardstate.EMPTY})
+	}
+
+	genAllQueenMovesGeneric(b, b.GetTurn(), updateFunc)
+	genAllBishopMovesGeneric(b, b.GetTurn(), updateFunc)
+	genAllKnightMovesGeneric(b, b.GetTurn(), updateFunc)
+	genAllRookMovesGeneric(b, b.GetTurn(), updateFunc)
+	genAllKingMovesGeneric(b, b.GetTurn(), false, updateFunc)
+	//genAllPawnMovesGeneric(b, b.GetTurn(), false, updateFunc)
 	result = append(result, genAllPawnMoves(b, b.GetTurn(), false)...)
-	result = append(result, genAllKingMoves(b, b.GetTurn(), false)...)
-	result = append(result, genAllQueenMoves(b, b.GetTurn())...)
-	result = append(result, genAllBishopMoves(b, b.GetTurn())...)
-	result = append(result, genAllKnightMoves(b, b.GetTurn())...)
-	result = append(result, genAllRookMoves(b, b.GetTurn())...)
+	//result = append(result, genAllKingMoves(b, b.GetTurn(), false)...)
 	return result
 }
 

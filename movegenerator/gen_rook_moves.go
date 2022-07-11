@@ -43,6 +43,13 @@ func genSingleRookMovesGeneric(b *boardstate.BoardState, rookPos int8, updateFun
 	}
 }
 
+func genAllRookMovesGeneric(b *boardstate.BoardState, color int8, updatefunc func(int8, int8)) {
+	rookPositions := b.FindPieces(color, boardstate.ROOK)
+	for _, rookPos := range rookPositions {
+		genSingleRookMovesGeneric(b, rookPos, updatefunc)
+	}
+}
+
 func genSingleRookMovesBitboard(b *boardstate.BoardState, piecePos int8) uint64 {
 	var result uint64
 
@@ -55,33 +62,11 @@ func genSingleRookMovesBitboard(b *boardstate.BoardState, piecePos int8) uint64 
 	return result
 }
 
-// This will be almost identical everywhere.
-func genSingleRookMoves(b *boardstate.BoardState, piecePos int8) []*boardstate.Move {
-	var result []*boardstate.Move
-
-	updateFunc := func(src, dst int8) {
-		result = append(result, &boardstate.Move{Src: piecePos, Dst: dst, PromotePiece: boardstate.EMPTY})
-	}
-
-	genSingleRookMovesGeneric(b, piecePos, updateFunc)
-
-	return result
-}
-
 func genAllRookAttacks(b *boardstate.BoardState, color int8) uint64 {
 	var result uint64
 	rookPositions := b.FindPieces(color, boardstate.ROOK)
 	for i := 0; i < len(rookPositions); i++ {
 		result = result | genSingleRookMovesBitboard(b, rookPositions[i])
-	}
-	return result
-}
-
-func genAllRookMoves(b *boardstate.BoardState, color int8) []*boardstate.Move {
-	var result []*boardstate.Move
-	rookPositions := b.FindPieces(color, boardstate.ROOK)
-	for i := 0; i < len(rookPositions); i++ {
-		result = append(result, genSingleRookMoves(b, rookPositions[i])...)
 	}
 	return result
 }

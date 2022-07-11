@@ -115,15 +115,6 @@ func genAllKnightAttacks(b *boardstate.BoardState, color int8) uint64 {
 	return result
 }
 
-func genAllKnightMoves(b *boardstate.BoardState, color int8) []*boardstate.Move {
-	var result []*boardstate.Move
-	updateFunc := func(src, dst int8) {
-		result = append(result, &boardstate.Move{Src: src, Dst: dst, PromotePiece: boardstate.EMPTY})
-	}
-	genAllKnightMovesGeneric(b, color, updateFunc)
-	return result
-}
-
 func genKnightSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
 	var result []*boardstate.BoardState
 

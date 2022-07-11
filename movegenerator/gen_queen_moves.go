@@ -5,28 +5,6 @@ import (
 	"github.com/sblackstone/go-chess/boardstate"
 )
 
-func genSingleQueenMoves(b *boardstate.BoardState, queenPos int8) []*boardstate.Move {
-	var result []*boardstate.Move
-
-	updateFunc := func(src int8, dst int8) {
-		result = append(result, &boardstate.Move{Src: src, Dst: dst, PromotePiece: boardstate.EMPTY})
-	}
-
-	genSingleBishopMovesGeneric(b, queenPos, updateFunc)
-	genSingleRookMovesGeneric(b, queenPos, updateFunc)
-
-	return result
-}
-
-func genAllQueenMoves(b *boardstate.BoardState, color int8) []*boardstate.Move {
-	var result []*boardstate.Move
-	queenPositions := b.FindPieces(color, boardstate.QUEEN)
-	for _, qp := range queenPositions {
-		result = append(result, genSingleQueenMoves(b, qp)...)
-	}
-	return result
-}
-
 func genAllQueenMovesGeneric(b *boardstate.BoardState, color int8, updateFunc func(int8, int8)) {
 	queenPositions := b.FindPieces(color, boardstate.QUEEN)
 	for _, qp := range queenPositions {

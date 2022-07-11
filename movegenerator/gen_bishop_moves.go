@@ -61,15 +61,6 @@ func genAllBishopAttacks(b *boardstate.BoardState, color int8) uint64 {
 	return result
 }
 
-func genAllBishopMoves(b *boardstate.BoardState, color int8) []*boardstate.Move {
-	var result []*boardstate.Move
-	updateFunc := func(src int8, dst int8) {
-		result = append(result, &boardstate.Move{Src: src, Dst: dst, PromotePiece: boardstate.EMPTY})
-	}
-	genAllBishopMovesGeneric(b, color, updateFunc)
-	return result
-}
-
 func genBishopSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
 	var result []*boardstate.BoardState
 	updateFunc := func(src int8, dst int8) {
