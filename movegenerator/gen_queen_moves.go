@@ -38,10 +38,11 @@ func genQueenSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
 	var result []*boardstate.BoardState
 	rookPositions := b.FindPieces(color, boardstate.QUEEN)
 
+	updateFunc := func(src int8, dst int8) {
+		result = append(result, b.CopyPlayTurn(src, dst, boardstate.EMPTY))
+	}
+
 	for _, pos := range rookPositions {
-		updateFunc := func(dst int8) {
-			result = append(result, b.CopyPlayTurn(pos, dst, boardstate.EMPTY))
-		}
 		genSingleBishopMovesGeneric(b, pos, updateFunc)
 		genSingleRookMovesGeneric(b, pos, updateFunc)
 	}

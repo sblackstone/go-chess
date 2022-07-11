@@ -5,10 +5,10 @@ import (
 	"github.com/sblackstone/go-chess/boardstate"
 )
 
-func genSingleRookMovesGeneric(b *boardstate.BoardState, rookPos int8, updateFunc func(int8)) {
+func genSingleRookMovesGeneric(b *boardstate.BoardState, rookPos int8, updateFunc func(int8, int8)) {
 	for r := rookPos + 8; r < 64; r += 8 {
 		if b.ColorOfSquare(r) != b.ColorOfSquare(rookPos) {
-			updateFunc(r)
+			updateFunc(rookPos, r)
 		}
 		if !b.EmptySquare(r) {
 			break
@@ -17,7 +17,7 @@ func genSingleRookMovesGeneric(b *boardstate.BoardState, rookPos int8, updateFun
 
 	for r := rookPos - 8; r >= 0; r -= 8 {
 		if b.ColorOfSquare(r) != b.ColorOfSquare(rookPos) {
-			updateFunc(r)
+			updateFunc(rookPos, r)
 		}
 		if !b.EmptySquare(r) {
 			break
@@ -26,7 +26,7 @@ func genSingleRookMovesGeneric(b *boardstate.BoardState, rookPos int8, updateFun
 
 	for r := rookPos + 1; r <= 63 && bitopts.FileOfSquare(r) > 0; r += 1 {
 		if b.ColorOfSquare(r) != b.ColorOfSquare(rookPos) {
-			updateFunc(r)
+			updateFunc(rookPos, r)
 		}
 		if !b.EmptySquare(r) {
 			break
@@ -35,7 +35,7 @@ func genSingleRookMovesGeneric(b *boardstate.BoardState, rookPos int8, updateFun
 
 	for r := rookPos - 1; r >= 0 && bitopts.FileOfSquare(r) < 7; r -= 1 {
 		if b.ColorOfSquare(r) != b.ColorOfSquare(rookPos) {
-			updateFunc(r)
+			updateFunc(rookPos, r)
 		}
 		if !b.EmptySquare(r) {
 			break
@@ -46,7 +46,7 @@ func genSingleRookMovesGeneric(b *boardstate.BoardState, rookPos int8, updateFun
 func genSingleRookMovesBitboard(b *boardstate.BoardState, piecePos int8) uint64 {
 	var result uint64
 
-	updateFunc := func(dst int8) {
+	updateFunc := func(src, dst int8) {
 		result = bitopts.SetBit(result, dst)
 	}
 
@@ -59,7 +59,7 @@ func genSingleRookMovesBitboard(b *boardstate.BoardState, piecePos int8) uint64 
 func genSingleRookMoves(b *boardstate.BoardState, piecePos int8) []*boardstate.Move {
 	var result []*boardstate.Move
 
-	updateFunc := func(dst int8) {
+	updateFunc := func(src, dst int8) {
 		result = append(result, &boardstate.Move{Src: piecePos, Dst: dst, PromotePiece: boardstate.EMPTY})
 	}
 
@@ -91,10 +91,11 @@ func genRookSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
 	var result []*boardstate.BoardState
 	rookPositions := b.FindPieces(color, boardstate.ROOK)
 
+	updateFunc := func(src, dst int8) {
+		result = append(result, b.CopyPlayTurn(src, dst, boardstate.EMPTY))
+	}
+
 	for _, pos := range rookPositions {
-		updateFunc := func(dst int8) {
-			result = append(result, b.CopyPlayTurn(pos, dst, boardstate.EMPTY))
-		}
 		genSingleRookMovesGeneric(b, pos, updateFunc)
 	}
 	return result

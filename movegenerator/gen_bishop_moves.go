@@ -5,12 +5,12 @@ import (
 	"github.com/sblackstone/go-chess/boardstate"
 )
 
-func genSingleBishopMovesGeneric(b *boardstate.BoardState, bishopPos int8, updateFunc func(int8)) {
+func genSingleBishopMovesGeneric(b *boardstate.BoardState, bishopPos int8, updateFunc func(int8, int8)) {
 	file := bitopts.FileOfSquare(bishopPos)
 
 	for r := bishopPos + 9; r < 64 && bitopts.FileOfSquare(r) > file; r += 9 {
 		if b.ColorOfSquare(r) != b.ColorOfSquare(bishopPos) {
-			updateFunc(r)
+			updateFunc(bishopPos, r)
 		}
 		if !b.EmptySquare(r) {
 			break
@@ -19,7 +19,7 @@ func genSingleBishopMovesGeneric(b *boardstate.BoardState, bishopPos int8, updat
 
 	for r := bishopPos + 7; r < 64 && bitopts.FileOfSquare(r) < file; r += 7 {
 		if b.ColorOfSquare(r) != b.ColorOfSquare(bishopPos) {
-			updateFunc(r)
+			updateFunc(bishopPos, r)
 		}
 		if !b.EmptySquare(r) {
 			break
@@ -28,7 +28,7 @@ func genSingleBishopMovesGeneric(b *boardstate.BoardState, bishopPos int8, updat
 
 	for r := bishopPos - 7; r >= 0 && bitopts.FileOfSquare(r) > file; r -= 7 {
 		if b.ColorOfSquare(r) != b.ColorOfSquare(bishopPos) {
-			updateFunc(r)
+			updateFunc(bishopPos, r)
 		}
 		if !b.EmptySquare(r) {
 			break
@@ -37,7 +37,7 @@ func genSingleBishopMovesGeneric(b *boardstate.BoardState, bishopPos int8, updat
 
 	for r := bishopPos - 9; r >= 0 && bitopts.FileOfSquare(r) < file; r -= 9 {
 		if b.ColorOfSquare(r) != b.ColorOfSquare(bishopPos) {
-			updateFunc(r)
+			updateFunc(bishopPos, r)
 		}
 		if !b.EmptySquare(r) {
 			break
@@ -45,11 +45,18 @@ func genSingleBishopMovesGeneric(b *boardstate.BoardState, bishopPos int8, updat
 	}
 }
 
+func genAllBishopMovesGeneric(b *boardstate.BoardState, color int8, updateFunc func(int8, int8)) {
+	bishopPositions := b.FindPieces(color, boardstate.BISHOP)
+	for _, pos := range bishopPositions {
+		genSingleBishopMovesGeneric(b, pos, updateFunc)
+	}
+}
+
 // This will be almost identical everywhere.
 func genSingleBishopMovesBitboard(b *boardstate.BoardState, piecePos int8) uint64 {
 	var result uint64
 
-	updateFunc := func(dst int8) {
+	updateFunc := func(src int8, dst int8) {
 		result = bitopts.SetBit(result, dst)
 	}
 
@@ -62,8 +69,8 @@ func genSingleBishopMovesBitboard(b *boardstate.BoardState, piecePos int8) uint6
 func genSingleBishopMoves(b *boardstate.BoardState, piecePos int8) []*boardstate.Move {
 	var result []*boardstate.Move
 
-	updateFunc := func(dst int8) {
-		result = append(result, &boardstate.Move{Src: piecePos, Dst: dst, PromotePiece: boardstate.EMPTY})
+	updateFunc := func(src int8, dst int8) {
+		result = append(result, &boardstate.Move{Src: src, Dst: dst, PromotePiece: boardstate.EMPTY})
 	}
 
 	genSingleBishopMovesGeneric(b, piecePos, updateFunc)
@@ -74,7 +81,7 @@ func genSingleBishopMoves(b *boardstate.BoardState, piecePos int8) []*boardstate
 func genAllBishopAttacks(b *boardstate.BoardState, color int8) uint64 {
 	var result uint64
 
-	updateFunc := func(dst int8) {
+	updateFunc := func(src int8, dst int8) {
 		result = bitopts.SetBit(result, dst)
 	}
 	bishopPositions := b.FindPieces(color, boardstate.BISHOP)
@@ -99,7 +106,7 @@ func genBishopSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
 	bishopPositions := b.FindPieces(color, boardstate.BISHOP)
 
 	for _, pos := range bishopPositions {
-		updateFunc := func(dst int8) {
+		updateFunc := func(src int8, dst int8) {
 			result = append(result, b.CopyPlayTurn(pos, dst, boardstate.EMPTY))
 		}
 		genSingleBishopMovesGeneric(b, pos, updateFunc)
