@@ -89,17 +89,23 @@ func init() {
 	}
 }
 
-// All the base generators need to look like this.....
-func genSingleKnightMovesGeneric(b *boardstate.BoardState, knightPos int8, updateFunc func(int8)) {
+func genSingleKnightMovesGeneric(b *boardstate.BoardState, knightPos int8, updateFunc func(int8, int8)) {
+	knightColor := b.ColorOfSquare(knightPos)
 	for i := range pregeneratedKnightMoves[knightPos] {
 		move := pregeneratedKnightMoves[knightPos][i]
-		if b.ColorOfSquare(move) != b.ColorOfSquare(knightPos) {
-			updateFunc(move)
+		if b.ColorOfSquare(move) != knightColor {
+			updateFunc(knightPos, move)
 		}
 	}
 }
 
-// This will be almost identical everywhere.
+func genAllKnightMovesGeneric(b *boardstate.BoardState, color int8, updateFunc func(int8, int8)) {
+	knightPositions := b.FindPieces(color, boardstate.KNIGHT)
+	for _, pos := range knightPositions {
+		genSingleKnightMovesGeneric(b, pos, updateFunc)
+	}
+}
+
 func genAllKnightAttacks(b *boardstate.BoardState, color int8) uint64 {
 	var result uint64
 	knightPositions := b.FindPieces(color, boardstate.KNIGHT)
@@ -111,27 +117,19 @@ func genAllKnightAttacks(b *boardstate.BoardState, color int8) uint64 {
 
 func genAllKnightMoves(b *boardstate.BoardState, color int8) []*boardstate.Move {
 	var result []*boardstate.Move
-	knightPositions := b.FindPieces(color, boardstate.KNIGHT)
-
-	for _, pos := range knightPositions {
-		updateFunc := func(dst int8) {
-			result = append(result, &boardstate.Move{Src: pos, Dst: dst, PromotePiece: boardstate.EMPTY})
-		}
-		genSingleKnightMovesGeneric(b, pos, updateFunc)
+	updateFunc := func(src, dst int8) {
+		result = append(result, &boardstate.Move{Src: src, Dst: dst, PromotePiece: boardstate.EMPTY})
 	}
+	genAllKnightMovesGeneric(b, color, updateFunc)
 	return result
 }
 
 func genKnightSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
-	color := b.GetTurn()
 	var result []*boardstate.BoardState
-	knightPositions := b.FindPieces(color, boardstate.KNIGHT)
 
-	for _, pos := range knightPositions {
-		updateFunc := func(dst int8) {
-			result = append(result, b.CopyPlayTurn(pos, dst, boardstate.EMPTY))
-		}
-		genSingleKnightMovesGeneric(b, pos, updateFunc)
+	updateFunc := func(src, dst int8) {
+		result = append(result, b.CopyPlayTurn(src, dst, boardstate.EMPTY))
 	}
+	genAllKnightMovesGeneric(b, b.GetTurn(), updateFunc)
 	return result
 }
