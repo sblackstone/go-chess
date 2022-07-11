@@ -10,9 +10,9 @@ func TestMoveList(t *testing.T) {
 
 	sum := int8(0)
 
-	for mle := ml.head; mle != nil; mle = mle.next {
-		sum += mle.move.Src
-		sum += mle.move.Dst
+	for mle := ml.Head; mle != nil; mle = mle.Next {
+		sum += mle.Move.Src
+		sum += mle.Move.Dst
 	}
 
 	if sum != 21 {

@@ -1,18 +1,18 @@
 package boardstate
 
 type MoveList struct {
-	head *MoveListEntry
+	Head *MoveListEntry
 }
 
 type MoveListEntry struct {
-	move *Move
-	next *MoveListEntry
+	Move *Move
+	Next *MoveListEntry
 }
 
 func (m *MoveList) AddMove(move *Move) {
-	if m.head == nil {
-		m.head = &MoveListEntry{move: move}
+	if m.Head == nil {
+		m.Head = &MoveListEntry{Move: move}
 	} else {
-		m.head = &MoveListEntry{move: move, next: m.head}
+		m.Head = &MoveListEntry{Move: move, Next: m.Head}
 	}
 }
