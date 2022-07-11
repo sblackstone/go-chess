@@ -6,6 +6,17 @@ import (
 	"github.com/sblackstone/go-chess/bitopts"
 )
 
+func RemoveValue(s []int8, val int8) []int8 {
+	ret := make([]int8, 0)
+	for index, v := range s {
+		if v == val {
+			ret = append(ret, s[:index]...)
+			return append(ret, s[index+1:]...)
+		}
+	}
+	return ret
+}
+
 // BoardState contains the state of the Board
 type BoardState struct {
 	colors          [2]uint64
