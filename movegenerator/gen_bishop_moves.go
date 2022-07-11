@@ -52,64 +52,29 @@ func genAllBishopMovesGeneric(b *boardstate.BoardState, color int8, updateFunc f
 	}
 }
 
-// This will be almost identical everywhere.
-func genSingleBishopMovesBitboard(b *boardstate.BoardState, piecePos int8) uint64 {
-	var result uint64
-
-	updateFunc := func(src int8, dst int8) {
-		result = bitopts.SetBit(result, dst)
-	}
-
-	genSingleBishopMovesGeneric(b, piecePos, updateFunc)
-
-	return result
-}
-
-// This will be almost identical everywhere.
-func genSingleBishopMoves(b *boardstate.BoardState, piecePos int8) []*boardstate.Move {
-	var result []*boardstate.Move
-
-	updateFunc := func(src int8, dst int8) {
-		result = append(result, &boardstate.Move{Src: src, Dst: dst, PromotePiece: boardstate.EMPTY})
-	}
-
-	genSingleBishopMovesGeneric(b, piecePos, updateFunc)
-
-	return result
-}
-
 func genAllBishopAttacks(b *boardstate.BoardState, color int8) uint64 {
 	var result uint64
-
 	updateFunc := func(src int8, dst int8) {
 		result = bitopts.SetBit(result, dst)
 	}
-	bishopPositions := b.FindPieces(color, boardstate.BISHOP)
-	for _, bp := range bishopPositions {
-		genSingleBishopMovesGeneric(b, bp, updateFunc)
-	}
+	genAllBishopMovesGeneric(b, color, updateFunc)
 	return result
 }
 
 func genAllBishopMoves(b *boardstate.BoardState, color int8) []*boardstate.Move {
 	var result []*boardstate.Move
-	bishopPositions := b.FindPieces(color, boardstate.BISHOP)
-	for i := 0; i < len(bishopPositions); i++ {
-		result = append(result, genSingleBishopMoves(b, bishopPositions[i])...)
+	updateFunc := func(src int8, dst int8) {
+		result = append(result, &boardstate.Move{Src: src, Dst: dst, PromotePiece: boardstate.EMPTY})
 	}
+	genAllBishopMovesGeneric(b, color, updateFunc)
 	return result
 }
 
 func genBishopSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
-	color := b.GetTurn()
 	var result []*boardstate.BoardState
-	bishopPositions := b.FindPieces(color, boardstate.BISHOP)
-
-	for _, pos := range bishopPositions {
-		updateFunc := func(src int8, dst int8) {
-			result = append(result, b.CopyPlayTurn(pos, dst, boardstate.EMPTY))
-		}
-		genSingleBishopMovesGeneric(b, pos, updateFunc)
+	updateFunc := func(src int8, dst int8) {
+		result = append(result, b.CopyPlayTurn(src, dst, boardstate.EMPTY))
 	}
+	genAllBishopMovesGeneric(b, b.GetTurn(), updateFunc)
 	return result
 }
