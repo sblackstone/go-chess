@@ -25,8 +25,7 @@ func init() {
 	}
 }
 
-func genSinglePawnMovesGeneric(b *boardstate.BoardState, pawnPos int8, calculateChecks bool, updateFunc func(int8)) []*boardstate.Move {
-	var result []*boardstate.Move
+func genSinglePawnMovesGeneric(b *boardstate.BoardState, pawnPos int8, calculateChecks bool, updateFunc func(int8)) {
 	pawnPosRank, pawnPosFile := bitopts.SquareToRankFile(pawnPos)
 	var pushFoardTwoRank, pushForwardOne, pushForwardTwo, captureToLowerFilePos, captureToHigherFilePos, fromEnpassantRank int8
 
@@ -57,7 +56,7 @@ func genSinglePawnMovesGeneric(b *boardstate.BoardState, pawnPos int8, calculate
 			updateFunc(captureToLowerFilePos)
 		}
 
-		return result
+		return
 
 	}
 
@@ -95,8 +94,6 @@ func genSinglePawnMovesGeneric(b *boardstate.BoardState, pawnPos int8, calculate
 	if b.EmptySquare(pushForwardOne) {
 		updateFunc(pushForwardOne)
 	}
-
-	return result
 }
 
 // This will be almost identical everywhere.

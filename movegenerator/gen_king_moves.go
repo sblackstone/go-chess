@@ -94,8 +94,7 @@ func initPregeneratedKingMoves() {
 	}
 }
 
-func genSingleKingMovesGeneric(b *boardstate.BoardState, kingPos int8, calculateChecks bool, updateFunc func(int8)) []*boardstate.Move {
-	var result []*boardstate.Move
+func genSingleKingMovesGeneric(b *boardstate.BoardState, kingPos int8, calculateChecks bool, updateFunc func(int8)) {
 
 	kingColor := b.ColorOfSquare(kingPos)
 
@@ -127,8 +126,6 @@ func genSingleKingMovesGeneric(b *boardstate.BoardState, kingPos int8, calculate
 			}
 		}
 	}
-
-	return result
 }
 
 // This will be almost identical everywhere.

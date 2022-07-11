@@ -5,9 +5,7 @@ import (
 	"github.com/sblackstone/go-chess/boardstate"
 )
 
-func genSingleBishopMovesGeneric(b *boardstate.BoardState, bishopPos int8, updateFunc func(int8)) []*boardstate.Move {
-	var result []*boardstate.Move
-
+func genSingleBishopMovesGeneric(b *boardstate.BoardState, bishopPos int8, updateFunc func(int8)) {
 	file := bitopts.FileOfSquare(bishopPos)
 
 	for r := bishopPos + 9; r < 64 && bitopts.FileOfSquare(r) > file; r += 9 {
@@ -45,7 +43,6 @@ func genSingleBishopMovesGeneric(b *boardstate.BoardState, bishopPos int8, updat
 			break
 		}
 	}
-	return result
 }
 
 // This will be almost identical everywhere.
