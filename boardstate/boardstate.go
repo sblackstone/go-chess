@@ -27,6 +27,7 @@ type BoardState struct {
 	halfMoves       int
 	fullMoves       int
 	moveStack       *MoveStackData
+	colorList       [64]int8
 }
 
 type MoveStackData struct {
@@ -52,6 +53,9 @@ func Blank() *BoardState {
 	b.colors = [2]uint64{0, 0}
 	b.pieces = [6]uint64{0, 0, 0, 0, 0, 0}
 	b.enpassantSquare = NO_ENPASSANT
+	for i := 0; i < 64; i++ {
+		b.colorList[i] = EMPTY
+	}
 	return &b
 }
 
@@ -77,6 +81,7 @@ func (b *BoardState) Copy() *BoardState {
 		fullMoves:       b.fullMoves,
 		castleData:      b.castleData,
 		moveStack:       b.moveStack,
+		colorList:       b.colorList,
 	}
 
 	return &boardCopy
@@ -156,13 +161,7 @@ func (b *BoardState) FindPieces(color int8, pieceType int8) []int8 {
 
 // ColorOfSquare returns WHITE,BLACK, or EMPTY
 func (b *BoardState) ColorOfSquare(n int8) int8 {
-	if bitopts.TestBit(b.colors[WHITE], n) {
-		return WHITE
-	}
-	if bitopts.TestBit(b.colors[BLACK], n) {
-		return BLACK
-	}
-	return EMPTY
+	return b.colorList[n]
 }
 
 // PieceOfSquare t
@@ -182,6 +181,7 @@ func (b *BoardState) SetSquare(n int8, color int8, piece int8) {
 		b.pieces[b.PieceOfSquare(n)] = bitopts.ClearBit(b.pieces[b.PieceOfSquare(n)], n)
 		b.colors[b.ColorOfSquare(n)] = bitopts.ClearBit(b.colors[b.ColorOfSquare(n)], n)
 	}
+	b.colorList[n] = color
 
 	if color != EMPTY {
 		b.colors[color] = bitopts.SetBit(b.colors[color], n)
