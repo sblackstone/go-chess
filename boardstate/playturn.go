@@ -75,14 +75,24 @@ func (b *BoardState) UnplayTurn() {
 	b.halfMoves = msd.halfMoves
 	b.MovePiece(msd.dst, msd.src)
 
+	turnAfterMove := b.GetTurn()
+
 	// Deal with un-promotion.
 	// TODO: This is an expensive way to do this.
 	if msd.srcPiece == PAWN {
 		b.SetSquare(msd.src, b.EnemyColor(), PAWN)
+		if msd.dst == msd.enpassantSquare {
+			if msd.dst > msd.src {
+				b.SetSquare(msd.dst-8, turnAfterMove, PAWN)
+			} else {
+				b.SetSquare(msd.dst+8, turnAfterMove, PAWN)
+
+			}
+		}
 	}
 
 	if msd.dstPiece != EMPTY {
-		b.SetSquare(msd.dst, b.GetTurn(), msd.dstPiece)
+		b.SetSquare(msd.dst, turnAfterMove, msd.dstPiece)
 	}
 
 	if b.GetTurn() == WHITE {
