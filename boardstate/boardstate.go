@@ -77,9 +77,8 @@ func (b *BoardState) Copy() *BoardState {
 		colorList:       b.colorList,
 		kingPos:         b.kingPos,
 		pieceList:       b.pieceList,
+		pieceLocations:  b.pieceLocations.Copy(),
 	}
-
-	boardCopy.pieceLocations = b.pieceLocations.Copy()
 
 	return &boardCopy
 }
@@ -150,10 +149,7 @@ func (b *BoardState) MovePiece(src int8, dst int8) {
 
 // Returns an array of positions for a given set of pieces.
 func (b *BoardState) FindPieces(color int8, pieceType int8) []int8 {
-	// TODO: We can't rely on using upper/lower if we aren't sure there hasn't been promotions
-	// If we track promotions, we can make this go faster by skipping the loop between upper and lower.
-	pieceBitboard := b.colors[color] & b.pieces[pieceType]
-	return bitopts.FindSetBits(pieceBitboard)
+	return b.pieceLocations.GetLocations(color, pieceType)
 }
 
 // ColorOfSquare returns WHITE,BLACK, or EMPTY
@@ -168,9 +164,12 @@ func (b *BoardState) PieceOfSquare(n int8) int8 {
 
 // SetSquare removes any existing piece and sets the square to the new piece/color.
 func (b *BoardState) SetSquare(n int8, color int8, piece int8) {
-	if !b.EmptySquare(n) {
-		b.pieces[b.PieceOfSquare(n)] = bitopts.ClearBit(b.pieces[b.PieceOfSquare(n)], n)
-		b.colors[b.ColorOfSquare(n)] = bitopts.ClearBit(b.colors[b.ColorOfSquare(n)], n)
+	origPiece := b.PieceOfSquare(n)
+	origColor := b.ColorOfSquare(n)
+	if origColor != EMPTY {
+		b.pieces[origPiece] = bitopts.ClearBit(b.pieces[origPiece], n)
+		b.colors[origColor] = bitopts.ClearBit(b.colors[origColor], n)
+		b.pieceLocations.RemovePieceLocation(origColor, origPiece, n)
 	}
 	b.colorList[n] = color
 	b.pieceList[n] = piece
@@ -179,6 +178,7 @@ func (b *BoardState) SetSquare(n int8, color int8, piece int8) {
 		b.kingPos[color] = n
 	}
 	if color != EMPTY {
+		b.pieceLocations.AddPieceLocation(color, piece, n)
 		b.colors[color] = bitopts.SetBit(b.colors[color], n)
 		b.pieces[piece] = bitopts.SetBit(b.pieces[piece], n)
 	}
