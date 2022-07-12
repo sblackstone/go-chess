@@ -72,7 +72,7 @@ func FindSetBits(n uint64) []int8 {
 	for n > 0 {
 		leading := bits.TrailingZeros64(n)
 		result = append(result, int8(leading))
-		n = ClearBit(n, int8(leading))
+		n &= clearMasks[leading]
 	}
 
 	return result
