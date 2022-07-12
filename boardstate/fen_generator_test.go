@@ -1,15 +1,38 @@
 package boardstate
 
 import (
+	"reflect"
 	"testing"
 )
 
-func TestMissingGenerator(t *testing.T) {
-	t.Errorf("enpassnt on export")
-	t.Errorf("turn on export")
-	t.Errorf("halfmove on export")
-	t.Errorf("fullmove on export")
-	t.Errorf("caslting on export")
+func TestToFenEnPassant(t *testing.T) {
+	b := Blank()
+	b.SetSquare(25, BLACK, PAWN)
+	b.SetSquare(8, WHITE, PAWN)
+	b.PlayTurn(8, 24, EMPTY)
+	b.SetCastleRights(WHITE, CASTLE_SHORT, false)
+	b.SetCastleRights(BLACK, CASTLE_LONG, false)
+	b.SetFullMoves(25)
+	b.SetHalfMoves(50)
+	boardFen, _ := b.ToFEN()
+	b2, _ := FromFEN(boardFen)
+	if b.GetEnpassant() != b2.GetEnpassant() {
+		t.Errorf("Expected FEN to work with enpassant")
+	}
+	if b.GetTurn() != b2.GetTurn() {
+		t.Errorf("Expected FEN Turn")
+	}
+	if b.GetHalfMoves() != b2.GetHalfMoves() {
+		t.Errorf("expected FEN half moves match")
+	}
+	if b.GetFullMoves() != b2.GetFullMoves() {
+		t.Errorf("expected FEN full moves match")
+	}
+
+	if !reflect.DeepEqual(b.castleData, b2.castleData) {
+		t.Errorf("Expected castling match")
+	}
+
 }
 
 func TestToFEN(t *testing.T) {
