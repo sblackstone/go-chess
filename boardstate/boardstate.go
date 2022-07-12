@@ -142,20 +142,8 @@ func (b *BoardState) GenerateSuccessors(moves []*Move) []*BoardState {
 func (b *BoardState) MovePiece(src int8, dst int8) {
 	color := b.ColorOfSquare(src)
 	piece := b.PieceOfSquare(src)
-
-	// Clear the source square.
-	b.pieces[piece] = bitopts.ClearBit(b.pieces[piece], src)
-	b.colors[color] = bitopts.ClearBit(b.colors[color], src)
-
-	// Clear the destination square.
-	if !b.EmptySquare(dst) {
-		b.pieces[b.PieceOfSquare(dst)] = bitopts.ClearBit(b.pieces[b.PieceOfSquare(dst)], dst)
-		b.colors[b.ColorOfSquare(dst)] = bitopts.ClearBit(b.colors[b.ColorOfSquare(dst)], dst)
-	}
-
-	// Set the new piece.
-	b.colors[color] = bitopts.SetBit(b.colors[color], dst)
-	b.pieces[piece] = bitopts.SetBit(b.pieces[piece], dst)
+	b.SetSquare(src, EMPTY, EMPTY)
+	b.SetSquare(dst, color, piece)
 }
 
 // Returns an array of positions for a given set of pieces.
@@ -190,16 +178,11 @@ func (b *BoardState) PieceOfSquare(n int8) int8 {
 
 // SetSquare removes any existing piece and sets the square to the new piece/color.
 func (b *BoardState) SetSquare(n int8, color int8, piece int8) {
-	// Theres gotta be room for improvement here...
-	// we really only need to update the bitboard that is currently set.
-	b.pieces[ROOK] = bitopts.ClearBit(b.pieces[ROOK], n)
-	b.pieces[BISHOP] = bitopts.ClearBit(b.pieces[BISHOP], n)
-	b.pieces[KNIGHT] = bitopts.ClearBit(b.pieces[KNIGHT], n)
-	b.pieces[QUEEN] = bitopts.ClearBit(b.pieces[QUEEN], n)
-	b.pieces[KING] = bitopts.ClearBit(b.pieces[KING], n)
-	b.pieces[PAWN] = bitopts.ClearBit(b.pieces[PAWN], n)
-	b.colors[WHITE] = bitopts.ClearBit(b.colors[WHITE], n)
-	b.colors[BLACK] = bitopts.ClearBit(b.colors[BLACK], n)
+	if !b.EmptySquare(n) {
+		b.pieces[b.PieceOfSquare(n)] = bitopts.ClearBit(b.pieces[b.PieceOfSquare(n)], n)
+		b.colors[b.ColorOfSquare(n)] = bitopts.ClearBit(b.colors[b.ColorOfSquare(n)], n)
+	}
+
 	if color != EMPTY {
 		b.colors[color] = bitopts.SetBit(b.colors[color], n)
 		b.pieces[piece] = bitopts.SetBit(b.pieces[piece], n)
