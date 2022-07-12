@@ -29,7 +29,7 @@ func genPerfMakeUnmake(b *boardstate.BoardState, depth int) int {
 			if depth == 1 {
 				result += 1
 			} else {
-				result += genPerf(b, depth-1)
+				result += genPerfMakeUnmake(b, depth-1)
 			}
 		}
 		b.UnplayTurn()
