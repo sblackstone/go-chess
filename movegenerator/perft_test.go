@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/sblackstone/go-chess/boardstate"
-	"github.com/sblackstone/go-chess/fen"
 )
 
 func genPerf(state *boardstate.BoardState, depth int) int {
@@ -38,7 +37,7 @@ func genPerfMakeUnmake(b *boardstate.BoardState, depth int) int {
 }
 
 func BenchmarkPerf(b *testing.B) {
-	board, _ := fen.FromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+	board, _ := boardstate.FromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
 	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
 		genPerf(board, 5)
@@ -46,7 +45,7 @@ func BenchmarkPerf(b *testing.B) {
 }
 
 func BenchmarkPerfMakeUnmake(b *testing.B) {
-	board, _ := fen.FromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+	board, _ := boardstate.FromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
 	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
 		genPerfMakeUnmake(board, 5)
@@ -70,7 +69,7 @@ func TestPerftPositions(t *testing.T) {
 	}
 
 	for _, pt := range perfTests {
-		b, err := fen.FromFEN(pt.fen)
+		b, err := boardstate.FromFEN(pt.fen)
 		if err != nil {
 			t.Errorf("%v\n", err)
 		} else {

@@ -1,4 +1,4 @@
-package fen
+package boardstate
 
 import (
 	//"strings"
@@ -6,13 +6,12 @@ import (
 	"regexp"
 
 	"github.com/sblackstone/go-chess/bitopts"
-	"github.com/sblackstone/go-chess/boardstate"
 
 	//"fmt"
 	"strconv"
 )
 
-func applyBoardString(b *boardstate.BoardState, boardStr string) error {
+func applyBoardString(b *BoardState, boardStr string) error {
 	var rank, file int8
 	var j int
 
@@ -27,30 +26,30 @@ func applyBoardString(b *boardstate.BoardState, boardStr string) error {
 		char := string(boardStr[j])
 		switch char {
 		case "p":
-			addPiece(rank, file, boardstate.BLACK, boardstate.PAWN)
+			addPiece(rank, file, BLACK, PAWN)
 		case "r":
-			addPiece(rank, file, boardstate.BLACK, boardstate.ROOK)
+			addPiece(rank, file, BLACK, ROOK)
 		case "n":
-			addPiece(rank, file, boardstate.BLACK, boardstate.KNIGHT)
+			addPiece(rank, file, BLACK, KNIGHT)
 		case "b":
-			addPiece(rank, file, boardstate.BLACK, boardstate.BISHOP)
+			addPiece(rank, file, BLACK, BISHOP)
 		case "q":
-			addPiece(rank, file, boardstate.BLACK, boardstate.QUEEN)
+			addPiece(rank, file, BLACK, QUEEN)
 		case "k":
-			addPiece(rank, file, boardstate.BLACK, boardstate.KING)
+			addPiece(rank, file, BLACK, KING)
 
 		case "P":
-			addPiece(rank, file, boardstate.WHITE, boardstate.PAWN)
+			addPiece(rank, file, WHITE, PAWN)
 		case "R":
-			addPiece(rank, file, boardstate.WHITE, boardstate.ROOK)
+			addPiece(rank, file, WHITE, ROOK)
 		case "N":
-			addPiece(rank, file, boardstate.WHITE, boardstate.KNIGHT)
+			addPiece(rank, file, WHITE, KNIGHT)
 		case "B":
-			addPiece(rank, file, boardstate.WHITE, boardstate.BISHOP)
+			addPiece(rank, file, WHITE, BISHOP)
 		case "Q":
-			addPiece(rank, file, boardstate.WHITE, boardstate.QUEEN)
+			addPiece(rank, file, WHITE, QUEEN)
 		case "K":
-			addPiece(rank, file, boardstate.WHITE, boardstate.KING)
+			addPiece(rank, file, WHITE, KING)
 		case "1":
 			file += 1
 		case "2":
@@ -82,40 +81,40 @@ func applyBoardString(b *boardstate.BoardState, boardStr string) error {
 
 }
 
-func applyTurnString(b *boardstate.BoardState, turnString string) error {
+func applyTurnString(b *BoardState, turnString string) error {
 	// regex ensures this is already a w or b.
 	if turnString == "w" {
-		b.SetTurn(boardstate.WHITE)
+		b.SetTurn(WHITE)
 	} else if turnString == "b" {
-		b.SetTurn(boardstate.BLACK)
+		b.SetTurn(BLACK)
 	}
 	return nil
 }
 
-func applyCastlingString(b *boardstate.BoardState, castlingString string) error {
-	b.SetCastleRights(boardstate.BLACK, boardstate.CASTLE_LONG, false)
-	b.SetCastleRights(boardstate.WHITE, boardstate.CASTLE_LONG, false)
-	b.SetCastleRights(boardstate.BLACK, boardstate.CASTLE_SHORT, false)
-	b.SetCastleRights(boardstate.WHITE, boardstate.CASTLE_SHORT, false)
+func applyCastlingString(b *BoardState, castlingString string) error {
+	b.SetCastleRights(BLACK, CASTLE_LONG, false)
+	b.SetCastleRights(WHITE, CASTLE_LONG, false)
+	b.SetCastleRights(BLACK, CASTLE_SHORT, false)
+	b.SetCastleRights(WHITE, CASTLE_SHORT, false)
 	// We're sure its one of these cases via the REGEX
 	for _, char := range castlingString {
 		switch string(char) {
 		case "-":
 			return nil
 		case "k":
-			b.SetCastleRights(boardstate.BLACK, boardstate.CASTLE_SHORT, true)
+			b.SetCastleRights(BLACK, CASTLE_SHORT, true)
 		case "q":
-			b.SetCastleRights(boardstate.BLACK, boardstate.CASTLE_LONG, true)
+			b.SetCastleRights(BLACK, CASTLE_LONG, true)
 		case "K":
-			b.SetCastleRights(boardstate.WHITE, boardstate.CASTLE_SHORT, true)
+			b.SetCastleRights(WHITE, CASTLE_SHORT, true)
 		case "Q":
-			b.SetCastleRights(boardstate.WHITE, boardstate.CASTLE_LONG, true)
+			b.SetCastleRights(WHITE, CASTLE_LONG, true)
 		}
 	}
 	return nil
 }
 
-func applyEnpassantString(b *boardstate.BoardState, enpassantString string) error {
+func applyEnpassantString(b *BoardState, enpassantString string) error {
 	if enpassantString == "-" {
 		return nil
 	}
@@ -128,8 +127,8 @@ func applyEnpassantString(b *boardstate.BoardState, enpassantString string) erro
 
 }
 
-func FromFEN(fenString string) (*boardstate.BoardState, error) {
-	b := boardstate.Blank()
+func FromFEN(fenString string) (*BoardState, error) {
+	b := Blank()
 	re := regexp.MustCompile(`([^\s]+)([\s]{1})([wb]+)([\s]{1})([-KQkq]+)([\s]{1})([-a-z0-9]+)([\s]{1})([0-9]*)([\s]{1})([0-9]*)`)
 	m := re.FindStringSubmatch(fenString)
 

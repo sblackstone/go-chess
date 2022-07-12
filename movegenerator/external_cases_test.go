@@ -9,7 +9,7 @@ import (
 	"reflect"
 	"sort"
 
-	"github.com/sblackstone/go-chess/fen"
+	"github.com/sblackstone/go-chess/boardstate"
 )
 
 type StartingPosition struct {
@@ -75,7 +75,7 @@ func testFromFile(t *testing.T, fileName string) error {
 	json.Unmarshal(byteValue, &testCaseFile)
 
 	for _, tc := range testCaseFile.TestCases {
-		b, err := fen.FromFEN(tc.Start.Fen)
+		b, err := boardstate.FromFEN(tc.Start.Fen)
 		if err != nil {
 			return err
 		}
@@ -84,7 +84,7 @@ func testFromFile(t *testing.T, fileName string) error {
 
 		var fens []string
 		for _, succ := range successors {
-			f, err := fen.ToFEN(succ)
+			f, err := succ.ToFEN()
 			if err != nil {
 				return err
 			}

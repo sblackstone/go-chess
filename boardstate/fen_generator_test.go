@@ -1,9 +1,7 @@
-package fen
+package boardstate
 
 import (
 	"testing"
-
-	"github.com/sblackstone/go-chess/boardstate"
 )
 
 func TestMissingGenerator(t *testing.T) {
@@ -15,9 +13,9 @@ func TestMissingGenerator(t *testing.T) {
 }
 
 func TestToFEN(t *testing.T) {
-	b := boardstate.Initial()
+	b := Initial()
 	correctStr := "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
-	str, _ := ToFEN(b)
+	str, _ := b.ToFEN()
 	if str != correctStr {
 		t.Errorf("Expected %v to be %v", str, correctStr)
 	}

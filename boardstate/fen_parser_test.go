@@ -1,8 +1,7 @@
-package fen
+package boardstate
 
 import (
 	"fmt"
-	"github.com/sblackstone/go-chess/boardstate"
 	"reflect"
 	"testing"
 )
@@ -12,9 +11,9 @@ func TestMoreCastling(t *testing.T) {
 	expected := "8/4k3/8/8/8/8/R6r/4K2R b K - 0 1"
 	b, _ := FromFEN(testCase)
 
-	b.PlayTurn(0, 8, boardstate.EMPTY)
+	b.PlayTurn(0, 8, EMPTY)
 
-	newFen, _ := ToFEN(b)
+	newFen, _ := b.ToFEN()
 
 	if newFen != expected {
 		t.Errorf("Initial  %v\n", testCase)
@@ -33,7 +32,7 @@ func TestAllFileOffsets(t *testing.T) {
 		t.Errorf("Unexpected error with parsing fen: %v", err)
 	}
 	for i = 7; i <= 56; i += 7 {
-		if b.PieceOfSquare(i) != boardstate.PAWN || b.ColorOfSquare(i) != boardstate.WHITE {
+		if b.PieceOfSquare(i) != PAWN || b.ColorOfSquare(i) != WHITE {
 			t.Errorf("Expected a pawn on (%v)\n", i)
 		}
 	}
@@ -91,13 +90,13 @@ func TestMalShapedFenString(t *testing.T) {
 func TestParseTurn(t *testing.T) {
 	testStr := "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 	b, err := FromFEN(testStr)
-	if err != nil || b.GetTurn() != boardstate.WHITE {
+	if err != nil || b.GetTurn() != WHITE {
 		t.Errorf("Expected turn to be WHITE after import: %v %v", b.GetTurn(), err)
 	}
 
 	testStr2 := "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1"
 	b2, err2 := FromFEN(testStr2)
-	if err != nil || b2.GetTurn() != boardstate.BLACK {
+	if err != nil || b2.GetTurn() != BLACK {
 		t.Errorf("Expected turn to be WHITE after import: %v %v", b2.GetTurn(), err2)
 	}
 }
@@ -105,7 +104,7 @@ func TestParseTurn(t *testing.T) {
 func TestParseEnpassant(t *testing.T) {
 	testStr := "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 	b, err := FromFEN(testStr)
-	if err != nil || b.GetEnpassant() != boardstate.NO_ENPASSANT {
+	if err != nil || b.GetEnpassant() != NO_ENPASSANT {
 		t.Errorf("Expected GetEnpassant to be NO_ENPASSANT after import: %v %v", b.GetEnpassant(), err)
 	}
 
@@ -122,16 +121,16 @@ func TestParseCastlingNone(t *testing.T) {
 	if err != nil {
 		t.Errorf("Expected valid import: %v", err)
 	}
-	if b.HasCastleRights(boardstate.WHITE, boardstate.CASTLE_LONG) {
+	if b.HasCastleRights(WHITE, CASTLE_LONG) {
 		t.Errorf("expected not to have  WHITE LONG")
 	}
-	if b.HasCastleRights(boardstate.WHITE, boardstate.CASTLE_SHORT) {
+	if b.HasCastleRights(WHITE, CASTLE_SHORT) {
 		t.Errorf("expected not to have  WHITE SHORT")
 	}
-	if b.HasCastleRights(boardstate.BLACK, boardstate.CASTLE_LONG) {
+	if b.HasCastleRights(BLACK, CASTLE_LONG) {
 		t.Errorf("expected not to have  BLACK LONG")
 	}
-	if b.HasCastleRights(boardstate.BLACK, boardstate.CASTLE_SHORT) {
+	if b.HasCastleRights(BLACK, CASTLE_SHORT) {
 		t.Errorf("expected not to have  BLACK SHORT")
 	}
 }
@@ -142,16 +141,16 @@ func TestParseCastlingShortOnly(t *testing.T) {
 	if err != nil {
 		t.Errorf("Expected valid import: %v", err)
 	}
-	if b.HasCastleRights(boardstate.WHITE, boardstate.CASTLE_LONG) {
+	if b.HasCastleRights(WHITE, CASTLE_LONG) {
 		t.Errorf("expected not to have  WHITE LONG")
 	}
-	if !b.HasCastleRights(boardstate.WHITE, boardstate.CASTLE_SHORT) {
+	if !b.HasCastleRights(WHITE, CASTLE_SHORT) {
 		t.Errorf("expected TO have  WHITE SHORT")
 	}
-	if b.HasCastleRights(boardstate.BLACK, boardstate.CASTLE_LONG) {
+	if b.HasCastleRights(BLACK, CASTLE_LONG) {
 		t.Errorf("expected not to have  BLACK LONG")
 	}
-	if !b.HasCastleRights(boardstate.BLACK, boardstate.CASTLE_SHORT) {
+	if !b.HasCastleRights(BLACK, CASTLE_SHORT) {
 		t.Errorf("expected TO have  BLACK SHORT")
 	}
 }
@@ -162,22 +161,22 @@ func TestParseCastlingLongOnly(t *testing.T) {
 	if err != nil {
 		t.Errorf("Expected valid import: %v", err)
 	}
-	if !b.HasCastleRights(boardstate.WHITE, boardstate.CASTLE_LONG) {
+	if !b.HasCastleRights(WHITE, CASTLE_LONG) {
 		t.Errorf("expected TO have  WHITE LONG")
 	}
-	if b.HasCastleRights(boardstate.WHITE, boardstate.CASTLE_SHORT) {
+	if b.HasCastleRights(WHITE, CASTLE_SHORT) {
 		t.Errorf("expected NOT TO have  WHITE SHORT")
 	}
-	if !b.HasCastleRights(boardstate.BLACK, boardstate.CASTLE_LONG) {
+	if !b.HasCastleRights(BLACK, CASTLE_LONG) {
 		t.Errorf("expected TO have  BLACK LONG")
 	}
-	if b.HasCastleRights(boardstate.BLACK, boardstate.CASTLE_SHORT) {
+	if b.HasCastleRights(BLACK, CASTLE_SHORT) {
 		t.Errorf("expected NOT have  BLACK SHORT")
 	}
 }
 
 func TestFENParserDefaultBoard(t *testing.T) {
-	correct := boardstate.Initial()
+	correct := Initial()
 	testStr := "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 	b, err := FromFEN(testStr)
 

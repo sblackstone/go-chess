@@ -1,14 +1,14 @@
-package fen
+package boardstate
 
 import (
 	//"strings"
 	"fmt"
-	"github.com/sblackstone/go-chess/bitopts"
-	"github.com/sblackstone/go-chess/boardstate"
 	"strings"
+
+	"github.com/sblackstone/go-chess/bitopts"
 )
 
-func ToFEN(b *boardstate.BoardState) (string, error) {
+func (b *BoardState) ToFEN() (string, error) {
 	var rank, file int8
 	result := ""
 	for rank = 7; rank >= 0; rank-- {
@@ -17,25 +17,25 @@ func ToFEN(b *boardstate.BoardState) (string, error) {
 			pos := bitopts.RankFileToSquare(rank, file)
 			color := b.ColorOfSquare(pos)
 			piece := b.PieceOfSquare(pos)
-			if color == boardstate.EMPTY {
+			if color == EMPTY {
 				emptyCount += 1
 			} else {
 				sqStr := ""
 				switch piece {
-				case boardstate.PAWN:
+				case PAWN:
 					sqStr = "p"
-				case boardstate.ROOK:
+				case ROOK:
 					sqStr = "r"
-				case boardstate.KNIGHT:
+				case KNIGHT:
 					sqStr = "n"
-				case boardstate.BISHOP:
+				case BISHOP:
 					sqStr = "b"
-				case boardstate.QUEEN:
+				case QUEEN:
 					sqStr = "q"
-				case boardstate.KING:
+				case KING:
 					sqStr = "k"
 				}
-				if color == boardstate.WHITE {
+				if color == WHITE {
 					sqStr = strings.ToUpper(sqStr)
 				}
 				if emptyCount > 0 {
@@ -54,7 +54,7 @@ func ToFEN(b *boardstate.BoardState) (string, error) {
 	}
 
 	result += " "
-	if b.GetTurn() == boardstate.WHITE {
+	if b.GetTurn() == WHITE {
 		result += "w"
 	} else {
 		result += "b"
@@ -63,10 +63,10 @@ func ToFEN(b *boardstate.BoardState) (string, error) {
 	result += " "
 
 	/// Add castling rights
-	wlong := b.HasCastleRights(boardstate.WHITE, boardstate.CASTLE_LONG)
-	wshort := b.HasCastleRights(boardstate.WHITE, boardstate.CASTLE_SHORT)
-	blong := b.HasCastleRights(boardstate.BLACK, boardstate.CASTLE_LONG)
-	bshort := b.HasCastleRights(boardstate.BLACK, boardstate.CASTLE_SHORT)
+	wlong := b.HasCastleRights(WHITE, CASTLE_LONG)
+	wshort := b.HasCastleRights(WHITE, CASTLE_SHORT)
+	blong := b.HasCastleRights(BLACK, CASTLE_LONG)
+	bshort := b.HasCastleRights(BLACK, CASTLE_SHORT)
 
 	if !wlong && !wshort && !blong && !bshort {
 		result += "-"
@@ -89,7 +89,7 @@ func ToFEN(b *boardstate.BoardState) (string, error) {
 
 	/// Add Enpassant
 	enpassantSq := b.GetEnpassant()
-	if enpassantSq == boardstate.NO_ENPASSANT {
+	if enpassantSq == NO_ENPASSANT {
 		result += "-"
 	} else {
 		result += bitopts.SquareToAlgebraic(enpassantSq)

@@ -5,7 +5,6 @@ import (
 	"strings"
 
 	"github.com/sblackstone/go-chess/boardstate"
-	"github.com/sblackstone/go-chess/fen"
 )
 
 func RemovePositionPrefix(positionStr string) string {
@@ -22,7 +21,7 @@ func BoardFromUCIPosition(positionStr string) *boardstate.BoardState {
 	if fenStr == "startpos" {
 		board = boardstate.Initial()
 	} else {
-		board, err = fen.FromFEN(fenStr)
+		board, err = boardstate.FromFEN(fenStr)
 		if err != nil {
 			panic(fmt.Sprintf("%v\n", err))
 		}
