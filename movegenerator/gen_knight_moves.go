@@ -91,8 +91,7 @@ func init() {
 
 func genSingleKnightMovesGeneric(b *boardstate.BoardState, knightPos int8, updateFunc func(int8, int8)) {
 	knightColor := b.ColorOfSquare(knightPos)
-	for i := range pregeneratedKnightMoves[knightPos] {
-		move := pregeneratedKnightMoves[knightPos][i]
+	for _, move := range pregeneratedKnightMoves[knightPos] {
 		if b.ColorOfSquare(move) != knightColor {
 			updateFunc(knightPos, move)
 		}
