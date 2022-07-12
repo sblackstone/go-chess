@@ -5,6 +5,45 @@ import (
 	"testing"
 )
 
+func TestCopyPieceLocations(t *testing.T) {
+	var pl PieceLocations
+	pl.AddPieceLocation(WHITE, PAWN, 1)
+	pl.AddPieceLocation(WHITE, PAWN, 2)
+	pl.AddPieceLocation(WHITE, PAWN, 3)
+	pl.AddPieceLocation(WHITE, ROOK, 4)
+
+	pl.AddPieceLocation(BLACK, PAWN, 8)
+	pl.AddPieceLocation(BLACK, PAWN, 9)
+	pl.AddPieceLocation(BLACK, PAWN, 10)
+	pl.AddPieceLocation(BLACK, ROOK, 12)
+
+	plCopy := pl.Copy()
+
+	var color, piece int8
+	for color = WHITE; color <= BLACK; color++ {
+		for piece = ROOK; piece <= PAWN; piece++ {
+			orig := pl.GetLocations(color, piece)
+			latest := plCopy.GetLocations(color, piece)
+			if (len(orig) != 0 || len(latest) != 0) && !reflect.DeepEqual(orig, latest) {
+				t.Errorf("Expected %v to be %v for %v %v", latest, orig, color, piece)
+			}
+		}
+	}
+
+	wpawns := plCopy.GetLocations(WHITE, PAWN)
+	wpawnsExpected := pl.GetLocations(WHITE, PAWN)
+
+	bpawns := plCopy.GetLocations(BLACK, PAWN)
+	bpawnsExpected := pl.GetLocations(BLACK, PAWN)
+
+	if !reflect.DeepEqual(wpawns, wpawnsExpected) {
+		t.Errorf("Expected %v to be %v", wpawns, wpawnsExpected)
+	}
+	if !reflect.DeepEqual(bpawns, bpawnsExpected) {
+		t.Errorf("Expected %v to be %v", bpawns, bpawnsExpected)
+	}
+
+}
 func TestPieceLocationsSeparateColors(t *testing.T) {
 	var pl PieceLocations
 	pl.AddPieceLocation(WHITE, PAWN, 1)

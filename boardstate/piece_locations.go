@@ -4,6 +4,18 @@ type PieceLocations struct {
 	pieces [2][6][]int8
 }
 
+func (pl *PieceLocations) Copy() PieceLocations {
+	var result PieceLocations
+	var color, piece int8
+	for color = WHITE; color <= BLACK; color++ {
+		for piece = ROOK; piece <= PAWN; piece++ {
+			result.pieces[color][piece] = make([]int8, len(pl.pieces[color][piece]))
+			copy(result.pieces[color][piece], pl.pieces[color][piece])
+		}
+	}
+	return result
+}
+
 func (pl *PieceLocations) AddPieceLocation(color, piece, location int8) {
 	pl.pieces[color][piece] = append(pl.pieces[color][piece], location)
 }

@@ -17,6 +17,7 @@ type BoardState struct {
 	colorList       [64]int8
 	pieceList       [64]int8
 	kingPos         [2]int8
+	pieceLocations  PieceLocations
 }
 
 type MoveStackData struct {
@@ -77,6 +78,8 @@ func (b *BoardState) Copy() *BoardState {
 		kingPos:         b.kingPos,
 		pieceList:       b.pieceList,
 	}
+
+	boardCopy.pieceLocations = b.pieceLocations.Copy()
 
 	return &boardCopy
 }
