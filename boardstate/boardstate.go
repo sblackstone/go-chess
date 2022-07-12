@@ -1,8 +1,6 @@
 package boardstate
 
 import (
-	"math/bits"
-
 	"github.com/sblackstone/go-chess/bitopts"
 )
 
@@ -28,6 +26,7 @@ type BoardState struct {
 	fullMoves       int
 	moveStack       *MoveStackData
 	colorList       [64]int8
+	kingPos         [2]int8
 }
 
 type MoveStackData struct {
@@ -42,7 +41,7 @@ type MoveStackData struct {
 }
 
 func (b *BoardState) GetKingPos(color int8) int8 {
-	return int8(bits.TrailingZeros64(b.colors[color] & b.pieces[KING]))
+	return b.kingPos[color]
 }
 
 // Blank returns a blank board with no pieces on it
@@ -56,6 +55,8 @@ func Blank() *BoardState {
 	for i := 0; i < 64; i++ {
 		b.colorList[i] = EMPTY
 	}
+	b.kingPos[WHITE] = NO_KING
+	b.kingPos[BLACK] = NO_KING
 	return &b
 }
 
@@ -82,6 +83,7 @@ func (b *BoardState) Copy() *BoardState {
 		castleData:      b.castleData,
 		moveStack:       b.moveStack,
 		colorList:       b.colorList,
+		kingPos:         b.kingPos,
 	}
 
 	return &boardCopy
@@ -128,7 +130,7 @@ func (b *BoardState) EnemyOccupiedSquare(n int8) bool {
 }
 
 func (b *BoardState) EmptySquare(n int8) bool {
-	return !bitopts.TestBit(b.colors[BLACK]|b.colors[WHITE], n)
+	return b.colorList[n] == EMPTY
 }
 
 func (b *BoardState) EmptyOrEnemyOccupiedSquare(n int8) bool {
@@ -183,6 +185,9 @@ func (b *BoardState) SetSquare(n int8, color int8, piece int8) {
 	}
 	b.colorList[n] = color
 
+	if piece == KING {
+		b.kingPos[color] = n
+	}
 	if color != EMPTY {
 		b.colors[color] = bitopts.SetBit(b.colors[color], n)
 		b.pieces[piece] = bitopts.SetBit(b.pieces[piece], n)

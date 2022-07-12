@@ -177,10 +177,10 @@ func TestGenAllKingMoves(t *testing.T) {
 
 func TestKingCenterOfBoard(t *testing.T) {
 	b := boardstate.Blank()
+	b.SetSquare(27, boardstate.WHITE, boardstate.KING)
 	b.SetCastleRights(boardstate.WHITE, boardstate.CASTLE_LONG, false)
 	b.SetCastleRights(boardstate.WHITE, boardstate.CASTLE_SHORT, false)
 
-	b.SetSquare(27, boardstate.WHITE, boardstate.KING)
 	expected := []int8{18, 19, 20, 26, 28, 34, 35, 36}
 	testSuccessorsHelper(t, b, boardstate.KING, expected)
 	testAttacksHelper(t, b, boardstate.KING, expected)
