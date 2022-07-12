@@ -26,6 +26,7 @@ type BoardState struct {
 	fullMoves       int
 	moveStack       *MoveStackData
 	colorList       [64]int8
+	pieceList       [64]int8
 	kingPos         [2]int8
 }
 
@@ -54,6 +55,7 @@ func Blank() *BoardState {
 	b.enpassantSquare = NO_ENPASSANT
 	for i := 0; i < 64; i++ {
 		b.colorList[i] = EMPTY
+		b.pieceList[i] = EMPTY
 	}
 	b.kingPos[WHITE] = NO_KING
 	b.kingPos[BLACK] = NO_KING
@@ -84,6 +86,7 @@ func (b *BoardState) Copy() *BoardState {
 		moveStack:       b.moveStack,
 		colorList:       b.colorList,
 		kingPos:         b.kingPos,
+		pieceList:       b.pieceList,
 	}
 
 	return &boardCopy
@@ -168,13 +171,7 @@ func (b *BoardState) ColorOfSquare(n int8) int8 {
 
 // PieceOfSquare t
 func (b *BoardState) PieceOfSquare(n int8) int8 {
-	var i int8
-	for i = 0; i < 6; i++ {
-		if bitopts.TestBit(b.pieces[i], n) {
-			return i
-		}
-	}
-	return EMPTY
+	return b.pieceList[n]
 }
 
 // SetSquare removes any existing piece and sets the square to the new piece/color.
@@ -184,6 +181,7 @@ func (b *BoardState) SetSquare(n int8, color int8, piece int8) {
 		b.colors[b.ColorOfSquare(n)] = bitopts.ClearBit(b.colors[b.ColorOfSquare(n)], n)
 	}
 	b.colorList[n] = color
+	b.pieceList[n] = piece
 
 	if piece == KING {
 		b.kingPos[color] = n
