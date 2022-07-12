@@ -90,10 +90,77 @@ func TestUnplayTurnEnpassantDeclinedBlack(t *testing.T) {
 	}
 }
 
-func TestUnplayTurnCastling(t *testing.T) {
-	t.Errorf("Unimplmemented")
+func TestUnplayTurnCastlingWhiteLong(t *testing.T) {
+	b := testCastlingBoard()
+	before, _ := b.ToFEN()
+	b.PlayTurn(4, 2, EMPTY)
+	b.UnplayTurn()
+	after, _ := b.ToFEN()
+	if before != after {
+		t.Errorf("Expected %v to be %v", after, before)
+	}
 }
 
-func TestUnplayTurnPromotion(t *testing.T) {
-	t.Errorf("unimplmeneted")
+func TestUnplayTurnCastlingWhiteShort(t *testing.T) {
+	b := testCastlingBoard()
+	before, _ := b.ToFEN()
+	b.PlayTurn(4, 6, EMPTY)
+	b.UnplayTurn()
+	after, _ := b.ToFEN()
+	if before != after {
+		t.Errorf("Expected %v to be %v", after, before)
+	}
+}
+
+func TestUnplayTurnCastlingBlackLong(t *testing.T) {
+	b := testCastlingBoard()
+	b.ToggleTurn()
+	before, _ := b.ToFEN()
+	b.PlayTurn(60, 58, EMPTY)
+	b.UnplayTurn()
+	after, _ := b.ToFEN()
+	if before != after {
+		t.Errorf("Expected %v to be %v", after, before)
+	}
+}
+
+func TestUnplayTurnCastlingBlackShort(t *testing.T) {
+	b := testCastlingBoard()
+	b.ToggleTurn()
+	before, _ := b.ToFEN()
+	b.PlayTurn(60, 62, EMPTY)
+	b.UnplayTurn()
+	after, _ := b.ToFEN()
+	if before != after {
+		t.Errorf("Expected %v to be %v", after, before)
+	}
+}
+
+func TestUnplayTurnPromotionWithCaptureWhite(t *testing.T) {
+	b := Blank()
+	b.SetSquare(48, WHITE, PAWN)
+	b.SetSquare(57, BLACK, QUEEN)
+	before, _ := b.ToFEN()
+	b.PlayTurn(48, 57, KNIGHT)
+	b.UnplayTurn()
+	after, _ := b.ToFEN()
+	if before != after {
+		t.Errorf("Expected %v to be %v", after, before)
+	}
+}
+
+func TestUnplayTurnPromotionWithCaptureBlack(t *testing.T) {
+	b := Blank()
+	b.SetSquare(9, BLACK, PAWN)
+	b.SetSquare(0, WHITE, QUEEN)
+	b.ToggleTurn()
+
+	before, _ := b.ToFEN()
+	b.PlayTurn(9, 0, KNIGHT)
+	b.UnplayTurn()
+	after, _ := b.ToFEN()
+	if before != after {
+		t.Errorf("Expected %v to be %v", after, before)
+	}
+
 }
