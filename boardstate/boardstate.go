@@ -55,16 +55,16 @@ func Blank() *BoardState {
 	return &b
 }
 
-// Initial returns a board with the initial setup.
-func Initial() *BoardState {
-	b := Blank()
-	// These constants are pre-calculated using InitialManual (see below)...
-	b.colors = [2]uint64{65535, 18446462598732840960}
-	b.pieces = [6]uint64{9295429630892703873, 4755801206503243842, 2594073385365405732, 576460752303423496, 1152921504606846992, 71776119061282560}
-	b.fullMoves = 1
-	b.EnableAllCastling()
-	return b
-}
+// // Initial returns a board with the initial setup.
+// func Initial() *BoardState {
+// 	b := Blank()
+// 	// These constants are pre-calculated using InitialManual (see below)...
+// 	b.colors = [2]uint64{65535, 18446462598732840960}
+// 	b.pieces = [6]uint64{9295429630892703873, 4755801206503243842, 2594073385365405732, 576460752303423496, 1152921504606846992, 71776119061282560}
+// 	b.fullMoves = 1
+// 	b.EnableAllCastling()
+// 	return b
+// }
 
 // Copy returns a copy of a BoardState
 func (b *BoardState) Copy() *BoardState {
@@ -83,7 +83,7 @@ func (b *BoardState) Copy() *BoardState {
 }
 
 // initialManual sets up the board manually, only used to calculate the constants for the fast version Initial.
-func initialManual() *BoardState {
+func Initial() *BoardState {
 	var j int8
 
 	b := Blank()

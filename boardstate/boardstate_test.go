@@ -776,10 +776,6 @@ func TestCreateInitialBoard(t *testing.T) {
 	testInitialBoard(t, Initial())
 }
 
-func TestCreateInitialBoardManual(t *testing.T) {
-	testInitialBoard(t, initialManual())
-}
-
 func TestColorOfSquare(t *testing.T) {
 	b := Initial()
 	if b.ColorOfSquare(63) != BLACK {
