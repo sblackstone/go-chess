@@ -79,26 +79,6 @@ func GenMoves(b *boardstate.BoardState) []*boardstate.Move {
 	return result
 }
 
-func GenMovesList(b *boardstate.BoardState) *boardstate.MoveList {
-	var moveList boardstate.MoveList
-
-	updateFunc := func(src int8, dst int8) {
-		moveList.AddMove(&boardstate.Move{Src: src, Dst: dst, PromotePiece: boardstate.EMPTY})
-	}
-
-	updateFuncPawns := func(src, dst, promotePiece int8) {
-		moveList.AddMove(&boardstate.Move{Src: src, Dst: dst, PromotePiece: promotePiece})
-	}
-
-	genAllQueenMovesGeneric(b, b.GetTurn(), updateFunc)
-	genAllBishopMovesGeneric(b, b.GetTurn(), updateFunc)
-	genAllKnightMovesGeneric(b, b.GetTurn(), updateFunc)
-	genAllRookMovesGeneric(b, b.GetTurn(), updateFunc)
-	genAllKingMovesGeneric(b, b.GetTurn(), false, updateFunc)
-	genAllPawnMovesGeneric(b, b.GetTurn(), false, updateFuncPawns)
-	return &moveList
-}
-
 func IsInCheck(b *boardstate.BoardState, color int8) bool {
 	kingPos := b.GetKingPos(color)
 	if kingPos == boardstate.NO_KING {
