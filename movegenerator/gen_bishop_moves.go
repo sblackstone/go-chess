@@ -5,6 +5,24 @@ import (
 	"github.com/sblackstone/go-chess/boardstate"
 )
 
+// For future use.
+var bishopAttackMasks [64]uint64
+
+func genBishopAttackMasks() {
+	var pos int8
+	for pos = 0; pos < 64; pos++ {
+		b := boardstate.Blank()
+		b.SetSquare(pos, boardstate.WHITE, boardstate.BISHOP)
+		bishopAttackMasks[pos] = genAllBishopAttacks(b, boardstate.WHITE)
+		// bitopts.Print(bishopAttackMasks[pos], pos)
+		// fmt.Printf("***\n\n")
+	}
+}
+
+func init() {
+	genBishopAttackMasks()
+}
+
 func genSingleBishopMovesGeneric(b *boardstate.BoardState, bishopPos int8, updateFunc func(int8, int8)) {
 	file := bitopts.FileOfSquare(bishopPos)
 

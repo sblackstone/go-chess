@@ -5,18 +5,20 @@ import (
 	"github.com/sblackstone/go-chess/boardstate"
 )
 
-var rookMasks [64]uint64
+var rookAttackMasks [64]uint64
 
 // For future use.
-func init() {
+func genRookAttackMasks() {
 	var pos int8
 	for pos = 0; pos < 64; pos++ {
 		b := boardstate.Blank()
 		b.SetSquare(pos, boardstate.WHITE, boardstate.ROOK)
-		rookMasks[pos] = genAllRookAttacks(b, boardstate.WHITE)
+		rookAttackMasks[pos] = genAllRookAttacks(b, boardstate.WHITE)
 		//bitopts.Print(rookMasks[pos], pos)
 	}
-
+}
+func init() {
+	genRookAttackMasks()
 }
 
 func genSingleRookMovesGeneric(b *boardstate.BoardState, rookPos int8, updateFunc func(int8, int8)) {
