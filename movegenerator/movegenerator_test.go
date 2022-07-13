@@ -22,6 +22,14 @@ func TestIsInCheckWhite(t *testing.T) {
 
 }
 
+func TestCountMoves(t *testing.T) {
+	b := boardstate.Initial()
+	result := GenMovesCount(b)
+	if result != 20 {
+		t.Errorf("Expected GenMovesCount to return 20 for initial position")
+	}
+}
+
 func TestIsInCheckBlack(t *testing.T) {
 	b := boardstate.Blank()
 	b.SetSquare(0, boardstate.BLACK, boardstate.KING)

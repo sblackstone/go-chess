@@ -59,6 +59,26 @@ func GenSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
 }
 
 // For testing at the moment, not tested.
+func GenMovesCount(b *boardstate.BoardState) uint64 {
+	var result uint64
+
+	updateFunc := func(src int8, dst int8) {
+		result += 1
+	}
+
+	updateFuncPawns := func(src, dst, promotePiece int8) {
+		result += 1
+	}
+
+	genAllQueenMovesGeneric(b, b.GetTurn(), updateFunc)
+	genAllBishopMovesGeneric(b, b.GetTurn(), updateFunc)
+	genAllKnightMovesGeneric(b, b.GetTurn(), updateFunc)
+	genAllRookMovesGeneric(b, b.GetTurn(), updateFunc)
+	genAllKingMovesGeneric(b, b.GetTurn(), false, updateFunc)
+	genAllPawnMovesGeneric(b, b.GetTurn(), false, updateFuncPawns)
+	return result
+}
+
 func GenMoves(b *boardstate.BoardState) []*boardstate.Move {
 	var result []*boardstate.Move
 
