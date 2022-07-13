@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/sblackstone/go-chess/boardstate"
+	"github.com/sblackstone/go-chess/uci"
 )
 
 func TestBestSuccessor1(t *testing.T) {
@@ -13,6 +14,13 @@ func TestBestSuccessor1(t *testing.T) {
 	b.Print(127)
 	bs := BestSuccessor(b, 2)
 	bs.Print(127)
+}
+
+func TestCrash(t *testing.T) {
+	posStr := "position startpos moves d2d4 e7e6 c1f4 g7g5 f4g3 f8d6 g3d6"
+	b := uci.BoardFromUCIPosition(posStr)
+	bs := BestMove(b, 4)
+	t.Errorf("%v", bs)
 }
 
 // func TestPlayItself(t *testing.T) {
