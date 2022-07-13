@@ -170,6 +170,9 @@ func (b *BoardState) SetSquare(n int8, color int8, piece int8) {
 		b.pieces[origPiece] = bitopts.ClearBit(b.pieces[origPiece], n)
 		b.colors[origColor] = bitopts.ClearBit(b.colors[origColor], n)
 		b.pieceLocations.RemovePieceLocation(origColor, origPiece, n)
+		if origPiece == KING {
+			b.kingPos[origColor] = NO_KING
+		}
 	}
 	b.colorList[n] = color
 	b.pieceList[n] = piece
