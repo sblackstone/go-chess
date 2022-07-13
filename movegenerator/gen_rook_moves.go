@@ -14,7 +14,7 @@ func init() {
 		b := boardstate.Blank()
 		b.SetSquare(pos, boardstate.WHITE, boardstate.ROOK)
 		rookMasks[pos] = genAllRookAttacks(b, boardstate.WHITE)
-		bitopts.Print(rookMasks[pos], pos)
+		//bitopts.Print(rookMasks[pos], pos)
 	}
 
 }
