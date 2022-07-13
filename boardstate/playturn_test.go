@@ -4,6 +4,34 @@ import (
 	"testing"
 )
 
+func TestKingCaptured(t *testing.T) {
+	b := Blank()
+	b.SetSquare(8, BLACK, KING)
+	b.SetSquare(16, WHITE, QUEEN)
+	oldKingPos := b.GetKingPos(BLACK)
+
+	if oldKingPos != 8 {
+		t.Errorf("expected kingPos to be 8")
+	}
+	before, _ := b.ToFEN()
+	b.PlayTurn(16, 8, EMPTY)
+
+	midKingPos := b.GetKingPos(BLACK)
+	if midKingPos != NO_KING {
+		t.Errorf("Expected NO_KING")
+	}
+	b.UnplayTurn()
+	after, _ := b.ToFEN()
+	if before != after {
+		t.Errorf("Expected %v to be %v", after, before)
+	}
+	afterKingPos := b.GetKingPos(BLACK)
+	if afterKingPos != 8 {
+		t.Errorf("Expected afterKingPos to be 8")
+	}
+
+}
+
 func TestUnplayTurnPieceMove(t *testing.T) {
 	b := Initial()
 	before, _ := b.ToFEN()
