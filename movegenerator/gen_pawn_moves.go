@@ -1,7 +1,7 @@
 package movegenerator
 
 import (
-	"github.com/sblackstone/go-chess/bitopts"
+	"github.com/sblackstone/go-chess/bitops"
 	"github.com/sblackstone/go-chess/boardstate"
 )
 
@@ -11,7 +11,7 @@ func init() {
 	var color, pos int8
 
 	updateFunc := func(src, dst, promotePiece int8) {
-		pregeneratedPawnAttacks[color][src] = bitopts.SetBit(pregeneratedPawnAttacks[color][src], dst)
+		pregeneratedPawnAttacks[color][src] = bitops.SetBit(pregeneratedPawnAttacks[color][src], dst)
 	}
 
 	for color = 0; color < 2; color++ {
@@ -27,11 +27,11 @@ func init() {
 }
 
 func genSinglePawnMovesGeneric(b *boardstate.BoardState, pawnPos int8, calculateChecks bool, origUpdateFunc func(int8, int8, int8)) {
-	pawnPosRank, pawnPosFile := bitopts.SquareToRankFile(pawnPos)
+	pawnPosRank, pawnPosFile := bitops.SquareToRankFile(pawnPos)
 	var pushFoardTwoRank, pushForwardOne, pushForwardTwo, captureToLowerFilePos, captureToHigherFilePos, fromEnpassantRank int8
 
 	updateFunc := func(src, dst int8) {
-		rank := bitopts.RankOfSquare(dst)
+		rank := bitops.RankOfSquare(dst)
 		if rank == 0 || rank == 7 {
 			origUpdateFunc(src, dst, boardstate.ROOK)
 			origUpdateFunc(src, dst, boardstate.KNIGHT)
@@ -60,12 +60,12 @@ func genSinglePawnMovesGeneric(b *boardstate.BoardState, pawnPos int8, calculate
 
 	if calculateChecks {
 		// Capture to Higher file
-		if captureToHigherFilePos >= 0 && captureToHigherFilePos <= 63 && bitopts.FileOfSquare(captureToHigherFilePos) > pawnPosFile {
+		if captureToHigherFilePos >= 0 && captureToHigherFilePos <= 63 && bitops.FileOfSquare(captureToHigherFilePos) > pawnPosFile {
 			updateFunc(pawnPos, captureToHigherFilePos)
 		}
 
 		// Cpature to Lower file
-		if captureToLowerFilePos >= 0 && captureToLowerFilePos <= 63 && bitopts.FileOfSquare(captureToLowerFilePos) < pawnPosFile {
+		if captureToLowerFilePos >= 0 && captureToLowerFilePos <= 63 && bitops.FileOfSquare(captureToLowerFilePos) < pawnPosFile {
 			updateFunc(pawnPos, captureToLowerFilePos)
 		}
 
@@ -74,12 +74,12 @@ func genSinglePawnMovesGeneric(b *boardstate.BoardState, pawnPos int8, calculate
 	}
 
 	// Capture to Higher file
-	if captureToHigherFilePos <= 63 && b.EnemyOccupiedSquare(captureToHigherFilePos) && bitopts.FileOfSquare(captureToHigherFilePos) > pawnPosFile {
+	if captureToHigherFilePos <= 63 && b.EnemyOccupiedSquare(captureToHigherFilePos) && bitops.FileOfSquare(captureToHigherFilePos) > pawnPosFile {
 		updateFunc(pawnPos, captureToHigherFilePos)
 	}
 
 	// Cpature to Lower file
-	if captureToLowerFilePos >= 0 && b.EnemyOccupiedSquare(captureToLowerFilePos) && bitopts.FileOfSquare(captureToLowerFilePos) < pawnPosFile {
+	if captureToLowerFilePos >= 0 && b.EnemyOccupiedSquare(captureToLowerFilePos) && bitops.FileOfSquare(captureToLowerFilePos) < pawnPosFile {
 		updateFunc(pawnPos, captureToLowerFilePos)
 	}
 
@@ -99,7 +99,7 @@ func genSinglePawnMovesGeneric(b *boardstate.BoardState, pawnPos int8, calculate
 	}
 
 	// Push 2, never has to promote.
-	if bitopts.RankOfSquare(pawnPos) == pushFoardTwoRank && b.EmptySquare(pushForwardOne) && b.EmptySquare(pushForwardTwo) {
+	if bitops.RankOfSquare(pawnPos) == pushFoardTwoRank && b.EmptySquare(pushForwardOne) && b.EmptySquare(pushForwardTwo) {
 		updateFunc(pawnPos, pushForwardTwo)
 	}
 

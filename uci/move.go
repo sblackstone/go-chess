@@ -3,7 +3,7 @@ package uci
 import (
 	"fmt"
 
-	"github.com/sblackstone/go-chess/bitopts"
+	"github.com/sblackstone/go-chess/bitops"
 	"github.com/sblackstone/go-chess/boardstate"
 )
 
@@ -11,11 +11,11 @@ func MoveFromUCI(uciStr string) (*boardstate.Move, error) {
 	if len(uciStr) > 5 || len(uciStr) < 4 {
 		return nil, fmt.Errorf("invalid UCI str: %s", uciStr)
 	}
-	src, err := bitopts.AlgebraicToSquare(uciStr[0:2])
+	src, err := bitops.AlgebraicToSquare(uciStr[0:2])
 	if err != nil {
 		return nil, err
 	}
-	dst, err := bitopts.AlgebraicToSquare(uciStr[2:4])
+	dst, err := bitops.AlgebraicToSquare(uciStr[2:4])
 	if err != nil {
 		return nil, err
 	}
@@ -44,8 +44,8 @@ func MoveFromUCI(uciStr string) (*boardstate.Move, error) {
 }
 
 func MoveToUCI(move *boardstate.Move) string {
-	src := bitopts.SquareToAlgebraic(move.Src)
-	dst := bitopts.SquareToAlgebraic(move.Dst)
+	src := bitops.SquareToAlgebraic(move.Src)
+	dst := bitops.SquareToAlgebraic(move.Dst)
 
 	promotionPiece := ""
 

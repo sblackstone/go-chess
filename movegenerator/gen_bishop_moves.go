@@ -1,7 +1,7 @@
 package movegenerator
 
 import (
-	"github.com/sblackstone/go-chess/bitopts"
+	"github.com/sblackstone/go-chess/bitops"
 	"github.com/sblackstone/go-chess/boardstate"
 )
 
@@ -14,7 +14,7 @@ func genBishopAttackMasks() {
 		b := boardstate.Blank()
 		b.SetSquare(pos, boardstate.WHITE, boardstate.BISHOP)
 		bishopAttackMasks[pos] = genAllBishopAttacks(b, boardstate.WHITE)
-		// bitopts.Print(bishopAttackMasks[pos], pos)
+		// bitops.Print(bishopAttackMasks[pos], pos)
 		// fmt.Printf("***\n\n")
 	}
 }
@@ -24,9 +24,9 @@ func init() {
 }
 
 func genSingleBishopMovesGeneric(b *boardstate.BoardState, bishopPos int8, updateFunc func(int8, int8)) {
-	file := bitopts.FileOfSquare(bishopPos)
+	file := bitops.FileOfSquare(bishopPos)
 
-	for r := bishopPos + 9; r < 64 && bitopts.FileOfSquare(r) > file; r += 9 {
+	for r := bishopPos + 9; r < 64 && bitops.FileOfSquare(r) > file; r += 9 {
 		if b.ColorOfSquare(r) != b.ColorOfSquare(bishopPos) {
 			updateFunc(bishopPos, r)
 		}
@@ -35,7 +35,7 @@ func genSingleBishopMovesGeneric(b *boardstate.BoardState, bishopPos int8, updat
 		}
 	}
 
-	for r := bishopPos + 7; r < 64 && bitopts.FileOfSquare(r) < file; r += 7 {
+	for r := bishopPos + 7; r < 64 && bitops.FileOfSquare(r) < file; r += 7 {
 		if b.ColorOfSquare(r) != b.ColorOfSquare(bishopPos) {
 			updateFunc(bishopPos, r)
 		}
@@ -44,7 +44,7 @@ func genSingleBishopMovesGeneric(b *boardstate.BoardState, bishopPos int8, updat
 		}
 	}
 
-	for r := bishopPos - 7; r >= 0 && bitopts.FileOfSquare(r) > file; r -= 7 {
+	for r := bishopPos - 7; r >= 0 && bitops.FileOfSquare(r) > file; r -= 7 {
 		if b.ColorOfSquare(r) != b.ColorOfSquare(bishopPos) {
 			updateFunc(bishopPos, r)
 		}
@@ -53,7 +53,7 @@ func genSingleBishopMovesGeneric(b *boardstate.BoardState, bishopPos int8, updat
 		}
 	}
 
-	for r := bishopPos - 9; r >= 0 && bitopts.FileOfSquare(r) < file; r -= 9 {
+	for r := bishopPos - 9; r >= 0 && bitops.FileOfSquare(r) < file; r -= 9 {
 		if b.ColorOfSquare(r) != b.ColorOfSquare(bishopPos) {
 			updateFunc(bishopPos, r)
 		}
@@ -73,7 +73,7 @@ func genAllBishopMovesGeneric(b *boardstate.BoardState, color int8, updateFunc f
 func genAllBishopAttacks(b *boardstate.BoardState, color int8) uint64 {
 	var result uint64
 	updateFunc := func(src int8, dst int8) {
-		result = bitopts.SetBit(result, dst)
+		result = bitops.SetBit(result, dst)
 	}
 	genAllBishopMovesGeneric(b, color, updateFunc)
 	return result

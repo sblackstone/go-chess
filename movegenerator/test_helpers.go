@@ -3,7 +3,7 @@ package movegenerator
 import (
 	"sort"
 
-	"github.com/sblackstone/go-chess/bitopts"
+	"github.com/sblackstone/go-chess/bitops"
 	"github.com/sblackstone/go-chess/boardstate"
 
 	"reflect"
@@ -33,7 +33,7 @@ func testAttacksHelper(t *testing.T, b *boardstate.BoardState, pieceType int8, e
 	var locations []int8
 	var i int8
 	for i = 0; i < 64; i++ {
-		if bitopts.TestBit(attacks, i) {
+		if bitops.TestBit(attacks, i) {
 			locations = append(locations, i)
 		}
 	}

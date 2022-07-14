@@ -1,7 +1,7 @@
 package movegenerator
 
 import (
-	"github.com/sblackstone/go-chess/bitopts"
+	"github.com/sblackstone/go-chess/bitops"
 	"github.com/sblackstone/go-chess/boardstate"
 )
 
@@ -14,7 +14,7 @@ func genRookAttackMasks() {
 		b := boardstate.Blank()
 		b.SetSquare(pos, boardstate.WHITE, boardstate.ROOK)
 		rookAttackMasks[pos] = genAllRookAttacks(b, boardstate.WHITE)
-		//bitopts.Print(rookMasks[pos], pos)
+		//bitops.Print(rookMasks[pos], pos)
 	}
 }
 func init() {
@@ -40,7 +40,7 @@ func genSingleRookMovesGeneric(b *boardstate.BoardState, rookPos int8, updateFun
 		}
 	}
 
-	for r := rookPos + 1; r <= 63 && bitopts.FileOfSquare(r) > 0; r += 1 {
+	for r := rookPos + 1; r <= 63 && bitops.FileOfSquare(r) > 0; r += 1 {
 		if b.ColorOfSquare(r) != b.ColorOfSquare(rookPos) {
 			updateFunc(rookPos, r)
 		}
@@ -49,7 +49,7 @@ func genSingleRookMovesGeneric(b *boardstate.BoardState, rookPos int8, updateFun
 		}
 	}
 
-	for r := rookPos - 1; r >= 0 && bitopts.FileOfSquare(r) < 7; r -= 1 {
+	for r := rookPos - 1; r >= 0 && bitops.FileOfSquare(r) < 7; r -= 1 {
 		if b.ColorOfSquare(r) != b.ColorOfSquare(rookPos) {
 			updateFunc(rookPos, r)
 		}
@@ -69,7 +69,7 @@ func genAllRookMovesGeneric(b *boardstate.BoardState, color int8, updatefunc fun
 func genAllRookAttacks(b *boardstate.BoardState, color int8) uint64 {
 	var result uint64
 	updateFunc := func(src, dst int8) {
-		result = bitopts.SetBit(result, dst)
+		result = bitops.SetBit(result, dst)
 	}
 	genAllRookMovesGeneric(b, color, updateFunc)
 	return result

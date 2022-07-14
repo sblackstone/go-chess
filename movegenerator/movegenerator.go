@@ -3,7 +3,7 @@ package movegenerator
 import (
 	"fmt"
 
-	"github.com/sblackstone/go-chess/bitopts"
+	"github.com/sblackstone/go-chess/bitops"
 	"github.com/sblackstone/go-chess/boardstate"
 )
 
@@ -106,7 +106,7 @@ func IsInCheck(b *boardstate.BoardState, color int8) bool {
 	}
 	// Find all the checked squares for the opposing side
 	attacks := GenAllCheckedSquares(b, color^1)
-	return bitopts.TestBit(attacks, kingPos)
+	return bitops.TestBit(attacks, kingPos)
 }
 
 // We can do much better here, naieve O(n^2) first attempt.
@@ -142,7 +142,7 @@ func CheckEndOfGame(b *boardstate.BoardState) int8 {
 
 	kingPos := b.FindPieces(currentTurnColor, boardstate.KING)
 	attacks := GenAllCheckedSquares(b, oppTurnColor)
-	if bitopts.TestBit(attacks, kingPos[0]) {
+	if bitops.TestBit(attacks, kingPos[0]) {
 		return GAME_STATE_CHECKMATE
 	}
 

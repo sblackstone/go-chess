@@ -1,7 +1,7 @@
 package movegenerator
 
 import (
-	"github.com/sblackstone/go-chess/bitopts"
+	"github.com/sblackstone/go-chess/bitops"
 	"github.com/sblackstone/go-chess/boardstate"
 )
 
@@ -37,11 +37,11 @@ func init() {
 	var rank, file int8
 	for rank = 0; rank < 8; rank++ {
 		for file = 0; file < 8; file++ {
-			pos := bitopts.RankFileToSquare(rank, file)
+			pos := bitops.RankFileToSquare(rank, file)
 			pregeneratedKnightMovesBitboard[pos] = 0
 
 			appendPos := func(dst int8) {
-				pregeneratedKnightMovesBitboard[pos] = bitopts.SetBit(pregeneratedKnightMovesBitboard[pos], dst)
+				pregeneratedKnightMovesBitboard[pos] = bitops.SetBit(pregeneratedKnightMovesBitboard[pos], dst)
 				pregeneratedKnightMoves[pos] = append(pregeneratedKnightMoves[pos], dst)
 			}
 

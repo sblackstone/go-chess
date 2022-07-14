@@ -1,7 +1,7 @@
 package movegenerator
 
 import (
-	"github.com/sblackstone/go-chess/bitopts"
+	"github.com/sblackstone/go-chess/bitops"
 	"github.com/sblackstone/go-chess/boardstate"
 )
 
@@ -22,26 +22,26 @@ var castlingConfigs [2][2]*CastlingConfig
 
 func initCastlingMasks() {
 	castlingConfigs[boardstate.WHITE][boardstate.CASTLE_SHORT] = &CastlingConfig{
-		emptyMask:  bitopts.Mask(5) | bitopts.Mask(6),
-		attackMask: bitopts.Mask(5) | bitopts.Mask(6),
+		emptyMask:  bitops.Mask(5) | bitops.Mask(6),
+		attackMask: bitops.Mask(5) | bitops.Mask(6),
 		kingDst:    6,
 	}
 
 	castlingConfigs[boardstate.WHITE][boardstate.CASTLE_LONG] = &CastlingConfig{
-		emptyMask:  bitopts.Mask(1) | bitopts.Mask(2) | bitopts.Mask(3),
-		attackMask: bitopts.Mask(2) | bitopts.Mask(3),
+		emptyMask:  bitops.Mask(1) | bitops.Mask(2) | bitops.Mask(3),
+		attackMask: bitops.Mask(2) | bitops.Mask(3),
 		kingDst:    2,
 	}
 
 	castlingConfigs[boardstate.BLACK][boardstate.CASTLE_SHORT] = &CastlingConfig{
-		emptyMask:  bitopts.Mask(61) | bitopts.Mask(62),
-		attackMask: bitopts.Mask(61) | bitopts.Mask(62),
+		emptyMask:  bitops.Mask(61) | bitops.Mask(62),
+		attackMask: bitops.Mask(61) | bitops.Mask(62),
 		kingDst:    62,
 	}
 
 	castlingConfigs[boardstate.BLACK][boardstate.CASTLE_LONG] = &CastlingConfig{
-		emptyMask:  bitopts.Mask(57) | bitopts.Mask(58) | bitopts.Mask(59),
-		attackMask: bitopts.Mask(58) | bitopts.Mask(59),
+		emptyMask:  bitops.Mask(57) | bitops.Mask(58) | bitops.Mask(59),
+		attackMask: bitops.Mask(58) | bitops.Mask(59),
 		kingDst:    58,
 	}
 }
@@ -55,11 +55,11 @@ func initPregeneratedKingMoves() {
 	var rank, file int8
 	for rank = 7; rank >= 0; rank-- {
 		for file = 0; file < 8; file++ {
-			pos := bitopts.RankFileToSquare(rank, file)
+			pos := bitops.RankFileToSquare(rank, file)
 			pregeneratedKingMovesBitboard[pos] = 0
 
 			appendPos := func(dst int8) {
-				pregeneratedKingMovesBitboard[pos] = bitopts.SetBit(pregeneratedKingMovesBitboard[pos], dst)
+				pregeneratedKingMovesBitboard[pos] = bitops.SetBit(pregeneratedKingMovesBitboard[pos], dst)
 				pregeneratedKingMoves[pos] = append(pregeneratedKingMoves[pos], dst)
 			}
 
@@ -111,7 +111,7 @@ func genSingleKingMovesGeneric(b *boardstate.BoardState, kingPos int8, calculate
 		occupied := b.GetOccupiedBitboard()
 
 		// And the king isn't in check....
-		if !bitopts.TestBit(checkedSquares, kingPos) {
+		if !bitops.TestBit(checkedSquares, kingPos) {
 
 			if b.HasCastleRights(kingColor, boardstate.CASTLE_SHORT) &&
 				(occupied&castlingConfigs[kingColor][boardstate.CASTLE_SHORT].emptyMask == 0) &&

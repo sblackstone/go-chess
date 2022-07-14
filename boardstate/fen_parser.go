@@ -5,7 +5,7 @@ import (
 	"errors"
 	"regexp"
 
-	"github.com/sblackstone/go-chess/bitopts"
+	"github.com/sblackstone/go-chess/bitops"
 
 	//"fmt"
 	"strconv"
@@ -18,7 +18,7 @@ func applyBoardString(b *BoardState, boardStr string) error {
 	rank = 7
 
 	addPiece := func(r int8, f int8, color int8, piece int8) {
-		b.SetSquare(bitopts.RankFileToSquare(r, f), color, piece)
+		b.SetSquare(bitops.RankFileToSquare(r, f), color, piece)
 		file += 1
 	}
 
@@ -118,7 +118,7 @@ func applyEnpassantString(b *BoardState, enpassantString string) error {
 	if enpassantString == "-" {
 		return nil
 	}
-	val, err := bitopts.AlgebraicToSquare(enpassantString)
+	val, err := bitops.AlgebraicToSquare(enpassantString)
 	if err != nil {
 		return err
 	}

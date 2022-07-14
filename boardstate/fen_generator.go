@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/sblackstone/go-chess/bitopts"
+	"github.com/sblackstone/go-chess/bitops"
 )
 
 func (b *BoardState) ToFEN() (string, error) {
@@ -14,7 +14,7 @@ func (b *BoardState) ToFEN() (string, error) {
 	for rank = 7; rank >= 0; rank-- {
 		emptyCount := 0
 		for file = 0; file < 8; file++ {
-			pos := bitopts.RankFileToSquare(rank, file)
+			pos := bitops.RankFileToSquare(rank, file)
 			color := b.ColorOfSquare(pos)
 			piece := b.PieceOfSquare(pos)
 			if color == EMPTY {
@@ -92,7 +92,7 @@ func (b *BoardState) ToFEN() (string, error) {
 	if enpassantSq == NO_ENPASSANT {
 		result += "-"
 	} else {
-		result += bitopts.SquareToAlgebraic(enpassantSq)
+		result += bitops.SquareToAlgebraic(enpassantSq)
 	}
 
 	result += " "

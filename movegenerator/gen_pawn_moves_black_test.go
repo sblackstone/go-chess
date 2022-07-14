@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/sblackstone/go-chess/bitopts"
+	"github.com/sblackstone/go-chess/bitops"
 	"github.com/sblackstone/go-chess/boardstate"
 )
 
@@ -15,7 +15,7 @@ func TestGenerateChecksOnlyBlack(t *testing.T) {
 	var actual []int8
 	var i int8
 	for i = 0; i < 64; i++ {
-		if bitopts.TestBit(squares, i) {
+		if bitops.TestBit(squares, i) {
 			actual = append(actual, i)
 		}
 	}

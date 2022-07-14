@@ -1,7 +1,7 @@
 package boardstate
 
 import (
-	"github.com/sblackstone/go-chess/bitopts"
+	"github.com/sblackstone/go-chess/bitops"
 )
 
 // BoardState contains the state of the Board
@@ -167,8 +167,8 @@ func (b *BoardState) SetSquare(n int8, color int8, piece int8) {
 	origPiece := b.PieceOfSquare(n)
 	origColor := b.ColorOfSquare(n)
 	if origColor != EMPTY {
-		b.pieces[origPiece] = bitopts.ClearBit(b.pieces[origPiece], n)
-		b.colors[origColor] = bitopts.ClearBit(b.colors[origColor], n)
+		b.pieces[origPiece] = bitops.ClearBit(b.pieces[origPiece], n)
+		b.colors[origColor] = bitops.ClearBit(b.colors[origColor], n)
 		b.pieceLocations.RemovePieceLocation(origColor, origPiece, n)
 		if origPiece == KING {
 			b.kingPos[origColor] = NO_KING
@@ -182,12 +182,12 @@ func (b *BoardState) SetSquare(n int8, color int8, piece int8) {
 	}
 	if color != EMPTY {
 		b.pieceLocations.AddPieceLocation(color, piece, n)
-		b.colors[color] = bitopts.SetBit(b.colors[color], n)
-		b.pieces[piece] = bitopts.SetBit(b.pieces[piece], n)
+		b.colors[color] = bitops.SetBit(b.colors[color], n)
+		b.pieces[piece] = bitops.SetBit(b.pieces[piece], n)
 	}
 }
 
 // SetSquareRankFile removes any existing piece and sets the square to the new piece/color with (x,y) coordinates.
 func (b *BoardState) SetSquareRankFile(rank int8, file int8, color int8, piece int8) {
-	b.SetSquare(bitopts.RankFileToSquare(rank, file), color, piece)
+	b.SetSquare(bitops.RankFileToSquare(rank, file), color, piece)
 }

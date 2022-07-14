@@ -1,7 +1,7 @@
 package movegenerator
 
 import (
-	"github.com/sblackstone/go-chess/bitopts"
+	"github.com/sblackstone/go-chess/bitops"
 	"github.com/sblackstone/go-chess/boardstate"
 )
 
@@ -16,7 +16,7 @@ func genAllQueenMovesGeneric(b *boardstate.BoardState, color int8, updateFunc fu
 func genAllQueenAttacks(b *boardstate.BoardState, color int8) uint64 {
 	var result uint64
 	updateFunc := func(src int8, dst int8) {
-		result = bitopts.SetBit(result, dst)
+		result = bitops.SetBit(result, dst)
 	}
 	genAllQueenMovesGeneric(b, color, updateFunc)
 	return result

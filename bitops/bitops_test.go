@@ -1,4 +1,4 @@
-package bitopts
+package bitops
 
 import (
 	"reflect"
