@@ -5,10 +5,13 @@ import (
 	"math/bits"
 )
 
+var rankMasks [8]uint64
+var fileMasks [8]uint64
 var clearMasks [64]uint64
 var setMasks [64]uint64
 var ranks [64]int8
 var files [64]int8
+var perimeterMask uint64
 
 func init() {
 	for pos := 0; pos < 64; pos++ {
@@ -17,6 +20,16 @@ func init() {
 		ranks[pos] = int8(pos / 8)
 		files[pos] = int8(pos % 8)
 	}
+	var i int8
+	for i = 0; i < 8; i++ {
+		rankMasks[i] = 255 << (i * 8)
+		fileMasks[i] = Rotate90Clockwise(rankMasks[i])
+	}
+	perimeterMask = rankMasks[0] | rankMasks[7] | fileMasks[0] | fileMasks[7]
+}
+
+func PerimeterMask() uint64 {
+	return perimeterMask
 }
 
 func Mask(pos int8) uint64 {

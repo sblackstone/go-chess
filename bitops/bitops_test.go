@@ -1,10 +1,33 @@
 package bitops
 
 import (
+	"fmt"
 	"reflect"
 	"testing"
 )
 
+func TestPerimeterMask(t *testing.T) {
+	Print(PerimeterMask(), 127)
+	fmt.Printf("\n\n\n")
+	t.Errorf("not implemented")
+}
+func TestRankMasks(t *testing.T) {
+	var i int8
+	for i = 0; i < 8; i++ {
+		fmt.Printf("\n\n\ni=%v\n", i)
+		Print(rankMasks[i], 127)
+	}
+	t.Errorf("not implemented")
+}
+
+func TestFileMasks(t *testing.T) {
+	var i int8
+	for i = 0; i < 8; i++ {
+		fmt.Printf("\n\n\ni=%v\n", i)
+		Print(fileMasks[i], 127)
+	}
+	t.Errorf("not implemented")
+}
 func TestMask(t *testing.T) {
 	v := Mask(1)
 	if v != 2 {
