@@ -17,3 +17,8 @@ Nxh6 gxh6 16. c3 Na5 17. a4 Qf3 18. O-O Nxc4 19. dxc4 Qxe4 20. Rbd1 e5 21. Rfe1
 Qxc4 22. Bxe5 Rg8 23. Bf4 Qxa4 24. Bxh6 Bxh6 25. Nd4 Bb7 26. Nf5 Bg5 27. Rd4 Qc2
 28. Ne3 Qxc3 29. Rdd1 Bf6 30. Nd5 Bxd5 31. Rxd5 Qxe1+ 32. Kg2 Qe4+ 33. f3 Qxd5
 34. Kf2 Rae8 35. Kf1 Qxf3+ 36. Kg1 Re2 37. h3 Qxg3+ 38. Kh1 Rge8 39. h4 *
+
+
+
+Search Crash
+position startpos moves e2e4 e7e6 f1c4 d8g5 g2g3 g5c5 d2d3 b8c6 c1e3 c5b4 e3d2 b4b2 b1c3 b7b6 a1b1 b2a3 c3b5 a3c5 g1f3 e8d8 d2f4 d7d6 f3g5 g8h6 d1h5 d8d7 g5f7 c5h5 f7h6 g7h6 c2c3 c6a5 a2a4 h5f3 e1g1 a5c4 d3c4 f3e4 b1d1 e6e5 f1e1 e4c4 f4e5 h8g8 e5f4 c4a4 f4h6 f8h6 b5d4 c8b7 d4f5 h6g5 d1d4 a4c2 f5e3 c2c3 d4d1 g5f6 e3d5 b7d5 d1d5 c3e1 g1g2 e1e4 f2f3 e4d5 g2f2 a8e8 f2f1 d5f3 f1g1 e8e2 h2h3 f3g3 g1h1 g8e8 h3h4
