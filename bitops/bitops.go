@@ -12,6 +12,7 @@ var setMasks [64]uint64
 var ranks [64]int8
 var files [64]int8
 var perimeterMask uint64
+var internalMask uint64
 
 func init() {
 	for pos := 0; pos < 64; pos++ {
@@ -26,8 +27,20 @@ func init() {
 		fileMasks[i] = Rotate90Clockwise(rankMasks[i])
 	}
 	perimeterMask = rankMasks[0] | rankMasks[7] | fileMasks[0] | fileMasks[7]
+	internalMask = ^perimeterMask
 }
 
+func FileMask(file int8) uint64 {
+	return fileMasks[file]
+}
+
+func RankMask(rank int8) uint64 {
+	return rankMasks[rank]
+}
+
+func InternalMask() uint64 {
+	return internalMask
+}
 func PerimeterMask() uint64 {
 	return perimeterMask
 }

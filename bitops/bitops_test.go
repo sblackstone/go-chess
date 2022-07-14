@@ -6,6 +6,11 @@ import (
 	"testing"
 )
 
+func TestInternalMask(t *testing.T) {
+	Print(InternalMask(), 127)
+	fmt.Printf("\n\n\n")
+	t.Errorf("not implemented")
+}
 func TestPerimeterMask(t *testing.T) {
 	Print(PerimeterMask(), 127)
 	fmt.Printf("\n\n\n")
