@@ -118,7 +118,7 @@ func applyEnpassantString(b *BoardState, enpassantString string) error {
 	if enpassantString == "-" {
 		return nil
 	}
-	val, err := bitops.AlgebraicToSquare(enpassantString)
+	val, err := AlgebraicToSquare(enpassantString)
 	if err != nil {
 		return err
 	}

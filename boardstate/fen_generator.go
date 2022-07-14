@@ -92,7 +92,7 @@ func (b *BoardState) ToFEN() (string, error) {
 	if enpassantSq == NO_ENPASSANT {
 		result += "-"
 	} else {
-		result += bitops.SquareToAlgebraic(enpassantSq)
+		result += SquareToAlgebraic(enpassantSq)
 	}
 
 	result += " "
