@@ -19,6 +19,15 @@ func init() {
 	}
 }
 
+// https://www.chessprogramming.org/Traversing_Subsets_of_a_Set
+func SNOOB(x uint64) uint64 {
+	smallest := x & -x
+	ripple := x + smallest
+	ones := x ^ ripple
+	ones = (ones >> 2) / smallest
+	return ripple | ones
+}
+
 func Mask(pos int8) uint64 {
 	return setMasks[pos]
 }

@@ -5,6 +5,29 @@ import (
 	"testing"
 )
 
+func TestSNOOB(t *testing.T) {
+	var testCases = []struct {
+		input    uint64
+		expected uint64
+	}{
+		{1, 2},
+		{2, 4},
+		{4, 8},
+		{8, 16},
+		{3, 5},
+		{5, 6},
+		{6, 9},
+	}
+
+	for _, tc := range testCases {
+		v := SNOOB(tc.input)
+		if v != tc.expected {
+			t.Errorf("Expected %v to be %v", v, tc.expected)
+		}
+	}
+
+}
+
 func TestMask(t *testing.T) {
 	v := Mask(1)
 	if v != 2 {
