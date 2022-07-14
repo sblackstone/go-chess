@@ -20,8 +20,10 @@ func alphaBeta(b *boardstate.BoardState, depth int8, alpha float64, beta float64
 		return evaluator.EvaluateBoard(b)
 	}
 
-	for _, succ := range movegenerator.GenLegalSuccessors(b) {
-		score := -alphaBeta(succ, depth-1, -beta, -alpha)
+	for _, move := range movegenerator.GenMoves(b) {
+		b.PlayTurnFromMove(move)
+		score := -alphaBeta(b, depth-1, -beta, -alpha)
+		b.UnplayTurn()
 
 		if score >= beta {
 			return beta
@@ -58,8 +60,10 @@ func BestMove(b *boardstate.BoardState, depth int8) *boardstate.Move {
 	var bestMoves []*boardstate.Move
 	bestValue = -INFINITY
 	for _, move := range movegenerator.GenMoves(b) {
-		succ := b.CopyPlayTurnFromMove(move)
-		value := -alphaBeta(succ, depth-1, -INFINITY, INFINITY)
+		//succ := b.CopyPlayTurnFromMove(move)
+		b.PlayTurnFromMove(move)
+		value := -alphaBeta(b, depth-1, -INFINITY, INFINITY)
+		b.UnplayTurn()
 		if value == bestValue {
 			bestMoves = append(bestMoves, move)
 		}
