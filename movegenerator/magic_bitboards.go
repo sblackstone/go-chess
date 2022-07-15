@@ -1,7 +1,6 @@
 package movegenerator
 
 import (
-	"fmt"
 	"math/bits"
 	"math/rand"
 
@@ -30,7 +29,9 @@ func RookAttackSetForOccupancy(n int8, occupancy uint64) uint64 {
 	b.SetSquare(n, boardstate.WHITE, boardstate.ROOK)
 	squares := bitops.FindSetBits(occupancy)
 	for _, pos := range squares {
-		b.SetSquare(pos, boardstate.BLACK, boardstate.PAWN)
+		if pos != n {
+			b.SetSquare(pos, boardstate.BLACK, boardstate.PAWN)
+		}
 	}
 
 	var result uint64
@@ -45,7 +46,7 @@ func RookAttackSetForOccupancy(n int8, occupancy uint64) uint64 {
 
 type MagicDefinition struct {
 	square     int8
-	mapping    [32768]uint64
+	mapping    [16535]uint64
 	magicValue uint64
 	rotate     int8
 	preMask    uint64
@@ -53,10 +54,10 @@ type MagicDefinition struct {
 
 func RookFindMagic(n int8) *MagicDefinition {
 	blockers := RookBlockerMasksForSquare(n)
-	file, rank := bitops.SquareToRankFile(n)
+	rank, file := bitops.SquareToRankFile(n)
 	preMask := (bitops.FileMask(file) | bitops.RankMask(rank))
-	blockerBits := bits.OnesCount64(preMask) - 1
-	fmt.Printf("Blocker Bits = %v\n", blockerBits)
+	blockerMaskBits := bits.OnesCount64(preMask) - 1
+	rotate := int8(64 - blockerMaskBits)
 	attackSets := make([]uint64, len(blockers))
 	totalCount := len(blockers)
 	best := 0
@@ -66,10 +67,10 @@ func RookFindMagic(n int8) *MagicDefinition {
 	}
 
 	for {
-		var mapping [32768]uint64
+		var mapping [16535]uint64
 		magicValue = rand.Uint64() & rand.Uint64() & rand.Uint64()
 		for i, blocker := range blockers {
-			cacheKey := (blocker * magicValue) >> (64 - blockerBits - 1)
+			cacheKey := (blocker * magicValue) >> rotate
 			attackSet := attackSets[i]
 			if mapping[cacheKey] == 0 {
 				mapping[cacheKey] = attackSet
@@ -77,7 +78,7 @@ func RookFindMagic(n int8) *MagicDefinition {
 			if mapping[cacheKey] != attackSet {
 				if i > best {
 					best = i
-					fmt.Printf("Collision detected at %v of %v with magic %v at cache key %v\n", i, totalCount, magicValue, cacheKey)
+					//fmt.Printf("Collision detected at %v of %v with magic %v at cache key %v\n", i, totalCount, magicValue, cacheKey)
 				}
 				break
 			}
@@ -86,7 +87,7 @@ func RookFindMagic(n int8) *MagicDefinition {
 					square:     n,
 					mapping:    mapping,
 					magicValue: magicValue,
-					rotate:     int8(64 - blockerBits - 1),
+					rotate:     rotate,
 					preMask:    preMask,
 				}
 			}

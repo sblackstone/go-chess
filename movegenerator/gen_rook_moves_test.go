@@ -3,6 +3,7 @@ package movegenerator
 import (
 	"testing"
 
+	"github.com/sblackstone/go-chess/bitops"
 	"github.com/sblackstone/go-chess/boardstate"
 )
 
@@ -59,6 +60,15 @@ func TestGenRookStopsAtCapture(t *testing.T) {
 	b.SetSquare(51, boardstate.BLACK, boardstate.KNIGHT)
 	b.SetSquare(11, boardstate.BLACK, boardstate.BISHOP)
 	expected := []int8{11, 19, 25, 26, 28, 29, 30, 35, 43, 51}
+
+	//found := genAllRookAttacks(b, b.GetTurn())
+	var expectedBord uint64
+	for _, p := range expected {
+		expectedBord = bitops.SetBit(expectedBord, p)
+	}
+
+	//bitops.Print(found, 127)
+	//bitops.Print(expectedBord, 127)
 	testSuccessorsHelper(t, b, boardstate.ROOK, expected)
 	testAttacksHelper(t, b, boardstate.ROOK, expected)
 

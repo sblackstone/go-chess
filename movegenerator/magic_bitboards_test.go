@@ -1,18 +1,15 @@
 package movegenerator
 
 import (
-	"fmt"
 	"testing"
-
-	"github.com/sblackstone/go-chess/bitops"
 )
 
 func TestRookBlockerMasksForSquare(t *testing.T) {
-	bbs := RookBlockerMasksForSquare(17)
-	for _, bb := range bbs {
-		bitops.Print(bb, 17)
-		fmt.Printf("\n\n")
-	}
+	// bbs := RookBlockerMasksForSquare(17)
+	// for _, bb := range bbs {
+	// 	bitops.Print(bb, 17)
+	// 	fmt.Printf("\n\n")
+	// }
 	t.Errorf("not implemented")
 }
 
@@ -32,15 +29,17 @@ func TestRookAttackSetForOccupancy(t *testing.T) {
 }
 
 func TestRookFindMagic(t *testing.T) {
-	var i int8
-	var result [64]*MagicDefinition
-	for i = 0; i < 64; i++ {
-		result[i] = RookFindMagic(i)
-	}
-	t.Errorf("Done")
+	// var i int8
+	// var result [64]*MagicDefinition
+	// for i = 0; i < 64; i++ {
+	// 	result[i] = RookFindMagic(i)
+	// }
+	t.Errorf("not implemented")
 }
 
 func TestGenerateRookMagicBitboards(t *testing.T) {
-	result := GenerateRookMagicBitboards()
-	fmt.Printf("%v", result)
+	// result := GenerateRookMagicBitboards()
+	// fmt.Printf("%v", result)
+	t.Errorf("not implemented")
+
 }
