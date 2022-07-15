@@ -130,25 +130,6 @@ func testCastlingBoard() *BoardState {
 	return b
 }
 
-func TestGenerateSuccessors(t *testing.T) {
-	b := Blank()
-	b.SetSquare(22, WHITE, PAWN)
-	m1 := &Move{Src: 22, Dst: 22 + 8, PromotePiece: EMPTY}
-	m2 := &Move{Src: 22, Dst: 22 + 16, PromotePiece: EMPTY}
-
-	var moves []*Move
-
-	moves = append(moves, m1)
-	moves = append(moves, m2)
-
-	successors := b.GenerateSuccessors(moves)
-
-	if len(successors) != 2 {
-		t.Errorf("Expected successors to be length 2")
-	}
-
-}
-
 func TestTakingRooksDisableCastlingWhiteLong(t *testing.T) {
 	b := testCastlingBoard()
 	b.SetTurn(BLACK)

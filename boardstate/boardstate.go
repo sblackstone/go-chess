@@ -130,14 +130,6 @@ func (b *BoardState) EmptyOrEnemyOccupiedSquare(n int8) bool {
 	return b.colorList[n] != b.GetTurn()
 }
 
-func (b *BoardState) GenerateSuccessors(moves []*Move) []*BoardState {
-	var result []*BoardState
-	for _, move := range moves {
-		result = append(result, b.CopyPlayTurnFromMove(move))
-	}
-	return result
-}
-
 func (b *BoardState) MovePiece(src int8, dst int8) {
 	color := b.ColorOfSquare(src)
 	piece := b.PieceOfSquare(src)
