@@ -58,18 +58,12 @@ type MagicDefinition struct {
 	preMask    uint64
 }
 
-func RookFindMagic(n int8) *MagicDefinition {
-	blockers := RookBlockerMasksForSquare(n)
-	preMask := RookPreMask(n)
+func FindMagic(n int8, preMask uint64, blockers []uint64, attackSets []uint64) *MagicDefinition {
 	blockerMaskBits := bits.OnesCount64(preMask) - 1
 	rotate := int8(64 - blockerMaskBits)
-	attackSets := make([]uint64, len(blockers))
 	totalCount := len(blockers)
 	best := 0
 	var magicValue uint64
-	for i, blocker := range blockers {
-		attackSets[i] = RookAttackSetForOccupancy(n, blocker)
-	}
 
 	for {
 		var mapping [16384]uint64
@@ -83,7 +77,7 @@ func RookFindMagic(n int8) *MagicDefinition {
 			if mapping[cacheKey] != attackSet {
 				if i > best {
 					best = i
-					fmt.Printf("Collision detected at %v of %v with magic %v at cache key %v\n", i, totalCount, magicValue, cacheKey)
+					//fmt.Printf("Collision detected at %v of %v with magic %v at cache key %v\n", i, totalCount, magicValue, cacheKey)
 				}
 				break
 			}
@@ -102,10 +96,16 @@ func RookFindMagic(n int8) *MagicDefinition {
 
 func GenerateRookMagicBitboards() [64]*MagicDefinition {
 	var result [64]*MagicDefinition
-	var i int8
-	for i = 0; i < 64; i++ {
-		fmt.Printf("Generating magic rook square for %v\n", i)
-		result[i] = RookFindMagic(i)
+	var n int8
+	for n = 0; n < 64; n++ {
+		fmt.Printf("Generating magic rook square for %v\n", n)
+		blockers := RookBlockerMasksForSquare(n)
+		attackSets := make([]uint64, len(blockers))
+		preMask := RookPreMask(n)
+		for i, blocker := range blockers {
+			attackSets[i] = RookAttackSetForOccupancy(n, blocker)
+		}
+		result[n] = FindMagic(n, preMask, blockers, attackSets)
 	}
 	return result
 }
