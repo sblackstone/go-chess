@@ -1,37 +1,48 @@
 package bitops
 
 import (
-	"fmt"
 	"reflect"
 	"testing"
 )
 
 func TestInternalMask(t *testing.T) {
-	Print(InternalMask(), 127)
-	fmt.Printf("\n\n\n")
-	t.Errorf("not implemented")
+	var expected uint64
+	var i, j int8
+	for i = 1; i < 7; i++ {
+		for j = 1; j < 7; j++ {
+			expected = SetBit(expected, RankFileToSquare(i, j))
+		}
+	}
+
+	im := InternalMask()
+	if im != expected {
+		t.Errorf("Expected %b to be %b", im, expected)
+	}
 }
 func TestPerimeterMask(t *testing.T) {
-	Print(PerimeterMask(), 127)
-	fmt.Printf("\n\n\n")
-	t.Errorf("not implemented")
+	expected := RankMask(0) | RankMask(7) | FileMask(0) | FileMask(7)
+	if PerimeterMask() != expected {
+		t.Errorf("Expected %b to be %b", PerimeterMask(), expected)
+	}
 }
 func TestRankMasks(t *testing.T) {
 	var i int8
 	for i = 0; i < 8; i++ {
-		fmt.Printf("\n\n\ni=%v\n", i)
-		Print(rankMasks[i], 127)
+		expected := uint64(255) << (i * 8)
+		if RankMask(i) != expected {
+			t.Errorf("Expected %b to be %b", RankMask(i), expected)
+		}
 	}
-	t.Errorf("not implemented")
 }
 
 func TestFileMasks(t *testing.T) {
 	var i int8
 	for i = 0; i < 8; i++ {
-		fmt.Printf("\n\n\ni=%v\n", i)
-		Print(fileMasks[i], 127)
+		expected := Rotate90Clockwise(RankMask(i))
+		if FileMask(i) != expected {
+			t.Errorf("Expected %b to be %b", FileMask(i), expected)
+		}
 	}
-	t.Errorf("not implemented")
 }
 func TestMask(t *testing.T) {
 	v := Mask(1)
