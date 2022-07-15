@@ -45,6 +45,11 @@ func RookAttackSetForOccupancy(n int8, occupancy uint64) uint64 {
 
 }
 
+func RookPreMask(n int8) uint64 {
+	rank, file := bitops.SquareToRankFile(n)
+	return bitops.FileMask(file) | bitops.RankMask(rank)
+}
+
 type MagicDefinition struct {
 	square     int8
 	mapping    [16384]uint64
@@ -55,8 +60,7 @@ type MagicDefinition struct {
 
 func RookFindMagic(n int8) *MagicDefinition {
 	blockers := RookBlockerMasksForSquare(n)
-	rank, file := bitops.SquareToRankFile(n)
-	preMask := (bitops.FileMask(file) | bitops.RankMask(rank))
+	preMask := RookPreMask(n)
 	blockerMaskBits := bits.OnesCount64(preMask) - 1
 	rotate := int8(64 - blockerMaskBits)
 	attackSets := make([]uint64, len(blockers))
