@@ -119,8 +119,7 @@ func (b *BoardState) GetPieceBitboard(color int8, piece int8) uint64 {
 }
 
 func (b *BoardState) EnemyOccupiedSquare(n int8) bool {
-	c := b.ColorOfSquare(n)
-	return c != EMPTY && c != b.GetTurn()
+	return b.colorList[n] == b.EnemyColor()
 }
 
 func (b *BoardState) EmptySquare(n int8) bool {
@@ -128,8 +127,7 @@ func (b *BoardState) EmptySquare(n int8) bool {
 }
 
 func (b *BoardState) EmptyOrEnemyOccupiedSquare(n int8) bool {
-	c := b.ColorOfSquare(n)
-	return c != b.GetTurn()
+	return b.colorList[n] != b.GetTurn()
 }
 
 func (b *BoardState) GenerateSuccessors(moves []*Move) []*BoardState {
