@@ -96,9 +96,13 @@ func FindMagic(n int8, preMask uint64, blockers []uint64, attackSets []uint64) *
 	totalCount := len(blockers)
 	best := 0
 	var magicValue uint64
+	mapping := make([]uint64, 1<<blockerMaskBits)
 
 	for {
-		mapping := make([]uint64, 1<<blockerMaskBits)
+		for i := range mapping {
+			mapping[i] = 0
+		}
+		// We want few small bits in our test values.   Using more or fewer random numbers here hurts.
 		magicValue = rand.Uint64() & rand.Uint64() & rand.Uint64()
 		for i, blocker := range blockers {
 			cacheKey := (blocker * magicValue) >> rotate
@@ -109,7 +113,7 @@ func FindMagic(n int8, preMask uint64, blockers []uint64, attackSets []uint64) *
 			if mapping[cacheKey] != attackSet {
 				if i > best {
 					best = i
-					//fmt.Printf("Collision detected at %v of %v with magic %v at cache key %v\n", i, totalCount, magicValue, cacheKey)
+					fmt.Printf("Collision detected at %v of %v with magic %v at cache key %v\n", i, totalCount, magicValue, cacheKey)
 				}
 				break
 			}
