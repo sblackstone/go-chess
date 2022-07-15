@@ -84,7 +84,7 @@ func PreMask(n int8, pieceType int8) uint64 {
 
 type MagicDefinition struct {
 	square     int8
-	mapping    [16384]uint64
+	mapping    []uint64
 	magicValue uint64
 	rotate     int8
 	preMask    uint64
@@ -98,7 +98,7 @@ func FindMagic(n int8, preMask uint64, blockers []uint64, attackSets []uint64) *
 	var magicValue uint64
 
 	for {
-		var mapping [16384]uint64
+		mapping := make([]uint64, 1<<blockerMaskBits)
 		magicValue = rand.Uint64() & rand.Uint64() & rand.Uint64()
 		for i, blocker := range blockers {
 			cacheKey := (blocker * magicValue) >> rotate

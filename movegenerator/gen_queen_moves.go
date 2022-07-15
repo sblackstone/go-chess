@@ -1,7 +1,6 @@
 package movegenerator
 
 import (
-	"github.com/sblackstone/go-chess/bitops"
 	"github.com/sblackstone/go-chess/boardstate"
 )
 
@@ -13,13 +12,38 @@ func genAllQueenMovesGeneric(b *boardstate.BoardState, color int8, updateFunc fu
 	}
 }
 
+// func genAllQueenAttacks(b *boardstate.BoardState, color int8) uint64 {
+// 	var result uint64
+// 	updateFunc := func(src int8, dst int8) {
+// 		result = bitops.SetBit(result, dst)
+// 	}
+// 	genAllQueenMovesGeneric(b, color, updateFunc)
+// 	return result
+// }
+
 func genAllQueenAttacks(b *boardstate.BoardState, color int8) uint64 {
+	// var result uint64
+	// updateFunc := func(src, dst int8) {
+	// 	result = bitops.SetBit(result, dst)
+	// }
+	// genAllRookMovesGeneric(b, color, updateFunc)
 	var result uint64
-	updateFunc := func(src int8, dst int8) {
-		result = bitops.SetBit(result, dst)
+
+	queenPositions := b.FindPieces(color, boardstate.QUEEN)
+	occupied := b.GetOccupiedBitboard()
+	for _, queenPos := range queenPositions {
+		magic := rookMagicBitboards[queenPos]
+		blockers := occupied & magic.preMask
+		cacheKey := (blockers * magic.magicValue) >> magic.rotate
+		result = result | magic.mapping[cacheKey]
+
+		magic = bishopMagicBitboards[queenPos]
+		blockers = occupied & magic.preMask
+		cacheKey = (blockers * magic.magicValue) >> magic.rotate
+		result = result | magic.mapping[cacheKey]
+
 	}
-	genAllQueenMovesGeneric(b, color, updateFunc)
-	return result
+	return result & (^b.GetColorBitboard(color))
 }
 
 func genQueenSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
