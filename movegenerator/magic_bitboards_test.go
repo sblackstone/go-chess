@@ -15,3 +15,18 @@ func TestRookOccuppancyMasksForSquare(t *testing.T) {
 	}
 	t.Errorf("not implemented")
 }
+
+func TestRookAttackSetForOccupancy(t *testing.T) {
+	// bbs := RookOccuppancyMasksForSquare(0)
+	// fmt.Printf("len = %v\n", len(bbs))
+	// for _, bb := range bbs {
+	// 	attackSet := RookAttackSetForOccupancy(0, bb)
+	// 	fmt.Printf("Blockers\n")
+	// 	bitops.Print(bb, 0)
+	// 	fmt.Printf("Attack Set\n")
+	// 	bitops.Print(attackSet, 0)
+	// 	fmt.Printf("----------\n")
+	// }
+	t.Errorf("not implemented")
+
+}

@@ -110,5 +110,6 @@ func Print(n uint64, highlight int8) {
 		}
 		fmt.Println()
 	}
+	fmt.Println()
 
 }
