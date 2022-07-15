@@ -5,6 +5,18 @@ import (
 	"testing"
 )
 
+func TestCanRemoveSinglePiece(t *testing.T) {
+	var pl PieceLocations
+	pl.AddPieceLocation(WHITE, PAWN, 2)
+	pl.RemovePieceLocation(WHITE, PAWN, 2)
+	wpawns := pl.GetLocations(WHITE, PAWN)
+	expected := make([]int8, 0)
+	if !reflect.DeepEqual(wpawns, expected) {
+		t.Errorf("Expected %v to be %v", wpawns, expected)
+	}
+
+}
+
 func TestCopyPieceLocations(t *testing.T) {
 	var pl PieceLocations
 	pl.AddPieceLocation(WHITE, PAWN, 1)
