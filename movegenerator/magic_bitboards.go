@@ -1,6 +1,7 @@
 package movegenerator
 
 import (
+	"fmt"
 	"math/bits"
 	"math/rand"
 
@@ -46,7 +47,7 @@ func RookAttackSetForOccupancy(n int8, occupancy uint64) uint64 {
 
 type MagicDefinition struct {
 	square     int8
-	mapping    [16535]uint64
+	mapping    [16384]uint64
 	magicValue uint64
 	rotate     int8
 	preMask    uint64
@@ -67,7 +68,7 @@ func RookFindMagic(n int8) *MagicDefinition {
 	}
 
 	for {
-		var mapping [16535]uint64
+		var mapping [16384]uint64
 		magicValue = rand.Uint64() & rand.Uint64() & rand.Uint64()
 		for i, blocker := range blockers {
 			cacheKey := (blocker * magicValue) >> rotate
@@ -78,7 +79,7 @@ func RookFindMagic(n int8) *MagicDefinition {
 			if mapping[cacheKey] != attackSet {
 				if i > best {
 					best = i
-					//fmt.Printf("Collision detected at %v of %v with magic %v at cache key %v\n", i, totalCount, magicValue, cacheKey)
+					fmt.Printf("Collision detected at %v of %v with magic %v at cache key %v\n", i, totalCount, magicValue, cacheKey)
 				}
 				break
 			}
@@ -99,6 +100,7 @@ func GenerateRookMagicBitboards() [64]*MagicDefinition {
 	var result [64]*MagicDefinition
 	var i int8
 	for i = 0; i < 64; i++ {
+		fmt.Printf("Generating magic rook square for %v\n", i)
 		result[i] = RookFindMagic(i)
 	}
 	return result
