@@ -5,22 +5,10 @@ import (
 	"github.com/sblackstone/go-chess/boardstate"
 )
 
-// For future use.
-var bishopAttackMasks [64]uint64
-
-func genBishopAttackMasks() {
-	var pos int8
-	for pos = 0; pos < 64; pos++ {
-		b := boardstate.Blank()
-		b.SetSquare(pos, boardstate.WHITE, boardstate.BISHOP)
-		bishopAttackMasks[pos] = genAllBishopAttacks(b, boardstate.WHITE)
-		// bitops.Print(bishopAttackMasks[pos], pos)
-		// fmt.Printf("***\n\n")
-	}
-}
+var bishopMagicBitboards [64]*MagicDefinition
 
 func init() {
-	genBishopAttackMasks()
+	bishopMagicBitboards = GenerateMagicBitboards(boardstate.BISHOP)
 }
 
 func genSingleBishopMovesGeneric(b *boardstate.BoardState, bishopPos int8, updateFunc func(int8, int8)) {
@@ -71,12 +59,30 @@ func genAllBishopMovesGeneric(b *boardstate.BoardState, color int8, updateFunc f
 }
 
 func genAllBishopAttacks(b *boardstate.BoardState, color int8) uint64 {
+	// var result uint64
+	// updateFunc := func(src, dst int8) {
+	// 	result = bitops.SetBit(result, dst)
+	// }
+	// genAllRookMovesGeneric(b, color, updateFunc)
 	var result uint64
-	updateFunc := func(src int8, dst int8) {
-		result = bitops.SetBit(result, dst)
+
+	bishopPositions := b.FindPieces(color, boardstate.BISHOP)
+	occupied := b.GetOccupiedBitboard()
+	for _, bishopPos := range bishopPositions {
+		// fmt.Printf("BOARD\n")
+		// b.Print(127)
+		magic := bishopMagicBitboards[bishopPos]
+		// fmt.Printf("PREMASK\n")
+		// bitops.Print(magic.preMask, 127)
+		blockers := occupied & magic.preMask
+		// fmt.Printf("BLOCKERS\n")
+		// bitops.Print(blockers, rookPos)
+		cacheKey := (blockers * magic.magicValue) >> magic.rotate
+		// fmt.Printf("ATTACK MASK\n")
+		// bitops.Print(magic.mapping[cacheKey], 127)
+		result = result | magic.mapping[cacheKey]
 	}
-	genAllBishopMovesGeneric(b, color, updateFunc)
-	return result
+	return result & (^b.GetColorBitboard(color))
 }
 
 func genBishopSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {

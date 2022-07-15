@@ -8,7 +8,7 @@ import (
 var rookMagicBitboards [64]*MagicDefinition
 
 func init() {
-	rookMagicBitboards = GenerateRookMagicBitboards()
+	rookMagicBitboards = GenerateMagicBitboards(boardstate.ROOK)
 }
 
 func genSingleRookMovesGeneric(b *boardstate.BoardState, rookPos int8, updateFunc func(int8, int8)) {
