@@ -30,8 +30,8 @@ func (pl *PieceLocations) AddPieceLocation(color, piece, location int8) {
 	pl.pieces[color][piece] = append(pl.pieces[color][piece], location)
 }
 
-// Warning: We do not preserve the slice here...  We assume pieceLocations will never get sliced else where.
-// Peformance for putting up with this is huge.
+// Warning: We do not preserve the slice here..
+// Peformance increase is huge!
 func removeValue(s []int8, val int8) []int8 {
 	ret := make([]int8, 0)
 	for i, v := range s {
