@@ -72,15 +72,20 @@ func PreMask(n int8, pieceType int8) uint64 {
 
 	baseMask := bitops.Mask(n)
 
-	f1 := func(src, dst int8) {
-		baseMask = bitops.SetBit(baseMask, dst)
-	}
 	if pieceType == boardstate.ROOK {
 		return GenRookPreMask(n)
-		//		genSingleRookMovesGeneric(b, n, f1)
 	}
+
 	if pieceType == boardstate.BISHOP {
+		f1 := func(src, dst int8) {
+			baseMask = bitops.SetBit(baseMask, dst)
+		}
+		// Take all the places a bishop can move
+		// Remove the edges
+		// Make sure bishop square is still set.
 		genSingleBishopMovesGeneric(b, n, f1)
+		baseMask = baseMask & bitops.InternalMask()
+		baseMask = bitops.SetBit(baseMask, n)
 	}
 
 	return baseMask
