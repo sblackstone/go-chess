@@ -50,8 +50,7 @@ func Mask(pos int8) uint64 {
 }
 
 func SetBit(n uint64, pos int8) uint64 {
-	n |= setMasks[pos]
-	return n
+	return n | setMasks[pos]
 }
 
 func FindSetBits(n uint64) []int8 {
