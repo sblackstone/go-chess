@@ -38,8 +38,7 @@ func (b *BoardState) handleEnpassant(src int8, dst int8) {
 	}
 
 	if diff == 7 || diff == 9 || diff == -7 || diff == -9 {
-		targetPiece := b.PieceOfSquare(dst)
-		if targetPiece == EMPTY {
+		if b.EmptySquare(dst) {
 			if dst > src {
 				b.SetSquare(dst-8, EMPTY, EMPTY)
 			} else {
