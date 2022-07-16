@@ -9,26 +9,17 @@ import (
 	"github.com/sblackstone/go-chess/boardstate"
 )
 
-func BlockerMasksForSquare(n int8, pieceType int8) []uint64 {
+func BlockersForSquare(n int8, pieceType int8) []uint64 {
 	var result []uint64
 
 	b := boardstate.Blank()
 	b.SetSquare(n, boardstate.WHITE, pieceType)
 
-	baseMask := bitops.Mask(n)
+	baseMask := PreMask(n, pieceType)
 
-	f1 := func(src, dst int8) {
-		baseMask = bitops.SetBit(baseMask, dst)
-	}
-	if pieceType == boardstate.ROOK {
-		genSingleRookMovesGeneric(b, n, f1)
-	}
-	if pieceType == boardstate.BISHOP {
-		genSingleBishopMovesGeneric(b, n, f1)
-	}
-	f := func(occupancyMask uint64) {
-		if bitops.TestBit(occupancyMask, n) {
-			result = append(result, occupancyMask)
+	f := func(blockerSet uint64) {
+		if bitops.TestBit(blockerSet, n) {
+			result = append(result, blockerSet)
 		}
 	}
 
@@ -38,10 +29,10 @@ func BlockerMasksForSquare(n int8, pieceType int8) []uint64 {
 
 }
 
-func AttackSetForOccupancy(n int8, occupancy uint64, pieceType int8) uint64 {
+func AttackSetForBlockers(n int8, blockers uint64, pieceType int8) uint64 {
 	b := boardstate.Blank()
 	b.SetSquare(n, boardstate.WHITE, pieceType)
-	squares := bitops.FindSetBits(occupancy)
+	squares := bitops.FindSetBits(blockers)
 	for _, pos := range squares {
 		if pos != n {
 			b.SetSquare(pos, boardstate.BLACK, pieceType)
@@ -135,11 +126,11 @@ func GenerateMagicBitboards(pieceType int8) [64]*MagicDefinition {
 	var n int8
 	for n = 0; n < 64; n++ {
 		fmt.Printf("Generating magic %v square for %v\n", pieceType, n)
-		blockers := BlockerMasksForSquare(n, pieceType)
+		blockers := BlockersForSquare(n, pieceType)
 		attackSets := make([]uint64, len(blockers))
 		preMask := PreMask(n, pieceType)
 		for i, blocker := range blockers {
-			attackSets[i] = AttackSetForOccupancy(n, blocker, pieceType)
+			attackSets[i] = AttackSetForBlockers(n, blocker, pieceType)
 		}
 		result[n] = FindMagic(n, preMask, blockers, attackSets)
 	}
