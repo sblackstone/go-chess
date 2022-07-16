@@ -8,13 +8,13 @@ import (
 	"github.com/sblackstone/go-chess/boardstate"
 )
 
-func BlockersForSquare(n int8, pieceType int8) []uint64 {
+func blockersForSquare(n int8, pieceType int8) []uint64 {
 	var result []uint64
 
 	b := boardstate.Blank()
 	b.SetSquare(n, boardstate.WHITE, pieceType)
 
-	baseMask := PreMask(n, pieceType)
+	baseMask := preMask(n, pieceType)
 
 	f := func(blockerSet uint64) {
 		if bitops.TestBit(blockerSet, n) {
@@ -28,7 +28,7 @@ func BlockersForSquare(n int8, pieceType int8) []uint64 {
 
 }
 
-func AttackSetForBlockers(n int8, blockers uint64, pieceType int8) uint64 {
+func attackSetForBlockers(n int8, blockers uint64, pieceType int8) uint64 {
 	b := boardstate.Blank()
 	b.SetSquare(n, boardstate.WHITE, pieceType)
 	squares := bitops.FindSetBits(blockers)
@@ -53,7 +53,7 @@ func AttackSetForBlockers(n int8, blockers uint64, pieceType int8) uint64 {
 
 }
 
-func GenRookPreMask(n int8) uint64 {
+func genRookPreMask(n int8) uint64 {
 	rank, file := bitops.SquareToRankFile(n)
 	result := bitops.Mask(n)
 	var i int8
@@ -66,14 +66,14 @@ func GenRookPreMask(n int8) uint64 {
 
 }
 
-func PreMask(n int8, pieceType int8) uint64 {
+func preMask(n int8, pieceType int8) uint64 {
 	b := boardstate.Blank()
 	b.SetSquare(n, boardstate.WHITE, pieceType)
 
 	baseMask := bitops.Mask(n)
 
 	if pieceType == boardstate.ROOK {
-		return GenRookPreMask(n)
+		return genRookPreMask(n)
 	}
 
 	if pieceType == boardstate.BISHOP {
@@ -92,14 +92,13 @@ func PreMask(n int8, pieceType int8) uint64 {
 }
 
 type MagicDefinition struct {
-	square     int8
 	mapping    []uint64
 	magicValue uint64
 	rotate     int8
 	preMask    uint64
 }
 
-func FindMagic(n int8, preMask uint64, blockers []uint64, attackSets []uint64) *MagicDefinition {
+func findMagic(n int8, preMask uint64, blockers []uint64, attackSets []uint64) *MagicDefinition {
 	blockerMaskBits := bits.OnesCount64(preMask) - 1
 	//fmt.Printf("blockerMaskBits = %v\n", blockerMaskBits)
 	rotate := int8(64 - blockerMaskBits)
@@ -129,7 +128,6 @@ func FindMagic(n int8, preMask uint64, blockers []uint64, attackSets []uint64) *
 			}
 			if i == totalCount-1 {
 				return &MagicDefinition{
-					square:     n,
 					mapping:    mapping,
 					magicValue: magicValue,
 					rotate:     rotate,
@@ -145,13 +143,13 @@ func GenerateMagicBitboards(pieceType int8) [64]*MagicDefinition {
 	var n int8
 	for n = 0; n < 64; n++ {
 		//fmt.Printf("Generating magic %v square for %v\n", pieceType, n)
-		blockers := BlockersForSquare(n, pieceType)
+		blockers := blockersForSquare(n, pieceType)
 		attackSets := make([]uint64, len(blockers))
-		preMask := PreMask(n, pieceType)
+		preMask := preMask(n, pieceType)
 		for i, blocker := range blockers {
-			attackSets[i] = AttackSetForBlockers(n, blocker, pieceType)
+			attackSets[i] = attackSetForBlockers(n, blocker, pieceType)
 		}
-		result[n] = FindMagic(n, preMask, blockers, attackSets)
+		result[n] = findMagic(n, preMask, blockers, attackSets)
 	}
 	return result
 }
