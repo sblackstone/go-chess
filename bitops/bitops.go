@@ -65,8 +65,7 @@ func FindSetBits(n uint64) []int8 {
 }
 
 func ClearBit(n uint64, pos int8) uint64 {
-	n &= clearMasks[pos]
-	return n
+	return n & clearMasks[pos]
 }
 
 func TestBit(n uint64, pos int8) bool {
@@ -74,8 +73,7 @@ func TestBit(n uint64, pos int8) bool {
 }
 
 func FlipBit(n uint64, pos int8) uint64 {
-	n ^= (setMasks[pos])
-	return n
+	return n ^ setMasks[pos]
 }
 
 func RankFileToSquare(rank int8, file int8) int8 {
