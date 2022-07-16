@@ -1,7 +1,6 @@
 package movegenerator
 
 import (
-	"fmt"
 	"math/bits"
 	"math/rand"
 
@@ -54,6 +53,19 @@ func AttackSetForBlockers(n int8, blockers uint64, pieceType int8) uint64 {
 
 }
 
+func GenRookPreMask(n int8) uint64 {
+	rank, file := bitops.SquareToRankFile(n)
+	result := bitops.Mask(n)
+	var i int8
+	for i = 1; i < 7; i++ {
+		result = bitops.SetBit(result, bitops.RankFileToSquare(rank, i))
+		result = bitops.SetBit(result, bitops.RankFileToSquare(i, file))
+	}
+	//bitops.Print(result, 127)
+	return result
+
+}
+
 func PreMask(n int8, pieceType int8) uint64 {
 	b := boardstate.Blank()
 	b.SetSquare(n, boardstate.WHITE, pieceType)
@@ -64,7 +76,8 @@ func PreMask(n int8, pieceType int8) uint64 {
 		baseMask = bitops.SetBit(baseMask, dst)
 	}
 	if pieceType == boardstate.ROOK {
-		genSingleRookMovesGeneric(b, n, f1)
+		return GenRookPreMask(n)
+		//		genSingleRookMovesGeneric(b, n, f1)
 	}
 	if pieceType == boardstate.BISHOP {
 		genSingleBishopMovesGeneric(b, n, f1)
@@ -83,6 +96,7 @@ type MagicDefinition struct {
 
 func FindMagic(n int8, preMask uint64, blockers []uint64, attackSets []uint64) *MagicDefinition {
 	blockerMaskBits := bits.OnesCount64(preMask) - 1
+	//fmt.Printf("blockerMaskBits = %v\n", blockerMaskBits)
 	rotate := int8(64 - blockerMaskBits)
 	totalCount := len(blockers)
 	best := 0
@@ -104,7 +118,7 @@ func FindMagic(n int8, preMask uint64, blockers []uint64, attackSets []uint64) *
 			if mapping[cacheKey] != attackSet {
 				if i > best {
 					best = i
-					fmt.Printf("Collision detected at %v of %v with magic %v at cache key %v\n", i, totalCount, magicValue, cacheKey)
+					//fmt.Printf("Collision detected at %v of %v with magic %v at cache key %v\n", i, totalCount, magicValue, cacheKey)
 				}
 				break
 			}
@@ -125,7 +139,7 @@ func GenerateMagicBitboards(pieceType int8) [64]*MagicDefinition {
 	var result [64]*MagicDefinition
 	var n int8
 	for n = 0; n < 64; n++ {
-		fmt.Printf("Generating magic %v square for %v\n", pieceType, n)
+		//fmt.Printf("Generating magic %v square for %v\n", pieceType, n)
 		blockers := BlockersForSquare(n, pieceType)
 		attackSets := make([]uint64, len(blockers))
 		preMask := PreMask(n, pieceType)
