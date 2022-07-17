@@ -1,6 +1,6 @@
 package boardstate
 
-func (b *BoardState) updateCastlingRights(src int8, dst int8) {
+func (b *BoardState) updateCastlingRights(src int8, dst int8, diff int8) {
 	if src == 4 {
 		b.SetCastleRights(WHITE, CASTLE_LONG, false)
 		b.SetCastleRights(WHITE, CASTLE_SHORT, false)
@@ -25,13 +25,12 @@ func (b *BoardState) updateCastlingRights(src int8, dst int8) {
 	}
 }
 
-func (b *BoardState) handleEnpassant(src int8, dst int8) {
-	diff := dst - src
+func (b *BoardState) handleEnpassant(src int8, dst int8, diff int8) {
 
 	// Flags
-	if diff == 16 {
+	if diff == -16 {
 		b.SetEnpassant(dst - 8)
-	} else if diff == -16 {
+	} else if diff == 16 {
 		b.SetEnpassant(dst + 8)
 	} else {
 		b.ClearEnpassant()
@@ -111,6 +110,7 @@ func (b *BoardState) PlayTurn(src int8, dst int8, promotePiece int8) {
 	piece := b.PieceOfSquare(src)
 	dstPiece := b.PieceOfSquare(dst)
 	dstColor := b.ColorOfSquare(dst)
+	diff := src - dst
 
 	msd := &MoveStackData{
 		src:             src,
@@ -126,12 +126,12 @@ func (b *BoardState) PlayTurn(src int8, dst int8, promotePiece int8) {
 
 	// Set or Clear enpassant flag
 	if piece == PAWN {
-		b.handleEnpassant(src, dst)
+		b.handleEnpassant(src, dst, diff)
 	} else {
 		b.ClearEnpassant()
 	}
 
-	b.updateCastlingRights(src, dst)
+	b.updateCastlingRights(src, dst, diff)
 
 	b.MovePiece(src, dst)
 
