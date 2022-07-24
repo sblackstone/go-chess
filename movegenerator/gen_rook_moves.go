@@ -11,10 +11,10 @@ func init() {
 	rookMagicBitboards = GenerateMagicBitboards(boardstate.ROOK)
 }
 
-func genSingleRookMovesGeneric(b *boardstate.BoardState, rookPos int8, updateFunc func(int8, int8)) {
+func genSingleRookMovesGeneric(b *boardstate.BoardState, rookPos int8, updateFunc func(int8, int8, int8)) {
 	for r := rookPos + 8; r < 64; r += 8 {
 		if b.ColorOfSquare(r) != b.ColorOfSquare(rookPos) {
-			updateFunc(rookPos, r)
+			updateFunc(rookPos, r, boardstate.EMPTY)
 		}
 		if !b.EmptySquare(r) {
 			break
@@ -23,7 +23,7 @@ func genSingleRookMovesGeneric(b *boardstate.BoardState, rookPos int8, updateFun
 
 	for r := rookPos - 8; r >= 0; r -= 8 {
 		if b.ColorOfSquare(r) != b.ColorOfSquare(rookPos) {
-			updateFunc(rookPos, r)
+			updateFunc(rookPos, r, boardstate.EMPTY)
 		}
 		if !b.EmptySquare(r) {
 			break
@@ -32,7 +32,7 @@ func genSingleRookMovesGeneric(b *boardstate.BoardState, rookPos int8, updateFun
 
 	for r := rookPos + 1; r <= 63 && bitops.FileOfSquare(r) > 0; r += 1 {
 		if b.ColorOfSquare(r) != b.ColorOfSquare(rookPos) {
-			updateFunc(rookPos, r)
+			updateFunc(rookPos, r, boardstate.EMPTY)
 		}
 		if !b.EmptySquare(r) {
 			break
@@ -41,7 +41,7 @@ func genSingleRookMovesGeneric(b *boardstate.BoardState, rookPos int8, updateFun
 
 	for r := rookPos - 1; r >= 0 && bitops.FileOfSquare(r) < 7; r -= 1 {
 		if b.ColorOfSquare(r) != b.ColorOfSquare(rookPos) {
-			updateFunc(rookPos, r)
+			updateFunc(rookPos, r, boardstate.EMPTY)
 		}
 		if !b.EmptySquare(r) {
 			break
@@ -49,7 +49,7 @@ func genSingleRookMovesGeneric(b *boardstate.BoardState, rookPos int8, updateFun
 	}
 }
 
-func genAllRookMovesGeneric(b *boardstate.BoardState, color int8, updatefunc func(int8, int8)) {
+func genAllRookMovesGeneric(b *boardstate.BoardState, color int8, updatefunc func(int8, int8, int8)) {
 	rookPositions := b.FindPieces(color, boardstate.ROOK)
 	for _, rookPos := range rookPositions {
 		genSingleRookMovesGeneric(b, rookPos, updatefunc)
@@ -85,8 +85,8 @@ func genAllRookAttacks(b *boardstate.BoardState, color int8) uint64 {
 
 func genRookSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
 	var result []*boardstate.BoardState
-	updateFunc := func(src, dst int8) {
-		result = append(result, b.CopyPlayTurn(src, dst, boardstate.EMPTY))
+	updateFunc := func(src, dst, promotionPiece int8) {
+		result = append(result, b.CopyPlayTurn(src, dst, promotionPiece))
 	}
 	genAllRookMovesGeneric(b, b.GetTurn(), updateFunc)
 	return result

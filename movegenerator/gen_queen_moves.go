@@ -4,7 +4,7 @@ import (
 	"github.com/sblackstone/go-chess/boardstate"
 )
 
-func genAllQueenMovesGeneric(b *boardstate.BoardState, color int8, updateFunc func(int8, int8)) {
+func genAllQueenMovesGeneric(b *boardstate.BoardState, color int8, updateFunc func(int8, int8, int8)) {
 	queenPositions := b.FindPieces(color, boardstate.QUEEN)
 	for _, qp := range queenPositions {
 		genSingleRookMovesGeneric(b, qp, updateFunc)
@@ -49,8 +49,8 @@ func genAllQueenAttacks(b *boardstate.BoardState, color int8) uint64 {
 func genQueenSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
 	var result []*boardstate.BoardState
 
-	updateFunc := func(src int8, dst int8) {
-		result = append(result, b.CopyPlayTurn(src, dst, boardstate.EMPTY))
+	updateFunc := func(src, dst, promotionPiece int8) {
+		result = append(result, b.CopyPlayTurn(src, dst, promotionPiece))
 	}
 	genAllQueenMovesGeneric(b, b.GetTurn(), updateFunc)
 	return result

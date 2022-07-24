@@ -89,16 +89,16 @@ func init() {
 	}
 }
 
-func genSingleKnightMovesGeneric(b *boardstate.BoardState, knightPos int8, updateFunc func(int8, int8)) {
+func genSingleKnightMovesGeneric(b *boardstate.BoardState, knightPos int8, updateFunc func(int8, int8, int8)) {
 	knightColor := b.ColorOfSquare(knightPos)
 	for _, move := range pregeneratedKnightMoves[knightPos] {
 		if b.ColorOfSquare(move) != knightColor {
-			updateFunc(knightPos, move)
+			updateFunc(knightPos, move, boardstate.EMPTY)
 		}
 	}
 }
 
-func genAllKnightMovesGeneric(b *boardstate.BoardState, color int8, updateFunc func(int8, int8)) {
+func genAllKnightMovesGeneric(b *boardstate.BoardState, color int8, updateFunc func(int8, int8, int8)) {
 	knightPositions := b.FindPieces(color, boardstate.KNIGHT)
 	for _, pos := range knightPositions {
 		genSingleKnightMovesGeneric(b, pos, updateFunc)
@@ -117,8 +117,8 @@ func genAllKnightAttacks(b *boardstate.BoardState, color int8) uint64 {
 func genKnightSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
 	var result []*boardstate.BoardState
 
-	updateFunc := func(src, dst int8) {
-		result = append(result, b.CopyPlayTurn(src, dst, boardstate.EMPTY))
+	updateFunc := func(src, dst, promotionPiece int8) {
+		result = append(result, b.CopyPlayTurn(src, dst, promotionPiece))
 	}
 	genAllKnightMovesGeneric(b, b.GetTurn(), updateFunc)
 	return result

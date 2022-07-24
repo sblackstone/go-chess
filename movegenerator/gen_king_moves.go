@@ -94,13 +94,13 @@ func initPregeneratedKingMoves() {
 	}
 }
 
-func genSingleKingMovesGeneric(b *boardstate.BoardState, kingPos int8, calculateChecks bool, updateFunc func(int8, int8)) {
+func genSingleKingMovesGeneric(b *boardstate.BoardState, kingPos int8, calculateChecks bool, updateFunc func(int8, int8, int8)) {
 
 	kingColor := b.ColorOfSquare(kingPos)
 
 	for _, move := range pregeneratedKingMoves[kingPos] {
 		if b.ColorOfSquare(move) != kingColor {
-			updateFunc(kingPos, move)
+			updateFunc(kingPos, move, boardstate.EMPTY)
 		}
 	}
 
@@ -116,13 +116,13 @@ func genSingleKingMovesGeneric(b *boardstate.BoardState, kingPos int8, calculate
 			if b.HasCastleRights(kingColor, boardstate.CASTLE_SHORT) &&
 				(occupied&castlingConfigs[kingColor][boardstate.CASTLE_SHORT].emptyMask == 0) &&
 				(checkedSquares&castlingConfigs[kingColor][boardstate.CASTLE_SHORT].attackMask == 0) {
-				updateFunc(kingPos, castlingConfigs[kingColor][boardstate.CASTLE_SHORT].kingDst)
+				updateFunc(kingPos, castlingConfigs[kingColor][boardstate.CASTLE_SHORT].kingDst, boardstate.EMPTY)
 			}
 
 			if b.HasCastleRights(kingColor, boardstate.CASTLE_LONG) &&
 				(occupied&castlingConfigs[kingColor][boardstate.CASTLE_LONG].emptyMask == 0) &&
 				(checkedSquares&castlingConfigs[kingColor][boardstate.CASTLE_LONG].attackMask == 0) {
-				updateFunc(kingPos, castlingConfigs[kingColor][boardstate.CASTLE_LONG].kingDst)
+				updateFunc(kingPos, castlingConfigs[kingColor][boardstate.CASTLE_LONG].kingDst, boardstate.EMPTY)
 			}
 		}
 	}
@@ -137,7 +137,7 @@ func genAllKingAttacks(b *boardstate.BoardState, color int8) uint64 {
 	}
 }
 
-func genAllKingMovesGeneric(b *boardstate.BoardState, color int8, calculateChecks bool, updateFunc func(int8, int8)) {
+func genAllKingMovesGeneric(b *boardstate.BoardState, color int8, calculateChecks bool, updateFunc func(int8, int8, int8)) {
 	kingPositions := b.FindPieces(color, boardstate.KING)
 
 	if len(kingPositions) > 0 {
@@ -151,8 +151,8 @@ func genAllKingMovesGeneric(b *boardstate.BoardState, color int8, calculateCheck
 func genKingSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
 	var result []*boardstate.BoardState
 
-	updateFunc := func(src, dst int8) {
-		result = append(result, b.CopyPlayTurn(src, dst, boardstate.EMPTY))
+	updateFunc := func(src, dst, promotionPiece int8) {
+		result = append(result, b.CopyPlayTurn(src, dst, promotionPiece))
 	}
 	genAllKingMovesGeneric(b, b.GetTurn(), false, updateFunc)
 

@@ -40,7 +40,7 @@ func attackSetForBlockers(n int8, blockers uint64, pieceType int8) uint64 {
 
 	var result uint64
 
-	f := func(src, dst int8) {
+	f := func(src, dst, promotionPiece int8) {
 		result = bitops.SetBit(result, dst)
 	}
 	if pieceType == boardstate.ROOK {
