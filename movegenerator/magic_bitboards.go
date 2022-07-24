@@ -66,29 +66,43 @@ func genRookPreMask(n int8) uint64 {
 
 }
 
-func preMask(n int8, pieceType int8) uint64 {
-	b := boardstate.Blank()
-	b.SetSquare(n, boardstate.WHITE, pieceType)
+func genBishopPreMask(n int8) uint64 {
+	var result uint64
+	file := bitops.FileOfSquare(n)
+	result = bitops.SetBit(result, n)
 
-	baseMask := bitops.Mask(n)
+	for r := n + 9; r < 64 && bitops.FileOfSquare(r) > file; r += 9 {
+		result = bitops.SetBit(result, r)
+	}
+
+	for r := n + 7; r < 64 && bitops.FileOfSquare(r) < file; r += 7 {
+		result = bitops.SetBit(result, r)
+	}
+
+	for r := n - 7; r >= 0 && bitops.FileOfSquare(r) > file; r -= 7 {
+		result = bitops.SetBit(result, r)
+	}
+
+	for r := n - 9; r >= 0 && bitops.FileOfSquare(r) < file; r -= 9 {
+		result = bitops.SetBit(result, r)
+	}
+
+	result = result & bitops.InternalMask()
+	result = bitops.SetBit(result, n)
+
+	return result
+}
+
+func preMask(n int8, pieceType int8) uint64 {
 
 	if pieceType == boardstate.ROOK {
 		return genRookPreMask(n)
 	}
 
 	if pieceType == boardstate.BISHOP {
-		f1 := func(src, dst int8) {
-			baseMask = bitops.SetBit(baseMask, dst)
-		}
-		// Take all the places a bishop can move
-		// Remove the edges
-		// Make sure bishop square is still set.
-		genSingleBishopMovesGeneric(b, n, f1)
-		baseMask = baseMask & bitops.InternalMask()
-		baseMask = bitops.SetBit(baseMask, n)
+		return genBishopPreMask(n)
 	}
-
-	return baseMask
+	panic("premask only supports rook and bishop")
 }
 
 type MagicDefinition struct {
@@ -111,7 +125,7 @@ func findMagic(n int8, preMask uint64, blockers []uint64, attackSets []uint64) *
 		for i := range mapping {
 			mapping[i] = 0
 		}
-		// We want few small bits in our test values.   Using more or fewer random numbers here hurts.
+		// We want few zero bits in our test values.   Using more or fewer random numbers here hurts.
 		magicValue = rand.Uint64() & rand.Uint64() & rand.Uint64()
 		for i, blocker := range blockers {
 			cacheKey := (blocker * magicValue) >> rotate
