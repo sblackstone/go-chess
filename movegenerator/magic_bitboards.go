@@ -164,6 +164,7 @@ func GenerateMagicBitboards(pieceType int8) [64]*MagicDefinition {
 			attackSets[i] = attackSetForBlockers(n, blocker, pieceType)
 		}
 		result[n] = findMagic(n, preMask, blockers, attackSets)
+		//fmt.Printf("Found Magic %v for %v in square %v using %v bits\n", result[n].magicValue, pieceType, n, 64-result[n].rotate)
 	}
 	return result
 }
