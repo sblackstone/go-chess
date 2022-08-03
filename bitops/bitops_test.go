@@ -5,6 +5,26 @@ import (
 	"testing"
 )
 
+func TestFindSetBitsGeneric(t *testing.T) {
+	var result []int8
+	var testCase uint64
+
+	f := func(n int8) {
+		result = append(result, n)
+	}
+
+	testCase = SetBit(testCase, 5)
+	testCase = SetBit(testCase, 7)
+	testCase = SetBit(testCase, 63)
+
+	FindSetBitsGeneric(testCase, f)
+	expected := []int8{5, 7, 63}
+	if !reflect.DeepEqual(result, expected) {
+		t.Errorf("Expected %v to be %v", result, expected)
+	}
+
+}
+
 func TestInternalMask(t *testing.T) {
 	var expected uint64
 	var i, j int8

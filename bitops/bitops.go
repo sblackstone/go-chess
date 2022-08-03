@@ -64,6 +64,14 @@ func FindSetBits(n uint64) []int8 {
 	return result
 }
 
+func FindSetBitsGeneric(n uint64, f func(int8)) {
+	for n > 0 {
+		leading := bits.TrailingZeros64(n)
+		f(int8(leading))
+		n &= clearMasks[leading]
+	}
+}
+
 func ClearBit(n uint64, pos int8) uint64 {
 	return n & clearMasks[pos]
 }
