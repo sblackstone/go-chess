@@ -1,6 +1,6 @@
 package boardstate
 
-func (b *BoardState) updateCastlingRights(src int8, dst int8, diff int8) {
+func (b *BoardState) updateCastlingRights(src int8, dst int8) {
 	if src == 4 {
 		b.SetCastleRights(WHITE, CASTLE_LONG, false)
 		b.SetCastleRights(WHITE, CASTLE_SHORT, false)
@@ -131,7 +131,7 @@ func (b *BoardState) PlayTurn(src int8, dst int8, promotePiece int8) {
 		b.ClearEnpassant()
 	}
 
-	b.updateCastlingRights(src, dst, diff)
+	b.updateCastlingRights(src, dst)
 
 	b.MovePiece(src, dst)
 
