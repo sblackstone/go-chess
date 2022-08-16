@@ -66,8 +66,8 @@ func (b *BoardState) handleUncastling(src int8, dst int8) {
 }
 
 func (b *BoardState) UnplayTurn() {
-	msd := b.moveStack
-	b.moveStack = msd.prev
+	msd := b.moveStack[b.moveStackNextIdx-1]
+	b.moveStackNextIdx -= 1
 	b.enpassantSquare = msd.enpassantSquare
 	b.castleData = msd.castleData
 	b.halfMoves = msd.halfMoves
@@ -111,18 +111,17 @@ func (b *BoardState) PlayTurn(src int8, dst int8, promotePiece int8) {
 	dstPiece := b.PieceOfSquare(dst)
 	dstColor := b.ColorOfSquare(dst)
 	diff := src - dst
-
-	msd := &MoveStackData{
-		src:             src,
-		srcPiece:        piece,
-		dst:             dst,
-		dstPiece:        dstPiece,
-		enpassantSquare: b.enpassantSquare,
-		castleData:      b.castleData,
-		halfMoves:       b.halfMoves,
-		prev:            b.moveStack,
+	if b.moveStack[b.moveStackNextIdx] == nil {
+		b.moveStack[b.moveStackNextIdx] = &MoveStackData{}
 	}
-	b.moveStack = msd
+	b.moveStack[b.moveStackNextIdx].src = src
+	b.moveStack[b.moveStackNextIdx].srcPiece = piece
+	b.moveStack[b.moveStackNextIdx].dst = dst
+	b.moveStack[b.moveStackNextIdx].dstPiece = dstPiece
+	b.moveStack[b.moveStackNextIdx].enpassantSquare = b.enpassantSquare
+	b.moveStack[b.moveStackNextIdx].castleData = b.castleData
+	b.moveStack[b.moveStackNextIdx].halfMoves = b.halfMoves
+	b.moveStackNextIdx += 1
 
 	// Set or Clear enpassant flag
 	if piece == PAWN {

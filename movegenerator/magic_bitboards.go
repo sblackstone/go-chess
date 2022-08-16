@@ -11,9 +11,6 @@ import (
 func blockersForSquare(n int8, pieceType int8) []uint64 {
 	var result []uint64
 
-	b := boardstate.Blank()
-	b.SetSquare(n, boardstate.WHITE, pieceType)
-
 	baseMask := preMask(n, pieceType)
 
 	f := func(blockerSet uint64) {

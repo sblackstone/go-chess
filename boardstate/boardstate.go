@@ -6,18 +6,19 @@ import (
 
 // BoardState contains the state of the Board
 type BoardState struct {
-	colors          [2]uint64
-	pieces          [6]uint64
-	castleData      [2][2]bool
-	enpassantSquare int8
-	turn            int8
-	halfMoves       int
-	fullMoves       int
-	moveStack       *MoveStackData
-	colorList       [64]int8
-	pieceList       [64]int8
-	kingPos         [2]int8
-	pieceLocations  PieceLocations
+	colors           [2]uint64
+	pieces           [6]uint64
+	castleData       [2][2]bool
+	enpassantSquare  int8
+	turn             int8
+	halfMoves        int
+	fullMoves        int
+	moveStack        []*MoveStackData
+	moveStackNextIdx int
+	colorList        [64]int8
+	pieceList        [64]int8
+	kingPos          [2]int8
+	pieceLocations   PieceLocations
 }
 
 type MoveStackData struct {
@@ -28,7 +29,6 @@ type MoveStackData struct {
 	enpassantSquare int8
 	halfMoves       int
 	castleData      [2][2]bool
-	prev            *MoveStackData
 }
 
 func (b *BoardState) GetKingPos(color int8) int8 {
@@ -39,6 +39,7 @@ func (b *BoardState) GetKingPos(color int8) int8 {
 func Blank() *BoardState {
 	b := BoardState{}
 	b.EnableAllCastling()
+	b.moveStack = make([]*MoveStackData, 500)
 	b.turn = WHITE
 	b.colors = [2]uint64{0, 0}
 	b.pieces = [6]uint64{0, 0, 0, 0, 0, 0}
