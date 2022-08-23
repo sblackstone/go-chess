@@ -142,9 +142,12 @@ func CheckEndOfGame(b *boardstate.BoardState) int8 {
 	currentTurnColor := b.GetTurn()
 	oppTurnColor := b.EnemyColor()
 
-	kingPos := b.FindPieces(currentTurnColor, boardstate.KING)
+	kingPos := b.GetKingPos(currentTurnColor)
+	if kingPos == boardstate.NO_KING {
+		return GAME_STATE_CHECKMATE
+	}
 	attacks := GenAllCheckedSquares(b, oppTurnColor)
-	if bitops.TestBit(attacks, kingPos[0]) {
+	if bitops.TestBit(attacks, kingPos) {
 		return GAME_STATE_CHECKMATE
 	}
 
