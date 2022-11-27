@@ -43,7 +43,7 @@ func Blank() *BoardState {
 	b.SetTurn(WHITE)
 	b.colors = [2]uint64{0, 0}
 	b.pieces = [6]uint64{0, 0, 0, 0, 0, 0}
-	b.enpassantSquare = NO_ENPASSANT
+	b.SetEnpassant(NO_ENPASSANT)
 	for i := 0; i < 64; i++ {
 		b.colorList[i] = EMPTY
 		b.pieceList[i] = EMPTY
