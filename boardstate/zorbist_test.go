@@ -72,3 +72,25 @@ func TestZorbistPieces(t *testing.T) {
 		t.Errorf("Expected zobristKey1 to equal zorbistKey3")
 	}
 }
+
+func TestZorbistCastling(t *testing.T) {
+	b := Blank()
+	zorbistKey1 := b.GetZorbistKey()
+	b.SetCastleRights(WHITE, CASTLE_LONG, false)
+	zorbistKey2 := b.GetZorbistKey()
+	b.SetCastleRights(WHITE, CASTLE_LONG, true)
+	zorbistKey3 := b.GetZorbistKey()
+
+	if zorbistKey1 == zorbistKey2 {
+		t.Errorf("Expected zobristKey1 to not equal zorbistKey2")
+	}
+
+	if zorbistKey2 == zorbistKey3 {
+		t.Errorf("Expected zobristKey2 to not equal zorbistKey3")
+	}
+
+	if zorbistKey3 != zorbistKey1 {
+		t.Errorf("Expected zobristKey1 to equal zorbistKey3")
+	}
+
+}
