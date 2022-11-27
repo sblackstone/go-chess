@@ -113,6 +113,14 @@ func (b *BoardState) GetColorBitboard(color int8) uint64 {
 	return b.colors[color]
 }
 
+func (b *BoardState) GetZorbistKey() uint64 {
+	return b.zorbistKey
+}
+
+func (b *BoardState) UpdateZorbistKey(value uint64) {
+	b.zorbistKey = b.zorbistKey ^ value
+}
+
 func (b *BoardState) GetPieceBitboard(color int8, piece int8) uint64 {
 	return b.pieces[piece] & b.colors[color]
 }

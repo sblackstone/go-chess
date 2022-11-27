@@ -50,14 +50,19 @@ func (b *BoardState) EnemyColor() int8 {
 }
 
 func (b *BoardState) SetTurn(color int8) {
+	b.UpdateZorbistKey(zorbistTurns[b.turn])
 	b.turn = color
+	b.UpdateZorbistKey(zorbistTurns[b.turn])
 }
 
 func (b *BoardState) ToggleTurn() {
-	b.turn = b.turn ^ 1
+	b.SetTurn(b.turn ^ 1)
 }
 
 func (b *BoardState) ClearEnpassant() {
+	if b.enpassantSquare != NO_ENPASSANT {
+		b.UpdateZorbistKey(zorbistEnpassant[b.enpassantSquare])
+	}
 	b.enpassantSquare = NO_ENPASSANT
 }
 
@@ -65,14 +70,20 @@ func (b *BoardState) GetEnpassant() int8 {
 	return b.enpassantSquare
 }
 
-// SetEnpassant takes a file 0-7 and saves the enpassant state.
-func (b *BoardState) SetEnpassant(file int8) {
-	b.enpassantSquare = file
+// SetEnpassant takes a pos and saves the enpassant state.
+func (b *BoardState) SetEnpassant(pos int8) {
+	if b.enpassantSquare != NO_ENPASSANT {
+		b.UpdateZorbistKey(zorbistEnpassant[b.enpassantSquare])
+	}
+	b.enpassantSquare = pos
+	if pos != NO_ENPASSANT {
+		b.UpdateZorbistKey(zorbistEnpassant[pos])
+	}
 }
 
-// IsEnpassant takes a file 0-7 and returns the enpassant state.
-func (b *BoardState) IsEnpassant(file int8) bool {
-	return b.enpassantSquare == file
+// IsEnpassant takes a pos and returns the enpassant state.
+func (b *BoardState) IsEnpassant(pos int8) bool {
+	return b.enpassantSquare == pos
 }
 
 func (b *BoardState) HasCastleRights(color int8, side int8) bool {
@@ -95,5 +106,6 @@ func (b *BoardState) EnableAllCastling() {
 }
 
 func (b *BoardState) SetCastleRights(color int8, side int8, enabled bool) {
+	//TODO: zorbistCastling
 	b.castleData[color][side] = enabled
 }
