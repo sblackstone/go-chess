@@ -164,6 +164,7 @@ func (b *BoardState) SetSquare(n int8, color int8, piece int8) {
 	origPiece := b.PieceOfSquare(n)
 	origColor := b.ColorOfSquare(n)
 	if origColor != EMPTY {
+		b.UpdateZorbistKey(zorbistPieces[origColor][origPiece][n])
 		b.pieces[origPiece] = bitops.ClearBit(b.pieces[origPiece], n)
 		b.colors[origColor] = bitops.ClearBit(b.colors[origColor], n)
 		b.pieceLocations.RemovePieceLocation(origColor, origPiece, n)
@@ -178,6 +179,7 @@ func (b *BoardState) SetSquare(n int8, color int8, piece int8) {
 		b.kingPos[color] = n
 	}
 	if color != EMPTY {
+		b.UpdateZorbistKey(zorbistPieces[color][piece][n])
 		b.pieceLocations.AddPieceLocation(color, piece, n)
 		b.colors[color] = bitops.SetBit(b.colors[color], n)
 		b.pieces[piece] = bitops.SetBit(b.pieces[piece], n)
