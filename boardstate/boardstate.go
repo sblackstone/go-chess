@@ -40,7 +40,7 @@ func Blank() *BoardState {
 	b := BoardState{}
 	b.EnableAllCastling()
 	b.moveStack = make([]*MoveStackData, 500)
-	b.turn = WHITE
+	b.SetTurn(WHITE)
 	b.colors = [2]uint64{0, 0}
 	b.pieces = [6]uint64{0, 0, 0, 0, 0, 0}
 	b.enpassantSquare = NO_ENPASSANT
@@ -94,16 +94,11 @@ func Initial() *BoardState {
 	for j = 0; j < 8; j++ {
 		b.SetSquareRankFile(7, j, BLACK, backFile[j])
 		b.SetSquareRankFile(0, j, WHITE, backFile[j])
-
 		b.SetSquareRankFile(6, j, BLACK, PAWN)
 		b.SetSquareRankFile(1, j, WHITE, PAWN)
 	}
-	b.EnableAllCastling()
 
 	b.fullMoves = 1
-	// b.kingPos[WHITE] = 4
-	// b.kingPos[BLACK] = 60
-
 	return b
 }
 
