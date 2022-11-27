@@ -106,7 +106,6 @@ func (b *BoardState) EnableAllCastling() {
 }
 
 func (b *BoardState) SetCastleRights(color int8, side int8, enabled bool) {
-	//TODO: zorbistCastling
 	if (b.castleData[color][side] && !enabled) || (!b.castleData[color][side] && enabled) {
 		b.UpdateZorbistKey(zorbistCastling[color][side])
 	}
