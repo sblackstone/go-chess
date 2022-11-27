@@ -19,6 +19,7 @@ type BoardState struct {
 	pieceList        [64]int8
 	kingPos          [2]int8
 	pieceLocations   PieceLocations
+	zorbistKey       uint64
 }
 
 type MoveStackData struct {
@@ -67,18 +68,20 @@ func Blank() *BoardState {
 // Copy returns a copy of a BoardState
 func (b *BoardState) Copy() *BoardState {
 	boardCopy := BoardState{
-		colors:          b.colors,
-		pieces:          b.pieces,
-		enpassantSquare: b.enpassantSquare,
-		turn:            b.turn,
-		halfMoves:       b.halfMoves,
-		fullMoves:       b.fullMoves,
-		castleData:      b.castleData,
-		moveStack:       b.moveStack,
-		colorList:       b.colorList,
-		kingPos:         b.kingPos,
-		pieceList:       b.pieceList,
-		pieceLocations:  b.pieceLocations.Copy(),
+		colors:           b.colors,
+		pieces:           b.pieces,
+		castleData:       b.castleData,
+		enpassantSquare:  b.enpassantSquare,
+		turn:             b.turn,
+		halfMoves:        b.halfMoves,
+		fullMoves:        b.fullMoves,
+		moveStack:        b.moveStack,
+		moveStackNextIdx: 0,
+		colorList:        b.colorList,
+		pieceList:        b.pieceList,
+		kingPos:          b.kingPos,
+		pieceLocations:   b.pieceLocations.Copy(),
+		zorbistKey:       b.zorbistKey,
 	}
 
 	return &boardCopy
