@@ -118,7 +118,7 @@ func (b *BoardState) GetZorbistKey() uint64 {
 }
 
 func (b *BoardState) UpdateZorbistKey(value uint64) {
-	b.zorbistKey = b.zorbistKey ^ value
+	b.zorbistKey ^= value
 }
 
 func (b *BoardState) GetPieceBitboard(color int8, piece int8) uint64 {
