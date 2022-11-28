@@ -40,7 +40,7 @@ func BenchmarkPerf(b *testing.B) {
 	board, _ := boardstate.FromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
 	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
-		v := genPerf(board, 6)
+		v := genPerf(board, 5)
 		b.ReportMetric(float64(v), "positions")
 	}
 }
