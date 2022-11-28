@@ -6,6 +6,11 @@ import (
 	"github.com/sblackstone/go-chess/bitops"
 )
 
+func (b *BoardState) PrintFen(withMoveCounts bool) {
+	f, _ := b.ToFEN(withMoveCounts)
+	fmt.Printf("%s\n", f)
+}
+
 // Print outputs a debug display of the current board.
 func (b *BoardState) Print(highlight int8) {
 	pieces := make([][]string, 2)

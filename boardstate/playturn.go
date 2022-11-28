@@ -68,8 +68,19 @@ func (b *BoardState) handleUncastling(src int8, dst int8) {
 func (b *BoardState) UnplayTurn() {
 	msd := b.moveStack[b.moveStackNextIdx-1]
 	b.moveStackNextIdx -= 1
-	b.enpassantSquare = msd.enpassantSquare
-	b.castleData = msd.castleData
+	b.SetEnpassant(msd.enpassantSquare)
+
+	// TODO: FIXME
+	// We should only have to call one of these at most, but at the moment attempting to debug Zorbist caching so.
+	// We just call all four.
+
+	// ALSO, removing these lines don't seem to cause any tests to break.
+	// TODO: NEEDS REGULAR TESTS!
+	b.SetCastleRights(WHITE, CASTLE_LONG, msd.castleData[WHITE][CASTLE_LONG])
+	b.SetCastleRights(WHITE, CASTLE_SHORT, msd.castleData[WHITE][CASTLE_SHORT])
+	b.SetCastleRights(BLACK, CASTLE_LONG, msd.castleData[BLACK][CASTLE_LONG])
+	b.SetCastleRights(BLACK, CASTLE_SHORT, msd.castleData[BLACK][CASTLE_SHORT])
+
 	b.halfMoves = msd.halfMoves
 	b.MovePiece(msd.dst, msd.src)
 

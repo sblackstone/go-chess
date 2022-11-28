@@ -15,17 +15,7 @@ func TestZorbistEnpassant(t *testing.T) {
 	zorbistKey3 := b.GetZorbistKey()
 	// fmt.Printf("%+v %+v %+v\n", zorbistKey1, zorbistKey2, zorbistKey3)
 
-	if zorbistKey1 == zorbistKey2 {
-		t.Errorf("Expected zobristKey1 to not equal zorbistKey2")
-	}
-
-	if zorbistKey2 == zorbistKey3 {
-		t.Errorf("Expected zobristKey2 to not equal zorbistKey3")
-	}
-
-	if zorbistKey3 != zorbistKey1 {
-		t.Errorf("Expected zobristKey1 to equal zorbistKey3")
-	}
+	checkZorbistBeforeAfter(t, zorbistKey1, zorbistKey2, zorbistKey3)
 }
 
 func TestZorbistTurns(t *testing.T) {
@@ -37,17 +27,7 @@ func TestZorbistTurns(t *testing.T) {
 	zorbistKey3 := b.GetZorbistKey()
 	fmt.Printf("%+v %+v %+v\n", zorbistKey1, zorbistKey2, zorbistKey3)
 
-	if zorbistKey1 == zorbistKey2 {
-		t.Errorf("Expected zobristKey1 to not equal zorbistKey2")
-	}
-
-	if zorbistKey2 == zorbistKey3 {
-		t.Errorf("Expected zobristKey2 to not equal zorbistKey3")
-	}
-
-	if zorbistKey3 != zorbistKey1 {
-		t.Errorf("Expected zobristKey1 to equal zorbistKey3")
-	}
+	checkZorbistBeforeAfter(t, zorbistKey1, zorbistKey2, zorbistKey3)
 
 }
 
@@ -60,17 +40,7 @@ func TestZorbistPieces(t *testing.T) {
 	zorbistKey3 := b.GetZorbistKey()
 	fmt.Printf("%+v %+v %+v\n", zorbistKey1, zorbistKey2, zorbistKey3)
 
-	if zorbistKey1 == zorbistKey2 {
-		t.Errorf("Expected zobristKey1 to not equal zorbistKey2")
-	}
-
-	if zorbistKey2 == zorbistKey3 {
-		t.Errorf("Expected zobristKey2 to not equal zorbistKey3")
-	}
-
-	if zorbistKey3 != zorbistKey1 {
-		t.Errorf("Expected zobristKey1 to equal zorbistKey3")
-	}
+	checkZorbistBeforeAfter(t, zorbistKey1, zorbistKey2, zorbistKey3)
 }
 
 func TestZorbistCastling(t *testing.T) {
@@ -81,6 +51,42 @@ func TestZorbistCastling(t *testing.T) {
 	b.SetCastleRights(WHITE, CASTLE_LONG, true)
 	zorbistKey3 := b.GetZorbistKey()
 
+	checkZorbistBeforeAfter(t, zorbistKey1, zorbistKey2, zorbistKey3)
+
+}
+
+func TestZorbistPlayTurnUnplayTurn(t *testing.T) {
+	b := Initial()
+	zorbistKey1 := b.GetZorbistKey()
+	b.PlayTurn(8, 16, EMPTY)
+	zorbistKey2 := b.GetZorbistKey()
+	b.UnplayTurn()
+	zorbistKey3 := b.GetZorbistKey()
+	checkZorbistBeforeAfter(t, zorbistKey1, zorbistKey2, zorbistKey3)
+}
+
+func TestZorbistPlayTurnUnplayTurnEnpassant(t *testing.T) {
+	b := Initial()
+	b.PlayTurn(8, 24, EMPTY)
+	b.PlayTurn(55, 39, EMPTY)
+	b.PlayTurn(24, 32, EMPTY)
+
+	zorbistKey1 := b.GetZorbistKey()
+	b.PrintFen(false)
+	// Ready for en-passant push.
+	b.PlayTurn(49, 33, EMPTY)
+	zorbistKey2 := b.GetZorbistKey()
+	b.PrintFen(false)
+
+	// Undo turn.
+	b.UnplayTurn()
+	b.PrintFen(false)
+
+	zorbistKey3 := b.GetZorbistKey()
+	checkZorbistBeforeAfter(t, zorbistKey1, zorbistKey2, zorbistKey3)
+}
+
+func checkZorbistBeforeAfter(t *testing.T, zorbistKey1, zorbistKey2, zorbistKey3 uint64) {
 	if zorbistKey1 == zorbistKey2 {
 		t.Errorf("Expected zobristKey1 to not equal zorbistKey2")
 	}
@@ -92,5 +98,4 @@ func TestZorbistCastling(t *testing.T) {
 	if zorbistKey3 != zorbistKey1 {
 		t.Errorf("Expected zobristKey1 to equal zorbistKey3")
 	}
-
 }
