@@ -19,7 +19,12 @@ func genPerf(state *boardstate.BoardState, depth int) int {
 	return result
 }
 
-func genPerfMakeUnmake(b *boardstate.BoardState, depth int) int {
+func genPerfMakeUnmake(b *boardstate.BoardState, depth int, posMap map[uint64]int) int {
+	effectiveKey := b.GetZorbistKey() ^ uint64(depth)
+	val, ok := posMap[effectiveKey]
+	if ok {
+		return val
+	}
 	moves := GenMoves(b)
 	result := 0
 	for _, move := range moves {
@@ -28,11 +33,13 @@ func genPerfMakeUnmake(b *boardstate.BoardState, depth int) int {
 			if depth == 1 {
 				result += 1
 			} else {
-				result += genPerfMakeUnmake(b, depth-1)
+				result += genPerfMakeUnmake(b, depth-1, posMap)
 			}
 		}
 		b.UnplayTurn()
 	}
+
+	posMap[effectiveKey] = result
 	return result
 }
 
@@ -49,7 +56,8 @@ func BenchmarkPerfMakeUnmake(b *testing.B) {
 	board, _ := boardstate.FromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
 	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
-		v := genPerfMakeUnmake(board, 5)
+		posMap := make(map[uint64]int)
+		v := genPerfMakeUnmake(board, 6, posMap)
 		b.ReportMetric(float64(v), "positions")
 
 	}
@@ -76,8 +84,9 @@ func TestPerftPositions(t *testing.T) {
 		if err != nil {
 			t.Errorf("%v\n", err)
 		} else {
+			posMap := make(map[uint64]int)
 			result := genPerf(b, pt.depth)
-			result2 := genPerfMakeUnmake(b, pt.depth)
+			result2 := genPerfMakeUnmake(b, pt.depth, posMap)
 			if result != pt.expected {
 				t.Errorf("test: %v, genPerf: %v: Expected %v, got %v", pt.name, pt.fen, pt.expected, result)
 			}
