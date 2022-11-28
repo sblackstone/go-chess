@@ -84,7 +84,7 @@ func testFromFile(t *testing.T, fileName string) error {
 
 		var fens []string
 		for _, succ := range successors {
-			f, err := succ.ToFEN()
+			f, err := succ.ToFEN(true)
 			if err != nil {
 				return err
 			}

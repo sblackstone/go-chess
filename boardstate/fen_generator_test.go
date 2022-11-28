@@ -14,7 +14,7 @@ func TestToFenEnPassant(t *testing.T) {
 	b.SetCastleRights(BLACK, CASTLE_LONG, false)
 	b.SetFullMoves(25)
 	b.SetHalfMoves(50)
-	boardFen, _ := b.ToFEN()
+	boardFen, _ := b.ToFEN(true)
 	b2, _ := FromFEN(boardFen)
 	if b.GetEnpassant() != b2.GetEnpassant() {
 		t.Errorf("Expected FEN to work with enpassant")
@@ -38,7 +38,16 @@ func TestToFenEnPassant(t *testing.T) {
 func TestToFEN(t *testing.T) {
 	b := Initial()
 	correctStr := "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
-	str, _ := b.ToFEN()
+	str, _ := b.ToFEN(true)
+	if str != correctStr {
+		t.Errorf("Expected %v to be %v", str, correctStr)
+	}
+}
+
+func TestToFENNoClocks(t *testing.T) {
+	b := Initial()
+	correctStr := "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -"
+	str, _ := b.ToFEN(false)
 	if str != correctStr {
 		t.Errorf("Expected %v to be %v", str, correctStr)
 	}

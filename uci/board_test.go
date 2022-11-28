@@ -29,12 +29,12 @@ func TestBoardFromUCIPosition(t *testing.T) {
 
 	b2 := BoardFromUCIPosition("position startpos moves a2a4 h7h5")
 
-	f1, err := b1.ToFEN()
+	f1, err := b1.ToFEN(true)
 	if err != nil {
 		t.Error(err)
 	}
 
-	f2, err := b2.ToFEN()
+	f2, err := b2.ToFEN(true)
 	if err != nil {
 		t.Error(err)
 	}
@@ -50,7 +50,7 @@ func TestBoardFromUCIPositionNonStart(t *testing.T) {
 	b1.PlayTurn(8, 24, boardstate.EMPTY)
 	b1.PlayTurn(55, 39, boardstate.EMPTY)
 
-	f0, err := b1.ToFEN()
+	f0, err := b1.ToFEN(true)
 	if err != nil {
 		t.Error(err)
 	}
@@ -59,12 +59,12 @@ func TestBoardFromUCIPositionNonStart(t *testing.T) {
 	b1.PlayTurn(10, 26, boardstate.EMPTY)
 	b2 := BoardFromUCIPosition(posStr)
 
-	f1, err := b1.ToFEN()
+	f1, err := b1.ToFEN(true)
 
 	if err != nil {
 		t.Error(err)
 	}
-	f2, err := b2.ToFEN()
+	f2, err := b2.ToFEN(true)
 	if err != nil {
 		t.Error(err)
 	}

@@ -8,7 +8,7 @@ import (
 	"github.com/sblackstone/go-chess/bitops"
 )
 
-func (b *BoardState) ToFEN() (string, error) {
+func (b *BoardState) ToFEN(withMoveCounts bool) (string, error) {
 	var rank, file int8
 	result := ""
 	for rank = 7; rank >= 0; rank-- {
@@ -95,12 +95,13 @@ func (b *BoardState) ToFEN() (string, error) {
 		result += SquareToAlgebraic(enpassantSq)
 	}
 
-	result += " "
-
-	/// Add Clocks
-	result += fmt.Sprint(b.GetHalfMoves())
-	result += " "
-	result += fmt.Sprint(b.GetFullMoves())
+	if withMoveCounts {
+		result += " "
+		/// Add Clocks
+		result += fmt.Sprint(b.GetHalfMoves())
+		result += " "
+		result += fmt.Sprint(b.GetFullMoves())
+	}
 
 	return result, nil
 

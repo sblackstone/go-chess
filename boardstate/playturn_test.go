@@ -13,7 +13,7 @@ func TestKingCaptured(t *testing.T) {
 	if oldKingPos != 8 {
 		t.Errorf("expected kingPos to be 8")
 	}
-	before, _ := b.ToFEN()
+	before, _ := b.ToFEN(true)
 	b.PlayTurn(16, 8, EMPTY)
 
 	midKingPos := b.GetKingPos(BLACK)
@@ -21,7 +21,7 @@ func TestKingCaptured(t *testing.T) {
 		t.Errorf("Expected NO_KING")
 	}
 	b.UnplayTurn()
-	after, _ := b.ToFEN()
+	after, _ := b.ToFEN(true)
 	if before != after {
 		t.Errorf("Expected %v to be %v", after, before)
 	}
@@ -34,10 +34,10 @@ func TestKingCaptured(t *testing.T) {
 
 func TestUnplayTurnPieceMove(t *testing.T) {
 	b := Initial()
-	before, _ := b.ToFEN()
+	before, _ := b.ToFEN(true)
 	b.PlayTurn(8, 24, EMPTY)
 	b.UnplayTurn()
-	after, _ := b.ToFEN()
+	after, _ := b.ToFEN(true)
 	if before != after {
 		t.Errorf("Expected %v to be %v", after, before)
 	}
@@ -47,10 +47,10 @@ func TestUnplayTurnCaptureMove(t *testing.T) {
 	b := Blank()
 	b.SetSquare(27, WHITE, PAWN)
 	b.SetSquare(36, BLACK, QUEEN)
-	before, _ := b.ToFEN()
+	before, _ := b.ToFEN(true)
 	b.PlayTurn(27, 36, EMPTY)
 	b.UnplayTurn()
-	after, _ := b.ToFEN()
+	after, _ := b.ToFEN(true)
 	if before != after {
 		t.Errorf("Expected %v to be %v", after, before)
 	}
@@ -63,10 +63,10 @@ func TestUnplayTurnEnpassantCaptureWhite(t *testing.T) {
 	b.ToggleTurn()
 	b.PlayTurn(49, 33, EMPTY)
 	b.Print(127)
-	before, _ := b.ToFEN()
+	before, _ := b.ToFEN(true)
 	b.PlayTurn(32, 41, EMPTY)
 	b.UnplayTurn()
-	after, _ := b.ToFEN()
+	after, _ := b.ToFEN(true)
 	if before != after {
 		t.Errorf("Expected %v to be %v", after, before)
 	}
@@ -77,10 +77,10 @@ func TestUnplayTurnEnpassantCaptureBlack(t *testing.T) {
 	b.SetSquare(8, WHITE, PAWN)
 	b.SetSquare(25, BLACK, PAWN)
 	b.PlayTurn(8, 24, EMPTY)
-	before, _ := b.ToFEN()
+	before, _ := b.ToFEN(true)
 	b.PlayTurn(25, 16, EMPTY)
 	b.UnplayTurn()
-	after, _ := b.ToFEN()
+	after, _ := b.ToFEN(true)
 	if before != after {
 		t.Errorf("Expected %v to be %v", after, before)
 	}
@@ -94,10 +94,10 @@ func TestUnplayTurnEnpassantDeclinedWhite(t *testing.T) {
 	b.ToggleTurn()
 	b.PlayTurn(49, 33, EMPTY)
 	b.Print(127)
-	before, _ := b.ToFEN()
+	before, _ := b.ToFEN(true)
 	b.PlayTurn(15, 23, EMPTY)
 	b.UnplayTurn()
-	after, _ := b.ToFEN()
+	after, _ := b.ToFEN(true)
 	if before != after {
 		t.Errorf("Expected %v to be %v", after, before)
 	}
@@ -109,10 +109,10 @@ func TestUnplayTurnEnpassantDeclinedBlack(t *testing.T) {
 	b.SetSquare(25, BLACK, PAWN)
 	b.SetSquare(55, BLACK, QUEEN)
 	b.PlayTurn(8, 24, EMPTY)
-	before, _ := b.ToFEN()
+	before, _ := b.ToFEN(true)
 	b.PlayTurn(55, 47, EMPTY)
 	b.UnplayTurn()
-	after, _ := b.ToFEN()
+	after, _ := b.ToFEN(true)
 	if before != after {
 		t.Errorf("Expected %v to be %v", after, before)
 	}
@@ -120,10 +120,10 @@ func TestUnplayTurnEnpassantDeclinedBlack(t *testing.T) {
 
 func TestUnplayTurnCastlingWhiteLong(t *testing.T) {
 	b := testCastlingBoard()
-	before, _ := b.ToFEN()
+	before, _ := b.ToFEN(true)
 	b.PlayTurn(4, 2, EMPTY)
 	b.UnplayTurn()
-	after, _ := b.ToFEN()
+	after, _ := b.ToFEN(true)
 	if before != after {
 		t.Errorf("Expected %v to be %v", after, before)
 	}
@@ -131,10 +131,10 @@ func TestUnplayTurnCastlingWhiteLong(t *testing.T) {
 
 func TestUnplayTurnCastlingWhiteShort(t *testing.T) {
 	b := testCastlingBoard()
-	before, _ := b.ToFEN()
+	before, _ := b.ToFEN(true)
 	b.PlayTurn(4, 6, EMPTY)
 	b.UnplayTurn()
-	after, _ := b.ToFEN()
+	after, _ := b.ToFEN(true)
 	if before != after {
 		t.Errorf("Expected %v to be %v", after, before)
 	}
@@ -143,10 +143,10 @@ func TestUnplayTurnCastlingWhiteShort(t *testing.T) {
 func TestUnplayTurnCastlingBlackLong(t *testing.T) {
 	b := testCastlingBoard()
 	b.ToggleTurn()
-	before, _ := b.ToFEN()
+	before, _ := b.ToFEN(true)
 	b.PlayTurn(60, 58, EMPTY)
 	b.UnplayTurn()
-	after, _ := b.ToFEN()
+	after, _ := b.ToFEN(true)
 	if before != after {
 		t.Errorf("Expected %v to be %v", after, before)
 	}
@@ -155,10 +155,10 @@ func TestUnplayTurnCastlingBlackLong(t *testing.T) {
 func TestUnplayTurnCastlingBlackShort(t *testing.T) {
 	b := testCastlingBoard()
 	b.ToggleTurn()
-	before, _ := b.ToFEN()
+	before, _ := b.ToFEN(true)
 	b.PlayTurn(60, 62, EMPTY)
 	b.UnplayTurn()
-	after, _ := b.ToFEN()
+	after, _ := b.ToFEN(true)
 	if before != after {
 		t.Errorf("Expected %v to be %v", after, before)
 	}
@@ -168,10 +168,10 @@ func TestUnplayTurnPromotionWithCaptureWhite(t *testing.T) {
 	b := Blank()
 	b.SetSquare(48, WHITE, PAWN)
 	b.SetSquare(57, BLACK, QUEEN)
-	before, _ := b.ToFEN()
+	before, _ := b.ToFEN(true)
 	b.PlayTurn(48, 57, KNIGHT)
 	b.UnplayTurn()
-	after, _ := b.ToFEN()
+	after, _ := b.ToFEN(true)
 	if before != after {
 		t.Errorf("Expected %v to be %v", after, before)
 	}
@@ -183,10 +183,10 @@ func TestUnplayTurnPromotionWithCaptureBlack(t *testing.T) {
 	b.SetSquare(0, WHITE, QUEEN)
 	b.ToggleTurn()
 
-	before, _ := b.ToFEN()
+	before, _ := b.ToFEN(true)
 	b.PlayTurn(9, 0, KNIGHT)
 	b.UnplayTurn()
-	after, _ := b.ToFEN()
+	after, _ := b.ToFEN(true)
 	if before != after {
 		t.Errorf("Expected %v to be %v", after, before)
 	}

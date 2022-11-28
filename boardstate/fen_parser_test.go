@@ -13,7 +13,7 @@ func TestMoreCastling(t *testing.T) {
 
 	b.PlayTurn(0, 8, EMPTY)
 
-	newFen, _ := b.ToFEN()
+	newFen, _ := b.ToFEN(true)
 
 	if newFen != expected {
 		t.Errorf("Initial  %v\n", testCase)
