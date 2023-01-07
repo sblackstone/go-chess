@@ -36,25 +36,6 @@ func alphaBeta(b *boardstate.BoardState, depth int8, alpha float64, beta float64
 	return alpha
 }
 
-func BestSuccessor(b *boardstate.BoardState, depth int8) *boardstate.BoardState {
-	var bestValue float64
-	var bestSuccessors []*boardstate.BoardState
-	bestValue = -INFINITY
-	for _, succ := range movegenerator.GenLegalSuccessors(b) {
-		value := -alphaBeta(succ, depth-1, -INFINITY, INFINITY)
-		if value == bestValue {
-			bestSuccessors = append(bestSuccessors, succ)
-		}
-		if value > bestValue {
-			bestValue = value
-			bestSuccessors = make([]*boardstate.BoardState, 1)
-			bestSuccessors[0] = succ
-		}
-	}
-	randomIndex := rand.Intn(len(bestSuccessors))
-	return bestSuccessors[randomIndex]
-}
-
 func BestMove(b *boardstate.BoardState, depth int8) *boardstate.Move {
 	var bestValue float64
 	var bestMoves []*boardstate.Move
