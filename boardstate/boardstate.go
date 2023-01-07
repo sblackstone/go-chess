@@ -1,6 +1,8 @@
 package boardstate
 
 import (
+	"os"
+
 	"github.com/sblackstone/go-chess/bitops"
 )
 
@@ -126,6 +128,10 @@ func (b *BoardState) GetPieceBitboard(color int8, piece int8) uint64 {
 }
 
 func (b *BoardState) EnemyOccupiedSquare(n int8) bool {
+	if n > 63 {
+		b.Print(127)
+		os.Exit(-1)
+	}
 	return b.colorList[n] == b.EnemyColor()
 }
 

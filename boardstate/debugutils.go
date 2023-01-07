@@ -13,6 +13,11 @@ func (b *BoardState) PrintFen(withMoveCounts bool) {
 
 // Print outputs a debug display of the current board.
 func (b *BoardState) Print(highlight int8) {
+	if b.GetTurn() == WHITE {
+		fmt.Printf("WHITE to move\n")
+	} else {
+		fmt.Printf("BLACK to move\n")
+	}
 	pieces := make([][]string, 2)
 	pieces[BLACK] = []string{"♖", "♘", "♗", "♕", "♔", "♙"}
 	pieces[WHITE] = []string{"♜", "♞", "♝", "♛", "♚", "♟"}
