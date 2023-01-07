@@ -1,19 +1,31 @@
 package treesearch
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/sblackstone/go-chess/boardstate"
+	"github.com/stretchr/testify/require"
 )
 
-func TestBestSuccessor1(t *testing.T) {
-	b := boardstate.Initial()
-	b.PlayTurn(8, 24, boardstate.EMPTY)
-	b.PlayTurn(48, 32, boardstate.EMPTY)
+func TestCanFindMateInOneForWhite(t *testing.T) {
+	b, err := boardstate.FromFEN("r1bqkbnr/1ppp1ppp/p1n5/4p3/2B1P3/5Q2/PPPP1PPP/RNB1K1NR w KQkq - 0 4")
+	fmt.Printf("%+v\n", err)
+	require.Nil(t, err)
 	b.Print(127)
-	bs := BestSuccessor(b, 2)
-	bs.Print(127)
+	bm := BestMove(b, 5)
+	fmt.Printf("%+v\n", bm)
+
 }
+
+// func TestBestSuccessor1(t *testing.T) {
+// 	b := boardstate.Initial()
+// 	b.PlayTurn(8, 24, boardstate.EMPTY)
+// 	b.PlayTurn(48, 32, boardstate.EMPTY)
+// 	b.Print(127)
+// 	bs := BestSuccessor(b, 2)
+// 	bs.Print(127)
+// }
 
 // Old test for when no king on board caused a crash.
 // func TestCrash(t *testing.T) {
