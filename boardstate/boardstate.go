@@ -15,7 +15,7 @@ type BoardState struct {
 	turn             int8
 	halfMoves        int
 	fullMoves        int
-	moveStack        []*MoveStackData
+	moveStack        []MoveStackData
 	moveStackNextIdx int
 	colorList        [64]int8
 	pieceList        [64]int8
@@ -42,7 +42,6 @@ func (b *BoardState) GetKingPos(color int8) int8 {
 func Blank() *BoardState {
 	b := BoardState{}
 	b.EnableAllCastling()
-	b.moveStack = make([]*MoveStackData, 500)
 	b.SetTurn(WHITE)
 	b.colors = [2]uint64{0, 0}
 	b.pieces = [6]uint64{0, 0, 0, 0, 0, 0}
