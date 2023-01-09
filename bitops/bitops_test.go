@@ -1,11 +1,14 @@
 package bitops
 
 import (
-	"reflect"
+	"fmt"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestFindSetBitsGeneric(t *testing.T) {
+	t.Parallel()
 	var result []int8
 	var testCase uint64
 
@@ -19,13 +22,12 @@ func TestFindSetBitsGeneric(t *testing.T) {
 
 	FindSetBitsGeneric(testCase, f)
 	expected := []int8{5, 7, 63}
-	if !reflect.DeepEqual(result, expected) {
-		t.Errorf("Expected %v to be %v", result, expected)
-	}
+	assert.Equal(t, result, expected)
 
 }
 
 func TestInternalMask(t *testing.T) {
+	t.Parallel()
 	var expected uint64
 	var i, j int8
 	for i = 1; i < 7; i++ {
@@ -35,164 +37,141 @@ func TestInternalMask(t *testing.T) {
 	}
 
 	im := InternalMask()
-	if im != expected {
-		t.Errorf("Expected %b to be %b", im, expected)
-	}
+	assert.Equal(t, im, expected)
 }
 func TestPerimeterMask(t *testing.T) {
+	t.Parallel()
 	expected := RankMask(0) | RankMask(7) | FileMask(0) | FileMask(7)
-	if PerimeterMask() != expected {
-		t.Errorf("Expected %b to be %b", PerimeterMask(), expected)
-	}
+	assert.Equal(t, expected, PerimeterMask())
 }
 func TestRankMasks(t *testing.T) {
+	t.Parallel()
 	var i int8
 	for i = 0; i < 8; i++ {
 		expected := uint64(255) << (i * 8)
-		if RankMask(i) != expected {
-			t.Errorf("Expected %b to be %b", RankMask(i), expected)
-		}
+		assert.Equal(t, expected, RankMask(i))
 	}
 }
 
 func TestFileMasks(t *testing.T) {
+	t.Parallel()
 	var i int8
 	for i = 0; i < 8; i++ {
 		expected := Rotate90Clockwise(RankMask(i))
-		if FileMask(i) != expected {
-			t.Errorf("Expected %b to be %b", FileMask(i), expected)
-		}
+		assert.Equal(t, expected, FileMask(i))
 	}
 }
 func TestMask(t *testing.T) {
-	v := Mask(1)
-	if v != 2 {
-		t.Errorf("expected Mask(1) to be 2")
-	}
+	t.Parallel()
+	expected := Mask(1)
+	assert.Equal(t, expected, 2)
 }
 
 func TestFindSetBits(t *testing.T) {
 	var v uint64
+	t.Parallel()
 	v = SetBit(v, 2)
 	v = SetBit(v, 4)
 	v = SetBit(v, 6)
 	result := FindSetBits(v)
 	expected := []int8{2, 4, 6}
-	if !reflect.DeepEqual(result, expected) {
-		t.Errorf("Expected %v to be %v\n", result, expected)
-	}
+	assert.Equal(t, expected, result)
 }
 
 func TestFindSetBitsNone(t *testing.T) {
+	t.Parallel()
 	var v uint64
 	result := FindSetBits(v)
 	var expected []int8
-	if !reflect.DeepEqual(result, expected) {
-		t.Errorf("Expected %v to be %v\n", result, expected)
-	}
+	assert.Equal(t, expected, result)
 }
 
 func TestFindSetBitsExtrema(t *testing.T) {
+	t.Parallel()
 	var v uint64
 	v = SetBit(v, 0)
 	v = SetBit(v, 63)
 	result := FindSetBits(v)
 	expected := []int8{0, 63}
-	if !reflect.DeepEqual(result, expected) {
-		t.Errorf("Expected %v to be %v\n", result, expected)
-	}
-}
-
-func TestPrint(t *testing.T) {
-	var val uint64 = 5
-	Print(val, 52)
+	assert.Equal(t, expected, result)
 }
 
 func TestRankFileToSquare(t *testing.T) {
-	cases := [][3]int8{
+	t.Parallel()
+	testCases := []struct {
+		rank     int8
+		file     int8
+		expected int8
+	}{
 		{0, 0, 0},
 		{7, 7, 63},
 		{7, 3, 59},
 		{3, 7, 31},
 	}
 
-	for i := range cases {
-		v := RankFileToSquare(cases[i][0], cases[i][1])
-		if v != cases[i][2] {
-			t.Errorf("Expected (%v,%v) to be %v, got %v", cases[i][0], cases[i][1], cases[i][2], v)
-		}
+	for i, tc := range testCases {
+		tc := tc
+		t.Run(fmt.Sprintf("square mapping %d", i), func(t *testing.T) {
+			t.Parallel()
+			v := RankFileToSquare(tc.rank, tc.file)
+			assert.Equal(t, tc.expected, v)
+		})
 	}
+
 }
 
 func TestSquareToRankFile(t *testing.T) {
-	cases := [][3]int8{
+	testCases := []struct {
+		rank   int8
+		file   int8
+		square int8
+	}{
 		{0, 0, 0},
 		{7, 7, 63},
 		{7, 3, 59},
 		{3, 7, 31},
 	}
 
-	for i := range cases {
-		row, col := SquareToRankFile(cases[i][2])
-		if row != cases[i][0] || col != cases[i][1] {
-			t.Errorf("Expected %v to be (%v,%v), got (%v,%v)", cases[i][2], cases[i][0], cases[i][1], row, col)
-		}
+	for i, tc := range testCases {
+		tc := tc
+		t.Run(fmt.Sprintf("square to rank file %d", i), func(t *testing.T) {
+			t.Parallel()
+			rank, file := SquareToRankFile(tc.square)
+			assert.Equal(t, tc.rank, rank, "expected rank to match")
+			assert.Equal(t, tc.file, file, "expected file to match")
+		})
 	}
 }
 
 func TestFlipBit(t *testing.T) {
 	var v uint64
-
 	v = 0b101
-
 	v = FlipBit(v, 1)
-
-	if v != 0b111 {
-		t.Errorf("Expected 101 ^ 010 = 111 (7)")
-	}
-
+	assert.Equal(t, uint64(0b111), v, "Expected 101 ^ 010 = 111 (7)")
 	v = FlipBit(v, 1)
-
-	if v != 0b101 {
-		t.Errorf("Expected 111 ^ 010 = 101 (5)")
-	}
-
+	assert.Equal(t, uint64(0b101), v, "Expected 111 ^ 010 = 101 (5)")
 }
 
 func TestSetBit(t *testing.T) {
 	var v uint64
 	v = SetBit(v, 0)
-	if v != 1 {
-		t.Errorf("%d should have been 1", v)
-	}
+	assert.Equal(t, uint64(1), v)
 	v = SetBit(v, 1)
-	if v != 3 {
-		t.Errorf("%d should have been 3", v)
-	}
+	assert.Equal(t, uint64(3), v)
 }
 
 func TestClearBit(t *testing.T) {
 	var v uint64 = 7
 	v = ClearBit(v, 0)
-	if v != 6 {
-		t.Errorf("%d should have been 6", v)
-	}
+	assert.Equal(t, uint64(6), v)
 	v = ClearBit(v, 1)
-	if v != 4 {
-		t.Errorf("%d should have been 4", v)
-	}
+	assert.Equal(t, uint64(4), v)
 }
 
 func TestTestBit(t *testing.T) {
 	var v uint64 = 5
-	if !TestBit(v, 0) {
-		t.Errorf("Expected first bit to be true")
-	}
-	if TestBit(v, 1) {
-		t.Errorf("Expected first bit to be false")
-	}
-	if !TestBit(v, 2) {
-		t.Errorf("Expected first bit to be true")
-	}
+	assert.True(t, TestBit(v, 0))
+	assert.False(t, TestBit(v, 1))
+	assert.True(t, TestBit(v, 2))
 
 }
