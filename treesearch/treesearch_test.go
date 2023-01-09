@@ -16,6 +16,14 @@ func TestCanFindMateInOneForWhite(t *testing.T) {
 	assert.Equal(t, bm.Dst, int8(53))
 }
 
+func BenchmarkFirstMove(b *testing.B) {
+	board := boardstate.Initial()
+	b.ResetTimer()
+	for n := 0; n < b.N; n++ {
+		BestMove(board, 5)
+	}
+}
+
 func TestCanFindMateInThreeForBlack(t *testing.T) {
 	b, err := boardstate.FromFEN("2r3k1/p4p2/3Rp2p/1p2P1pK/8/1P4P1/P3Q2P/1q6 b - - 0 1")
 	require.Nil(t, err)
