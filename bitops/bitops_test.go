@@ -144,6 +144,7 @@ func TestSquareToRankFile(t *testing.T) {
 }
 
 func TestFlipBit(t *testing.T) {
+	t.Parallel()
 	var v uint64
 	v = 0b101
 	v = FlipBit(v, 1)
@@ -153,6 +154,7 @@ func TestFlipBit(t *testing.T) {
 }
 
 func TestSetBit(t *testing.T) {
+	t.Parallel()
 	var v uint64
 	v = SetBit(v, 0)
 	assert.Equal(t, uint64(1), v)
@@ -161,6 +163,7 @@ func TestSetBit(t *testing.T) {
 }
 
 func TestClearBit(t *testing.T) {
+	t.Parallel()
 	var v uint64 = 7
 	v = ClearBit(v, 0)
 	assert.Equal(t, uint64(6), v)
@@ -169,6 +172,7 @@ func TestClearBit(t *testing.T) {
 }
 
 func TestTestBit(t *testing.T) {
+	t.Parallel()
 	var v uint64 = 5
 	assert.True(t, TestBit(v, 0))
 	assert.False(t, TestBit(v, 1))
