@@ -63,8 +63,8 @@ func TestFileMasks(t *testing.T) {
 }
 func TestMask(t *testing.T) {
 	t.Parallel()
-	expected := Mask(1)
-	assert.Equal(t, expected, 2)
+	val := Mask(1)
+	assert.Equal(t, uint64(2), val)
 }
 
 func TestFindSetBits(t *testing.T) {
