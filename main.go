@@ -40,7 +40,7 @@ func main() {
 		}
 
 		if strings.HasPrefix(command, "go ") {
-			move := treesearch.BestMove(board, 4)
+			move := treesearch.BestMove(board, 6)
 			sendReply(fmt.Sprintf("bestmove %s", uci.MoveToUCI(move)))
 		}
 
