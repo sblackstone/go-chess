@@ -101,6 +101,19 @@ func GenMoves(b *boardstate.BoardState) []*boardstate.Move {
 	return result
 }
 
+func GenLegalMoves(b *boardstate.BoardState) []*boardstate.Move {
+	var legalMoves []*boardstate.Move
+	currentTurn := b.GetTurn()
+	for _, move := range GenMoves(b) {
+		b.PlayTurnFromMove(move)
+		if !IsInCheck(b, currentTurn) {
+			legalMoves = append(legalMoves, move)
+		}
+		b.UnplayTurn()
+	}
+	return legalMoves
+}
+
 func IsInCheck(b *boardstate.BoardState, color int8) bool {
 	kingPos := b.GetKingPos(color)
 	if kingPos == boardstate.NO_KING {
@@ -134,8 +147,7 @@ const (
 )
 
 func CheckEndOfGame(b *boardstate.BoardState) int8 {
-	successors := GenLegalSuccessors(b)
-	if len(successors) > 0 {
+	if len(GenLegalMoves(b)) > 0 {
 		return GAME_STATE_PLAYING
 	}
 

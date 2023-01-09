@@ -7,6 +7,10 @@ import (
 	"github.com/sblackstone/go-chess/boardstate"
 )
 
+func TestGenLegalMoves(t *testing.T) {
+	t.Errorf("not implemented")
+}
+
 func TestIsInCheckWhite(t *testing.T) {
 	b := boardstate.Blank()
 	b.SetSquare(0, boardstate.WHITE, boardstate.KING)
