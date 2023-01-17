@@ -64,11 +64,9 @@ func BestMove(b *boardstate.BoardState, depth int8) *boardstate.Move {
 	bestValue = -INFINITY
 	currentTurn := b.GetTurn()
 	for _, move := range movegenerator.GenLegalMoves(b) {
-		//succ := b.CopyPlayTurnFromMove(move)
-		// fmt.Printf("  Playing %+v\n", move)
 		b.PlayTurnFromMove(move)
 		if !movegenerator.IsInCheck(b, currentTurn) {
-			value := -alphaBeta(b, depth-1, -INFINITY, INFINITY)
+			value := -alphaBeta(b, depth, -INFINITY, INFINITY)
 			if value == bestValue {
 				bestMoves = append(bestMoves, move)
 			}
@@ -78,10 +76,7 @@ func BestMove(b *boardstate.BoardState, depth int8) *boardstate.Move {
 				bestMoves[0] = move
 			}
 		}
-		//fmt.Printf("Unplaying %+v\n\n", move)
 		b.UnplayTurn()
-		// fmt.Printf("After top level unplay\n")
-		// b.Print(127)
 	}
 	randomIndex := rand.Intn(len(bestMoves))
 	return bestMoves[randomIndex]
