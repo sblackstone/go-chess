@@ -1,10 +1,12 @@
 package boardstate
 
-type PieceLocations struct {
+type PieceLocations = PieceLocationsLinkedList
+
+type PieceLocationsSlice struct {
 	pieces [2][6][]int8
 }
 
-func (pl *PieceLocations) Init() {
+func (pl *PieceLocationsSlice) Init() {
 	var color, piece int8
 	for color = WHITE; color <= BLACK; color++ {
 		for piece = ROOK; piece <= PAWN; piece++ {
@@ -14,8 +16,8 @@ func (pl *PieceLocations) Init() {
 
 }
 
-func (pl *PieceLocations) Copy() PieceLocations {
-	var result PieceLocations
+func (pl *PieceLocationsSlice) Copy() PieceLocationsSlice {
+	var result PieceLocationsSlice
 	var color, piece int8
 	for color = WHITE; color <= BLACK; color++ {
 		for piece = ROOK; piece <= PAWN; piece++ {
@@ -26,7 +28,7 @@ func (pl *PieceLocations) Copy() PieceLocations {
 	return result
 }
 
-func (pl *PieceLocations) AddPieceLocation(color, piece, location int8) {
+func (pl *PieceLocationsSlice) AddPieceLocation(color, piece, location int8) {
 	pl.pieces[color][piece] = append(pl.pieces[color][piece], location)
 }
 
@@ -42,10 +44,10 @@ func removeValue(s []int8, val int8) []int8 {
 	return s
 }
 
-func (pl *PieceLocations) RemovePieceLocation(color, piece, location int8) {
+func (pl *PieceLocationsSlice) RemovePieceLocation(color, piece, location int8) {
 	pl.pieces[color][piece] = removeValue(pl.pieces[color][piece], location)
 }
 
-func (pl *PieceLocations) GetLocations(color, piece int8) []int8 {
+func (pl *PieceLocationsSlice) GetLocations(color, piece int8) []int8 {
 	return pl.pieces[color][piece]
 }
