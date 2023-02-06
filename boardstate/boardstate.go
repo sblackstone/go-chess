@@ -150,6 +150,7 @@ func (b *BoardState) MovePiece(src int8, dst int8) {
 }
 
 // Returns an array of positions for a given set of pieces.
+// Deprecated: FindPieces is deprecated.
 func (b *BoardState) FindPieces(color int8, pieceType int8) []int8 {
 	return b.PieceLocations.GetLocations(color, pieceType)
 }

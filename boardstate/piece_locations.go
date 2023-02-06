@@ -1,6 +1,6 @@
 package boardstate
 
-type PieceLocations = PieceLocationsLinkedList
+type PieceLocations = PieceLocationsSlice
 
 type PieceLocationsSlice struct {
 	pieces [2][6][]int8
