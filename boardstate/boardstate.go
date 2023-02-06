@@ -20,7 +20,7 @@ type BoardState struct {
 	colorList        [64]int8
 	pieceList        [64]int8
 	kingPos          [2]int8
-	pieceLocations   PieceLocations
+	PieceLocations   PieceLocations
 	zorbistKey       uint64
 }
 
@@ -81,7 +81,7 @@ func (b *BoardState) Copy() *BoardState {
 		colorList:        b.colorList,
 		pieceList:        b.pieceList,
 		kingPos:          b.kingPos,
-		pieceLocations:   b.pieceLocations.Copy(),
+		PieceLocations:   b.PieceLocations.Copy(),
 		zorbistKey:       b.zorbistKey,
 	}
 
@@ -151,7 +151,7 @@ func (b *BoardState) MovePiece(src int8, dst int8) {
 
 // Returns an array of positions for a given set of pieces.
 func (b *BoardState) FindPieces(color int8, pieceType int8) []int8 {
-	return b.pieceLocations.GetLocations(color, pieceType)
+	return b.PieceLocations.GetLocations(color, pieceType)
 }
 
 // ColorOfSquare returns WHITE,BLACK, or EMPTY
@@ -172,7 +172,7 @@ func (b *BoardState) SetSquare(n int8, color int8, piece int8) {
 		b.UpdateZorbistKey(zorbistPieces[origColor][origPiece][n])
 		b.pieces[origPiece] = bitops.ClearBit(b.pieces[origPiece], n)
 		b.colors[origColor] = bitops.ClearBit(b.colors[origColor], n)
-		b.pieceLocations.RemovePieceLocation(origColor, origPiece, n)
+		b.PieceLocations.RemovePieceLocation(origColor, origPiece, n)
 		if origPiece == KING {
 			b.kingPos[origColor] = NO_KING
 		}
@@ -185,7 +185,7 @@ func (b *BoardState) SetSquare(n int8, color int8, piece int8) {
 	}
 	if color != EMPTY {
 		b.UpdateZorbistKey(zorbistPieces[color][piece][n])
-		b.pieceLocations.AddPieceLocation(color, piece, n)
+		b.PieceLocations.AddPieceLocation(color, piece, n)
 		b.colors[color] = bitops.SetBit(b.colors[color], n)
 		b.pieces[piece] = bitops.SetBit(b.pieces[piece], n)
 	}
