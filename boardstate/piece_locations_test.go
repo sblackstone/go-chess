@@ -118,3 +118,15 @@ func TestRemoveLastPiece(t *testing.T) {
 	pl.AddPieceLocation(WHITE, PAWN, 2)
 	pl.RemovePieceLocation(WHITE, PAWN, 1)
 }
+
+func TestEachLocation(t *testing.T) {
+	var pl PieceLocations
+	pl.AddPieceLocation(WHITE, PAWN, 1)
+	pl.AddPieceLocation(WHITE, PAWN, 2)
+	var res []int8
+	f := func(l int8) {
+		res = append(res, l)
+	}
+	pl.EachLocation(WHITE, PAWN, f)
+	assert.ElementsMatch(t, []int8{1, 2}, res)
+}

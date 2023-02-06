@@ -51,3 +51,9 @@ func (pl *PieceLocationsSlice) RemovePieceLocation(color, piece, location int8) 
 func (pl *PieceLocationsSlice) GetLocations(color, piece int8) []int8 {
 	return pl.pieces[color][piece]
 }
+
+func (pl *PieceLocationsSlice) EachLocation(color, piece int8, f func(int8)) {
+	for _, l := range pl.pieces[color][piece] {
+		f(l)
+	}
+}

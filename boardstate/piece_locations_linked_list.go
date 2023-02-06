@@ -58,7 +58,7 @@ func (pl *PieceLocationsLinkedList) GetLocations(color, piece int8) []int8 {
 	return ret
 }
 
-func (pl *PieceLocationsLinkedList) Each(color int8, piece int8, callback func(int8)) {
+func (pl *PieceLocationsLinkedList) EachLocation(color int8, piece int8, callback func(int8)) {
 	for cur := pl.pieces[color][piece]; cur != nil; cur = cur.next {
 		callback(cur.location)
 	}
