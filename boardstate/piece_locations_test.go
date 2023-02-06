@@ -1,20 +1,20 @@
 package boardstate
 
 import (
-	"reflect"
+	"fmt"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestCanRemoveSinglePiece(t *testing.T) {
 	var pl PieceLocations
 	pl.AddPieceLocation(WHITE, PAWN, 2)
+	fmt.Printf("%+v\n", pl.pieces[WHITE][PAWN])
 	pl.RemovePieceLocation(WHITE, PAWN, 2)
 	wpawns := pl.GetLocations(WHITE, PAWN)
-	expected := make([]int8, 0)
-	if !reflect.DeepEqual(wpawns, expected) {
-		t.Errorf("Expected %v to be %v", wpawns, expected)
-	}
-
+	var expected []int8
+	assert.ElementsMatch(t, expected, wpawns)
 }
 
 func TestCopyPieceLocations(t *testing.T) {
@@ -36,9 +36,7 @@ func TestCopyPieceLocations(t *testing.T) {
 		for piece = ROOK; piece <= PAWN; piece++ {
 			orig := pl.GetLocations(color, piece)
 			latest := plCopy.GetLocations(color, piece)
-			if (len(orig) != 0 || len(latest) != 0) && !reflect.DeepEqual(orig, latest) {
-				t.Errorf("Expected %v to be %v for %v %v", latest, orig, color, piece)
-			}
+			assert.ElementsMatch(t, orig, latest)
 		}
 	}
 
@@ -48,12 +46,8 @@ func TestCopyPieceLocations(t *testing.T) {
 	bpawns := plCopy.GetLocations(BLACK, PAWN)
 	bpawnsExpected := pl.GetLocations(BLACK, PAWN)
 
-	if !reflect.DeepEqual(wpawns, wpawnsExpected) {
-		t.Errorf("Expected %v to be %v", wpawns, wpawnsExpected)
-	}
-	if !reflect.DeepEqual(bpawns, bpawnsExpected) {
-		t.Errorf("Expected %v to be %v", bpawns, bpawnsExpected)
-	}
+	assert.ElementsMatch(t, wpawnsExpected, wpawns)
+	assert.ElementsMatch(t, bpawnsExpected, bpawns)
 
 }
 func TestPieceLocationsSeparateColors(t *testing.T) {
@@ -75,26 +69,13 @@ func TestPieceLocationsSeparateColors(t *testing.T) {
 
 	actualWhitePawns := pl.GetLocations(WHITE, PAWN)
 	actualBlackPawns := pl.GetLocations(BLACK, PAWN)
-
 	actualWhiteRooks := pl.GetLocations(WHITE, ROOK)
 	actualBlackRooks := pl.GetLocations(BLACK, ROOK)
 
-	if !reflect.DeepEqual(expectedWhitePawns, actualWhitePawns) {
-		t.Errorf("Expected %v to be %v", actualWhitePawns, expectedWhitePawns)
-	}
-
-	if !reflect.DeepEqual(expectedBlackPawns, actualBlackPawns) {
-		t.Errorf("Expected %v to be %v", actualBlackPawns, expectedBlackPawns)
-	}
-
-	if !reflect.DeepEqual(expectedWhiteRooks, actualWhiteRooks) {
-		t.Errorf("Expected %v to be %v", actualWhiteRooks, expectedWhiteRooks)
-	}
-
-	if !reflect.DeepEqual(expectedBlackRooks, actualBlackRooks) {
-		t.Errorf("Expected %v to be %v", actualBlackRooks, expectedBlackRooks)
-	}
-
+	assert.ElementsMatch(t, expectedWhitePawns, actualWhitePawns)
+	assert.ElementsMatch(t, expectedBlackPawns, actualBlackPawns)
+	assert.ElementsMatch(t, expectedWhiteRooks, actualWhiteRooks)
+	assert.ElementsMatch(t, expectedBlackRooks, actualBlackRooks)
 }
 
 func TestPieceLocationRemoval(t *testing.T) {
@@ -124,19 +105,16 @@ func TestPieceLocationRemoval(t *testing.T) {
 	actualBlackPawns := pl.GetLocations(BLACK, PAWN)
 	actualBlackRooks := pl.GetLocations(BLACK, ROOK)
 	actualWhiteRooks := pl.GetLocations(WHITE, ROOK)
+	assert.ElementsMatch(t, expectedWhitePawns, actualWhitePawns)
+	assert.ElementsMatch(t, expectedBlackPawns, actualBlackPawns)
+	assert.ElementsMatch(t, expectedWhiteRooks, actualWhiteRooks)
+	assert.ElementsMatch(t, expectedBlackRooks, actualBlackRooks)
 
-	if !reflect.DeepEqual(expectedWhitePawns, actualWhitePawns) {
-		t.Errorf("Expected %v to be %v", actualWhitePawns, expectedWhitePawns)
-	}
+}
 
-	if !reflect.DeepEqual(expectedBlackPawns, actualBlackPawns) {
-		t.Errorf("Expected %v to be %v", actualBlackPawns, expectedBlackPawns)
-	}
-	if !reflect.DeepEqual(expectedWhiteRooks, actualWhiteRooks) {
-		t.Errorf("Expected %v to be %v", actualWhiteRooks, expectedWhiteRooks)
-	}
-
-	if !reflect.DeepEqual(expectedBlackRooks, actualBlackRooks) {
-		t.Errorf("Expected %v to be %v", actualBlackRooks, expectedBlackRooks)
-	}
+func TestRemoveLastPiece(t *testing.T) {
+	var pl PieceLocations
+	pl.AddPieceLocation(WHITE, PAWN, 1)
+	pl.AddPieceLocation(WHITE, PAWN, 2)
+	pl.RemovePieceLocation(WHITE, PAWN, 1)
 }

@@ -3,6 +3,8 @@ package boardstate
 import (
 	"fmt"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGetOccupiedBitboard(t *testing.T) {
@@ -160,7 +162,7 @@ func TestTakingRooksDisableCastlingWhiteShort(t *testing.T) {
 	}
 }
 
-/////
+// ///
 func TestTakingRooksDisableCastlingBlackLong(t *testing.T) {
 	b := testCastlingBoard()
 
@@ -510,60 +512,104 @@ func TestCopy(t *testing.T) {
 func TestFindPieces(t *testing.T) {
 	b := Initial()
 
-	res := b.FindPieces(BLACK, QUEEN)
-	if len(res) != 1 || res[0] != 59 {
-		t.Errorf("Expected %v to be [59]\n", res)
+	testCases := []struct {
+		name     string
+		expected []int8
+		color    int8
+		piece    int8
+	}{
+		{
+			name:     "WhiteQueen",
+			piece:    QUEEN,
+			color:    WHITE,
+			expected: []int8{3},
+		},
+		{
+			name:     "BlackQueen",
+			piece:    QUEEN,
+			color:    BLACK,
+			expected: []int8{59},
+		},
+		{
+			name:     "WhiteKnight",
+			piece:    KNIGHT,
+			color:    WHITE,
+			expected: []int8{1, 6},
+		},
+		{
+			name:     "BlackKnight",
+			piece:    KNIGHT,
+			color:    BLACK,
+			expected: []int8{57, 62},
+		},
+		{
+			name:     "WhiteBishop",
+			piece:    BISHOP,
+			color:    WHITE,
+			expected: []int8{2, 5},
+		},
+		{
+			name:     "BlackBishop",
+			piece:    BISHOP,
+			color:    BLACK,
+			expected: []int8{58, 61},
+		},
+		{
+			name:     "WhiteRook",
+			piece:    ROOK,
+			color:    WHITE,
+			expected: []int8{0, 7},
+		},
+		{
+			name:     "BlackRook",
+			piece:    ROOK,
+			color:    BLACK,
+			expected: []int8{56, 63},
+		},
+		{
+			name:     "WhitePawn",
+			piece:    PAWN,
+			color:    WHITE,
+			expected: []int8{8, 9, 10, 11, 12, 13, 14, 15},
+		},
+		{
+			name:     "BlackPawn",
+			piece:    PAWN,
+			color:    BLACK,
+			expected: []int8{48, 49, 50, 51, 52, 53, 54, 55},
+		},
 	}
 
-	res2 := b.FindPieces(WHITE, QUEEN)
-	if len(res2) != 1 || res2[0] != 3 {
-		t.Errorf("Expected %v to be [3]\n", res2)
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			res := b.FindPieces(tc.color, tc.piece)
+			fmt.Printf("%+v\n", tc.expected)
+			fmt.Printf("%+v\n", res)
+
+			assert.ElementsMatch(t, tc.expected, res)
+		})
 	}
 
-	res3 := b.FindPieces(BLACK, KNIGHT)
-	if len(res3) != 2 || res3[0] != 57 || res3[1] != 62 {
-		t.Errorf("Expected %v to be [57,62]\n", res3)
-	}
+}
 
-	res4 := b.FindPieces(WHITE, KNIGHT)
-	if len(res4) != 2 || res4[0] != 1 || res4[1] != 6 {
-		t.Errorf("Expected %v to be [1,6]\n", res4)
-	}
-
-	res5 := b.FindPieces(WHITE, PAWN)
-	if len(res5) != 8 || res5[0] != 8 || res5[7] != 15 {
-		t.Errorf("Expected %v to be [8,9,10,11,12,13,14,15]\n", res5)
-	}
-
-	res6 := b.FindPieces(BLACK, PAWN)
-	if len(res6) != 8 || res6[0] != 48 || res6[7] != 55 {
-		t.Errorf("Expected %v to be [48,49,50,51,52,53,54,55]\n", res6)
-	}
-
+func TestPieceLocationsUpdatedBySetSquare(t *testing.T) {
 	b2 := Blank()
 	res7 := b2.FindPieces(BLACK, PAWN)
-	if len(res7) != 0 {
-		t.Errorf("Expected %v to be []\n", res7)
-	}
+	assert.ElementsMatch(t, []int8{}, res7)
 
 	res8 := b2.FindPieces(WHITE, QUEEN)
-	if len(res8) != 0 {
-		t.Errorf("Expected %v to be []\n", res8)
-	}
+	assert.ElementsMatch(t, []int8{}, res8)
 
 	b3 := Initial()
 	b3.SetSquare(57, EMPTY, EMPTY)
 	res9 := b3.FindPieces(BLACK, KNIGHT)
-	if len(res9) != 1 || res9[0] != 62 {
-		t.Errorf("Expected %v to be [62]\n", res9)
-	}
+	assert.ElementsMatch(t, []int8{62}, res9)
 
 	b4 := Blank()
 	b4.SetSquare(55, BLACK, PAWN)
 	res10 := b4.FindPieces(BLACK, PAWN)
-	if len(res10) != 1 || res10[0] != 55 {
-		t.Errorf("Expected %v to be [55]\n", res10)
-	}
+	assert.ElementsMatch(t, []int8{55}, res10)
+
 }
 
 func TestEnpassantCaptureClearsEnemyPawnBlackLowerFile(t *testing.T) {
@@ -606,7 +652,7 @@ func TestEnpassantCaptureClearsEnemyPawnBlackHigherFile(t *testing.T) {
 
 }
 
-///////+++++++++++++++++++++++++/
+// /////+++++++++++++++++++++++++/
 func TestEnpassantCaptureClearsEnemyPawnWhiteLowerFile(t *testing.T) {
 	b1 := Blank()
 	b1.SetSquare(55, BLACK, PAWN)
