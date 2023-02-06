@@ -65,13 +65,7 @@ func GenMovesCount(b *boardstate.BoardState) uint64 {
 	updateFunc := func(src, dst, promotePiece int8) {
 		result += 1
 	}
-
-	genAllQueenMovesGeneric(b, b.GetTurn(), updateFunc)
-	genAllBishopMovesGeneric(b, b.GetTurn(), updateFunc)
-	genAllKnightMovesGeneric(b, b.GetTurn(), updateFunc)
-	genAllRookMovesGeneric(b, b.GetTurn(), updateFunc)
-	genAllKingMovesGeneric(b, b.GetTurn(), false, updateFunc)
-	genAllPawnMovesGeneric(b, b.GetTurn(), false, updateFunc)
+	GenAllMovesGeneric(b, updateFunc)
 	return result
 }
 
@@ -91,13 +85,7 @@ func GenMoves(b *boardstate.BoardState) []*boardstate.Move {
 	updateFunc := func(src, dst, promotePiece int8) {
 		result = append(result, &boardstate.Move{Src: src, Dst: dst, PromotePiece: promotePiece})
 	}
-
-	genAllQueenMovesGeneric(b, b.GetTurn(), updateFunc)
-	genAllBishopMovesGeneric(b, b.GetTurn(), updateFunc)
-	genAllKnightMovesGeneric(b, b.GetTurn(), updateFunc)
-	genAllRookMovesGeneric(b, b.GetTurn(), updateFunc)
-	genAllKingMovesGeneric(b, b.GetTurn(), false, updateFunc)
-	genAllPawnMovesGeneric(b, b.GetTurn(), false, updateFunc)
+	GenAllMovesGeneric(b, updateFunc)
 	return result
 }
 
