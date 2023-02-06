@@ -52,10 +52,9 @@ func genSingleBishopMovesGeneric(b *boardstate.BoardState, bishopPos int8, updat
 }
 
 func genAllBishopMovesGeneric(b *boardstate.BoardState, color int8, updateFunc func(int8, int8, int8)) {
-	bishopPositions := b.FindPieces(color, boardstate.BISHOP)
-	for _, pos := range bishopPositions {
+	b.PieceLocations.EachLocation(color, boardstate.BISHOP, func(pos int8) {
 		genSingleBishopMovesGeneric(b, pos, updateFunc)
-	}
+	})
 }
 
 func genAllBishopAttacks(b *boardstate.BoardState, color int8) uint64 {
@@ -66,9 +65,9 @@ func genAllBishopAttacks(b *boardstate.BoardState, color int8) uint64 {
 	// genAllRookMovesGeneric(b, color, updateFunc)
 	var result uint64
 
-	bishopPositions := b.FindPieces(color, boardstate.BISHOP)
 	occupied := b.GetOccupiedBitboard()
-	for _, bishopPos := range bishopPositions {
+
+	b.PieceLocations.EachLocation(color, boardstate.BISHOP, func(bishopPos int8) {
 		// fmt.Printf("BOARD\n")
 		// b.Print(127)
 		magic := bishopMagicBitboards[bishopPos]
@@ -81,7 +80,7 @@ func genAllBishopAttacks(b *boardstate.BoardState, color int8) uint64 {
 		// fmt.Printf("ATTACK MASK\n")
 		// bitops.Print(magic.mapping[cacheKey], 127)
 		result = result | magic.mapping[cacheKey]
-	}
+	})
 	return result & (^b.GetColorBitboard(color))
 }
 

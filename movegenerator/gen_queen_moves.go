@@ -5,33 +5,17 @@ import (
 )
 
 func genAllQueenMovesGeneric(b *boardstate.BoardState, color int8, updateFunc func(int8, int8, int8)) {
-	queenPositions := b.FindPieces(color, boardstate.QUEEN)
-	for _, qp := range queenPositions {
-		genSingleRookMovesGeneric(b, qp, updateFunc)
-		genSingleBishopMovesGeneric(b, qp, updateFunc)
-	}
+	b.PieceLocations.EachLocation(color, boardstate.QUEEN, func(pos int8) {
+		genSingleRookMovesGeneric(b, pos, updateFunc)
+		genSingleBishopMovesGeneric(b, pos, updateFunc)
+	})
 }
 
-// func genAllQueenAttacks(b *boardstate.BoardState, color int8) uint64 {
-// 	var result uint64
-// 	updateFunc := func(src int8, dst int8) {
-// 		result = bitops.SetBit(result, dst)
-// 	}
-// 	genAllQueenMovesGeneric(b, color, updateFunc)
-// 	return result
-// }
-
 func genAllQueenAttacks(b *boardstate.BoardState, color int8) uint64 {
-	// var result uint64
-	// updateFunc := func(src, dst int8) {
-	// 	result = bitops.SetBit(result, dst)
-	// }
-	// genAllRookMovesGeneric(b, color, updateFunc)
 	var result uint64
-
-	queenPositions := b.FindPieces(color, boardstate.QUEEN)
 	occupied := b.GetOccupiedBitboard()
-	for _, queenPos := range queenPositions {
+
+	b.PieceLocations.EachLocation(color, boardstate.QUEEN, func(queenPos int8) {
 		magic := rookMagicBitboards[queenPos]
 		blockers := occupied & magic.preMask
 		cacheKey := (blockers * magic.magicValue) >> magic.rotate
@@ -41,8 +25,8 @@ func genAllQueenAttacks(b *boardstate.BoardState, color int8) uint64 {
 		blockers = occupied & magic.preMask
 		cacheKey = (blockers * magic.magicValue) >> magic.rotate
 		result = result | magic.mapping[cacheKey]
+	})
 
-	}
 	return result & (^b.GetColorBitboard(color))
 }
 

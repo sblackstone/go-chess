@@ -110,18 +110,17 @@ func genSinglePawnMovesGeneric(b *boardstate.BoardState, pawnPos int8, calculate
 }
 
 func genAllPawnMovesGeneric(b *boardstate.BoardState, color int8, calculateChecks bool, updateFunc func(int8, int8, int8)) {
-	pawnPositions := b.FindPieces(color, boardstate.PAWN)
-	for _, pos := range pawnPositions {
+
+	b.PieceLocations.EachLocation(color, boardstate.PAWN, func(pos int8) {
 		genSinglePawnMovesGeneric(b, pos, calculateChecks, updateFunc)
-	}
+	})
 }
 
 func genAllPawnAttacks(b *boardstate.BoardState, color int8) uint64 {
 	var result uint64
-	pawnPositions := b.FindPieces(color, boardstate.PAWN)
-	for _, pos := range pawnPositions {
+	b.PieceLocations.EachLocation(color, boardstate.PAWN, func(pos int8) {
 		result = result | (pregeneratedPawnAttacks[color][pos]^b.GetColorBitboard(color))&pregeneratedPawnAttacks[color][pos]
-	}
+	})
 	return result
 }
 

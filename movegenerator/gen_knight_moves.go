@@ -99,18 +99,16 @@ func genSingleKnightMovesGeneric(b *boardstate.BoardState, knightPos int8, updat
 }
 
 func genAllKnightMovesGeneric(b *boardstate.BoardState, color int8, updateFunc func(int8, int8, int8)) {
-	knightPositions := b.FindPieces(color, boardstate.KNIGHT)
-	for _, pos := range knightPositions {
-		genSingleKnightMovesGeneric(b, pos, updateFunc)
-	}
+	b.PieceLocations.EachLocation(color, boardstate.KNIGHT, func(knightPos int8) {
+		genSingleKnightMovesGeneric(b, knightPos, updateFunc)
+	})
 }
 
 func genAllKnightAttacks(b *boardstate.BoardState, color int8) uint64 {
 	var result uint64
-	knightPositions := b.FindPieces(color, boardstate.KNIGHT)
-	for _, pos := range knightPositions {
-		result = result | ((pregeneratedKnightMovesBitboard[pos] ^ b.GetColorBitboard(b.ColorOfSquare(pos))) & pregeneratedKnightMovesBitboard[pos])
-	}
+	b.PieceLocations.EachLocation(color, boardstate.KNIGHT, func(knightPos int8) {
+		result = result | ((pregeneratedKnightMovesBitboard[knightPos] ^ b.GetColorBitboard(b.ColorOfSquare(knightPos))) & pregeneratedKnightMovesBitboard[knightPos])
+	})
 	return result
 }
 

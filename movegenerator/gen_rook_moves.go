@@ -50,10 +50,9 @@ func genSingleRookMovesGeneric(b *boardstate.BoardState, rookPos int8, updateFun
 }
 
 func genAllRookMovesGeneric(b *boardstate.BoardState, color int8, updatefunc func(int8, int8, int8)) {
-	rookPositions := b.FindPieces(color, boardstate.ROOK)
-	for _, rookPos := range rookPositions {
+	b.PieceLocations.EachLocation(color, boardstate.ROOK, func(rookPos int8) {
 		genSingleRookMovesGeneric(b, rookPos, updatefunc)
-	}
+	})
 }
 
 func genAllRookAttacks(b *boardstate.BoardState, color int8) uint64 {
@@ -63,12 +62,9 @@ func genAllRookAttacks(b *boardstate.BoardState, color int8) uint64 {
 	// }
 	// genAllRookMovesGeneric(b, color, updateFunc)
 	var result uint64
-
-	rookPositions := b.FindPieces(color, boardstate.ROOK)
 	occupied := b.GetOccupiedBitboard()
-	for _, rookPos := range rookPositions {
-		// fmt.Printf("BOARD\n")
-		// b.Print(127)
+
+	b.PieceLocations.EachLocation(color, boardstate.ROOK, func(rookPos int8) {
 		magic := rookMagicBitboards[rookPos]
 		// fmt.Printf("PREMASK\n")
 		// bitops.Print(magic.preMask, 127)
@@ -79,7 +75,7 @@ func genAllRookAttacks(b *boardstate.BoardState, color int8) uint64 {
 		// fmt.Printf("ATTACK MASK\n")
 		// bitops.Print(magic.mapping[cacheKey], 127)
 		result = result | magic.mapping[cacheKey]
-	}
+	})
 	return result & (^b.GetColorBitboard(color))
 }
 

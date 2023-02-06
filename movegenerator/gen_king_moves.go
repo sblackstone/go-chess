@@ -138,14 +138,9 @@ func genAllKingAttacks(b *boardstate.BoardState, color int8) uint64 {
 }
 
 func genAllKingMovesGeneric(b *boardstate.BoardState, color int8, calculateChecks bool, updateFunc func(int8, int8, int8)) {
-	kingPositions := b.FindPieces(color, boardstate.KING)
-
-	if len(kingPositions) > 0 {
-		for _, kingPos := range kingPositions {
-			genSingleKingMovesGeneric(b, kingPos, calculateChecks, updateFunc)
-		}
-	}
-
+	b.PieceLocations.EachLocation(color, boardstate.KING, func(kingPos int8) {
+		genSingleKingMovesGeneric(b, kingPos, calculateChecks, updateFunc)
+	})
 }
 
 func genKingSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
