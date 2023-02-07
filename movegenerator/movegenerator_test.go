@@ -139,3 +139,12 @@ func TestGenMoves(t *testing.T) {
 		t.Errorf("Expected Gen Moves to find 20 inital moves")
 	}
 }
+
+func TestGenMovesInto(t *testing.T) {
+	moves := make([]*boardstate.Move, 0, 5)
+	b := boardstate.Initial()
+	GenMovesInto(b, &moves)
+	if len(moves) != 20 {
+		t.Errorf("Expected Gen Moves to find 20 inital moves")
+	}
+}

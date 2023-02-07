@@ -89,6 +89,13 @@ func GenMoves(b *boardstate.BoardState) []*boardstate.Move {
 	return result
 }
 
+func GenMovesInto(b *boardstate.BoardState, target *[]*boardstate.Move) {
+	updateFunc := func(src, dst, promotePiece int8) {
+		*target = append(*target, &boardstate.Move{Src: src, Dst: dst, PromotePiece: promotePiece})
+	}
+	GenAllMovesGeneric(b, updateFunc)
+}
+
 func GenLegalMoves(b *boardstate.BoardState) []*boardstate.Move {
 	var legalMoves []*boardstate.Move
 	currentTurn := b.GetTurn()
