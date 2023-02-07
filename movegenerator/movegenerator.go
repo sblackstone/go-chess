@@ -96,18 +96,48 @@ func GenMovesInto(b *boardstate.BoardState, target *[]*boardstate.Move) {
 	GenAllMovesGeneric(b, updateFunc)
 }
 
-func GenLegalMoves(b *boardstate.BoardState) []*boardstate.Move {
-	var legalMoves []*boardstate.Move
+func LegalMoveCount(b *boardstate.BoardState) uint64 {
+	var result uint64
 	currentTurn := b.GetTurn()
-	for _, move := range GenMoves(b) {
-		b.PlayTurnFromMove(move)
+	updateFunc := func(src, dst, promotePiece int8) {
+		b.PlayTurn(src, dst, promotePiece)
 		if !IsInCheck(b, currentTurn) {
-			legalMoves = append(legalMoves, move)
+			result += 1
 		}
 		b.UnplayTurn()
 	}
-	return legalMoves
+	GenAllMovesGeneric(b, updateFunc)
+	return result
 }
+
+func HasLegalMove(b *boardstate.BoardState) bool {
+	var result bool
+	currentTurn := b.GetTurn()
+	updateFunc := func(src, dst, promotePiece int8) {
+		if !result {
+			b.PlayTurn(src, dst, promotePiece)
+			if !IsInCheck(b, currentTurn) {
+				result = true
+			}
+			b.UnplayTurn()
+		}
+	}
+	GenAllMovesGeneric(b, updateFunc)
+	return result
+}
+
+// func GenLegalMoves(b *boardstate.BoardState) []*boardstate.Move {
+// 	var legalMoves []*boardstate.Move
+// 	currentTurn := b.GetTurn()
+// 	for _, move := range GenMoves(b) {
+// 		b.PlayTurnFromMove(move)
+// 		if !IsInCheck(b, currentTurn) {
+// 			legalMoves = append(legalMoves, move)
+// 		}
+// 		b.UnplayTurn()
+// 	}
+// 	return legalMoves
+// }
 
 func IsInCheck(b *boardstate.BoardState, color int8) bool {
 	kingPos := b.GetKingPos(color)
@@ -142,7 +172,7 @@ const (
 )
 
 func CheckEndOfGame(b *boardstate.BoardState) int8 {
-	if len(GenLegalMoves(b)) > 0 {
+	if HasLegalMove(b) {
 		return GAME_STATE_PLAYING
 	}
 

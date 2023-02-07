@@ -1,9 +1,11 @@
 package treesearch
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/sblackstone/go-chess/boardstate"
+	"github.com/sblackstone/go-chess/movegenerator"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -30,6 +32,53 @@ func BenchmarkFirstMove(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		BestMove(board, 5)
 	}
+}
+
+// func BenchmarkMateInNine(b *testing.B) {
+// 	board, _ := boardstate.FromFEN("4nr1k/p1p1p1pp/bp1pn1r1/8/6QR/6RP/1BBq1PP1/6K1 w - - 0 1")
+// 	fmt.Printf("%+v\n", BestMove(board, 10))
+// }
+
+func BenchmarkMateInSix(b *testing.B) {
+	board, _ := boardstate.FromFEN("r1k4r/ppp1bq1p/2n1N3/6B1/3p2Q1/8/PPP2PPP/R5K1 w - - 0 1")
+	fmt.Printf("%+v\n", BestMove(board, 7))
+}
+
+// This occasionally fails because there is more than one solution.
+func TestCanFindMateInFourForWhite(t *testing.T) {
+	board, _ := boardstate.FromFEN("1k6/2p3r1/p6p/1pQP4/3N2q1/8/P5P1/6K1 w - - 0 1")
+
+	// NC6+
+	move := BestMove(board, 5)
+	assert.Equal(t, "d4 c6 99", move.ToString())
+	board.PlayTurnFromMove(move)
+
+	// Kb7
+	board.PlayTurn(57, 49, 99)
+
+	// Qa7+
+	move = BestMove(board, 5)
+	assert.Equal(t, "c5 a7 99", move.ToString())
+	board.PlayTurnFromMove(move)
+
+	// Kc8
+	board.PlayTurn(49, 58, 99)
+
+	// Qa8
+	move = BestMove(board, 5)
+	assert.Equal(t, "a7 a8 99", move.ToString())
+	board.PlayTurnFromMove(move)
+
+	// Kd7
+	board.PlayTurn(58, 51, 99)
+
+	move = BestMove(board, 5)
+	fmt.Printf("%+v\n", move)
+	assert.Equal(t, "a8 d8 99", move.ToString())
+	board.PlayTurnFromMove(move)
+
+	assert.Equal(t, int8(movegenerator.GAME_STATE_CHECKMATE), movegenerator.CheckEndOfGame(board))
+
 }
 
 func TestCanFindMateInThreeForBlack(t *testing.T) {

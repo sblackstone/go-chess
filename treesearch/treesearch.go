@@ -20,26 +20,27 @@ func DepthPrint(depth int8, formatStr string, args ...any) {
 
 // https://www.chessprogramming.org/Alpha-Beta#Negamax_Framework
 // Alpha-Beta pruning NegaMax evaluation.
-func alphaBeta(b *boardstate.BoardState, depth int8, alpha float64, beta float64) float64 {
+func alphaBeta(b *boardstate.BoardState, moves []*boardstate.Move, depth int8, alpha float64, beta float64) float64 {
 
 	currentTurn := b.GetTurn()
 	// Making this not a variable seems to be a performance boost?  not getting compiled away?
 	gameState := movegenerator.CheckEndOfGame(b)
 	if gameState == movegenerator.GAME_STATE_CHECKMATE {
-		return -INFINITY
+		return -INFINITY - float64(depth)
 	}
 
 	if depth == 0 || gameState > movegenerator.GAME_STATE_PLAYING {
 		return evaluator.EvaluateBoard(b)
 	}
 
-	for _, move := range movegenerator.GenMoves(b) {
+	movegenerator.GenMovesInto(b, &moves)
+	for _, move := range moves {
 
 		//DepthPrint(5-depth, "Playing %+v\n", move)
 		b.PlayTurnFromMove(move)
 
 		if !movegenerator.IsInCheck(b, currentTurn) {
-			score := -alphaBeta(b, depth-1, -beta, -alpha)
+			score := -alphaBeta(b, moves[len(moves):], depth-1, -beta, -alpha)
 			if score >= beta {
 				//DepthPrint(5-depth, "Unplaying %+v\n", move)
 				b.UnplayTurn()
@@ -63,10 +64,12 @@ func BestMove(b *boardstate.BoardState, depth int8) *boardstate.Move {
 	var bestMoves []*boardstate.Move
 	bestValue = -INFINITY
 	currentTurn := b.GetTurn()
-	for _, move := range movegenerator.GenLegalMoves(b) {
+	moves := make([]*boardstate.Move, 0, 10000)
+	movegenerator.GenMovesInto(b, &moves)
+	for _, move := range moves {
 		b.PlayTurnFromMove(move)
 		if !movegenerator.IsInCheck(b, currentTurn) {
-			value := -alphaBeta(b, depth, -INFINITY, INFINITY)
+			value := -alphaBeta(b, moves[len(moves):], depth, -INFINITY, INFINITY)
 			if value == bestValue {
 				bestMoves = append(bestMoves, move)
 			}
