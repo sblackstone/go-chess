@@ -61,35 +61,46 @@ func BenchmarkMateInSix(b *testing.B) {
 // This occasionally fails because there is more than one solution.
 func TestCanFindMateInFourForWhite(t *testing.T) {
 	board, _ := boardstate.FromFEN("1k6/2p3r1/p6p/1pQP4/3N2q1/8/P5P1/6K1 w - - 0 1")
+	//board.Print(127)
 
 	// NC6+
 	move := BestMove(board, 5)
 	assert.Equal(t, "d4 c6 99", move.ToString())
 	board.PlayTurnFromMove(move)
 
+	//board.Print(127)
+
 	// Kb7
 	board.PlayTurn(57, 49, 99)
+	board.Print(127)
 
 	// Qa7+
 	move = BestMove(board, 5)
 	assert.Equal(t, "c5 a7 99", move.ToString())
 	board.PlayTurnFromMove(move)
+	//board.Print(127)
 
 	// Kc8
 	board.PlayTurn(49, 58, 99)
+	//board.Print(127)
 
 	// Qa8
 	move = BestMove(board, 5)
-	assert.Equal(t, "a7 a8 99", move.ToString())
+	valid := []string{"a7 a8 99", "a7 b8 99"}
+	assert.Contains(t, valid, move.ToString())
 	board.PlayTurnFromMove(move)
+	//board.Print(127)
 
 	// Kd7
 	board.PlayTurn(58, 51, 99)
+	//board.Print(127)
 
 	move = BestMove(board, 5)
 	fmt.Printf("%+v\n", move)
-	assert.Equal(t, "a8 d8 99", move.ToString())
+	valid = []string{"a8 d8 99", "b8 d8 99"}
+	assert.Contains(t, valid, move.ToString())
 	board.PlayTurnFromMove(move)
+	//board.Print(127)
 
 	assert.Equal(t, int8(movegenerator.GAME_STATE_CHECKMATE), movegenerator.CheckEndOfGame(board))
 
