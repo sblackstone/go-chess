@@ -59,8 +59,8 @@ func GenSuccessors(b *boardstate.BoardState) []*boardstate.BoardState {
 }
 
 // For testing at the moment, not tested.
-func GenMovesCount(b *boardstate.BoardState) uint64 {
-	var result uint64
+func GenMovesCount(b *boardstate.BoardState) int {
+	var result int
 
 	updateFunc := func(src, dst, promotePiece int8) {
 		result += 1
