@@ -3,6 +3,7 @@ package treesearch
 import (
 	"fmt"
 	"math/rand"
+	"sync"
 
 	"github.com/sblackstone/go-chess/boardstate"
 	"github.com/sblackstone/go-chess/evaluator"
@@ -59,12 +60,50 @@ func alphaBeta(b *boardstate.BoardState, moves []*boardstate.Move, depth int8, a
 	return alpha
 }
 
+func BestMoveSmp(b *boardstate.BoardState, depth int8) *boardstate.Move {
+	var bestValue float64
+	var bestMoves []*boardstate.Move
+	bestValue = -INFINITY
+	currentTurn := b.GetTurn()
+	var wg sync.WaitGroup
+	var mux sync.Mutex
+
+	moves := make([]*boardstate.Move, 0, 300)
+	movegenerator.GenMovesInto(b, &moves)
+	for _, move := range moves {
+		wg.Add(1)
+		go func(b *boardstate.BoardState, move *boardstate.Move) {
+			defer wg.Done()
+			b.PlayTurnFromMove(move)
+			if !movegenerator.IsInCheck(b, currentTurn) {
+				moves := make([]*boardstate.Move, 0, 1000)
+				value := -alphaBeta(b, moves, depth, -INFINITY, INFINITY)
+				mux.Lock()
+				if value == bestValue {
+					bestMoves = append(bestMoves, move)
+				}
+				if value > bestValue {
+					bestValue = value
+					bestMoves = make([]*boardstate.Move, 1)
+					bestMoves[0] = move
+				}
+				mux.Unlock()
+			}
+			b.UnplayTurn()
+
+		}(b.Copy(), move)
+	}
+	wg.Wait()
+	randomIndex := rand.Intn(len(bestMoves))
+	return bestMoves[randomIndex]
+}
+
 func BestMove(b *boardstate.BoardState, depth int8) *boardstate.Move {
 	var bestValue float64
 	var bestMoves []*boardstate.Move
 	bestValue = -INFINITY
 	currentTurn := b.GetTurn()
-	moves := make([]*boardstate.Move, 0, 10000)
+	moves := make([]*boardstate.Move, 0, 1000)
 	movegenerator.GenMovesInto(b, &moves)
 	for _, move := range moves {
 		b.PlayTurnFromMove(move)

@@ -10,6 +10,20 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func BenchmarkCanMateIn3Single(bench *testing.B) {
+	b, _ := boardstate.FromFEN("r1b1kb1r/pppp1ppp/5q2/4n3/3KP3/2N3PN/PPP4P/R1BQ1B1R b kq - 0 1")
+	for i := 0; i < bench.N; i++ {
+		BestMove(b, 4)
+	}
+}
+
+func BenchmarkCanMateIn3Multi(bench *testing.B) {
+	b, _ := boardstate.FromFEN("r1b1kb1r/pppp1ppp/5q2/4n3/3KP3/2N3PN/PPP4P/R1BQ1B1R b kq - 0 1")
+	for i := 0; i < bench.N; i++ {
+		BestMoveSmp(b, 4)
+	}
+}
+
 func TestCanFindMateInThree(t *testing.T) {
 	b, err := boardstate.FromFEN("r1b1kb1r/pppp1ppp/5q2/4n3/3KP3/2N3PN/PPP4P/R1BQ1B1R b kq - 0 1")
 	require.Nil(t, err)
