@@ -8,30 +8,19 @@ import (
 
 // BoardState contains the state of the Board
 type BoardState struct {
-	colors           [2]uint64
-	pieces           [6]uint64
-	castleData       [2][2]bool
-	enpassantSquare  int8
-	turn             int8
-	halfMoves        int
-	fullMoves        int
-	moveStack        []MoveStackData
-	moveStackNextIdx int
-	colorList        [64]int8
-	pieceList        [64]int8
-	kingPos          [2]int8
-	PieceLocations   PieceLocations
-	zorbistKey       uint64
-}
-
-type MoveStackData struct {
-	src             int8
-	dst             int8
-	srcPiece        int8
-	dstPiece        int8
-	enpassantSquare int8
-	halfMoves       int
+	colors          [2]uint64
+	pieces          [6]uint64
 	castleData      [2][2]bool
+	enpassantSquare int8
+	turn            int8
+	halfMoves       int
+	fullMoves       int
+	moveStack       *MoveStack
+	colorList       [64]int8
+	pieceList       [64]int8
+	kingPos         [2]int8
+	PieceLocations  PieceLocations
+	zorbistKey      uint64
 }
 
 func (b *BoardState) GetKingPos(color int8) int8 {
@@ -40,11 +29,13 @@ func (b *BoardState) GetKingPos(color int8) int8 {
 
 // Blank returns a blank board with no pieces on it
 func Blank() *BoardState {
-	b := BoardState{}
+	b := BoardState{
+		moveStack: &MoveStack{},
+		colors:    [2]uint64{0, 0},
+		pieces:    [6]uint64{0, 0, 0, 0, 0, 0},
+	}
 	b.EnableAllCastling()
 	b.SetTurn(WHITE)
-	b.colors = [2]uint64{0, 0}
-	b.pieces = [6]uint64{0, 0, 0, 0, 0, 0}
 	b.SetEnpassant(NO_ENPASSANT)
 	for i := 0; i < 64; i++ {
 		b.colorList[i] = EMPTY
@@ -69,20 +60,19 @@ func Blank() *BoardState {
 // Copy returns a copy of a BoardState
 func (b *BoardState) Copy() *BoardState {
 	boardCopy := BoardState{
-		colors:           b.colors,
-		pieces:           b.pieces,
-		castleData:       b.castleData,
-		enpassantSquare:  b.enpassantSquare,
-		turn:             b.turn,
-		halfMoves:        b.halfMoves,
-		fullMoves:        b.fullMoves,
-		moveStack:        b.moveStack,
-		moveStackNextIdx: 0,
-		colorList:        b.colorList,
-		pieceList:        b.pieceList,
-		kingPos:          b.kingPos,
-		PieceLocations:   b.PieceLocations.Copy(),
-		zorbistKey:       b.zorbistKey,
+		colors:          b.colors,
+		pieces:          b.pieces,
+		castleData:      b.castleData,
+		enpassantSquare: b.enpassantSquare,
+		turn:            b.turn,
+		halfMoves:       b.halfMoves,
+		fullMoves:       b.fullMoves,
+		moveStack:       b.moveStack.Copy(),
+		colorList:       b.colorList,
+		pieceList:       b.pieceList,
+		kingPos:         b.kingPos,
+		PieceLocations:  b.PieceLocations.Copy(),
+		zorbistKey:      b.zorbistKey,
 	}
 
 	return &boardCopy

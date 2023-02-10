@@ -68,28 +68,26 @@ func BestMoveSmp(b *boardstate.BoardState, depth int) *boardstate.Move {
 	var wg sync.WaitGroup
 	var mux sync.Mutex
 
-	moves := make([]*boardstate.Move, 0, 300)
-	movegenerator.GenMovesInto(b, &moves)
-	for _, move := range moves {
+	for _, move := range movegenerator.GenMoves(b) {
 		wg.Add(1)
-		go func(b *boardstate.BoardState, move *boardstate.Move) {
+		go func(bs *boardstate.BoardState, localMove *boardstate.Move) {
 			defer wg.Done()
-			b.PlayTurnFromMove(move)
-			if !movegenerator.IsInCheck(b, currentTurn) {
+			bs.PlayTurnFromMove(localMove)
+			if !movegenerator.IsInCheck(bs, currentTurn) {
 				moves := make([]*boardstate.Move, 0, 1000)
-				value := -alphaBeta(b, moves, depth, -INFINITY, INFINITY)
+				value := -alphaBeta(bs, moves, depth, -INFINITY, INFINITY)
 				mux.Lock()
 				if value == bestValue {
-					bestMoves = append(bestMoves, move)
+					bestMoves = append(bestMoves, localMove)
 				}
 				if value > bestValue {
 					bestValue = value
 					bestMoves = make([]*boardstate.Move, 1)
-					bestMoves[0] = move
+					bestMoves[0] = localMove
 				}
 				mux.Unlock()
 			}
-			b.UnplayTurn()
+			bs.UnplayTurn()
 
 		}(b.Copy(), move)
 	}

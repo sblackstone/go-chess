@@ -66,8 +66,7 @@ func (b *BoardState) handleUncastling(src int8, dst int8) {
 }
 
 func (b *BoardState) UnplayTurn() {
-	msd := b.moveStack[len(b.moveStack)-1]
-	b.moveStack = b.moveStack[:len(b.moveStack)-1]
+	msd := b.moveStack.Pop()
 	b.SetEnpassant(msd.enpassantSquare)
 
 	// TODO: FIXME
@@ -131,7 +130,7 @@ func (b *BoardState) PlayTurn(src int8, dst int8, promotePiece int8) {
 	newMoveStackData.enpassantSquare = b.enpassantSquare
 	newMoveStackData.castleData = b.castleData
 	newMoveStackData.halfMoves = b.halfMoves
-	b.moveStack = append(b.moveStack, newMoveStackData)
+	b.moveStack.Push(newMoveStackData)
 
 	// Set or Clear enpassant flag
 	if piece == PAWN {
