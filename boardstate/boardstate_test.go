@@ -58,6 +58,24 @@ func TestSetGetHalfMoves(t *testing.T) {
 	}
 }
 
+func TestGetPieceBoard(t *testing.T) {
+	b := Initial()
+	var j int8
+	for j = ROOK; j <= PAWN; j++ {
+		assert.Equal(t, b.pieces[j], b.GetPieceBitboard(j))
+	}
+}
+
+func TestGetColorPieceBoard(t *testing.T) {
+	b := Initial()
+	var i, j int8
+	for i = WHITE; i <= BLACK; i++ {
+		for j = ROOK; j <= PAWN; j++ {
+			assert.Equal(t, b.colors[i]&b.pieces[j], b.GetColorPieceBitboard(i, j))
+		}
+	}
+}
+
 func TestSetGetFullMoves(t *testing.T) {
 	b := Initial()
 	b.SetFullMoves(512)

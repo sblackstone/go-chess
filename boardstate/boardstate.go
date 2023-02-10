@@ -104,16 +104,20 @@ func (b *BoardState) GetColorBitboard(color int8) uint64 {
 	return b.colors[color]
 }
 
+func (b *BoardState) GetPieceBitboard(piece int8) uint64 {
+	return b.pieces[piece]
+}
+
+func (b *BoardState) GetColorPieceBitboard(color, piece int8) uint64 {
+	return b.colors[color] & b.pieces[piece]
+}
+
 func (b *BoardState) GetZorbistKey() uint64 {
 	return b.zorbistKey
 }
 
 func (b *BoardState) UpdateZorbistKey(value uint64) {
 	b.zorbistKey ^= value
-}
-
-func (b *BoardState) GetPieceBitboard(color int8, piece int8) uint64 {
-	return b.pieces[piece] & b.colors[color]
 }
 
 func (b *BoardState) EnemyOccupiedSquare(n int8) bool {
