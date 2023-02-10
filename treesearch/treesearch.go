@@ -10,7 +10,7 @@ import (
 	"github.com/sblackstone/go-chess/movegenerator"
 )
 
-const INFINITY = int(9999999999999)
+const INFINITY = float64(9999999999999)
 
 func DepthPrint(depth int8, formatStr string, args ...any) {
 	for i := int8(0); i < depth; i++ {
@@ -21,13 +21,13 @@ func DepthPrint(depth int8, formatStr string, args ...any) {
 
 // https://www.chessprogramming.org/Alpha-Beta#Negamax_Framework
 // Alpha-Beta pruning NegaMax evaluation.
-func alphaBeta(b *boardstate.BoardState, moves []*boardstate.Move, depth int, alpha int, beta int) int {
+func alphaBeta(b *boardstate.BoardState, moves []*boardstate.Move, depth int, alpha float64, beta float64) float64 {
 
 	currentTurn := b.GetTurn()
 	// Making this not a variable seems to be a performance boost?  not getting compiled away?
 	gameState := movegenerator.CheckEndOfGame(b)
 	if gameState == movegenerator.GAME_STATE_CHECKMATE {
-		return -INFINITY - depth
+		return -INFINITY - float64(depth)
 	}
 
 	if depth == 0 || gameState > movegenerator.GAME_STATE_PLAYING {
@@ -61,7 +61,7 @@ func alphaBeta(b *boardstate.BoardState, moves []*boardstate.Move, depth int, al
 }
 
 func BestMoveSmp(b *boardstate.BoardState, depth int) *boardstate.Move {
-	var bestValue int
+	var bestValue float64
 	var bestMoves []*boardstate.Move
 	bestValue = -INFINITY
 	currentTurn := b.GetTurn()
@@ -97,7 +97,7 @@ func BestMoveSmp(b *boardstate.BoardState, depth int) *boardstate.Move {
 }
 
 func BestMove(b *boardstate.BoardState, depth int) *boardstate.Move {
-	var bestValue int
+	var bestValue float64
 	var bestMoves []*boardstate.Move
 	bestValue = -INFINITY
 	currentTurn := b.GetTurn()
