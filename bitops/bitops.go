@@ -64,6 +64,10 @@ func FindSetBits(n uint64) []int8 {
 	return result
 }
 
+func MirrorSquare(n int8) int8 {
+	return n ^ 56
+}
+
 func FindSetBitsGeneric(n uint64, f func(int8)) {
 	for n > 0 {
 		leading := bits.TrailingZeros64(n)
