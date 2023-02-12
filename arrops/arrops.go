@@ -3,7 +3,7 @@ package arrops
 import "fmt"
 
 // Flip takes a 8x8 array and flips it along its horizontal axis.
-func Flip[T any](a *[64]T) {
+func FlipInt(a *[64]int) {
 	for i := 0; i < 32; i++ {
 		t := a[i]
 		a[i] = a[i^56]
