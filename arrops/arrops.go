@@ -11,6 +11,14 @@ func FlipInt(a *[64]int) {
 	}
 }
 
+func FlipFloat64(a *[64]float64) {
+	for i := 0; i < 32; i++ {
+		t := a[i]
+		a[i] = a[i^56]
+		a[i^56] = t
+	}
+}
+
 // PrintWhiteBottom takes an array and prints its values from the perspective of white.
 func PrintWhiteBottom[T any](a *[64]T) {
 	for i := 7; i >= 0; i-- {
