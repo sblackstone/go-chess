@@ -43,5 +43,5 @@ func TestIntuitionPawns(t *testing.T) {
 	fmt.Printf("Black castle long = %f\n", example[35^56])
 	fmt.Printf("Black castle short = %f\n", example[36^56])
 
-	t.Error(1)
+	//t.Error(1)
 }

@@ -58,7 +58,6 @@ func BenchmarkMateInSix(b *testing.B) {
 	fmt.Printf("%+v\n", BestMove(board, 7))
 }
 
-// This occasionally fails because there is more than one solution.
 func TestCanFindMateInFourForWhite(t *testing.T) {
 	board, _ := boardstate.FromFEN("1k6/2p3r1/p6p/1pQP4/3N2q1/8/P5P1/6K1 w - - 0 1")
 	//board.Print(127)
@@ -112,4 +111,10 @@ func TestCanFindMateInThreeForBlack(t *testing.T) {
 	bm := BestMove(b, 4)
 	assert.Equal(t, bm.Src, int8(1))
 	assert.Equal(t, bm.Dst, int8(46))
+}
+
+func TestD4Response(t *testing.T) {
+	b := boardstate.Initial()
+	b.PlayTurn(11, 27, 99)
+	BestMoveSmp(b, 6)
 }
