@@ -179,3 +179,17 @@ func TestTestBit(t *testing.T) {
 	assert.True(t, TestBit(v, 2))
 
 }
+
+func TestRankOfSquare(t *testing.T) {
+	assert.Equal(t, int8(0), RankOfSquare(0))
+	assert.Equal(t, int8(3), RankOfSquare(25))
+	assert.Equal(t, int8(4), RankOfSquare(37))
+	assert.Equal(t, int8(7), RankOfSquare(63))
+}
+
+func TestFileOfSquare(t *testing.T) {
+	assert.Equal(t, int8(0), FileOfSquare(0))
+	assert.Equal(t, int8(1), FileOfSquare(25))
+	assert.Equal(t, int8(5), FileOfSquare(37))
+	assert.Equal(t, int8(7), FileOfSquare(63))
+}
