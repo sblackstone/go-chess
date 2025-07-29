@@ -1,7 +1,7 @@
 package bitops
 
 // Standard bitboard operations...
-// Some of these algorithms are originally creddited to Knuth.
+// Some of these algorithms are originally credited to Knuth.
 //
 // https://www.chessprogramming.org/Flipping_Mirroring_and_Rotating#Rotationby90degreesClockwise
 
