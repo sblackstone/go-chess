@@ -1,17 +1,16 @@
 package arrops
 
-import "fmt"
+import (
+	"fmt"
 
-// Flip takes a 8x8 array and flips it along its horizontal axis.
-func FlipInt(a *[64]int) {
-	for i := 0; i < 32; i++ {
-		t := a[i]
-		a[i] = a[i^56]
-		a[i^56] = t
-	}
+	"golang.org/x/exp/constraints"
+)
+
+type Numeric interface {
+	constraints.Integer | constraints.Float
 }
 
-func FlipFloat64(a *[64]float64) {
+func Flip[T Numeric](a *[64]T) {
 	for i := 0; i < 32; i++ {
 		t := a[i]
 		a[i] = a[i^56]

@@ -31,7 +31,7 @@ func TestFlipInt(t *testing.T) {
 		0, 1, 2, 3, 4, 5, 6, 7,
 	}
 
-	FlipInt(&inputArray)
+	Flip(&inputArray)
 	fmt.Printf("%v\n", inputArray)
 	assert.Equal(t, expected, inputArray)
 
@@ -61,7 +61,7 @@ func TestFlipFloat64(t *testing.T) {
 		0, 1, 2, 3, 4, 5, 6, 7,
 	}
 
-	FlipFloat64(&inputArray)
+	Flip(&inputArray)
 	fmt.Printf("%v\n", inputArray)
 	assert.Equal(t, expected, inputArray)
 

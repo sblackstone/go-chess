@@ -150,8 +150,8 @@ func init() {
 	// Everything above is drawn from the perspective of white.
 	// But the arrays are reversed..   So put the arrays in the correct order.
 	for piece := boardstate.ROOK; piece <= boardstate.PAWN; piece++ {
-		arrops.FlipFloat64(&squarePieceMapsStart[piece])
-		arrops.FlipFloat64(&squarePieceMapsEndGame[piece])
+		arrops.Flip(&squarePieceMapsStart[piece])
+		arrops.Flip(&squarePieceMapsEndGame[piece])
 	}
 
 }
