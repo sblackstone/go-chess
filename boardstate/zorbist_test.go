@@ -73,13 +73,10 @@ func TestZorbistPlayTurnUnplayTurnCastling(t *testing.T) {
 	b.PlayTurn(54, 54-8, EMPTY)
 	b.PlayTurn(5, 5+7, EMPTY)
 	b.PlayTurn(53, 53-8, EMPTY)
-	b.Print(-1)
 	zorbistKey1 := b.GetZorbistKey()
 	b.PlayTurn(4, 6, EMPTY) // White castle short
-	b.Print(-1)
 	zorbistKey2 := b.GetZorbistKey()
 	b.UnplayTurn()
-	b.Print(-1)
 	zorbistKey3 := b.GetZorbistKey()
 	checkZorbistBeforeAfter(t, zorbistKey1, zorbistKey2, zorbistKey3)
 
