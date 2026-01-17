@@ -65,6 +65,26 @@ func TestZorbistPlayTurnUnplayTurn(t *testing.T) {
 	checkZorbistBeforeAfter(t, zorbistKey1, zorbistKey2, zorbistKey3)
 }
 
+func TestZorbistPlayTurnUnplayTurnCastling(t *testing.T) {
+	b := Initial()
+	b.PlayTurn(4+8, 4+8+8, EMPTY)
+	b.PlayTurn(55, 55-8, EMPTY)
+	b.PlayTurn(6, 6+16+1, EMPTY) // Black knight out of the way
+	b.PlayTurn(54, 54-8, EMPTY)
+	b.PlayTurn(5, 5+7, EMPTY)
+	b.PlayTurn(53, 53-8, EMPTY)
+	b.Print(-1)
+	zorbistKey1 := b.GetZorbistKey()
+	b.PlayTurn(4, 6, EMPTY) // White castle short
+	b.Print(-1)
+	zorbistKey2 := b.GetZorbistKey()
+	b.UnplayTurn()
+	b.Print(-1)
+	zorbistKey3 := b.GetZorbistKey()
+	checkZorbistBeforeAfter(t, zorbistKey1, zorbistKey2, zorbistKey3)
+
+}
+
 func TestZorbistPlayTurnUnplayTurnEnpassant(t *testing.T) {
 	b := Initial()
 	b.PlayTurn(8, 24, EMPTY)
