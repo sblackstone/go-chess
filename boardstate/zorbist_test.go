@@ -1,12 +1,17 @@
-package boardstate
+package boardstate_test
 
 import (
 	"fmt"
+	"math/rand"
 	"testing"
+
+	"github.com/sblackstone/go-chess/boardstate"
+	"github.com/sblackstone/go-chess/movegenerator"
+	"github.com/stretchr/testify/require"
 )
 
 func TestZorbistEnpassant(t *testing.T) {
-	b := Initial()
+	b := boardstate.Initial()
 	b.SetEnpassant(5)
 	zorbistKey1 := b.GetZorbistKey()
 	b.SetEnpassant(6)
@@ -19,7 +24,7 @@ func TestZorbistEnpassant(t *testing.T) {
 }
 
 func TestZorbistTurns(t *testing.T) {
-	b := Blank()
+	b := boardstate.Blank()
 	zorbistKey1 := b.GetZorbistKey()
 	b.ToggleTurn()
 	zorbistKey2 := b.GetZorbistKey()
@@ -32,11 +37,11 @@ func TestZorbistTurns(t *testing.T) {
 }
 
 func TestZorbistPieces(t *testing.T) {
-	b := Blank()
+	b := boardstate.Blank()
 	zorbistKey1 := b.GetZorbistKey()
-	b.SetSquare(10, WHITE, ROOK)
+	b.SetSquare(10, boardstate.WHITE, boardstate.ROOK)
 	zorbistKey2 := b.GetZorbistKey()
-	b.SetSquare(10, EMPTY, EMPTY)
+	b.SetSquare(10, boardstate.EMPTY, boardstate.EMPTY)
 	zorbistKey3 := b.GetZorbistKey()
 	fmt.Printf("%+v %+v %+v\n", zorbistKey1, zorbistKey2, zorbistKey3)
 
@@ -44,11 +49,11 @@ func TestZorbistPieces(t *testing.T) {
 }
 
 func TestZorbistCastling(t *testing.T) {
-	b := Blank()
+	b := boardstate.Blank()
 	zorbistKey1 := b.GetZorbistKey()
-	b.SetCastleRights(WHITE, CASTLE_LONG, false)
+	b.SetCastleRights(boardstate.WHITE, boardstate.CASTLE_LONG, false)
 	zorbistKey2 := b.GetZorbistKey()
-	b.SetCastleRights(WHITE, CASTLE_LONG, true)
+	b.SetCastleRights(boardstate.WHITE, boardstate.CASTLE_LONG, true)
 	zorbistKey3 := b.GetZorbistKey()
 
 	checkZorbistBeforeAfter(t, zorbistKey1, zorbistKey2, zorbistKey3)
@@ -56,9 +61,9 @@ func TestZorbistCastling(t *testing.T) {
 }
 
 func TestZorbistPlayTurnUnplayTurn(t *testing.T) {
-	b := Initial()
+	b := boardstate.Initial()
 	zorbistKey1 := b.GetZorbistKey()
-	b.PlayTurn(8, 16, EMPTY)
+	b.PlayTurn(8, 16, boardstate.EMPTY)
 	zorbistKey2 := b.GetZorbistKey()
 	b.UnplayTurn()
 	zorbistKey3 := b.GetZorbistKey()
@@ -66,15 +71,15 @@ func TestZorbistPlayTurnUnplayTurn(t *testing.T) {
 }
 
 func TestZorbistPlayTurnUnplayTurnCastling(t *testing.T) {
-	b := Initial()
-	b.PlayTurn(4+8, 4+8+8, EMPTY)
-	b.PlayTurn(55, 55-8, EMPTY)
-	b.PlayTurn(6, 6+16+1, EMPTY) // Black knight out of the way
-	b.PlayTurn(54, 54-8, EMPTY)
-	b.PlayTurn(5, 5+7, EMPTY)
-	b.PlayTurn(53, 53-8, EMPTY)
+	b := boardstate.Initial()
+	b.PlayTurn(4+8, 4+8+8, boardstate.EMPTY)
+	b.PlayTurn(55, 55-8, boardstate.EMPTY)
+	b.PlayTurn(6, 6+16+1, boardstate.EMPTY) // Black knight out of the way
+	b.PlayTurn(54, 54-8, boardstate.EMPTY)
+	b.PlayTurn(5, 5+7, boardstate.EMPTY)
+	b.PlayTurn(53, 53-8, boardstate.EMPTY)
 	zorbistKey1 := b.GetZorbistKey()
-	b.PlayTurn(4, 6, EMPTY) // White castle short
+	b.PlayTurn(4, 6, boardstate.EMPTY) // White castle short
 	zorbistKey2 := b.GetZorbistKey()
 	b.UnplayTurn()
 	zorbistKey3 := b.GetZorbistKey()
@@ -83,15 +88,15 @@ func TestZorbistPlayTurnUnplayTurnCastling(t *testing.T) {
 }
 
 func TestZorbistPlayTurnUnplayTurnEnpassant(t *testing.T) {
-	b := Initial()
-	b.PlayTurn(8, 24, EMPTY)
-	b.PlayTurn(55, 39, EMPTY)
-	b.PlayTurn(24, 32, EMPTY)
+	b := boardstate.Initial()
+	b.PlayTurn(8, 24, boardstate.EMPTY)
+	b.PlayTurn(55, 39, boardstate.EMPTY)
+	b.PlayTurn(24, 32, boardstate.EMPTY)
 
 	zorbistKey1 := b.GetZorbistKey()
 	b.PrintFen(false)
 	// Ready for en-passant push.
-	b.PlayTurn(49, 33, EMPTY)
+	b.PlayTurn(49, 33, boardstate.EMPTY)
 	zorbistKey2 := b.GetZorbistKey()
 	b.PrintFen(false)
 
@@ -115,4 +120,29 @@ func checkZorbistBeforeAfter(t *testing.T, zorbistKey1, zorbistKey2, zorbistKey3
 	if zorbistKey3 != zorbistKey1 {
 		t.Errorf("Expected zobristKey1 to equal zorbistKey3")
 	}
+}
+
+func TestZorbistLongGame(t *testing.T) {
+	// Zorbist sanity check over a long random game.
+	for i := 0; i < 25; i++ {
+		b := boardstate.Initial()
+		zorbistKeys := make([]uint64, 0, 200)
+		for i := 0; i < 100; i++ {
+			moves := make([]*boardstate.Move, 0, 1000)
+			movegenerator.GenMovesInto(b, &moves)
+			if len(moves) == 0 {
+				break
+			}
+			randomIndex := rand.Intn(len(moves))
+			b.PlayTurn(moves[randomIndex].Src, moves[randomIndex].Dst, moves[randomIndex].PromotePiece)
+			zorbistKeys = append(zorbistKeys, b.GetZorbistKey())
+		}
+
+		for i := len(zorbistKeys) - 1; i > 0; i-- {
+			b.UnplayTurn()
+			require.Equal(t, b.GetZorbistKey(), zorbistKeys[i-1])
+		}
+
+	}
+
 }
